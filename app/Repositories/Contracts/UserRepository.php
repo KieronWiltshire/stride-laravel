@@ -18,6 +18,7 @@ interface UserRepository
    *
    * @param Array $attributes
    * @return App\Entities\User
+   * 
    * @throws Illuminate\Validation\ValidationException
    */
   function create($attributes);
@@ -54,6 +55,7 @@ interface UserRepository
    * @param App\Entities\User $user
    * @param Array $attributes
    * @return App\Entities\User
+   * 
    * @throws Illuminate\Validation\ValidationException
    */
   function update($user, $attributes);
@@ -65,6 +67,7 @@ interface UserRepository
    * @param App\Entities\User $user
    * @param string $email
    * @return App\Entities\User
+   * 
    * @throws Illuminate\Validation\ValidationException
    */
   function requestEmailChange($user, $email);
@@ -76,6 +79,7 @@ interface UserRepository
    * @param App\Entities\User $user
    * @param string $emailVerificationToken
    * @return App\Entities\User
+   * 
    * @throws Illuminate\Validation\ValidationException
    * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
    */
@@ -94,6 +98,7 @@ interface UserRepository
    *
    * @param string $emailVerificationToken
    * @return Object
+   * 
    * @throws Illuminate\Validation\ValidationException
    */
   function decodeEmailVerificationToken($emailVerificationToken);
@@ -122,6 +127,7 @@ interface UserRepository
    * @param string $password
    * @param string $passwordResetToken
    * @return App\Entities\User
+   * 
    * @throws App\Exceptions\User\PasswordResetTokenExpiredException
    * @throws App\Exceptions\User\InvalidPasswordResetTokenException
    */

@@ -45,6 +45,7 @@ class EloquentUserRepository implements UserRepository
    *
    * @param Array $attributes
    * @return App\Entities\User
+   * 
    * @throws Illuminate\Validation\ValidationException
    */
   public function create($attributes)
@@ -126,6 +127,7 @@ class EloquentUserRepository implements UserRepository
    * @param App\Entities\User $user
    * @param Array $attributes
    * @return App\Entities\User
+   * 
    * @throws Illuminate\Validation\ValidationException
    */
   public function update($user, $attributes)
@@ -165,6 +167,7 @@ class EloquentUserRepository implements UserRepository
    * @param App\Entities\User $user
    * @param string $email
    * @return App\Entities\User
+   * 
    * @throws Illuminate\Validation\ValidationException
    */
   public function requestEmailChange($user, $email)
@@ -199,6 +202,7 @@ class EloquentUserRepository implements UserRepository
    * @param App\Entities\User $user
    * @param string $emailVerificationToken
    * @return App\Entities\User
+   * 
    * @throws Illuminate\Validation\ValidationException
    * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
    */
@@ -301,6 +305,7 @@ class EloquentUserRepository implements UserRepository
    * @param string $password
    * @param string $passwordResetToken
    * @return App\Entities\User
+   * 
    * @throws App\Exceptions\User\PasswordResetTokenExpiredException
    * @throws App\Exceptions\User\InvalidPasswordResetTokenException
    */
