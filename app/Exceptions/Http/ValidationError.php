@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\HttpError;
+namespace App\Exceptions\Http;
 
 use App\Exceptions\AppException;
 

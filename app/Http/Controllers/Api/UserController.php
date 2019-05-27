@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\UserRepository;
-use App\Exceptions\HttpError\BadRequestError;
+use App\Exceptions\Http\BadRequestError;
+use App\Exceptions\Http\NotFoundError;
+use App\Exceptions\User\PasswordResetTokenExpiredException;
+use App\Exceptions\User\InvalidPasswordResetTokenException;
 
 class UserController extends Controller
 {
@@ -49,7 +52,10 @@ class UserController extends Controller
    */
   public function create(Request $request)
   {
-    return $this->users->create($request->only(['email', 'password']));
+    return $this->users->create([
+      'email' => $request->input('email'),
+      'password' => $request->input('password')
+    ]);
   }
 
   /**
@@ -100,5 +106,86 @@ class UserController extends Controller
       ->appends([
         'limit' => $request->query('limit')
       ]);
+  }
+
+  /**
+   * Update a user.
+   * 
+   * @param Illuminate\Http\Request $request
+   * @return Illuminate\Http\Response
+   */
+  public function update(Request $request)
+  {
+    $user = $this->users->findByEmail($request->query('email'));
+
+    if ($user instanceof User) {
+      return $this->users->update($user, [
+        'password' => $request->input('password')
+      ]);
+    } else {
+      throw (new NotFoundError())->setContext([
+        'email' => [
+          __('passwords.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Send the user a password reset token.
+   *
+   * @param Illuminate\Http\Request $request
+   * @return Illuminate\Http\Response
+   */
+  public function forgotPassword(Request $request)
+  {
+    $user = $this->users->findByEmail($request->query('email'));
+
+    if ($user instanceof User) {
+      $this->users->forgotPassword($user);
+
+      return response([], 202);
+    } else {
+      throw (new NotFoundError())->setContext([
+        'email' => [
+          __('passwords.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Reset the user's password using the password reset token.
+   *
+   * @param Illuminate\Http\Request $request
+   * @return Illuminate\Http\Response
+   */
+  public function resetPassword(Request $request)
+  {
+    $user = $this->users->findByEmail($request->query('email'));
+
+    if ($user instanceof User) {
+      try {
+        return $this->users->resetPassword($user, $request->input('password'), $request->query('password_reset_token'));
+      } catch (InvalidPasswordResetTokenException $e) {
+        throw $e->setContext([
+          'password_reset_token' => [
+            __('passwords.invalid')
+          ]
+        ]);
+      } catch (PasswordResetTokenExpiredException $e) {
+        throw $e->setContext([
+          'password_reset_token' => [
+            __('passwords.invalid')
+          ]
+        ]);
+      }
+    } else {
+      throw (new NotFoundError())->setContext([
+        'email' => [
+          __('passwords.not_found')
+        ]
+      ]);
+    }
   }
 }

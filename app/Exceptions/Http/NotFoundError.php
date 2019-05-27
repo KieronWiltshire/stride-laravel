@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exceptions\HttpError;
+namespace App\Exceptions\Http;
 
 use App\Exceptions\AppException;
 
@@ -11,6 +11,6 @@ class NotFoundError extends AppException
    */
   public function __construct()
   {
-    parent::__construct(__('http-error.not-found'), 404, 'NotFoundError');
+    parent::__construct(__('http-error.not_found'), 404, 'NotFoundError');
   }
 }

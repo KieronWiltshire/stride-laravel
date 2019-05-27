@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Events\User\UserCreatedEvent;
+use App\Events\User\EmailVerificationTokenGeneratedEvent;
+use App\Events\User\PasswordResetTokenGeneratedEvent;
 use App\Listeners\User\SendEmailVerificationToken;
+use App\Listeners\User\SendPasswordResetToken;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -14,9 +16,12 @@ class EventServiceProvider extends ServiceProvider
    * @var array
    */
   protected $listen = [
-    UserCreatedEvent::class => [
+    EmailVerificationTokenGeneratedEvent::class => [
       SendEmailVerificationToken::class,
     ],
+    PasswordResetTokenGeneratedEvent::class => [
+      SendPasswordResetToken::class,
+    ]
   ];
 
   /**
