@@ -34,7 +34,7 @@ class PasswordResetToken extends Mailable
    */
   public function build()
   {
-    return $this->subject(__('email.password_reset'))->view('app')->with([
+    return $this->subject(__('email-subjects.password_reset'))->view('app')->with([
       'passwordResetToken' => $this->passwordResetToken
     ]);
   }
