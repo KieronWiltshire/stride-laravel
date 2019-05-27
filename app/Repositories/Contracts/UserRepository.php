@@ -91,7 +91,7 @@ interface UserRepository
    * @param string $email
    * @return string
    */
-  function generateEmailVerificationToken($user, $email);
+  function generateEmailVerificationToken($email);
 
   /**
    * Decode an email verification token.
@@ -106,11 +106,12 @@ interface UserRepository
   /**
    * Send the email verification email.
    *
-   * @param string $email
-   * @param string $emailVerificationToken
+   * @param App\Entities\User $user
    * @return void
+   * 
+   * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
    */
-  function sendEmailVerificationToken($email, $emailVerificationToken);
+  function sendEmailVerificationToken($user);
 
   /**
    * Create's a password reset token for the specified user.
@@ -128,6 +129,7 @@ interface UserRepository
    * @param string $passwordResetToken
    * @return App\Entities\User
    * 
+   * @throws Illuminate\Validation\ValidationException
    * @throws App\Exceptions\User\PasswordResetTokenExpiredException
    * @throws App\Exceptions\User\InvalidPasswordResetTokenException
    */
@@ -151,9 +153,8 @@ interface UserRepository
   /**
    * Send the user a password reset email.
    *
-   * @param string $email
-   * @param string $passwordResetToken
+   * @param App\Entities\User $user
    * @return void
    */
-  function sendPasswordResetToken($email, $passwordResetToken);
+  function sendPasswordResetToken($user);
 }

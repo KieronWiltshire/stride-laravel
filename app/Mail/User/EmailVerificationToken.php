@@ -13,23 +13,16 @@ class EmailVerificationToken extends Mailable
   /**
    * @var string
    */
-  private $to;
-
-  /**
-   * @var string
-   */
   private $emailVerificationToken;
 
   /**
    * Create a new message instance.
    *
-   * @param string $to
    * @param string $passwordResetToken
    * @return void
    */
-  public function __construct($to, $emailVerificationToken)
+  public function __construct($emailVerificationToken)
   {
-    $this->to = $to;
     $this->emailVerificationToken = $emailVerificationToken;
   }
 
@@ -40,8 +33,7 @@ class EmailVerificationToken extends Mailable
    */
   public function build()
   {
-    return $this->subject(__('email.email_verification'))->view('view.name')->with([
-      'to' => $this->to,
+    return $this->subject(__('email.email_verification'))->view('app')->with([
       'emailVerificationToken' => $this->emailVerificationToken
     ]);
   }

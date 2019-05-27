@@ -12,7 +12,7 @@ return [
   |
   */
 
-  'bad-request' => 'The server could not process the request',
+  'bad_request' => 'The server could not process the request',
   'forbidden' => 'You are forbidden to make that request',
   'internal' => 'An internal server error occured',
   'not_found' => 'The intended resource could not be found',

@@ -11,6 +11,6 @@ class BadRequestError extends AppException
    */
   public function __construct()
   {
-    parent::__construct(__('http-error.bad-request'), 400, 'BadRequestError');
+    parent::__construct(__('http-error.bad_request'), 400, 'BadRequestError');
   }
 }

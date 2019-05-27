@@ -32,13 +32,6 @@ class SendEmailVerificationToken
    */
   public function handle(EmailVerificationTokenGeneratedEvent $event)
   {
-    $user = $event->getUser();
-    $decodedToken = $this->users->decodeEmailVerificationToken($user->email_verification_token);
-
-    if ($decodedToken) {
-      $this->users->sendEmailVerificationToken($decodedToken->email, $user->email_verification_token);
-    } else {
-      throw new Exception();
-    }
+    $this->users->sendEmailVerificationToken($event->getUser());
   }
 }

@@ -4,7 +4,7 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Email Language Lines
+  | Email Subject Language Lines
   |--------------------------------------------------------------------------
   |
   | The following language lines are used as the subject in the emails sent
@@ -12,7 +12,7 @@ return [
   |
   */
 
-  'email_verification' => 'These credentials do not match our records.',
-  'password_reset' => 'These credentials do not match our records.',
+  'email_verification' => 'Email Verification',
+  'password_reset' => 'Password Reset',
 
 ];

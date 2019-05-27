@@ -5,12 +5,12 @@ namespace App\Exceptions;
 use Exception;
 use App\Exceptions\AppException;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\HttpError\BadRequestError;
-use App\Exceptions\HttpError\ForbiddenError;
-use App\Exceptions\HttpError\InternalServerError;
-use App\Exceptions\HttpError\NotFoundError;
-use App\Exceptions\HttpError\UnauthorizedError;
-use App\Exceptions\HttpError\ValidationError;
+use App\Exceptions\Http\BadRequestError;
+use App\Exceptions\Http\ForbiddenError;
+use App\Exceptions\Http\InternalServerError;
+use App\Exceptions\Http\NotFoundError;
+use App\Exceptions\Http\UnauthorizedError;
+use App\Exceptions\Http\ValidationError;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 

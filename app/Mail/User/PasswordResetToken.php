@@ -13,11 +13,6 @@ class PasswordResetToken extends Mailable
   /**
    * @var string
    */
-  private $to;
-
-  /**
-   * @var string
-   */
   private $passwordResetToken;
 
   /**
@@ -27,9 +22,8 @@ class PasswordResetToken extends Mailable
    * @param string $passwordResetToken
    * @return void
    */
-  public function __construct($to, $passwordResetToken)
+  public function __construct($passwordResetToken)
   {
-    $this->to = $to;
     $this->passwordResetToken = $passwordResetToken;
   }
 
@@ -40,8 +34,7 @@ class PasswordResetToken extends Mailable
    */
   public function build()
   {
-    return $this->subject(__('email.password_reset'))->view('view.name')->with([
-      'to' => $this->to,
+    return $this->subject(__('email.password_reset'))->view('app')->with([
       'passwordResetToken' => $this->passwordResetToken
     ]);
   }
