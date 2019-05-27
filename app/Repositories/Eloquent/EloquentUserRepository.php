@@ -1,9 +1,15 @@
 <?php
 
-namespace App\Eloquent;
+namespace App\Repositories\Eloquent;
 
-use App\Contracts\UserRepository;
+use Validator;
+use App\Entities\User;
+use App\Repositories\Contracts\UserRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Validation\ValidationException;
+use Exception;
+use App\Events\User\UserCreatedEvent;
+use App\Exceptions\HttpError\BadRequestError;
 
 class EloquentUserRepository implements UserRepository
 {
@@ -12,40 +18,76 @@ class EloquentUserRepository implements UserRepository
    * 
    * @param integer $limit
    * @param integer $offset
-   * @return LengthAwarePaginator<App\Entities\User>
+   * @return Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    */
-  public function all($limit, $offset)
+  public function all($limit, $offset = 1)
   {
     if ($limit) {
       return User::paginate($limit, ['*'], 'page', $offset);
     } else {
       $users = User::get();
 
-      return new LengthAwarePaginator($users->all(), $users->count(), $users->count(), 1);
+      return new LengthAwarePaginator($users->all(), $users->count(), max($users->count(), 1), 1);
     }
   }
 
   /**
    * Create a new user.
    *
-   * @param string email
-   * @param string username
-   * @param string password
+   * @param Array $input
    * @return App\Entities\User
+   * @throws Illuminate\Validation\ValidationException
    */
-  public function create($email, $password)
-  { }
+  public function create($input)
+  {
+    if (isset($input['email'])) {
+      $input[] = ['email_verification_token' => $this->generateEmailVerificationToken($input['email'])];
+    }
+
+    $validator = Validator::make($input, [
+      'email' => 'required|unique:users|email',
+      'password' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+      throw ValidationException::withMessages($validator->errors()->toArray());
+    }
+
+    if ($user = User::create($input)) {
+      event(new UserCreatedEvent($user));
+
+      return $user;
+    } else {
+      throw new Exception();
+    }
+  }
 
   /**
    * Find a user by an unknown parameter.
    *
-   * @param number|string $param
-   * @param number|string $value
+   * @param number|string $parameter
+   * @param number|string $search
    * @param boolean $regex
-   * @return App\Entities\User
+   * @return Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    */
-  public function find($param, $value, $regex = true)
-  { }
+  public function find($parameter, $search, $regex = true, $limit, $offset = 1)
+  {
+    $query = User::query();
+
+    if ($regex) {
+      $query->where($parameter, 'REGEXP', $search)->get();
+    } else {
+      $query->where($parameter, $search)->get();
+    }
+
+    if ($limit) {
+      return $query->paginate($limit, ['*'], 'page', $offset);
+    } else {
+      $users = $query->get();
+
+      return new LengthAwarePaginator($users->all(), $users->count(), max($users->count(), 1), 1);
+    }
+  }
 
   /**
    * Find a user by identifier.
@@ -54,7 +96,9 @@ class EloquentUserRepository implements UserRepository
    * @return App\Entities\User
    */
   public function findById($id)
-  { }
+  {
+    return User::find($id);
+  }
 
   /**
    * Find a user by email.
@@ -63,17 +107,19 @@ class EloquentUserRepository implements UserRepository
    * @return App\Entities\User
    */
   public function findByEmail($email)
-  { }
+  {
+    return User::where('email', $email)->first();
+  }
 
   /**
-   * Change the email of the specified user.
-   *
+   * Edit a user.
+   * 
    * @param App\Entities\User $user
-   * @param string $email
-   * @param boolean $requireVerification
-   * @return App\Entities\User
+   * @param Array $input
+   * @return boolean
+   * @throws Illuminate\Validation\ValidationException
    */
-  public function changeEmail($user, $email, $requireVerification = true)
+  public function edit($user, $input)
   { }
 
   /**
@@ -101,26 +147,6 @@ class EloquentUserRepository implements UserRepository
    * @return boolean
    */
   public function sendEmailVerificationToken($user)
-  { }
-
-  /**
-   * Change a user's password.
-   *
-   * @param App\Entities\User $user
-   * @param string $password
-   * @return App\Entities\User
-   */
-  public function changePassword($user, $password)
-  { }
-
-  /**
-   * Compare a user's password.
-   *
-   * @param App\Entities\User $user
-   * @param string $password
-   * @return boolean
-   */
-  public function comparePassword($user, $password)
   { }
 
   /**

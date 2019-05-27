@@ -2,6 +2,7 @@
 
 namespace App\Entities;
 
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -33,6 +34,26 @@ class User extends Authenticatable implements JWTSubject
     'email_verification_token',
     'password_reset_token'
   ];
+
+  /**
+   * The attributes that should be cast to native types.
+   *
+   * @var array
+   */
+  protected $casts = [
+    'email_verified' => 'boolean',
+  ];
+
+  /**
+   * Set the user's password.
+   *
+   * @param string $password
+   * @return void
+   */
+  public function setPasswordAttribute($password)
+  {
+    $this->attributes['password'] = Hash::make($password);
+  }
 
   /**
    * Get the identifier that will be stored in the subject claim of the JWT.

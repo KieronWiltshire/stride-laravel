@@ -3,9 +3,16 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Exceptions\AppException;
+use Illuminate\Validation\ValidationException;
+use App\Exceptions\HttpError\BadRequestError;
+use App\Exceptions\HttpError\ForbiddenError;
+use App\Exceptions\HttpError\InternalServerError;
+use App\Exceptions\HttpError\NotFoundError;
+use App\Exceptions\HttpError\UnauthorizedError;
+use App\Exceptions\HttpError\ValidationError;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -48,23 +55,18 @@ class Handler extends ExceptionHandler
    */
   public function render($request, Exception $exception)
   {
-    try {
-      $exception = $this->conform($exception);
+    $exception = $this->conform($exception);
 
-      return response([
-        'error' => $exception->render()
-      ], $exception->getHttpStatus());
-    } catch (AppConformException $e) {
-      return parent::render($request, $exception);
-    }
+    return response([
+      'error' => $exception->render()
+    ], $exception->getHttpStatus());
   }
 
   /**
    * Conform the exception to an application standard.
    * 
    * @param Exception $exception
-   * @return App\Exceptions\AppException|Exception
-   * @throws App\Exceptions\AppConformException
+   * @return App\Exceptions\AppException
    */
   public function conform($exception)
   {
@@ -116,7 +118,7 @@ class Handler extends ExceptionHandler
     */
     if ($exception instanceof ValidationException) {
       $error = new ValidationError();
-      $error->setContext($exception->getResponse());
+      $error->setContext($exception->errors());
     }
 
     /*
@@ -131,10 +133,16 @@ class Handler extends ExceptionHandler
       $error = $exception;
     }
 
-    if ($error) {
-      return $error;
-    } else {
-      throw new AppConformException($exception);
+    if (!$error) {
+      $error = new InternalServerError();
+
+      if (app()->environment(['local', 'development'])) {
+        $error->setContext([
+          'exception' => $this->convertExceptionToArray($exception)
+        ]);
+      }
     }
+
+    return $error;
   }
 }

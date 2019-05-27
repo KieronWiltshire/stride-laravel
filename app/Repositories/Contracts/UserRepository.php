@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Repositories\Contracts;
 
 interface UserRepository
 {
@@ -9,29 +9,28 @@ interface UserRepository
    * 
    * @param integer $limit
    * @param integer $offset
-   * @return LengthAwarePaginator<App\Entities\User>
+   * @return Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    */
-  function all($limit, $offset);
+  function all($limit, $offset = 1);
 
   /**
    * Create a new user.
    *
-   * @param string email
-   * @param string username
-   * @param string password
+   * @param Array $input
    * @return App\Entities\User
+   * @throws Illuminate\Validation\ValidationException
    */
-  function create($email, $password);
+  function create($input);
 
   /**
    * Find a user by an unknown parameter.
    *
-   * @param number|string $param
-   * @param number|string $value
+   * @param number|string $parameter
+   * @param number|string $search
    * @param boolean $regex
-   * @return App\Entities\User
+   * @return Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    */
-  function find($param, $value, $regex = true);
+  function find($parameter, $search, $regex = true, $limit, $offset = 1);
 
   /**
    * Find a user by identifier.
@@ -50,14 +49,14 @@ interface UserRepository
   function findByEmail($email);
 
   /**
-   * Change the email of the specified user.
-   *
+   * Edit a user.
+   * 
    * @param App\Entities\User $user
-   * @param string $email
-   * @param boolean $requireVerification
-   * @return App\Entities\User
+   * @param Array $input
+   * @return boolean
+   * @throws Illuminate\Validation\ValidationException
    */
-  function changeEmail($user, $email, $requireVerification = true);
+  public function edit($user, $input);
 
   /**
    * Generate an email verification token for the specified email address.
@@ -91,15 +90,6 @@ interface UserRepository
    * @return App\Entities\User
    */
   function changePassword($user, $password);
-
-  /**
-   * Compare a user's password.
-   *
-   * @param App\Entities\User $user
-   * @param string $password
-   * @return boolean
-   */
-  function comparePassword($user, $password);
 
   /**
    * Create's a password reset token for the specified user.

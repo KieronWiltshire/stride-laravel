@@ -77,10 +77,12 @@ abstract class AppException extends Exception
    * Set the context of the error.
    * 
    * @param Array $context
+   * @param App\Exceptions\AppException
    */
   public function setContext($context)
   {
     $this->context = $context;
+    return $this;
   }
 
   /**
