@@ -10,6 +10,8 @@ interface UserRepository
    * @param integer $limit
    * @param integer $offset
    * @return Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   * 
+   * @throws App\Exceptions\Pagination\InvalidPaginationException
    */
   function all($limit, $offset = 1);
 
@@ -68,7 +70,7 @@ interface UserRepository
    * @param string $email
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\InvalidEmailException
    */
   function requestEmailChange($user, $email);
 
@@ -80,7 +82,7 @@ interface UserRepository
    * @param string $emailVerificationToken
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\InvalidEmailException
    * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
    */
   function verifyEmail($user, $emailVerificationToken);
@@ -98,8 +100,6 @@ interface UserRepository
    *
    * @param string $emailVerificationToken
    * @return Object
-   * 
-   * @throws Illuminate\Validation\ValidationException
    */
   function decodeEmailVerificationToken($emailVerificationToken);
 
@@ -129,7 +129,7 @@ interface UserRepository
    * @param string $passwordResetToken
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\InvalidPasswordException
    * @throws App\Exceptions\User\PasswordResetTokenExpiredException
    * @throws App\Exceptions\User\InvalidPasswordResetTokenException
    */

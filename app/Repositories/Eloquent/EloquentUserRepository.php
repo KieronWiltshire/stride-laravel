@@ -20,6 +20,9 @@ use App\Events\User\EmailVerificationTokenGeneratedEvent;
 use App\Events\User\UserEmailVerifiedEvent;
 use App\Events\User\UserPasswordResetEvent;
 use App\Events\User\PasswordResetTokenGeneratedEvent;
+use App\Exceptions\User\InvalidPasswordException;
+use App\Exceptions\User\InvalidEmailException;
+use App\Exceptions\Pagination\InvalidPaginationException;
 
 class EloquentUserRepository implements UserRepository
 {
@@ -29,9 +32,23 @@ class EloquentUserRepository implements UserRepository
    * @param integer $limit
    * @param integer $offset
    * @return Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   * 
+   * @throws App\Exceptions\Pagination\InvalidPaginationException
    */
   public function all($limit, $offset = 1)
   {
+    $validator = Validator::make([
+      'limit' => $limit,
+      'offset' => $offset
+    ], [
+      'limit' => 'nullable|numeric|min:1',
+      'offset' => 'nullable|numeric|min:1',
+    ]);
+
+    if ($validator->fails()) {
+      throw (new InvalidPaginationException())->setContext($validator->errors()->toArray());
+    }
+
     if ($limit) {
       return User::paginate($limit, ['*'], 'page', $offset);
     } else {
@@ -169,7 +186,7 @@ class EloquentUserRepository implements UserRepository
    * @param string $email
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\InvalidEmailException
    */
   public function requestEmailChange($user, $email)
   {
@@ -181,7 +198,7 @@ class EloquentUserRepository implements UserRepository
       ]);
 
       if ($validator->fails()) {
-        throw ValidationException::withMessages($validator->errors()->toArray());
+        throw (new InvalidEmailException())->setContext($validator->errors()->toArray());
       }
 
       $user->email_verification_token = $this->generateEmailVerificationToken($email);
@@ -204,7 +221,7 @@ class EloquentUserRepository implements UserRepository
    * @param string $emailVerificationToken
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\InvalidEmailException
    * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
    */
   public function verifyEmail($user, $emailVerificationToken)
@@ -220,7 +237,7 @@ class EloquentUserRepository implements UserRepository
         ]);
 
         if ($validator->fails()) {
-          throw ValidationException::withMessages($validator->errors()->toArray());
+          throw (new InvalidEmailException())->setContext($validator->errors()->toArray());
         }
 
         $oldEmail = $user->email;
@@ -319,7 +336,7 @@ class EloquentUserRepository implements UserRepository
    * @param string $passwordResetToken
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\InvalidPasswordException
    * @throws App\Exceptions\User\PasswordResetTokenExpiredException
    * @throws App\Exceptions\User\InvalidPasswordResetTokenException
    */
@@ -337,7 +354,7 @@ class EloquentUserRepository implements UserRepository
           ]);
 
           if ($validator->fails()) {
-            throw ValidationException::withMessages($validator->errors()->toArray());
+            throw (new InvalidPasswordException())->setContext($validator->errors()->toArray());
           }
 
           $user->password = $password;
