@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Http;
 
-use App\Exceptions\AppException;
+use App\Exceptions\AppError;
 
-class BadRequestError extends AppException
+class BadRequestError extends AppError
 {
   /**
    * Constructor.

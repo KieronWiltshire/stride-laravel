@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Http;
 
-use App\Exceptions\AppException;
+use App\Exceptions\AppError;
 
-class InternalServerError extends AppException
+class InternalServerError extends AppError
 {
   /**
    * Constructor.

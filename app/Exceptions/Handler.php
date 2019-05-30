@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
-use App\Exceptions\AppException;
+use App\Exceptions\AppError;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\Http\ForbiddenError;
@@ -124,13 +124,13 @@ class Handler extends ExceptionHandler
 
     /*
     |--------------------------------------------------------------------------
-    | Handling AppException
+    | Handling AppError
     |--------------------------------------------------------------------------
     |
-    | Use the AppException in the response.
+    | Use the AppError in the response.
     |
     */
-    if ($exception instanceof AppException) {
+    if ($exception instanceof AppError) {
       $error = $exception;
     }
 

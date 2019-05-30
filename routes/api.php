@@ -26,13 +26,6 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::post('/{email}/reset', 'UserController@resetPassword')->name('reset_password');
   });
 
-  Route::name('auth.')->prefix('auth')->group(function() {
-    Route::post('/login', 'AuthController@login')->name('login');
-    Route::get('/me', 'AuthController@me')->name('me')->middleware('auth:api');
-    Route::post('/logout', 'AuthController@logout')->name('logout')->middleware('auth:api');
-    Route::post('/refresh', 'AuthController@refresh')->name('refresh')->middleware('auth:api');
-  });
-
   Route::fallback(function(){
     throw (new App\Exceptions\Router\UnableToLocateRequestRouteException())->setContext([
       'route' => __('route-error.route_not_found')

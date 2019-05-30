@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Http;
 
-use App\Exceptions\AppException;
+use App\Exceptions\AppError;
 
-class UnauthorizedError extends AppException
+class UnauthorizedError extends AppError
 {
   /**
    * Constructor.

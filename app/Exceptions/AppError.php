@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Webpatser\Uuid\Uuid;
 
-abstract class AppException extends Exception
+abstract class AppError extends Exception
 {
   /**
    * @var Uuid
@@ -43,9 +43,11 @@ abstract class AppException extends Exception
   public function __construct($message, $httpStatus = 200, $type = null)
   {
     parent::__construct($message);
+    $class = (new \ReflectionClass($this));
+
     $this->uuid = Uuid::generate();
-    $this->type = ($type) ? $type : (new \ReflectionClass($this))->getShortName();
-    $this->cause = str_replace('_exception', '', strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', (new \ReflectionClass($this))->getShortName())));
+    $this->type = ($type) ? $type : $class->getShortName();
+    $this->cause = str_replace('_exception', '', strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class->getShortName())));
     $this->httpStatus = $httpStatus;
     $this->context = [];
   }

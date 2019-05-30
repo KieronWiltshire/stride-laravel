@@ -2,9 +2,9 @@
 
 namespace App\Exceptions\Http;
 
-use App\Exceptions\AppException;
+use App\Exceptions\AppError;
 
-class NotFoundError extends AppException
+class NotFoundError extends AppError
 {
   /**
    * Constructor.
