@@ -18,10 +18,10 @@ interface UserRepository
   /**
    * Create a new user.
    *
-   * @param Array $attributes
+   * @param array $attributes
    * @return App\Entities\User
-   * 
-   * @throws Illuminate\Validation\ValidationException
+   *
+   * @throws App\Exceptions\User\CannotCreateUserException
    */
   function create($attributes);
 
@@ -40,6 +40,8 @@ interface UserRepository
    *
    * @param string $id
    * @return App\Entities\User
+   *
+   * @throws App\Exceptions\User\UserNotFoundException
    */
   function findById($id);
 
@@ -48,6 +50,8 @@ interface UserRepository
    *
    * @param string $email
    * @return App\Entities\User
+   *
+   * @throws App\Exceptions\User\UserNotFoundException
    */
   function findByEmail($email);
 
@@ -55,15 +59,15 @@ interface UserRepository
    * Update a user.
    * 
    * @param App\Entities\User $user
-   * @param Array $attributes
+   * @param array $attributes
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\CannotUpdateUserException
    */
   function update($user, $attributes);
 
   /**
-   * Request a new email verification token be generated with
+   * Router a new email verification token be generated with
    * the user's new email address to verify.
    * 
    * @param App\Entities\User $user

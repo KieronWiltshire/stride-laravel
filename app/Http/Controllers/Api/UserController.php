@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Repositories\Contracts\UserRepository;
 use App\Exceptions\Http\BadRequestError;
-use App\Exceptions\Http\NotFoundError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
 use App\Entities\User;
@@ -21,7 +20,7 @@ class UserController extends Controller
 
   /**
    * Create a new user controller instance
-   * 
+   *
    * @param App\Repositories\Contracts\UserRepository $users
    * @return void
    */
@@ -32,65 +31,80 @@ class UserController extends Controller
 
   /**
    * Retrieve an index of users.
-   * 
-   * @param Illuminate\Http\Request $request
-   * @return Illuminate\Http\Response
+   *
+   * @return Illuminate\Http\JsonResponse
    */
-  public function index(Request $request)
+  public function index()
   {
-    return $this->users->all($request->query('limit'), $request->query('offset'))
-      ->setPath(route('user.index'))
+    return $this->users->all(request()->query('limit'), request()->query('offset'))
+      ->setPath(route('api.user.index'))
       ->setPageName('offset')
       ->appends([
-        'limit' => $request->query('limit')
+        'limit' => request()->query('limit')
       ]);
   }
 
   /**
    * Create a new user.
-   * 
-   * @param Illuminate\Http\Request $request
-   * @return Illuminate\Http\Response
+   *
+   * @return Illuminate\Http\JsonResponse
    */
-  public function create(Request $request)
+  public function create()
   {
     return $this->users->create([
-      'email' => $request->input('email'),
-      'password' => $request->input('password')
+      'email' => request()->input('email'),
+      'password' => request()->input('password')
     ]);
   }
 
   /**
    * Retrieve a user by id.
-   * 
+   *
    * @param integer $id
-   * @return Illuminate\Http\Response
+   * @return Illuminate\Http\JsonResponse
    */
   public function getById($id)
   {
-    return $this->users->findById($id);
+    try {
+      return $this->users->findById($id);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('users.id.not_found')
+        ]
+      ]);
+    }
   }
 
   /**
    * Retrieve a user by email.
-   * 
+   *
    * @param string $email
-   * @return Illuminate\Http\Response
+   * @return Illuminate\Http\JsonResponse
    */
   public function getByEmail($email)
   {
-    return $this->users->findByEmail($email);
+    try {
+      return $this->users->findByEmail($email);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('users.email.not_found')
+        ]
+      ]);
+    }
   }
 
   /**
    * Retrieve an index of users matching a particular search phrase.
-   * 
-   * @param Illuminate\Http\Request $request
-   * @return Illuminate\Http\Response
+   *
+   * @return Illuminate\Http\JsonResponse
+   *
+   * @throws App\Exceptions\Http\BadRequestError
    */
-  public function search(Request $request)
+  public function search()
   {
-    switch (strtolower($request->query('parameter'))) {
+    switch (strtolower(request()->query('parameter'))) {
       case 'id':
       case 'email':
         break;
@@ -102,31 +116,29 @@ class UserController extends Controller
         ]);
     }
 
-    return $this->users->find($request->query('parameter'), $request->query('search'), (bool)$request->query('regex'), $request->query('limit'), $request->query('offset'))
-      ->setPath(route('user.search'))
+    return $this->users->find(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
+      ->setPath(route('api.user.search'))
       ->setPageName('offset')
       ->appends([
-        'limit' => $request->query('limit')
+        'limit' => request()->query('limit')
       ]);
   }
 
   /**
    * Update a user.
-   * 
-   * @param Illuminate\Http\Request $request
+   *
    * @param integer $id
-   * @return Illuminate\Http\Response
+   * @return Illuminate\Http\JsonResponse
    */
-  public function update(Request $request, $id)
+  public function update($id)
   {
-    $user = $this->users->findById($id);
-
-    if ($user instanceof User) {
+    try {
+      $user = $this->users->findById($id);
       return $this->users->update($user, [
-        'password' => $request->input('password')
+        'password' => request()->input('password')
       ]);
-    } else {
-      throw (new NotFoundError())->setContext([
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
         'id' => [
           __('users.id.not_found')
         ]
@@ -135,24 +147,22 @@ class UserController extends Controller
   }
 
   /**
-   * Request a change to the specified email.
+   * Router a change to the specified email.
    *
-   * @param Illuminate\Http\Request $request
    * @param integer $id
-   * @return Illuminate\Http\Response
+   * @return Illuminate\Http\JsonResponse
    */
-  public function requestEmailChange(Request $request, $id)
+  public function requestEmailChange($id)
   {
-    $user = $this->users->findById($id);
-
-    if ($user instanceof User) {
-      if ($this->users->requestEmailChange($user, $request->input('email'))) {
-        return response([
-          'message' => __('emails.sent')
+    try {
+      $user = $this->users->findById($id);
+      if ($this->users->requestEmailChange($user, request()->input('email'))) {
+        return response()->json([
+          'message' => __('emails.email_verification_sent')
         ], 202);
       }
-    } else {
-      throw (new NotFoundError())->setContext([
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
         'id' => [
           __('users.id.not_found')
         ]
@@ -163,18 +173,16 @@ class UserController extends Controller
   /**
    * Verify the user's email.
    *
-   * @param Illuminate\Http\Request $request
    * @param string $email
-   * @return Illuminate\Http\Response
+   * @return Illuminate\Http\JsonResponse
    */
-  public function verifyEmail(Request $request, $email)
+  public function verifyEmail($email)
   {
-    $user = $this->users->findByEmail($email);
-
-    if ($user instanceof User) {
-      return $this->users->verifyEmail($user, $request->query('email_verification_token'));
-    } else {
-      throw (new NotFoundError())->setContext([
+    try {
+      $user = $this->users->findByEmail($email);
+      return $this->users->verifyEmail($user, request()->query('email_verification_token'));
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
         'email' => [
           __('users.email.not_found')
         ]
@@ -186,26 +194,27 @@ class UserController extends Controller
    * Resend the user's email verification token.
    *
    * @param string $email
-   * @return Illuminate\Http\Response
+   * @return Illuminate\Http\JsonResponse
+   *
+   * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
+   * @throws App\Exceptions\User\UserNotFoundException
    */
   public function resendEmailVerificationToken($email)
   {
-    $user = $this->users->findByEmail($email);
-
-    if ($user instanceof User) {
-      try {
-        $this->users->sendEmailVerificationToken($user);
-
-        return response([], 202);
-      } catch (InvalidEmailVerificationTokenException $e) {
-        throw $e->setContext([
-          'email_verification_token' => [
-            __('users.invalid_email_verification_token')
-          ]
-        ]);
-      }
-    } else {
-      throw (new NotFoundError())->setContext([
+    try {
+      $user = $this->users->findByEmail($email);
+      $this->users->sendEmailVerificationToken($user);
+      return response()->json([
+        'message' => __('emails.email_verification_resent')
+      ], 202);
+    } catch (InvalidEmailVerificationTokenException $e) {
+      throw $e->setContext([
+        'email_verification_token' => [
+          __('users.invalid_email_verification_token')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
         'email' => [
           __('users.email.not_found')
         ]
@@ -217,20 +226,20 @@ class UserController extends Controller
    * Send the user a password reset token.
    *
    * @param string $email
-   * @return Illuminate\Http\Response
+   * @return Illuminate\Http\JsonResponse
+   *
+   * @throws App\Exceptions\User\UserNotFoundException
    */
   public function forgotPassword($email)
   {
-    $user = $this->users->findByEmail($email);
-
-    if ($user instanceof User) {
+    try {
+      $user = $this->users->findByEmail($email);
       $this->users->forgotPassword($user);
-
       return response([
         'message' => __('passwords.sent')
       ], 202);
-    } else {
-      throw (new NotFoundError())->setContext([
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
         'email' => [
           __('users.email.not_found')
         ]
@@ -241,32 +250,28 @@ class UserController extends Controller
   /**
    * Reset the user's password using the password reset token.
    *
-   * @param Illuminate\Http\Request $request
    * @param string $email
-   * @return Illuminate\Http\Response
+   * @return Illuminate\Http\JsonResponse
    */
-  public function resetPassword(Request $request, $email)
+  public function resetPassword($email)
   {
-    $user = $this->users->findByEmail($email);
-
-    if ($user instanceof User) {
-      try {
-        return $this->users->resetPassword($user, $request->input('password'), $request->query('password_reset_token'));
-      } catch (InvalidPasswordResetTokenException $e) {
-        throw $e->setContext([
-          'password_reset_token' => [
-            __('passwords.invalid_password_reset_token')
-          ]
-        ]);
-      } catch (PasswordResetTokenExpiredException $e) {
-        throw $e->setContext([
-          'password_reset_token' => [
-            __('passwords.invalid_password_reset_token')
-          ]
-        ]);
-      }
-    } else {
-      throw (new NotFoundError())->setContext([
+    try {
+      $user = $this->users->findByEmail($email);
+      return $this->users->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
+    } catch (InvalidPasswordResetTokenException $e) {
+      throw $e->setContext([
+        'password_reset_token' => [
+          __('passwords.invalid_password_reset_token')
+        ]
+      ]);
+    } catch (PasswordResetTokenExpiredException $e) {
+      throw $e->setContext([
+        'password_reset_token' => [
+          __('passwords.invalid_password_reset_token')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
         'email' => [
           __('users.email.not_found')
         ]

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\Auth\AuthenticationRequiredException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
@@ -14,8 +15,10 @@ class Authenticate extends Middleware
    */
   protected function redirectTo($request)
   {
-    if (!$request->expectsJson()) {
-      return route('login');
+    if ($request->is('api/*')) {
+      throw new AuthenticationRequiredException();
+    } else {
+      return route('any');
     }
   }
 }

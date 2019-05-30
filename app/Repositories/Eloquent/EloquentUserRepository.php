@@ -2,11 +2,13 @@
 
 namespace App\Repositories\Eloquent;
 
+use App\Exceptions\User\CannotCreateUserException;
+use App\Exceptions\User\CannotUpdateUserException;
+use App\Exceptions\User\UserNotFoundException;
 use Validator;
 use App\Entities\User;
 use App\Repositories\Contracts\UserRepository;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Validation\ValidationException;
 use Exception;
 use App\Events\User\UserCreatedEvent;
 use App\Events\User\UserUpdatedEvent;
@@ -64,12 +66,12 @@ class EloquentUserRepository implements UserRepository
    * @param Array $attributes
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\CannotCreateUserException
    */
   public function create($attributes)
   {
     if (isset($attributes['email'])) {
-      $attributes[] = ['email_verification_token' => $this->generateEmailVerificationToken($attributes['email'])];
+      $attributes['email_verification_token'] = $this->generateEmailVerificationToken($attributes['email']);
     }
 
     $validator = Validator::make($attributes, [
@@ -78,7 +80,7 @@ class EloquentUserRepository implements UserRepository
     ]);
 
     if ($validator->fails()) {
-      throw ValidationException::withMessages($validator->errors()->toArray());
+      throw (new CannotCreateUserException())->setContext($validator->errors()->toArray());
     }
 
     if ($user = User::create($attributes)) {
@@ -122,10 +124,18 @@ class EloquentUserRepository implements UserRepository
    *
    * @param string $id
    * @return App\Entities\User
+   *
+   * @throws App\Exceptions\User\UserNotFoundException
    */
   public function findById($id)
   {
-    return User::find($id);
+    $user = User::find($id);
+
+    if (!$user) {
+      throw new UserNotFoundException();
+    }
+
+    return $user;
   }
 
   /**
@@ -133,10 +143,18 @@ class EloquentUserRepository implements UserRepository
    *
    * @param string $email
    * @return App\Entities\User
+   *
+   * @throws App\Exceptions\User\UserNotFoundException
    */
   public function findByEmail($email)
   {
-    return User::where('email', $email)->first();
+    $user = User::where('email', $email)->first();
+
+    if (!$user) {
+      throw new UserNotFoundException();
+    }
+
+    return $user;
   }
 
   /**
@@ -146,7 +164,7 @@ class EloquentUserRepository implements UserRepository
    * @param Array $attributes
    * @return App\Entities\User
    * 
-   * @throws Illuminate\Validation\ValidationException
+   * @throws App\Exceptions\User\CannotUpdateUserException
    */
   public function update($user, $attributes)
   {
@@ -157,7 +175,7 @@ class EloquentUserRepository implements UserRepository
       ]);
 
       if ($validator->fails()) {
-        throw ValidationException::withMessages($validator->errors()->toArray());
+        throw (new CannotUpdateUserException())->setContext($validator->errors()->toArray());
       }
 
       if (isset($attributes['email'])) {
@@ -179,7 +197,7 @@ class EloquentUserRepository implements UserRepository
   }
 
   /**
-   * Request a new email verification token be generated with
+   * Router a new email verification token be generated with
    * the user's new email address to verify.
    * 
    * @param App\Entities\User $user

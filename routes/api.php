@@ -11,7 +11,7 @@
 |
 */
 
-Route::namespace('Api')->group(function () {
+Route::namespace('Api')->name('api.')->group(function () {
   Route::name('user.')->prefix('user')->group(function () {
     Route::get('/', 'UserController@index')->name('index');
     Route::post('/', 'UserController@create')->name('create');
@@ -21,8 +21,21 @@ Route::namespace('Api')->group(function () {
     Route::post('/{id}/email', 'UserController@requestEmailChange')->name('change_email')->where('id', '[0-9]+');
     Route::get('/{email}', 'UserController@getByEmail')->name('get');
     Route::get('/{email}/verify', 'UserController@verifyEmail')->name('verify_email');
-    Route::get('/{email}/resend', 'UserController@resendEmailVerificationToken')->name('resend_email_verification_token');
+    Route::post('/{email}/resend', 'UserController@resendEmailVerificationToken')->name('resend_email_verification_token');
     Route::post('/{email}/forgot', 'UserController@forgotPassword')->name('forgot_password');
     Route::post('/{email}/reset', 'UserController@resetPassword')->name('reset_password');
   });
+
+  Route::name('auth.')->prefix('auth')->group(function() {
+    Route::post('/login', 'AuthController@login')->name('login');
+    Route::get('/me', 'AuthController@me')->name('me')->middleware('auth:api');
+    Route::post('/logout', 'AuthController@logout')->name('logout')->middleware('auth:api');
+    Route::post('/refresh', 'AuthController@refresh')->name('refresh')->middleware('auth:api');
+  });
+
+  Route::fallback(function(){
+    throw (new App\Exceptions\Router\UnableToLocateRequestRouteException())->setContext([
+      'route' => __('route-error.route_not_found')
+    ]);
+  })->name('fallback.404');
 });

@@ -15,7 +15,7 @@ return [
 
   'reset' => 'Your password has been reset!',
   'sent' => 'We have e-mailed your password reset link!',
-  'invalid_password_reset_token' => 'This password reset token is invalid.',
+  'invalid_password_reset_token' => 'The specified password reset token is invalid.',
   'expired' => 'This password reset token has expired.',
 
 ];

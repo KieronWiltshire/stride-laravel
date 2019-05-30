@@ -18,27 +18,34 @@ abstract class AppException extends Exception
   private $type;
 
   /**
+   * @var string
+   */
+  private $cause;
+
+  /**
    * @var integer
    */
   private $httpStatus;
 
   /**
-   * @var Array
+   * @var array
    */
   private $context;
 
-  /**
-   * Constructor.
-   *
-   * @param string $message
-   * @param integer $httpStatus
-   * @param string $type
-   */
+    /**
+     * Constructor.
+     *
+     * @param string $message
+     * @param integer $httpStatus
+     * @param string $type
+     * @throws Exception
+     */
   public function __construct($message, $httpStatus = 200, $type = null)
   {
     parent::__construct($message);
-    $this->uuid = Uuid::generate()->string;
+    $this->uuid = Uuid::generate();
     $this->type = ($type) ? $type : (new \ReflectionClass($this))->getShortName();
+    $this->cause = str_replace('_exception', '', strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', (new \ReflectionClass($this))->getShortName())));
     $this->httpStatus = $httpStatus;
     $this->context = [];
   }
@@ -46,11 +53,11 @@ abstract class AppException extends Exception
   /**
    * Retrieve the unique identifier relating to this exception.
    *
-   * @return Webpatser\Uuid\Uuid
+   * @return string
    */
   public function getId()
   {
-    return $this->uuid;
+    return $this->uuid->string;
   }
 
   /**
@@ -61,6 +68,16 @@ abstract class AppException extends Exception
   public function getErrorType()
   {
     return $this->type;
+  }
+
+  /**
+   * Retrieve the cause of the error.
+   *
+   * @return array
+   */
+  public function getCause()
+  {
+    return $this->cause;
   }
 
   /**
@@ -75,9 +92,9 @@ abstract class AppException extends Exception
 
   /**
    * Set the context of the error.
-   * 
-   * @param Array $context
-   * @param App\Exceptions\AppException
+   *
+   * @param array $context
+   * @return App\Exceptions\AppException
    */
   public function setContext($context)
   {
@@ -88,7 +105,7 @@ abstract class AppException extends Exception
   /**
    * Retrieve the context of the error.
    * 
-   * @return Array
+   * @return array
    */
   public function getContext()
   {
@@ -98,16 +115,17 @@ abstract class AppException extends Exception
   /**
    * Render the error.
    *
-   * @return Array
+   * @return array
    */
   public function render()
   {
     return [
       'type' => $this->getErrorType(),
-      'message' => $this->message,
-      'context' => $this->context,
+      'message' => $this->getMessage(),
+      'cause' => $this->getCause(),
+      'context' => $this->getContext(),
       'meta' => [
-        'id' => $this->uuid,
+        'id' => $this->getId(),
       ]
     ];
   }

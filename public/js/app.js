@@ -1006,7 +1006,7 @@ module.exports = function settle(resolve, reject, response) {
     resolve(response);
   } else {
     reject(createError(
-      'Request failed with status code ' + response.status,
+      'Router failed with status code ' + response.status,
       response.config,
       null,
       response.request,
@@ -17762,7 +17762,7 @@ jQuery.extend( {
 			// Url cleanup var
 			urlAnchor,
 
-			// Request state (becomes false upon send and true upon completion)
+			// Router state (becomes false upon send and true upon completion)
 			completed,
 
 			// To know if global events are to be dispatched
@@ -81191,7 +81191,7 @@ function flushImmediateWork() {
     } finally {
       isExecutingCallback = false;
       if (firstCallbackNode !== null) {
-        // There's still work remaining. Request another callback.
+        // There's still work remaining. Router another callback.
         ensureHostCallbackIsScheduled();
       } else {
         isHostCallbackScheduled = false;
@@ -81242,7 +81242,7 @@ function flushWork(didTimeout) {
     isExecutingCallback = false;
     currentDidTimeout = previousDidTimeout;
     if (firstCallbackNode !== null) {
-      // There's still work remaining. Request another callback.
+      // There's still work remaining. Router another callback.
       ensureHostCallbackIsScheduled();
     } else {
       isHostCallbackScheduled = false;
