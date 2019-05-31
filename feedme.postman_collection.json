@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "c2d268cc-12ce-49e7-ab12-5f890d4cddf8",
+		"_postman_id": "64267194-0d63-4a27-8c64-6714102986a6",
 		"name": "feedme",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -405,22 +405,12 @@
 			"response": []
 		},
 		{
-			"name": "/api/auth/refresh",
+			"name": "/api/oauth/authorize",
 			"request": {
-				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTU1OTI1MDY1NCwiZXhwIjoxNTU5MjU0MjU0LCJuYmYiOjE1NTkyNTA2NTQsImp0aSI6IjBHZWpqQlBpUUdKYTFzWTUiLCJzdWIiOjEsInBydiI6ImY5MzA3ZWI1ZjI5YzcyYTkwZGJhYWVmMGUyNmYwMjYyZWRlODZmNTUifQ.DKBI1pwmay74ekWuhVzhHELCYPaXEnQoL6BIpiUWAcE",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/auth/refresh",
+					"raw": "http://localhost:8000/api/oauth/authorize",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -428,9 +418,59 @@
 					"port": "8000",
 					"path": [
 						"api",
-						"auth",
-						"refresh"
+						"oauth",
+						"authorize"
 					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/oauth/authorize",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/oauth/authorize?client_id=1&redirect_uri=http://localhost:8000/&response_type=token&scope=*",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"oauth",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "1"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:8000/"
+						},
+						{
+							"key": "response_type",
+							"value": "token"
+						},
+						{
+							"key": "scope",
+							"value": "*"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/api/oauth/clients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": ""
 				}
 			},
 			"response": []

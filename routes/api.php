@@ -68,10 +68,10 @@ Route::namespace('Api')->name('api.')->group(function () {
      * Clients
      */
     Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
-      Route::get('/clients', 'ClientController@forUser')->name('clients.index');
-      Route::post('/clients', 'ClientController@store')->name('clients.store');
-      Route::put('/clients/{client_id}', 'ClientController@update')->name('clients.update');
-      Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('clients.destroy');
+      Route::get('/clients', 'ClientController@forUser')->name('clients.index')->middleware('auth');
+      Route::post('/clients', 'ClientController@store')->name('clients.store')->middleware('auth');
+      Route::put('/clients/{client_id}', 'ClientController@update')->name('clients.update')->middleware('auth');
+      Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('clients.destroy')->middleware('auth');
     });
   });
 
