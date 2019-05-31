@@ -8,9 +8,11 @@ class InternalServerError extends AppError
 {
   /**
    * Constructor.
+   *
+   * @param string $message
    */
-  public function __construct()
+  public function __construct($message)
   {
-    parent::__construct(__('http-error.internal'), 500, 'InternalServerError');
+    parent::__construct($message ?: __('http.exceptions.internal'), 500, 'InternalServerError');
   }
 }

@@ -4,13 +4,15 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Route Error Language Lines
+  | Request Language Lines
   |--------------------------------------------------------------------------
   |
-  | The following language lines are used during the routing process.
+  | The following language lines are used by the request.
   |
   */
 
-  'route_not_found' => 'The server was unable to route the request',
+  'exceptions' => [
+    'invalid_request' => 'The server could not process the request.',
+  ]
 
 ];

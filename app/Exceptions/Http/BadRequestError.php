@@ -8,9 +8,11 @@ class BadRequestError extends AppError
 {
   /**
    * Constructor.
+   *
+   * @param string $message
    */
-  public function __construct()
+  public function __construct($message)
   {
-    parent::__construct(__('http-error.bad_request'), 400, 'BadRequestError');
+    parent::__construct($message ?: __('http.exceptions.bad_request'), 400, 'BadRequestError');
   }
 }

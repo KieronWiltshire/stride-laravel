@@ -8,9 +8,11 @@ class ValidationError extends AppError
 {
   /**
    * Constructor.
+   *
+   * @param string $message
    */
-  public function __construct()
+  public function __construct($message)
   {
-    parent::__construct(__('http-error.validation'), 422, 'ValidationError');
+    parent::__construct($message ?: __('http.exceptions.validation'), 422, 'ValidationError');
   }
 }

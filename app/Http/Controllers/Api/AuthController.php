@@ -38,7 +38,9 @@ class AuthController extends Controller
       $user = $this->users->findByEmail(request()->input('email'));
 
       if (Hash::check(request()->input('password'), $user->password)) {
-        $token = $user->createToken('login');
+        $token = $user->createToken('login', ['*']);
+
+        dd($token);
 
         return response()->json([
           'access_token' => $token->accessToken,
@@ -55,7 +57,7 @@ class AuthController extends Controller
     } catch (UserNotFoundException $e) {
         throw $e->setContext([
           'id' => [
-          __('users.email.not_found')
+          __('user.email.not_found')
           ]
         ]);
     }

@@ -73,6 +73,17 @@ abstract class AppError extends Exception
   }
 
   /**
+   * Set the cause of the error.
+   *
+   * @param string $cause
+   * @return App\Exceptions\AppError
+   */
+  public function setCause($cause) {
+    $this->cause = $cause;
+    return $this;
+  }
+
+  /**
    * Retrieve the cause of the error.
    *
    * @return array
@@ -96,7 +107,7 @@ abstract class AppError extends Exception
    * Set the context of the error.
    *
    * @param array $context
-   * @return App\Exceptions\AppException
+   * @return App\Exceptions\AppError
    */
   public function setContext($context)
   {

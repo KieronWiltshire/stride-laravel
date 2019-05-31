@@ -261,7 +261,7 @@ class EloquentUserRepository implements UserRepository
         $oldEmail = $user->email;
 
         $user->email = $decodedToken->email;
-        $user->email_verified = true;
+        $user->email_verified_at = now();
         $user->email_verification_token = null;
 
         if ($user->save()) {

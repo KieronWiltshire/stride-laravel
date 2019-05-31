@@ -13,6 +13,10 @@ return [
   |
   */
 
+  'exceptions' => [
+    'invalid_pagination' => 'An invalid pagination parameter or value was specified.',
+  ],
+
   'previous' => '&laquo; Previous',
   'next' => 'Next &raquo;',
 

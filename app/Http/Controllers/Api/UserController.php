@@ -70,7 +70,7 @@ class UserController extends Controller
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
-          __('users.id.not_found')
+          __('user.id.not_found')
         ]
       ]);
     }
@@ -89,7 +89,7 @@ class UserController extends Controller
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
-          __('users.email.not_found')
+          __('user.email.not_found')
         ]
       ]);
     }
@@ -140,7 +140,7 @@ class UserController extends Controller
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
-          __('users.id.not_found')
+          __('user.id.not_found')
         ]
       ]);
     }
@@ -158,13 +158,13 @@ class UserController extends Controller
       $user = $this->users->findById($id);
       if ($this->users->requestEmailChange($user, request()->input('email'))) {
         return response()->json([
-          'message' => __('emails.email_verification_sent')
+          'message' => __('email.email_verification_sent')
         ], 202);
       }
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
-          __('users.id.not_found')
+          __('user.id.not_found')
         ]
       ]);
     }
@@ -184,7 +184,7 @@ class UserController extends Controller
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
-          __('users.email.not_found')
+          __('user.email.not_found')
         ]
       ]);
     }
@@ -205,18 +205,18 @@ class UserController extends Controller
       $user = $this->users->findByEmail($email);
       $this->users->sendEmailVerificationToken($user);
       return response()->json([
-        'message' => __('emails.email_verification_resent')
+        'message' => __('email.email_verification_resent')
       ], 202);
     } catch (InvalidEmailVerificationTokenException $e) {
       throw $e->setContext([
         'email_verification_token' => [
-          __('users.invalid_email_verification_token')
+          __('user.exceptions.invalid_email_verification_token')
         ]
       ]);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
-          __('users.email.not_found')
+          __('user.email.not_found')
         ]
       ]);
     }
@@ -241,7 +241,7 @@ class UserController extends Controller
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
-          __('users.email.not_found')
+          __('user.email.not_found')
         ]
       ]);
     }
@@ -261,19 +261,19 @@ class UserController extends Controller
     } catch (InvalidPasswordResetTokenException $e) {
       throw $e->setContext([
         'password_reset_token' => [
-          __('passwords.invalid_password_reset_token')
+          __('user.exceptions.invalid_password_reset_token')
         ]
       ]);
     } catch (PasswordResetTokenExpiredException $e) {
       throw $e->setContext([
         'password_reset_token' => [
-          __('passwords.invalid_password_reset_token')
+          __('user.exceptions.invalid_password_reset_token')
         ]
       ]);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
-          __('users.email.not_found')
+          __('user.email.not_found')
         ]
       ]);
     }

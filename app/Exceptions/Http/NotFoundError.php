@@ -8,9 +8,11 @@ class NotFoundError extends AppError
 {
   /**
    * Constructor.
+   *
+   * @param string $message
    */
-  public function __construct()
+  public function __construct($message)
   {
-    parent::__construct(__('http-error.not_found'), 404, 'NotFoundError');
+    parent::__construct($message ?: __('http.exceptions.not_found'), 404, 'NotFoundError');
   }
 }

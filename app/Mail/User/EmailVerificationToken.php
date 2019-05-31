@@ -33,7 +33,7 @@ class EmailVerificationToken extends Mailable
    */
   public function build()
   {
-    return $this->subject(__('email-subjects.email_verification'))->view('app')->with([
+    return $this->subject(__('email.subjects.email_verification'))->view('app')->with([
       'emailVerificationToken' => $this->emailVerificationToken
     ]);
   }

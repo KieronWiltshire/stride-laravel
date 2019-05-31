@@ -34,26 +34,44 @@ Route::namespace('Api')->name('api.')->group(function () {
    */
   Route::name('auth.')->prefix('auth')->group(function() {
     Route::post('/login', 'AuthController@login')->name('login');
-    Route::get('/me', 'AuthController@me')->name('me')->middleware('auth:api');
-    Route::post('/logout', 'AuthController@logout')->name('logout')->middleware('auth:api');
-    Route::post('/refresh', 'AuthController@refresh')->name('refresh')->middleware('auth:api');
+    Route::get('/me', 'AuthController@me')->name('me')->middleware('auth');
+    Route::post('/logout', 'AuthController@logout')->name('logout')->middleware('auth');
+  });
 
+  /**
+   * Laravel Passport (OAuth)
+   */
+  Route::name('oauth.')->prefix('oauth')->group(function() {
     /**
-     * Laravel Passport
+     * Authorize
      */
-    Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
+    Route::namespace('OAuth')->group(function() {
       Route::get('/authorize', 'AuthorizationController@authorize')->name('authorizations.authorize');
       Route::post('/authorize', 'ApproveAuthorizationController@approve')->name('authorizations.approve');
+    });
+    Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
       Route::delete('/authorize', 'DenyAuthorizationController@deny')->name('authorizations.deny');
+    });
 
-      Route::post('/token', 'AccessTokenController@issueToken')->name('token')->middleware('throttle');
-      Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index')->middleware('auth:api');
-      Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy')->middleware('auth:api');
+    /**
+     * Token
+     */
+    Route::namespace('OAuth')->group(function() {
+      Route::post('/token', 'AccessTokenController@issueToken')->name('token');
+    });
+    Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
+      Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index')->middleware('auth');
+      Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy')->middleware('auth');
+    });
 
+    /**
+     * Clients
+     */
+    Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
       Route::get('/clients', 'ClientController@forUser')->name('clients.index');
       Route::post('/clients', 'ClientController@store')->name('clients.store');
       Route::put('/clients/{client_id}', 'ClientController@update')->name('clients.update');
-      Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('passport.clients.destroy');
+      Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('clients.destroy');
     });
   });
 
@@ -61,8 +79,6 @@ Route::namespace('Api')->name('api.')->group(function () {
    * 404 catch
    */
   Route::fallback(function(){
-    throw (new App\Exceptions\Router\UnableToLocateRequestRouteException())->setContext([
-      'route' => __('route-error.route_not_found')
-    ]);
+    throw new App\Exceptions\Router\UnableToLocateRequestRouteException();
   })->name('fallback.404');
 });

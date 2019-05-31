@@ -13,7 +13,11 @@ return [
   |
   */
 
-  'failed' => 'These credentials do not match our records.',
+  'exceptions' => [
+    'authentication_required' => 'Access is required for the requested resource.',
+    'authentication_failed' => 'The specified credentials do not match our records.',
+  ],
+
   'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
   'logout' => 'You have been logged out.'
 

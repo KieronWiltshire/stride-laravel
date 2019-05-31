@@ -8,9 +8,11 @@ class UnauthorizedError extends AppError
 {
   /**
    * Constructor.
+   *
+   * @param string $message
    */
-  public function __construct()
+  public function __construct($message)
   {
-    parent::__construct(__('http-error.unauthorized'), 401, 'UnauthorizedError');
+    parent::__construct($message ?: __('http.exceptions.unauthorized'), 401, 'UnauthorizedError');
   }
 }
