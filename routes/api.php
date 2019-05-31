@@ -12,6 +12,9 @@
 */
 
 Route::namespace('Api')->name('api.')->group(function () {
+  /**
+   * User routes
+   */
   Route::name('user.')->prefix('user')->group(function () {
     Route::get('/', 'UserController@index')->name('index');
     Route::post('/', 'UserController@create')->name('create');
@@ -26,6 +29,37 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::post('/{email}/reset', 'UserController@resetPassword')->name('reset_password');
   });
 
+  /**
+   * Authentication routes
+   */
+  Route::name('auth.')->prefix('auth')->group(function() {
+    Route::post('/login', 'AuthController@login')->name('login');
+    Route::get('/me', 'AuthController@me')->name('me')->middleware('auth:api');
+    Route::post('/logout', 'AuthController@logout')->name('logout')->middleware('auth:api');
+    Route::post('/refresh', 'AuthController@refresh')->name('refresh')->middleware('auth:api');
+
+    /**
+     * Laravel Passport
+     */
+    Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
+      Route::get('/authorize', 'AuthorizationController@authorize')->name('authorizations.authorize');
+      Route::post('/authorize', 'ApproveAuthorizationController@approve')->name('authorizations.approve');
+      Route::delete('/authorize', 'DenyAuthorizationController@deny')->name('authorizations.deny');
+
+      Route::post('/token', 'AccessTokenController@issueToken')->name('token')->middleware('throttle');
+      Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index')->middleware('auth:api');
+      Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy')->middleware('auth:api');
+
+      Route::get('/clients', 'ClientController@forUser')->name('clients.index');
+      Route::post('/clients', 'ClientController@store')->name('clients.store');
+      Route::put('/clients/{client_id}', 'ClientController@update')->name('clients.update');
+      Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('passport.clients.destroy');
+    });
+  });
+
+  /**
+   * 404 catch
+   */
   Route::fallback(function(){
     throw (new App\Exceptions\Router\UnableToLocateRequestRouteException())->setContext([
       'route' => __('route-error.route_not_found')
