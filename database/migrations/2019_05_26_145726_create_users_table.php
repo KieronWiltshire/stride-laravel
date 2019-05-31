@@ -20,7 +20,6 @@ class CreateUsersTable extends Migration
       $table->text('email_verification_token')->nullable();
       $table->string('password');
       $table->text('password_reset_token')->nullable();
-      $table->timestamp('sessions_valid_after')->useCurrent();
       $table->timestamps();
     });
   }
