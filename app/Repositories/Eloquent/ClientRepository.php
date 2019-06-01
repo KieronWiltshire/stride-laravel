@@ -107,7 +107,7 @@ class ClientRepository extends PassportClientRepository
      */
     public function forUser($userId)
     {
-      return parent::forUser($clientId, $userId);
+      return parent::forUser($userId);
     }
 
     /**

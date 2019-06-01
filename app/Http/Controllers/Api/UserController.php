@@ -135,6 +135,7 @@ class UserController extends Controller
   {
     try {
       $user = $this->users->findById($id);
+
       return $this->users->update($user, [
         'password' => request()->input('password')
       ]);
@@ -157,6 +158,7 @@ class UserController extends Controller
   {
     try {
       $user = $this->users->findById($id);
+
       if ($this->users->requestEmailChange($user, request()->input('email'))) {
         return response()->json([
           'message' => __('email.email_verification_sent')
@@ -181,6 +183,7 @@ class UserController extends Controller
   {
     try {
       $user = $this->users->findByEmail($email);
+
       return $this->users->verifyEmail($user, request()->query('email_verification_token'));
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
@@ -205,6 +208,7 @@ class UserController extends Controller
     try {
       $user = $this->users->findByEmail($email);
       $this->users->sendEmailVerificationToken($user);
+
       return response()->json([
         'message' => __('email.email_verification_resent')
       ], 202);
@@ -236,6 +240,7 @@ class UserController extends Controller
     try {
       $user = $this->users->findByEmail($email);
       $this->users->forgotPassword($user);
+
       return response([
         'message' => __('passwords.sent')
       ], 202);
@@ -258,6 +263,7 @@ class UserController extends Controller
   {
     try {
       $user = $this->users->findByEmail($email);
+
       return $this->users->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
     } catch (InvalidPasswordResetTokenException $e) {
       throw $e->setContext([

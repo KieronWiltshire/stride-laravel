@@ -43,7 +43,7 @@ class UserRepository implements UserRepositoryInterface
    * @return void
    */
   public function __construct(
-    Factory $validation
+    ValidationFactory $validation
   ) {
     $this->validation = $validation;
   }
@@ -189,8 +189,8 @@ class UserRepository implements UserRepositoryInterface
   {
     if ($user instanceof User) {
       $validator = $this->validation->make($attributes, [
-        'email' => 'nullable|unique:users|email',
-        'password' => 'nullable|min:6',
+        'email' => 'required|unique:users|email',
+        'password' => 'required|min:6',
       ]);
 
       if ($validator->fails()) {
@@ -231,7 +231,7 @@ class UserRepository implements UserRepositoryInterface
       $validator = $this->validation->make([
         'email' => $email
       ], [
-        'email' => 'unique:users|email',
+        'email' => 'required|unique:users|email',
       ]);
 
       if ($validator->fails()) {
@@ -387,7 +387,7 @@ class UserRepository implements UserRepositoryInterface
           $validator = $this->validation->make([
             'password' => $password
           ], [
-            'password' => 'nullable|min:6',
+            'password' => 'required|min:6',
           ]);
 
           if ($validator->fails()) {
