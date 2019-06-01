@@ -7,6 +7,8 @@ use App\Exceptions\OAuth\ClientNotFoundException;
 use Laravel\Passport\Client;
 use \Laravel\Passport\Http\Rules\RedirectRule;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
+use App\Exceptions\OAuth\CannotCreateClientException;
+use App\Exceptions\OAuth\CannotUpdateClientException;
 
 class ClientRepository extends PassportClientRepository 
 {
@@ -151,9 +153,26 @@ class ClientRepository extends PassportClientRepository
      * @param  bool  $personalAccess
      * @param  bool  $password
      * @return \Laravel\Passport\Client
+     * 
+     * @throws App\Exceptions\OAuth\CannotCreateClientException
      */
     public function create($userId, $name, $redirect, $personalAccess = false, $password = false)
     {
+        $validator = $this->validation->make([
+          'name' => $name,
+          'redirect' => $redirect
+        ], [
+            'name' => 'required|max:255',
+            'redirect' => [
+              'required', 
+              $this->redirectRule
+            ],
+        ]);
+
+        if ($validator->fails()) {
+          throw (new CannotCreateClientException())->setContext($validator->errors()->toArray());
+        }
+
         return parent::create($userId, $name, $redirect, $personalAccess, $password);
     }
 
@@ -190,9 +209,26 @@ class ClientRepository extends PassportClientRepository
      * @param  string  $name
      * @param  string  $redirect
      * @return \Laravel\Passport\Client
+     * 
+     * @throws App\Exceptions\OAuth\CannotUpdateClientException
      */
     public function update(Client $client, $name, $redirect)
     {
+        $validator = $this->validation->make([
+          'name' => $name,
+          'redirect' => $redirect
+        ], [
+            'name' => 'required|max:255',
+            'redirect' => [
+              'required', 
+              $this->redirectRule
+            ],
+        ]);
+
+        if ($validator->fails()) {
+          throw (new CannotUpdateClientException())->setContext($validator->errors()->toArray());
+        }
+
         return parent::update($client, $name, $redirect);
     }
 

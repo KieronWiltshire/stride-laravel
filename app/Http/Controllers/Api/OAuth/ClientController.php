@@ -49,14 +49,6 @@ class ClientController
      */
     public function store(Request $request)
     {
-        // $this->validation->make($request->all(), [
-        //     'name' => 'required|max:255',
-        //     'redirect' => [
-        //       'required', 
-        //       $this->redirectRule
-        //     ],
-        // ])->validate();
-
         return $this->clients->create(
             $request->user()->getKey(), $request->name, $request->redirect
         )->makeVisible('secret');
@@ -79,15 +71,7 @@ class ClientController
               __('oauth.id.not_found')
             ]
           ]);
-      }
-
-        // $this->validation->make($request->all(), [
-        //     'name' => 'required|max:255',
-        //     'redirect' => [
-        //       'required', 
-        //       $this->redirectRule
-        //     ],
-        // ])->validate();
+        }
 
         return $this->clients->update(
             $client, $request->name, $request->redirect
