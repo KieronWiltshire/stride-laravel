@@ -7,9 +7,10 @@ use App\Exceptions\AppError;
 class UnauthorizedError extends AppError
 {
   /**
-   * Constructor.
+   * Create a new unauthorized error instance.
    *
    * @param string $message
+   * @return void
    */
   public function __construct($message = null)
   {

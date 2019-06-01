@@ -7,9 +7,10 @@ use App\Exceptions\AppError;
 class NotFoundError extends AppError
 {
   /**
-   * Constructor.
+   * Create a new not found error instance.
    *
    * @param string $message
+   * @return void
    */
   public function __construct($message = null)
   {

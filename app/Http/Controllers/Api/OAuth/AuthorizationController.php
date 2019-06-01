@@ -37,8 +37,10 @@ class AuthorizationController
    * @param \Illuminate\Contracts\Routing\ResponseFactory $response
    * @return void
    */
-  public function __construct(AuthorizationServer $server, ResponseFactory $response)
-  {
+  public function __construct(
+    AuthorizationServer $server, 
+    ResponseFactory $response
+  ) {
     $this->server = $server;
     $this->response = $response;
   }

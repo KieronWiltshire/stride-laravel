@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Repositories\Contracts\UserRepository;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
@@ -14,25 +14,26 @@ use App\Exceptions\User\InvalidEmailVerificationTokenException;
 class UserController extends Controller
 {
   /**
-   * @var UserRepository
+   * @var \App\Repositories\Contracts\UserRepositoryInterface
    */
   private $users;
 
   /**
    * Create a new user controller instance
    *
-   * @param App\Repositories\Contracts\UserRepository $users
+   * @param \App\Repositories\Contracts\UserRepositoryInterface $users
    * @return void
    */
-  public function __construct(UserRepository $users)
-  {
+  public function __construct(
+    UserRepositoryInterface $users
+  ) {
     $this->users = $users;
   }
 
   /**
    * Retrieve an index of users.
    *
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public function index()
   {
@@ -47,7 +48,7 @@ class UserController extends Controller
   /**
    * Create a new user.
    *
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public function create()
   {
@@ -61,7 +62,7 @@ class UserController extends Controller
    * Retrieve a user by id.
    *
    * @param integer $id
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public function getById($id)
   {
@@ -80,7 +81,7 @@ class UserController extends Controller
    * Retrieve a user by email.
    *
    * @param string $email
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public function getByEmail($email)
   {
@@ -98,9 +99,9 @@ class UserController extends Controller
   /**
    * Retrieve an index of users matching a particular search phrase.
    *
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    *
-   * @throws App\Exceptions\Http\BadRequestError
+   * @throws \App\Exceptions\Http\BadRequestError
    */
   public function search()
   {
@@ -128,7 +129,7 @@ class UserController extends Controller
    * Update a user.
    *
    * @param integer $id
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public function update($id)
   {
@@ -150,7 +151,7 @@ class UserController extends Controller
    * Router a change to the specified email.
    *
    * @param integer $id
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public function requestEmailChange($id)
   {
@@ -174,7 +175,7 @@ class UserController extends Controller
    * Verify the user's email.
    *
    * @param string $email
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public function verifyEmail($email)
   {
@@ -196,8 +197,8 @@ class UserController extends Controller
    * @param string $email
    * @return Illuminate\Http\JsonResponse
    *
-   * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
-   * @throws App\Exceptions\User\UserNotFoundException
+   * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
+   * @throws \App\Exceptions\User\UserNotFoundException
    */
   public function resendEmailVerificationToken($email)
   {
@@ -226,9 +227,9 @@ class UserController extends Controller
    * Send the user a password reset token.
    *
    * @param string $email
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    *
-   * @throws App\Exceptions\User\UserNotFoundException
+   * @throws \App\Exceptions\User\UserNotFoundException
    */
   public function forgotPassword($email)
   {
@@ -251,7 +252,7 @@ class UserController extends Controller
    * Reset the user's password using the password reset token.
    *
    * @param string $email
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\JsonResponse
    */
   public function resetPassword($email)
   {

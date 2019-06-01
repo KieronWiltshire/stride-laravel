@@ -7,9 +7,10 @@ use App\Exceptions\AppError;
 class InternalServerError extends AppError
 {
   /**
-   * Constructor.
+   * Create a new internal server error instance.
    *
    * @param string $message
+   * @return void
    */
   public function __construct($message = null)
   {

@@ -7,7 +7,7 @@ use App\Exceptions\User\CannotUpdateUserException;
 use App\Exceptions\User\UserNotFoundException;
 use Validator;
 use App\Entities\User;
-use App\Repositories\Contracts\UserRepository;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Exception;
 use App\Events\User\UserCreatedEvent;
@@ -25,21 +25,40 @@ use App\Events\User\PasswordResetTokenGeneratedEvent;
 use App\Exceptions\User\InvalidPasswordException;
 use App\Exceptions\User\InvalidEmailException;
 use App\Exceptions\Pagination\InvalidPaginationException;
+use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
-class EloquentUserRepository implements UserRepository
+class UserRepository implements UserRepositoryInterface
 {
+  /**
+   * The validation factory implementation.
+   *
+   * @var \Illuminate\Contracts\Validation\Factory
+   */
+  protected $validation;
+
+  /**
+   * Create a new user repository instance.
+   * 
+   * @param  \Illuminate\Contracts\Validation\Factory  $validation
+   * @return void
+   */
+  public function __construct(
+    Factory $validation
+  ) {
+    $this->validation = $validation;
+  }
   /**
    * Retrieve all of the users.
    * 
    * @param integer $limit
    * @param integer $offset
-   * @return Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    * 
-   * @throws App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
   public function all($limit, $offset = 1)
   {
-    $validator = Validator::make([
+    $validator = $this->validation->make([
       'limit' => $limit,
       'offset' => $offset
     ], [
@@ -66,7 +85,7 @@ class EloquentUserRepository implements UserRepository
    * @param Array $attributes
    * @return App\Entities\User
    * 
-   * @throws App\Exceptions\User\CannotCreateUserException
+   * @throws \App\Exceptions\User\CannotCreateUserException
    */
   public function create($attributes)
   {
@@ -74,7 +93,7 @@ class EloquentUserRepository implements UserRepository
       $attributes['email_verification_token'] = $this->generateEmailVerificationToken($attributes['email']);
     }
 
-    $validator = Validator::make($attributes, [
+    $validator = $this->validation->make($attributes, [
       'email' => 'required|unique:users|email',
       'password' => 'required|min:6',
     ]);
@@ -98,7 +117,7 @@ class EloquentUserRepository implements UserRepository
    * @param number|string $parameter
    * @param number|string $search
    * @param boolean $regex
-   * @return Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    */
   public function find($parameter, $search, $regex = true, $limit, $offset = 1)
   {
@@ -123,9 +142,9 @@ class EloquentUserRepository implements UserRepository
    * Find a user by identifier.
    *
    * @param string $id
-   * @return App\Entities\User
+   * @return \App\Entities\User
    *
-   * @throws App\Exceptions\User\UserNotFoundException
+   * @throws \App\Exceptions\User\UserNotFoundException
    */
   public function findById($id)
   {
@@ -142,9 +161,9 @@ class EloquentUserRepository implements UserRepository
    * Find a user by email.
    *
    * @param string $email
-   * @return App\Entities\User
+   * @return \App\Entities\User
    *
-   * @throws App\Exceptions\User\UserNotFoundException
+   * @throws \App\Exceptions\User\UserNotFoundException
    */
   public function findByEmail($email)
   {
@@ -160,16 +179,16 @@ class EloquentUserRepository implements UserRepository
   /**
    * Update a user.
    * 
-   * @param App\Entities\User $user
+   * @param \App\Entities\User $user
    * @param Array $attributes
-   * @return App\Entities\User
+   * @return \App\Entities\User
    * 
-   * @throws App\Exceptions\User\CannotUpdateUserException
+   * @throws \App\Exceptions\User\CannotUpdateUserException
    */
-  public function update($user, $attributes)
+  public function update(User $user, $attributes)
   {
     if ($user instanceof User) {
-      $validator = Validator::make($attributes, [
+      $validator = $this->validation->make($attributes, [
         'email' => 'nullable|unique:users|email',
         'password' => 'nullable|min:6',
       ]);
@@ -200,16 +219,16 @@ class EloquentUserRepository implements UserRepository
    * Router a new email verification token be generated with
    * the user's new email address to verify.
    * 
-   * @param App\Entities\User $user
+   * @param \App\Entities\User $user
    * @param string $email
-   * @return App\Entities\User
+   * @return \App\Entities\User
    * 
-   * @throws App\Exceptions\User\InvalidEmailException
+   * @throws \App\Exceptions\User\InvalidEmailException
    */
-  public function requestEmailChange($user, $email)
+  public function requestEmailChange(User $user, $email)
   {
     if ($user instanceof User) {
-      $validator = Validator::make([
+      $validator = $this->validation->make([
         'email' => $email
       ], [
         'email' => 'unique:users|email',
@@ -235,20 +254,20 @@ class EloquentUserRepository implements UserRepository
    * Verify the user's specified email address and set their
    * email to the new one encoded within the token.
    * 
-   * @param App\Entities\User $user
+   * @param \App\Entities\User $user
    * @param string $emailVerificationToken
-   * @return App\Entities\User
+   * @return \App\Entities\User
    * 
-   * @throws App\Exceptions\User\InvalidEmailException
-   * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
+   * @throws \App\Exceptions\User\InvalidEmailException
+   * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
    */
-  public function verifyEmail($user, $emailVerificationToken)
+  public function verifyEmail(User $user, $emailVerificationToken)
   {
     if ($user instanceof User) {
       $decodedToken = $this->decodeEmailVerificationToken($emailVerificationToken);
 
       if ($emailVerificationToken && $decodedToken && $user->email_verification_token == $emailVerificationToken) {
-        $validator = Validator::make([
+        $validator = $this->validation->make([
           'email' => $decodedToken->email
         ], [
           'email' => 'unique:users|email',
@@ -308,9 +327,9 @@ class EloquentUserRepository implements UserRepository
    * @param App\Entities\User $user
    * @return void
    * 
-   * @throws App\Exceptions\User\InvalidEmailVerificationTokenException
+   * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
    */
-  public function sendEmailVerificationToken($user)
+  public function sendEmailVerificationToken(User $user)
   {
     if ($user->email_verification_token) {
       $decodedToken = $this->decodeEmailVerificationToken($user->email_verification_token);
@@ -328,10 +347,10 @@ class EloquentUserRepository implements UserRepository
   /**
    * Create's a password reset token for the specified user.
    *
-   * @param App\Entities\User $user
-   * @return App\Entities\User
+   * @param \App\Entities\User $user
+   * @return \App\Entities\User
    */
-  public function forgotPassword($user)
+  public function forgotPassword(User $user)
   {
     if ($user instanceof User) {
       $user->password_reset_token = $this->generatePasswordResetToken();
@@ -349,23 +368,23 @@ class EloquentUserRepository implements UserRepository
   /**
    * Reset a user's password using the password reset token.
    * 
-   * @param App\Entities\User $user
+   * @param \App\Entities\User $user
    * @param string $password
    * @param string $passwordResetToken
-   * @return App\Entities\User
+   * @return \App\Entities\User
    * 
-   * @throws App\Exceptions\User\InvalidPasswordException
-   * @throws App\Exceptions\User\PasswordResetTokenExpiredException
-   * @throws App\Exceptions\User\InvalidPasswordResetTokenException
+   * @throws \App\Exceptions\User\InvalidPasswordException
+   * @throws \App\Exceptions\User\PasswordResetTokenExpiredException
+   * @throws \App\Exceptions\User\InvalidPasswordResetTokenException
    */
-  public function resetPassword($user, $password, $passwordResetToken)
+  public function resetPassword(User $user, $password, $passwordResetToken)
   {
     if ($user instanceof User) {
       $decodedToken = $this->decodePasswordResetToken($passwordResetToken);
 
       if ($passwordResetToken && $decodedToken && $user->password_reset_token == $passwordResetToken) {
         if (Carbon::now()->lessThan(new Carbon($decodedToken->expiry))) {
-          $validator = Validator::make([
+          $validator = $this->validation->make([
             'password' => $password
           ], [
             'password' => 'nullable|min:6',
@@ -421,10 +440,10 @@ class EloquentUserRepository implements UserRepository
   /**
    * Send the user a password reset email.
    *
-   * @param App\Entities\User $user
+   * @param \App\Entities\User $user
    * @return void
    */
-  public function sendPasswordResetToken($user)
+  public function sendPasswordResetToken(User $user)
   {
     Mail::to($user->email)->send(new PasswordResetToken($user->password_reset_token));
   }

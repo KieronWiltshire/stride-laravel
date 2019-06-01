@@ -9,14 +9,14 @@ use Exception;
 class SendPasswordResetToken
 {
   /**
-   * @var UserRepository
+   * @var \App\Repositories\Contracts\UserRepository
    */
   private $users;
 
   /**
    * Create the event listener.
    *
-   * @param App\Repositories\Contracts\UserRepository $users
+   * @param \App\Repositories\Contracts\UserRepository $users
    * @return void
    */
   public function __construct(UserRepository $users)
@@ -27,7 +27,7 @@ class SendPasswordResetToken
   /**
    * Handle the event.
    *
-   * @param App\Events\User\PasswordResetTokenGeneratedEvent $event
+   * @param \App\Events\User\PasswordResetTokenGeneratedEvent $event
    * @return void
    */
   public function handle(PasswordResetTokenGeneratedEvent $event)

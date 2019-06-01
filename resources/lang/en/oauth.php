@@ -19,6 +19,13 @@ return [
     'invalid_refresh_token' => 'The specified refresh token is invalid.',
     'invalid_scope' => 'The requested scope is invalid, unknown, or malformed.',
     'unsupported_grant_type' => 'The authorization grant type is not supported by the authorization server.',
+    'client_not_found' => 'Unable to find the specified client.',
+    'cannot_create_client' => 'Unable to create a client.',
+    'cannot_update_client' => 'Unable to update a client.'
   ],
+
+  'id' => [
+    'not_found' => 'We can\'t find a client with the specified identifier.',
+  ]
 
 ];

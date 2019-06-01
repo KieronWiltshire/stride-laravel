@@ -11,7 +11,7 @@ class UserUpdatedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var App\Entities\User
+   * @var \App\Entities\User
    */
   private $user;
 
@@ -23,11 +23,11 @@ class UserUpdatedEvent
   /**
    * Create a new event instance.
    *
-   * @param App\Entities\User $user
+   * @param \App\Entities\User $user
    * @param Array $attributes
    * @return void
    */
-  public function __construct($user, $attributes)
+  public function __construct(User $user, $attributes)
   {
     $this->user = $user;
     $this->attributes = $attributes;
@@ -36,7 +36,7 @@ class UserUpdatedEvent
   /**
    * Retrieve the created user.
    * 
-   * @return App\Entities\User
+   * @return \App\Entities\User
    */
   public function getUser()
   {

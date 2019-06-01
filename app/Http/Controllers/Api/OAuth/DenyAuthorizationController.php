@@ -23,8 +23,9 @@ class DenyAuthorizationController
    * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
    * @return void
    */
-  public function __construct(ResponseFactory $response)
-  {
+  public function __construct(
+    ResponseFactory $response
+  ) {
     $this->response = $response;
   }
 

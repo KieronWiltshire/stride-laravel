@@ -48,7 +48,7 @@ class Handler extends ExceptionHandler
      *
      * @param \Exception $exception
      * @return void
-     * @throws Exception
+     * @throws \Exception
      */
   public function report(Exception $exception)
   {
@@ -77,8 +77,8 @@ class Handler extends ExceptionHandler
   /**
    * Conform the exception to an application standard.
    * 
-   * @param Exception $exception
-   * @return App\Exceptions\AppException
+   * @param \Exception $exception
+   * @return \App\Exceptions\AppException
    */
   public function conform($exception)
   {

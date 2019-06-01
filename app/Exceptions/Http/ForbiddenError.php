@@ -7,9 +7,10 @@ use App\Exceptions\AppError;
 class ForbiddenError extends AppError
 {
   /**
-   * Constructor.
+   * Create a new forbidden error instance.
    *
    * @param string $message
+   * @return void
    */
   public function __construct($message = null)
   {

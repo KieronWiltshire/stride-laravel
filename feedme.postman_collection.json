@@ -11,12 +11,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/user",
-					"protocol": "http",
+					"raw": "{{url}}/api/user",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user"
@@ -65,12 +63,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/user",
-					"protocol": "http",
+					"raw": "{{url}}/api/user",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user"
@@ -85,12 +81,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/user/search?parameter=email&search=(john)&regex=true",
-					"protocol": "http",
+					"raw": "{{url}}/api/user/search?parameter=email&search=(john)&regex=true",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user",
@@ -120,12 +114,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/user/john.doe@example.com",
-					"protocol": "http",
+					"raw": "{{url}}/api/user/john.doe@example.com",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user",
@@ -141,12 +133,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/user/john.doe@example.com/forgot",
-					"protocol": "http",
+					"raw": "{{url}}/api/user/john.doe@example.com/forgot",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user",
@@ -163,12 +153,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/user/john.doe@example.com/resend",
-					"protocol": "http",
+					"raw": "{{url}}/api/user/john.doe@example.com/resend",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user",
@@ -202,12 +190,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/user/john.doe@example.com/reset?password_reset_token=XXX",
-					"protocol": "http",
+					"raw": "{{url}}/api/user/john.doe@example.com/reset?password_reset_token=XXX",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user",
@@ -247,12 +233,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/user/1",
-					"protocol": "http",
+					"raw": "{{url}}/api/user/1",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user",
@@ -268,12 +252,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/user/1",
-					"protocol": "http",
+					"raw": "{{url}}/api/user/1",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user",
@@ -289,12 +271,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/user/1/email?email=john.doe@example.com",
-					"protocol": "http",
+					"raw": "{{url}}/api/user/1/email?email=john.doe@example.com",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"user",
@@ -339,12 +319,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/auth/login",
-					"protocol": "http",
+					"raw": "{{url}}/api/auth/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"auth",
@@ -370,12 +348,10 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/auth/logout",
-					"protocol": "http",
+					"raw": "{{url}}/api/auth/logout",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"auth",
@@ -401,12 +377,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/auth/me",
-					"protocol": "http",
+					"raw": "{{url}}/api/auth/me",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"auth",
@@ -432,12 +406,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8000/api/oauth/authorize?client_id=2&redirect_uri=http://localhost&response_type=token&scope=",
-					"protocol": "http",
+					"raw": "{{url}}/api/oauth/authorize?client_id=2&redirect_uri=http://localhost&response_type=token&scope=",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"oauth",
@@ -455,6 +427,11 @@
 						{
 							"key": "response_type",
 							"value": "token"
+						},
+						{
+							"key": "response_type",
+							"value": "code",
+							"disabled": true
 						},
 						{
 							"key": "scope",
@@ -589,12 +566,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/oauth/authorize",
-					"protocol": "http",
+					"raw": "{{url}}/api/oauth/authorize",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"oauth",
@@ -623,8 +598,8 @@
 					{
 						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/x-www-form-urlencoded",
-						"type": "text"
+						"type": "text",
+						"value": "application/x-www-form-urlencoded"
 					}
 				],
 				"body": {
@@ -643,12 +618,10 @@
 					]
 				},
 				"url": {
-					"raw": "http://localhost:8000/api/oauth/authorize",
-					"protocol": "http",
+					"raw": "{{url}}/api/oauth/authorize",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8000",
 					"path": [
 						"api",
 						"oauth",

@@ -8,7 +8,7 @@ use Webpatser\Uuid\Uuid;
 abstract class AppError extends Exception
 {
   /**
-   * @var Uuid
+   * @var \Webpatser\Uuid\Uuid
    */
   private $uuid;
 
@@ -38,7 +38,7 @@ abstract class AppError extends Exception
      * @param string $message
      * @param integer $httpStatus
      * @param string $type
-     * @throws Exception
+     * @throws \Exception
      */
   public function __construct($message, $httpStatus = 200, $type = null)
   {
@@ -76,7 +76,7 @@ abstract class AppError extends Exception
    * Set the cause of the error.
    *
    * @param string $cause
-   * @return App\Exceptions\AppError
+   * @return \App\Exceptions\AppError
    */
   public function setCause($cause) {
     $this->cause = $cause;
@@ -107,7 +107,7 @@ abstract class AppError extends Exception
    * Set the context of the error.
    *
    * @param array $context
-   * @return App\Exceptions\AppError
+   * @return \App\Exceptions\AppError
    */
   public function setContext($context)
   {

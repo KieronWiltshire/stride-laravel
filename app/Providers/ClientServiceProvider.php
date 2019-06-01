@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class UserServiceProvider extends ServiceProvider
+use App\Repositories\Eloquent\ClientRepository;
+
+class ClientServiceProvider extends ServiceProvider
 {
   /**
    * Register services.
@@ -14,8 +16,8 @@ class UserServiceProvider extends ServiceProvider
   public function register()
   {
     $this->app->bind(
-      'App\Repositories\Contracts\UserRepositoryInterface',
-      'App\Repositories\Eloquent\UserRepository'
+      'Laravel\Passport\ClientRepository',
+      'App\Repositories\Eloquent\ClientRepository'
     );
   }
 

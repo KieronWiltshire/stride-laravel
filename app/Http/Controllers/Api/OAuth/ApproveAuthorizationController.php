@@ -24,8 +24,9 @@ class ApproveAuthorizationController
    * @param \League\OAuth2\Server\AuthorizationServer $server
    * @return void
    */
-  public function __construct(AuthorizationServer $server)
-  {
+  public function __construct(
+    AuthorizationServer $server
+  ) {
     $this->server = $server;
   }
 
