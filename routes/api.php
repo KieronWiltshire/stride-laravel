@@ -46,11 +46,11 @@ Route::namespace('Api')->name('api.')->group(function () {
      * Authorize
      */
     Route::namespace('OAuth')->group(function() {
-      Route::get('/authorize', 'AuthorizationController@authorize')->name('authorizations.authorize');
-      Route::post('/authorize', 'ApproveAuthorizationController@approve')->name('authorizations.approve');
+      Route::get('/authorize', 'AuthorizationController@authorize')->name('authorizations.authorize')->middleware(['auth', 'web']);
+      Route::post('/authorize', 'ApproveAuthorizationController@approve')->name('authorizations.approve')->middleware('auth');
     });
     Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
-      Route::delete('/authorize', 'DenyAuthorizationController@deny')->name('authorizations.deny');
+      Route::delete('/authorize', 'DenyAuthorizationController@deny')->name('authorizations.deny')->middleware(['auth', 'web']);
     });
 
     /**
@@ -62,6 +62,24 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
       Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index')->middleware('auth');
       Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy')->middleware('auth');
+      Route::post('/token/refresh', 'TransientTokenController@refresh')->name('token.refresh')->middleware('auth');
+    });
+
+    /**
+     * Scopes
+     */
+    Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
+      Route::get('/scopes', 'ScopeController@all')->name('scopes.index')->middleware('auth');
+
+    });
+
+    /**
+     * Personal Access Tokens
+     */
+    Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
+      Route::get('/personal-access-tokens', 'PersonalAccessTokenController@forUser')->name('personal.tokens.index')->middleware('auth');
+      Route::post('/personal-access-tokens', 'PersonalAccessTokenController@store')->name('personal.tokens.store')->middleware('auth');
+      Route::delete('/personal-access-tokens/{token_id}')->name('personal.tokens.destroy')->middleware('auth');
     });
 
     /**

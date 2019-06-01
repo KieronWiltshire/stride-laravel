@@ -64,11 +64,14 @@ class Handler extends ExceptionHandler
    */
   public function render($request, Exception $exception)
   {
-    $exception = $this->conform($exception);
+    $conform = $this->conform($exception);
+    $render = $conform->render();
 
-    return response([
-      'error' => $exception->render()
-    ], $exception->getHttpStatus());
+    if (app()->environment(['local', 'development'])) {
+      $render['stack'] = $exception->getTrace();
+    }
+
+    return response($render, $conform->getHttpStatus());
   }
 
   /**
@@ -163,12 +166,6 @@ class Handler extends ExceptionHandler
 
     if (!$error) {
       $error = new InternalServerError();
-
-      if (app()->environment(['local', 'development'])) {
-        $error->setContext([
-          'exception' => $this->convertExceptionToArray($exception)
-        ]);
-      }
     }
 
     return $error;

@@ -42,7 +42,7 @@ abstract class AppError extends Exception
      */
   public function __construct($message, $httpStatus = 200, $type = null)
   {
-    parent::__construct($message);
+    parent::__construct($message, 0);
     $class = (new \ReflectionClass($this));
 
     $this->uuid = Uuid::generate();
