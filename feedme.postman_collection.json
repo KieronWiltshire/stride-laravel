@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "/api/user",
+			"name": "Retrieve all of the users",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -20,13 +20,25 @@
 					"path": [
 						"api",
 						"user"
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "50",
+							"disabled": true
+						},
+						{
+							"key": "offset",
+							"value": "0",
+							"disabled": true
+						}
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "/api/user",
+			"name": "Create a new user",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -68,7 +80,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/user/search",
+			"name": "Search for a user",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -103,7 +115,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/user/{email}",
+			"name": "Retrieve a user by email",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -124,7 +136,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/user/{email}/forgot",
+			"name": "Retrieve password reset link",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -146,7 +158,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/user/{email}/resend",
+			"name": "Resend email verification link",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -168,7 +180,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/user/{email}/reset",
+			"name": "Reset a user's password using a password reset token",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -213,7 +225,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/user/{id}",
+			"name": "Update a user",
 			"request": {
 				"method": "PUT",
 				"header": [
@@ -251,7 +263,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/user/{id}",
+			"name": "Retrieve a user by ID",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -272,7 +284,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/user/{id}/email",
+			"name": "Change emaill address",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -300,7 +312,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/auth/login",
+			"name": "Login",
 			"request": {
 				"method": "POST",
 				"header": [
@@ -343,7 +355,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/auth/logout",
+			"name": "Logout",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -374,7 +386,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/auth/me",
+			"name": "Retrieve logged in user",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -405,7 +417,7 @@
 			"response": []
 		},
 		{
-			"name": "/api/oauth/authorize",
+			"name": "Request OAuth grant",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -540,7 +552,7 @@
 			]
 		},
 		{
-			"name": "/api/oauth/authorize",
+			"name": "Accept OAuth grant",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -588,12 +600,13 @@
 						"oauth",
 						"authorize"
 					]
-				}
+				},
+				"description": "This request can fail in postman as the returned response is a redirect which cannot be performed in postman."
 			},
 			"response": []
 		},
 		{
-			"name": "/api/oauth/authorize",
+			"name": "Deny OAuth grant",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -641,12 +654,13 @@
 						"oauth",
 						"authorize"
 					]
-				}
+				},
+				"description": "This request can fail in postman as the returned response is a redirect which cannot be performed in postman."
 			},
 			"response": []
 		},
 		{
-			"name": "/api/oauth/clients",
+			"name": "Retrieve OAuth clients",
 			"request": {
 				"method": "GET",
 				"header": [],

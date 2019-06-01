@@ -45,12 +45,10 @@ Route::namespace('Api')->name('api.')->group(function () {
     /**
      * Authorize
      */
-    Route::namespace('OAuth')->group(function() {
-      Route::get('/authorize', 'AuthorizationController@authorize')->name('authorizations.authorize')->middleware(['auth', 'web']);
-      Route::post('/authorize', 'ApproveAuthorizationController@approve')->name('authorizations.approve')->middleware(['auth', 'web']);
-    });
-    Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
-      Route::delete('/authorize', 'DenyAuthorizationController@deny')->name('authorizations.deny')->middleware(['auth', 'web']);
+    Route::namespace('OAuth')->middleware(['auth', 'web'])->group(function() {
+      Route::get('/authorize', 'AuthorizationController@authorize')->name('authorizations.authorize');
+      Route::post('/authorize', 'ApproveAuthorizationController@approve')->name('authorizations.approve');
+      Route::delete('/authorize', 'DenyAuthorizationController@deny')->name('authorizations.deny');
     });
 
     /**
