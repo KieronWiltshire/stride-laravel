@@ -40,8 +40,6 @@ class AuthController extends Controller
       if (Hash::check(request()->input('password'), $user->password)) {
         $token = $user->createToken('login', ['*']);
 
-        dd($token);
-
         return response()->json([
           'access_token' => $token->accessToken,
           'token_type' => 'Bearer',

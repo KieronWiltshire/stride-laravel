@@ -19,7 +19,7 @@ return [
     'invalid_password' => 'The specified password is invalid.',
     'invalid_password_reset_token' => 'The specified password reset token is invalid.',
     'password_reset_token_expired' => 'The specified password reset token has expired',
-    'user_not_found' => 'Unable to find the specified user'
+    'not_found' => 'Unable to find the specified user'
   ],
 
   'id' => [

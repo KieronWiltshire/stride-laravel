@@ -381,7 +381,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTU1OTI1MDY1NCwiZXhwIjoxNTU5MjU0MjU0LCJuYmYiOjE1NTkyNTA2NTQsImp0aSI6IjBHZWpqQlBpUUdKYTFzWTUiLCJzdWIiOjEsInBydiI6ImY5MzA3ZWI1ZjI5YzcyYTkwZGJhYWVmMGUyNmYwMjYyZWRlODZmNTUifQ.DKBI1pwmay74ekWuhVzhHELCYPaXEnQoL6BIpiUWAcE",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
 							"type": "string"
 						}
 					]
@@ -407,8 +407,175 @@
 		{
 			"name": "/api/oauth/authorize",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/api/oauth/authorize?client_id=2&redirect_uri=http://localhost&response_type=token&scope=",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"oauth",
+						"authorize"
+					],
+					"query": [
+						{
+							"key": "client_id",
+							"value": "2"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost"
+						},
+						{
+							"key": "response_type",
+							"value": "token"
+						},
+						{
+							"key": "scope",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "/api/oauth/authorize",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/oauth/authorize?client_id=2&redirect_uri=http://localhost&response_type=token&scope=*",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"oauth",
+								"authorize"
+							],
+							"query": [
+								{
+									"key": "client_id",
+									"value": "2"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost"
+								},
+								{
+									"key": "response_type",
+									"value": "token"
+								},
+								{
+									"key": "scope",
+									"value": "*"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Host",
+							"value": "localhost:8000"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 01 Jun 2019 16:32:59 GMT"
+						},
+						{
+							"key": "Date",
+							"value": "Sat, 01 Jun 2019 16:32:59 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/7.3.5"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "X-RateLimit-Limit",
+							"value": "60"
+						},
+						{
+							"key": "X-RateLimit-Remaining",
+							"value": "59"
+						},
+						{
+							"key": "Set-Cookie",
+							"value": "laravel_session=Icz3O6cCchUrZKqZouzHMla376v8u0GC1hJiNqF7; expires=Sat, 01-Jun-2019 18:32:59 GMT; Max-Age=7200; path=/; httponly"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"client\": {\n        \"id\": 2,\n        \"user_id\": null,\n        \"name\": \"Laravel Password Grant Client\",\n        \"redirect\": \"http://localhost\",\n        \"personal_access_client\": false,\n        \"password_client\": true,\n        \"revoked\": false,\n        \"created_at\": \"2019-05-31 14:39:40\",\n        \"updated_at\": \"2019-05-31 14:39:40\"\n    },\n    \"user\": {\n        \"id\": 1,\n        \"email\": \"john.doe@example.com\",\n        \"email_verified\": false,\n        \"sessions_valid_after\": \"2019-05-30 20:46:58\",\n        \"created_at\": \"2019-05-30 19:46:58\",\n        \"updated_at\": \"2019-05-30 20:53:27\"\n    },\n    \"scopes\": [],\n    \"request\": {\n        \"attributes\": {},\n        \"request\": {},\n        \"query\": {},\n        \"server\": {},\n        \"files\": {},\n        \"cookies\": {},\n        \"headers\": {}\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "/api/oauth/authorize",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
 					"raw": "http://localhost:8000/api/oauth/authorize",
 					"protocol": "http",
@@ -428,10 +595,42 @@
 		{
 			"name": "/api/oauth/authorize",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "client_id",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
-					"raw": "http://localhost:8000/api/oauth/authorize?client_id=1&redirect_uri=http://localhost:8000/&response_type=token&scope=*",
+					"raw": "http://localhost:8000/api/oauth/authorize",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -441,24 +640,6 @@
 						"api",
 						"oauth",
 						"authorize"
-					],
-					"query": [
-						{
-							"key": "client_id",
-							"value": "1"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "http://localhost:8000/"
-						},
-						{
-							"key": "response_type",
-							"value": "token"
-						},
-						{
-							"key": "scope",
-							"value": "*"
-						}
 					]
 				}
 			},
