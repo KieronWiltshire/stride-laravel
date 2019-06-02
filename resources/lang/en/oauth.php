@@ -21,7 +21,8 @@ return [
     'unsupported_grant_type' => 'The authorization grant type is not supported by the authorization server.',
     'client_not_found' => 'Unable to find the specified client.',
     'cannot_create_client' => 'Unable to create a client.',
-    'cannot_update_client' => 'Unable to update a client.'
+    'cannot_update_client' => 'Unable to update a client.',
+    'invalid_authorization_request' => 'The authorization request was not present in the session.'
   ],
 
   'id' => [

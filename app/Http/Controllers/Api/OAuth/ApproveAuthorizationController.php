@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
+use App\Exceptions\OAuth\InvalidAuthorizationRequestException;
+use Exception;
 use Illuminate\Http\Request;
 use Zend\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\AuthorizationServer;
@@ -39,7 +41,11 @@ class ApproveAuthorizationController
   public function approve(Request $request)
   {
     return $this->withErrorHandling(function () use ($request) {
-      $authRequest = $this->getAuthRequestFromSession($request);
+      try {
+        $authRequest = $this->getAuthRequestFromSession($request);
+      } catch (Exception $e) {
+        throw new InvalidAuthorizationRequestException();
+      }
 
       return $this->convertResponse(
         $this->server->completeAuthorizationRequest($authRequest, new Psr7Response)

@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\Api\OAuth;
 
+use App\Exceptions\OAuth\InvalidAuthorizationRequestException;
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -37,7 +39,12 @@ class DenyAuthorizationController
    */
   public function deny(Request $request)
   {
-    $authRequest = $this->getAuthRequestFromSession($request);
+    try {
+      $authRequest = $this->getAuthRequestFromSession($request);
+    } catch (Exception $e) {
+      throw new InvalidAuthorizationRequestException();
+    }
+
     $clientUris = Arr::wrap($authRequest->getClient()->getRedirectUri());
 
     if (! in_array($uri = $authRequest->getRedirectUri(), $clientUris)) {
