@@ -24,8 +24,7 @@ class ClientController
    */
   public function __construct(
     ClientRepository $clients
-  )
-  {
+  ) {
     $this->clients = $clients;
   }
 
