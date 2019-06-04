@@ -33,7 +33,9 @@ class UserController extends Controller
   /**
    * Retrieve an index of users.
    *
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
   public function index()
   {
@@ -48,7 +50,9 @@ class UserController extends Controller
   /**
    * Create a new user.
    *
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\App\Entities\User
+   *
+   * @throws \App\Exceptions\User\CannotCreateUserException
    */
   public function create()
   {
@@ -62,7 +66,9 @@ class UserController extends Controller
    * Retrieve a user by id.
    *
    * @param integer $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\App\Entities\User
+   *
+   * @throws \App\Exceptions\User\UserNotFoundException
    */
   public function getById($id)
   {
@@ -81,7 +87,9 @@ class UserController extends Controller
    * Retrieve a user by email.
    *
    * @param string $email
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\App\Entities\User
+   *
+   * @throws \App\Exceptions\User\UserNotFoundException
    */
   public function getByEmail($email)
   {
@@ -99,9 +107,10 @@ class UserController extends Controller
   /**
    * Retrieve an index of users matching a particular search phrase.
    *
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    *
    * @throws \App\Exceptions\Http\BadRequestError
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
   public function search()
   {
@@ -129,7 +138,10 @@ class UserController extends Controller
    * Update a user.
    *
    * @param integer $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\App\Entities\User
+   *
+   * @throws \App\Exceptions\User\UserNotFoundException
+   * @throws \App\Exceptions\User\CannotUpdateUserException
    */
   public function update($id)
   {
@@ -152,7 +164,10 @@ class UserController extends Controller
    * Router a change to the specified email.
    *
    * @param integer $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\App\Entities\User
+   *
+   * @throws \App\Exceptions\User\UserNotFoundException
+   * @throws \App\Exceptions\User\InvalidEmailException
    */
   public function requestEmailChange($id)
   {
@@ -177,7 +192,11 @@ class UserController extends Controller
    * Verify the user's email.
    *
    * @param string $email
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\App\Entities\User
+   *
+   * @throws \App\Exceptions\User\UserNotFoundException
+   * @throws \App\Exceptions\User\InvalidEmailException
+   * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
    */
   public function verifyEmail($email)
   {
@@ -198,7 +217,7 @@ class UserController extends Controller
    * Resend the user's email verification token.
    *
    * @param string $email
-   * @return Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response
    *
    * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
    * @throws \App\Exceptions\User\UserNotFoundException
@@ -231,7 +250,7 @@ class UserController extends Controller
    * Send the user a password reset token.
    *
    * @param string $email
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    */
@@ -257,7 +276,11 @@ class UserController extends Controller
    * Reset the user's password using the password reset token.
    *
    * @param string $email
-   * @return \Illuminate\Http\JsonResponse
+   * @return \Illuminate\Http\Response|\App\Entities\User
+   *
+   * @throws \App\Exceptions\User\UserNotFoundException
+   * @throws \App\Exceptions\User\PasswordResetTokenExpiredException
+   * @throws \App\Exceptions\User\InvalidPasswordResetTokenException
    */
   public function resetPassword($email)
   {

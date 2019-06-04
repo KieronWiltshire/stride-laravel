@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Api\OAuth;
 
 use App\Exceptions\OAuth\ClientNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Laravel\Passport\ClientRepository;
 
 class ClientController
@@ -31,14 +29,13 @@ class ClientController
   /**
    * Get all of the clients for the authenticated user.
    *
-   * @param \Illuminate\Http\Request $request
    * @return \Illuminate\Database\Eloquent\Collection
    */
-  public function forUser(Request $request)
+  public function forUser()
   {
-    $userId = $request->user()->getKey();
+    $userId = request()->user()->getKey();
 
-    $resource = $this->clients->activeForUserAsPaginated($userId, $request->query('limit'), $request->query('offset'));
+    $resource = $this->clients->activeForUserAsPaginated($userId, request()->query('limit'), request()->query('offset'));
 
     $resource->getCollection()->each(function ($client) {
       $client->makeVisible('secret');
@@ -55,26 +52,22 @@ class ClientController
   /**
    * Store a new client.
    *
-   * @param \Illuminate\Http\Request $request
    * @return \Laravel\Passport\Client
    */
-  public function store(Request $request)
+  public function store()
   {
-    return $this->clients->create(
-      $request->user()->getKey(), $request->name, $request->redirect
-    )->makeVisible('secret');
+    return $this->clients->create(request()->user()->getKey(), request()->input('name'), request()->input('redirect'))->makeVisible('secret');
   }
 
   /**
    * Update the given client.
    *
-   * @param \Illuminate\Http\Request $request
    * @param string $clientId
    * @return \Illuminate\Http\Response|\Laravel\Passport\Client
    */
-  public function update(Request $request, $clientId)
+  public function update($clientId)
   {
-    $client = $this->clients->findForUser($clientId, $request->user()->getKey());
+    $client = $this->clients->findForUser($clientId, request()->user()->getKey());
 
     if (!$client) {
       throw (new ClientNotFoundException())->setContext([
@@ -84,21 +77,18 @@ class ClientController
       ]);
     }
 
-    return $this->clients->update(
-      $client, $request->name, $request->redirect
-    );
+    return $this->clients->update($client, request()->input('name'), request()->input('redirect'));
   }
 
   /**
    * Delete the given client.
    *
-   * @param \Illuminate\Http\Request $request
    * @param string $clientId
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Request $request, $clientId)
+  public function destroy($clientId)
   {
-    $client = $this->clients->findForUser($clientId, $request->user()->getKey());
+    $client = $this->clients->findForUser($clientId, request()->user()->getKey());
 
     if (!$client || $client->revoked) {
       throw (new ClientNotFoundException())->setContext([
@@ -110,6 +100,6 @@ class ClientController
 
     $this->clients->delete($client);
 
-    return new Response('', Response::HTTP_NO_CONTENT);
+    return response('', Response::HTTP_NO_CONTENT);
   }
 }
