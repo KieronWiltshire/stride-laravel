@@ -47,6 +47,19 @@ class UserRepository implements UserRepositoryInterface
   ) {
     $this->validation = $validation;
   }
+
+  /**
+   * Retrieve all of the users.
+   *
+   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   */
+  public function all()
+  {
+    return User::all();
+  }
+
   /**
    * Retrieve all of the users.
    * 
@@ -56,7 +69,7 @@ class UserRepository implements UserRepositoryInterface
    * 
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
-  public function all($limit, $offset = 1)
+  public function allAsPaginated($limit = null, $offset = 1)
   {
     $validator = $this->validation->make([
       'limit' => $limit,
@@ -117,9 +130,32 @@ class UserRepository implements UserRepositoryInterface
    * @param number|string $parameter
    * @param number|string $search
    * @param boolean $regex
+   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User>
+   */
+  public function find($parameter, $search, $regex = true)
+  {
+    $query = User::query();
+
+    if ($regex) {
+      $query->where($parameter, 'REGEXP', $search)->get();
+    } else {
+      $query->where($parameter, $search)->get();
+    }
+
+    return $query->get();
+  }
+
+  /**
+   * Find a user by an unknown parameter.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param integer $limit
+   * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    */
-  public function find($parameter, $search, $regex = true, $limit, $offset = 1)
+  public function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1)
   {
     $query = User::query();
 

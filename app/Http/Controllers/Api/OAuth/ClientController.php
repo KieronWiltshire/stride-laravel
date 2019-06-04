@@ -38,7 +38,18 @@ class ClientController
   {
     $userId = $request->user()->getKey();
 
-    return $this->clients->activeForUser($userId)->makeVisible('secret');
+    $resource = $this->clients->activeForUserAsPaginated($userId, $request->query('limit'), $request->query('offset'));
+
+    $resource->getCollection()->each(function ($client) {
+      $client->makeVisible('secret');
+    });
+
+    return $resource
+      ->setPath(route('api.oauth.clients.index'))
+      ->setPageName('offset')
+      ->appends([
+        'limit' => request()->query('limit')
+      ]);
   }
 
   /**

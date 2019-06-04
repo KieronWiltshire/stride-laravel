@@ -37,7 +37,7 @@ class UserController extends Controller
    */
   public function index()
   {
-    return $this->users->all(request()->query('limit'), request()->query('offset'))
+    return $this->users->allAsPaginated(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.index'))
       ->setPageName('offset')
       ->appends([
@@ -117,7 +117,7 @@ class UserController extends Controller
         ]);
     }
 
-    return $this->users->find(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
+    return $this->users->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.search'))
       ->setPageName('offset')
       ->appends([

@@ -8,14 +8,23 @@ interface UserRepositoryInterface
 {
   /**
    * Retrieve all of the users.
-   * 
+   *
+   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   */
+  function all();
+
+  /**
+   * Retrieve all of the users.
+   *
    * @param integer $limit
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
-   * 
+   *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
-  function all($limit, $offset = 1);
+  function allAsPaginated($limit = null, $offset = 1);
 
   /**
    * Create a new user.
@@ -33,9 +42,21 @@ interface UserRepositoryInterface
    * @param number|string $parameter
    * @param number|string $search
    * @param boolean $regex
+   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User>
+   */
+  function find($parameter, $search, $regex = true);
+
+  /**
+   * Find a user by an unknown parameter.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param integer $limit
+   * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
    */
-  function find($parameter, $search, $regex = true, $limit, $offset = 1);
+  function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1);
 
   /**
    * Find a user by identifier.
