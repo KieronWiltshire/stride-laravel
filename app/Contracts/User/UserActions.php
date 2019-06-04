@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities\User;
+namespace App\Contracts\User;
 
 use App\Exceptions\User\CannotCreateUserException;
 use App\Exceptions\User\CannotUpdateUserException;

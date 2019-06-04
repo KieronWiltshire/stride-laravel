@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
-use App\Entities\Token\TokenActions;
+use App\Contracts\Pagination\PaginationActions;
+use App\Contracts\Token\TokenActions;
 use App\Exceptions\OAuth\TokenNotFoundException;
-use App\Pagination\PaginationActions;
 use Laravel\Passport\Token;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -104,7 +104,7 @@ class TokenRepository extends PassportTokenRepository
    * @param mixed $userId
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<Laravel\Passport\Token>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -130,7 +130,7 @@ class TokenRepository extends PassportTokenRepository
    * @param mixed $userId
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<Laravel\Passport\Token>
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */

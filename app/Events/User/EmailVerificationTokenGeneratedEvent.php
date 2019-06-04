@@ -2,7 +2,7 @@
 
 namespace App\Events\User;
 
-use App\Entities\User\User;
+use App\Entities\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -12,14 +12,14 @@ class EmailVerificationTokenGeneratedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \App\Entities\User\User
+   * @var \App\Entities\User
    */
   private $user;
 
   /**
    * Create a new event instance.
    *
-   * @param \App\Entities\User\User $user
+   * @param \App\Entities\User $user
    * @param string $email
    * @return void
    */
@@ -31,7 +31,7 @@ class EmailVerificationTokenGeneratedEvent
   /**
    * Retrieve the created user.
    *
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    */
   public function getUser()
   {

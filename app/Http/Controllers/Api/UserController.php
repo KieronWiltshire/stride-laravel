@@ -4,24 +4,23 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Contracts\User\UserRepositoryInterface;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
-use App\Entities\User;
 use App\Exceptions\User\InvalidEmailVerificationTokenException;
 
 class UserController extends Controller
 {
   /**
-   * @var \App\Repositories\Contracts\UserRepositoryInterface
+   * @var \App\Contracts\User\UserRepositoryInterface
    */
   private $users;
 
   /**
    * Create a new user controller instance
    *
-   * @param \App\Repositories\Contracts\UserRepositoryInterface $users
+   * @param \App\Contracts\User\UserRepositoryInterface $users
    * @return void
    */
   public function __construct(
@@ -33,7 +32,7 @@ class UserController extends Controller
   /**
    * Retrieve an index of users.
    *
-   * @return \Illuminate\Http\Response|\Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   * @return \Illuminate\Http\Response|\Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -107,7 +106,7 @@ class UserController extends Controller
   /**
    * Retrieve an index of users matching a particular search phrase.
    *
-   * @return \Illuminate\Http\Response|\Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   * @return \Illuminate\Http\Response|\Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
    *
    * @throws \App\Exceptions\Http\BadRequestError
    * @throws \App\Exceptions\Pagination\InvalidPaginationException

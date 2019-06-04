@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Entities\Token\TokenActions;
+use App\Contracts\Token\TokenActions;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use App\Repositories\Eloquent\TokenRepository;
+use App\Repositories\TokenRepository;
 
 class PersonalAccessTokenController
 {
@@ -42,7 +42,7 @@ class PersonalAccessTokenController
   /**
    * Get all of the personal access tokens for the authenticated user.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<Laravel\Passport\Token>
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */

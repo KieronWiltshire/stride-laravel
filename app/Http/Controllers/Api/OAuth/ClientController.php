@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\OAuth;
 
 use App\Exceptions\OAuth\ClientNotFoundException;
-use App\Repositories\Eloquent\ClientRepository;
+use App\Repositories\ClientRepository;
 
 class ClientController
 {
@@ -29,7 +29,7 @@ class ClientController
   /**
    * Get all of the clients for the authenticated user.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<Laravel\Passport\Client>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    */
   public function forUser()
   {

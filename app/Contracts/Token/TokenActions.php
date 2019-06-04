@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Entities\Token;
+namespace App\Contracts\Token;
 
 use App\Exceptions\OAuth\CannotCreateTokenException;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;

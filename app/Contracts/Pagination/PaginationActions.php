@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Pagination;
+namespace App\Contracts\Pagination;
 
 use App\Exceptions\Pagination\InvalidPaginationException;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;

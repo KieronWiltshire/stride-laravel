@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Entities\Client;
+namespace App\Contracts\Client;
 
 use App\Exceptions\OAuth\CannotCreateClientException;
 use App\Exceptions\OAuth\CannotUpdateClientException;

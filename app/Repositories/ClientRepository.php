@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
-use App\Entities\Client\ClientActions;
-use App\Pagination\PaginationActions;
+use App\Contracts\Client\ClientActions;
+use App\Contracts\Pagination\PaginationActions;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\ClientRepository as PassportClientRepository;
 use App\Exceptions\OAuth\ClientNotFoundException;
 use Laravel\Passport\Client;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use App\Exceptions\OAuth\CannotUpdateClientException;
 use Laravel\Passport\Passport;
 
 class ClientRepository extends PassportClientRepository
@@ -110,7 +109,7 @@ class ClientRepository extends PassportClientRepository
    * @param mixed $userId
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<Laravel\Passport\Client>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -148,7 +147,7 @@ class ClientRepository extends PassportClientRepository
    * @param mixed $userId
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<Laravel\Passport\Client>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */

@@ -1,15 +1,13 @@
 <?php
 
-namespace App\Repositories\Eloquent;
+namespace App\Repositories;
 
-use App\Entities\User\UserActions;
-use App\Exceptions\User\CannotCreateUserException;
-use App\Exceptions\User\CannotUpdateUserException;
+use App\Contracts\Pagination\PaginationActions;
+use App\Contracts\User\UserActions;
+use App\Contracts\User\UserRepositoryInterface;
+use App\Entities\User;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\UserNotFoundException;
-use App\Pagination\PaginationActions;
-use App\Entities\User\User;
-use App\Repositories\Contracts\UserRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Exception;
 use App\Events\User\UserCreatedEvent;
@@ -24,8 +22,6 @@ use App\Events\User\EmailVerificationTokenGeneratedEvent;
 use App\Events\User\UserEmailVerifiedEvent;
 use App\Events\User\UserPasswordResetEvent;
 use App\Events\User\PasswordResetTokenGeneratedEvent;
-use App\Exceptions\User\InvalidPasswordException;
-use App\Exceptions\User\InvalidEmailException;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 class UserRepository implements UserRepositoryInterface
@@ -54,7 +50,7 @@ class UserRepository implements UserRepositoryInterface
   /**
    * Retrieve all of the users.
    *a
-   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User>
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\User>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -68,7 +64,7 @@ class UserRepository implements UserRepositoryInterface
    * 
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
    * 
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -79,7 +75,7 @@ class UserRepository implements UserRepositoryInterface
     if ($limit) {
       return User::paginate($limit, ['*'], 'page', $offset);
     } else {
-      $users = User::get();
+      $users = User::all();
 
       return new LengthAwarePaginator($users->all(), $users->count(), max($users->count(), 1), 1);
     }
@@ -89,7 +85,7 @@ class UserRepository implements UserRepositoryInterface
    * Create a new user.
    *
    * @param Array $attributes
-   * @return App\Entities\User\User
+   * @return \App\Entities\User
    * 
    * @throws \App\Exceptions\User\CannotCreateUserException
    */
@@ -116,7 +112,7 @@ class UserRepository implements UserRepositoryInterface
    * @param number|string $parameter
    * @param number|string $search
    * @param boolean $regex
-   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User\User>
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\User>
    */
   public function find($parameter, $search, $regex = true)
   {
@@ -139,7 +135,7 @@ class UserRepository implements UserRepositoryInterface
    * @param boolean $regex
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
    */
   public function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1)
   {
@@ -164,7 +160,7 @@ class UserRepository implements UserRepositoryInterface
    * Find a user by identifier.
    *
    * @param string $id
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    */
@@ -183,7 +179,7 @@ class UserRepository implements UserRepositoryInterface
    * Find a user by email.
    *
    * @param string $email
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    */
@@ -201,9 +197,9 @@ class UserRepository implements UserRepositoryInterface
   /**
    * Update a user.
    * 
-   * @param \App\Entities\User\User $user
+   * @param \App\Entities\User $user
    * @param Array $attributes
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    * 
    * @throws \App\Exceptions\User\CannotUpdateUserException
    */
@@ -234,9 +230,9 @@ class UserRepository implements UserRepositoryInterface
    * Router a new email verification token be generated with
    * the user's new email address to verify.
    * 
-   * @param \App\Entities\User\User $user
+   * @param \App\Entities\User $user
    * @param string $email
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    * 
    * @throws \App\Exceptions\User\InvalidEmailException
    */
@@ -261,9 +257,9 @@ class UserRepository implements UserRepositoryInterface
    * Verify the user's specified email address and set their
    * email to the new one encoded within the token.
    * 
-   * @param \App\Entities\User\User $user
+   * @param \App\Entities\User $user
    * @param string $emailVerificationToken
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    * 
    * @throws \App\Exceptions\User\InvalidEmailException
    * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
@@ -323,7 +319,7 @@ class UserRepository implements UserRepositoryInterface
   /**
    * Send the email verification email.
    *
-   * @param App\Entities\User\User $user
+   * @param App\Entities\User $user
    * @return void
    * 
    * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
@@ -346,8 +342,8 @@ class UserRepository implements UserRepositoryInterface
   /**
    * Create's a password reset token for the specified user.
    *
-   * @param \App\Entities\User\User $user
-   * @return \App\Entities\User\User
+   * @param \App\Entities\User $user
+   * @return \App\Entities\User
    */
   public function forgotPassword(User $user)
   {
@@ -367,10 +363,10 @@ class UserRepository implements UserRepositoryInterface
   /**
    * Reset a user's password using the password reset token.
    * 
-   * @param \App\Entities\User\User $user
+   * @param \App\Entities\User $user
    * @param string $password
    * @param string $passwordResetToken
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    * 
    * @throws \App\Exceptions\User\InvalidPasswordException
    * @throws \App\Exceptions\User\PasswordResetTokenExpiredException
@@ -431,7 +427,7 @@ class UserRepository implements UserRepositoryInterface
   /**
    * Send the user a password reset email.
    *
-   * @param \App\Entities\User\User $user
+   * @param \App\Entities\User $user
    * @return void
    */
   public function sendPasswordResetToken(User $user)

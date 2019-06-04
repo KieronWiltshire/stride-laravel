@@ -12,7 +12,7 @@ class UserEmailVerifiedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \App\Entities\User\User
+   * @var \App\Entities\User
    */
   private $user;
 
@@ -24,7 +24,7 @@ class UserEmailVerifiedEvent
   /**
    * Create a new event instance.
    *
-   * @param \App\Entities\User\User $user
+   * @param \App\Entities\User $user
    * @return void
    */
   public function __construct(User $user, $oldEmail)
@@ -36,7 +36,7 @@ class UserEmailVerifiedEvent
   /**
    * Retrieve the created user.
    * 
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    */
   public function getUser()
   {

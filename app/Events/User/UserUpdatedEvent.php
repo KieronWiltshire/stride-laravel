@@ -12,7 +12,7 @@ class UserUpdatedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \App\Entities\User\User
+   * @var \App\Entities\User
    */
   private $user;
 
@@ -24,7 +24,7 @@ class UserUpdatedEvent
   /**
    * Create a new event instance.
    *
-   * @param \App\Entities\User\User $user
+   * @param \App\Entities\User $user
    * @param Array $attributes
    * @return void
    */
@@ -37,7 +37,7 @@ class UserUpdatedEvent
   /**
    * Retrieve the created user.
    * 
-   * @return \App\Entities\User\User
+   * @return \App\Entities\User
    */
   public function getUser()
   {
