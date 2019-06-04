@@ -2,6 +2,7 @@
 
 namespace App\Events\User;
 
+use App\Entities\User\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -11,14 +12,14 @@ class UserCreatedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \App\Entities\User
+   * @var \App\Entities\User\User
    */
   private $user;
 
   /**
    * Create a new event instance.
    *
-   * @param \App\Entities\User $user
+   * @param \App\Entities\User\User $user
    * @return void
    */
   public function __construct(User $user)
@@ -29,7 +30,7 @@ class UserCreatedEvent
   /**
    * Retrieve the created user.
    * 
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    */
   public function getUser()
   {

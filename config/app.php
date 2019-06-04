@@ -1,5 +1,7 @@
 <?php
 
+use App\Providers\ClientServiceProvider;
+
 return [
 
   /*
@@ -175,7 +177,6 @@ return [
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
     App\Providers\UserServiceProvider::class,
-    App\Providers\ClientServiceProvider::class,
 
   ],
 

@@ -2,19 +2,20 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Exceptions\Pagination\InvalidPaginationException;
+use App\Entities\Client\ClientActions;
+use App\Pagination\PaginationActions;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\ClientRepository as PassportClientRepository;
 use App\Exceptions\OAuth\ClientNotFoundException;
 use Laravel\Passport\Client;
-use \Laravel\Passport\Http\Rules\RedirectRule;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
-use App\Exceptions\OAuth\CannotCreateClientException;
 use App\Exceptions\OAuth\CannotUpdateClientException;
 use Laravel\Passport\Passport;
 
 class ClientRepository extends PassportClientRepository
 {
+  use PaginationActions, ClientActions;
+
   /**
    * The validation factory implementation.
    *
@@ -23,26 +24,15 @@ class ClientRepository extends PassportClientRepository
   protected $validation;
 
   /**
-   * The redirect validation rule.
-   *
-   * @var \Laravel\Passport\Http\Rules\RedirectRule
-   */
-  protected $redirectRule;
-
-  /**
-   * Create a new user repository instance.
+   * Create a new client repository instance.
    *
    * @param \Illuminate\Contracts\Validation\Factory $validation
-   * @param \Laravel\Passport\Http\Rules\RedirectRule $redirectRule
    * @return void
    */
   public function __construct(
-    ValidationFactory $validation,
-    RedirectRule $redirectRule
-  )
-  {
+    ValidationFactory $validation
+  ) {
     $this->validation = $validation;
-    $this->redirectRule = $redirectRule;
   }
 
   /**
@@ -126,17 +116,7 @@ class ClientRepository extends PassportClientRepository
    */
   public function forUserAsPaginated($userId, $limit = null, $offset = 1)
   {
-    $validator = $this->validation->make([
-      'limit' => $limit,
-      'offset' => $offset
-    ], [
-      'limit' => 'nullable|numeric|min:1',
-      'offset' => 'nullable|numeric|min:1',
-    ]);
-
-    if ($validator->fails()) {
-      throw (new InvalidPaginationException())->setContext($validator->errors()->toArray());
-    }
+    $this->validatePaginationParameters($this->validation, $limit, $offset);
 
     $query = Passport::client()
       ->where('user_id', $userId)
@@ -174,17 +154,7 @@ class ClientRepository extends PassportClientRepository
    */
   public function activeForUserAsPaginated($userId, $limit = null, $offset = 1)
   {
-    $validator = $this->validation->make([
-      'limit' => $limit,
-      'offset' => $offset
-    ], [
-      'limit' => 'nullable|numeric|min:1',
-      'offset' => 'nullable|numeric|min:1',
-    ]);
-
-    if ($validator->fails()) {
-      throw (new InvalidPaginationException())->setContext($validator->errors()->toArray());
-    }
+    $this->validatePaginationParameters($this->validation, $limit, $offset);
 
     $query = Passport::client()
       ->where('user_id', $userId)
@@ -237,20 +207,10 @@ class ClientRepository extends PassportClientRepository
    */
   public function create($userId, $name, $redirect, $personalAccess = false, $password = false)
   {
-    $validator = $this->validation->make([
+    $this->validateClientCreateParameters($this->validation, [
       'name' => $name,
       'redirect' => $redirect
-    ], [
-      'name' => 'required|max:255',
-      'redirect' => [
-        'required',
-        $this->redirectRule
-      ],
     ]);
-
-    if ($validator->fails()) {
-      throw (new CannotCreateClientException())->setContext($validator->errors()->toArray());
-    }
 
     return parent::create($userId, $name, $redirect, $personalAccess, $password);
   }
@@ -293,20 +253,10 @@ class ClientRepository extends PassportClientRepository
    */
   public function update(Client $client, $name, $redirect)
   {
-    $validator = $this->validation->make([
+    $this->validateClientUpdateParameters($this->validation, [
       'name' => $name,
       'redirect' => $redirect
-    ], [
-      'name' => 'required|max:255',
-      'redirect' => [
-        'required',
-        $this->redirectRule
-      ],
     ]);
-
-    if ($validator->fails()) {
-      throw (new CannotUpdateClientException())->setContext($validator->errors()->toArray());
-    }
 
     return parent::update($client, $name, $redirect);
   }

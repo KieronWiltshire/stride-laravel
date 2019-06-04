@@ -3,21 +3,21 @@
 namespace App\Http\Controllers\Api\OAuth;
 
 use App\Exceptions\OAuth\ClientNotFoundException;
-use Laravel\Passport\ClientRepository;
+use App\Repositories\Eloquent\ClientRepository;
 
 class ClientController
 {
   /**
    * The client repository instance.
    *
-   * @var \Laravel\Passport\ClientRepository
+   * @var \App\Repositories\Eloquent\ClientRepository
    */
   protected $clients;
 
   /**
    * Create a client controller instance.
    *
-   * @param \Laravel\Passport\ClientRepository $clients
+   * @param \App\Repositories\Eloquent\ClientRepository $clients
    * @return void
    */
   public function __construct(
@@ -29,7 +29,7 @@ class ClientController
   /**
    * Get all of the clients for the authenticated user.
    *
-   * @return \Illuminate\Database\Eloquent\Collection
+   * @return \Illuminate\Pagination\LengthAwarePaginator<Laravel\Passport\Client>
    */
   public function forUser()
   {
@@ -100,6 +100,6 @@ class ClientController
 
     $this->clients->delete($client);
 
-    return response('', Response::HTTP_NO_CONTENT);
+    return response('', 204);
   }
 }

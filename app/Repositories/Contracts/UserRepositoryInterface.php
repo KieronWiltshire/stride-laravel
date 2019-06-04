@@ -2,14 +2,15 @@
 
 namespace App\Repositories\Contracts;
 
-use App\Entities\User;
+use App\Entities\User\User;
 
 interface UserRepositoryInterface
 {
+
   /**
    * Retrieve all of the users.
    *
-   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User>
+   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User\User>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -20,7 +21,7 @@ interface UserRepositoryInterface
    *
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User\User>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -30,7 +31,7 @@ interface UserRepositoryInterface
    * Create a new user.
    *
    * @param array $attributes
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    *
    * @throws \App\Exceptions\User\CannotCreateUserException
    */
@@ -42,7 +43,7 @@ interface UserRepositoryInterface
    * @param number|string $parameter
    * @param number|string $search
    * @param boolean $regex
-   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User>
+   * @return \Illuminate\Database\Eloquent\Collection<App\Entities\User\User>
    */
   function find($parameter, $search, $regex = true);
 
@@ -54,7 +55,7 @@ interface UserRepositoryInterface
    * @param boolean $regex
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<App\Entities\User\User>
    */
   function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1);
 
@@ -62,7 +63,7 @@ interface UserRepositoryInterface
    * Find a user by identifier.
    *
    * @param string $id
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    */
@@ -72,7 +73,7 @@ interface UserRepositoryInterface
    * Find a user by email.
    *
    * @param string $email
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    */
@@ -81,9 +82,9 @@ interface UserRepositoryInterface
   /**
    * Update a user.
    * 
-   * @param \App\Entities\User $user
+   * @param \App\Entities\User\User $user
    * @param array $attributes
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    * 
    * @throws \App\Exceptions\User\CannotUpdateUserException
    */
@@ -93,9 +94,9 @@ interface UserRepositoryInterface
    * Router a new email verification token be generated with
    * the user's new email address to verify.
    * 
-   * @param \App\Entities\User $user
+   * @param \App\Entities\User\User $user
    * @param string $email
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    * 
    * @throws \App\Exceptions\User\InvalidEmailException
    */
@@ -105,9 +106,9 @@ interface UserRepositoryInterface
    * Verify the user's specified email address and set their
    * email to the new one encoded within the token.
    * 
-   * @param \App\Entities\User $user
+   * @param \App\Entities\User\User $user
    * @param string $emailVerificationToken
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    * 
    * @throws \App\Exceptions\User\InvalidEmailException
    * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
@@ -133,7 +134,7 @@ interface UserRepositoryInterface
   /**
    * Send the email verification email.
    *
-   * @param \App\Entities\User $user
+   * @param \App\Entities\User\User $user
    * @return void
    * 
    * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
@@ -143,18 +144,18 @@ interface UserRepositoryInterface
   /**
    * Create's a password reset token for the specified user.
    *
-   * @param \App\Entities\User $user
-   * @return \App\Entities\User
+   * @param \App\Entities\User\User $user
+   * @return \App\Entities\User\User
    */
   function forgotPassword(User $user);
 
   /**
    * Reset a user's password using the password reset token.
    * 
-   * @param \App\Entities\User $user
+   * @param \App\Entities\User\User $user
    * @param string $password
    * @param string $passwordResetToken
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    * 
    * @throws \App\Exceptions\User\InvalidPasswordException
    * @throws \App\Exceptions\User\PasswordResetTokenExpiredException
@@ -180,7 +181,7 @@ interface UserRepositoryInterface
   /**
    * Send the user a password reset email.
    *
-   * @param \App\Entities\User $user
+   * @param \App\Entities\User\User $user
    * @return void
    */
   function sendPasswordResetToken(User $user);

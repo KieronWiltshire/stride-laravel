@@ -22,7 +22,9 @@ return [
     'client_not_found' => 'Unable to find the specified client.',
     'cannot_create_client' => 'Unable to create a client.',
     'cannot_update_client' => 'Unable to update a client.',
-    'invalid_authorization_request' => 'The authorization request was not present in the session.'
+    'invalid_authorization_request' => 'The authorization request was not present in the session.',
+    'cannot_create_token' => 'Unable to create a personal access token',
+    'token_not_found' => 'Unable to find the specified token'
   ],
 
   'id' => [

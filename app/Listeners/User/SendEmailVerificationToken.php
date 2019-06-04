@@ -3,23 +3,23 @@
 namespace App\Listeners\User;
 
 use App\Events\User\EmailVerificationTokenGeneratedEvent;
-use App\Repositories\Contracts\UserRepository;
+use App\Repositories\Contracts\UserRepositoryInterface;
 use Exception;
 
 class SendEmailVerificationToken
 {
   /**
-   * @var \App\Repositories\Contracts\UserRepository
+   * @var \App\Repositories\Contracts\UserRepositoryInterface
    */
   private $users;
 
   /**
    * Create the event listener.
    *
-   * @param \App\Repositories\Contracts\UserRepository $users
+   * @param \App\Repositories\Contracts\UserRepositoryInterface $users
    * @return void
    */
-  public function __construct(UserRepository $users)
+  public function __construct(UserRepositoryInterface $users)
   {
     $this->users = $users;
   }

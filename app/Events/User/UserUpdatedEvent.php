@@ -2,6 +2,7 @@
 
 namespace App\Events\User;
 
+use App\Entities\User\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -11,7 +12,7 @@ class UserUpdatedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \App\Entities\User
+   * @var \App\Entities\User\User
    */
   private $user;
 
@@ -23,7 +24,7 @@ class UserUpdatedEvent
   /**
    * Create a new event instance.
    *
-   * @param \App\Entities\User $user
+   * @param \App\Entities\User\User $user
    * @param Array $attributes
    * @return void
    */
@@ -36,7 +37,7 @@ class UserUpdatedEvent
   /**
    * Retrieve the created user.
    * 
-   * @return \App\Entities\User
+   * @return \App\Entities\User\User
    */
   public function getUser()
   {
@@ -46,7 +47,7 @@ class UserUpdatedEvent
   /**
    * Retrieve the attributes that were updated.
    * 
-   * @return Array
+   * @return array
    */
   public function getAttributes()
   {

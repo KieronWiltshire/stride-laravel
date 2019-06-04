@@ -16,6 +16,7 @@ trait HandlesOAuthErrors
    */
   protected function withErrorHandling($callback)
   {
+    // Ignore the original intent of creating a response
     return $callback();
   }
 }
