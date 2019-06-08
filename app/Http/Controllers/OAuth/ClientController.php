@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\OAuth;
+namespace App\Http\Controllers\OAuth;
 
 use App\Exceptions\OAuth\ClientNotFoundException;
 use App\Repositories\ClientRepository;
@@ -10,14 +10,14 @@ class ClientController
   /**
    * The client repository instance.
    *
-   * @var \App\Repositories\Eloquent\ClientRepository
+   * @var \App\Repositories\ClientRepository
    */
   protected $clients;
 
   /**
    * Create a client controller instance.
    *
-   * @param \App\Repositories\Eloquent\ClientRepository $clients
+   * @param \App\Repositories\ClientRepository $clients
    * @return void
    */
   public function __construct(

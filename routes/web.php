@@ -11,6 +11,6 @@
 |
 */
 
-Route::get('{any?}', function () {
+Route::fallback(function () {
   return view('app');
-})->where('any', '^(?!api).*$')->name('any');
+});

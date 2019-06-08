@@ -39,64 +39,6 @@ Route::namespace('Api')->name('api.')->group(function () {
   });
 
   /**
-   * Laravel Passport (OAuth)
-   */
-  Route::name('oauth.')->prefix('oauth')->group(function() {
-    /**
-     * Authorize
-     */
-    Route::namespace('OAuth')->middleware('auth')->group(function() {
-      Route::get('/authorize', 'AuthorizationController@authorize')->name('authorizations.authorize');
-      Route::post('/authorize', 'ApproveAuthorizationController@approve')->name('authorizations.approve');
-      Route::delete('/authorize', 'DenyAuthorizationController@deny')->name('authorizations.deny');
-    });
-
-    /**
-     * Token
-     */
-    Route::namespace('OAuth')->group(function() {
-      Route::post('/token', 'AccessTokenController@issueToken')->name('token');
-    });
-    Route::namespace('\Laravel\Passport\Http\Controllers')->middleware('auth')->group(function() {
-      Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index');
-      Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy');
-    });
-    Route::namespace('OAuth')->middleware('auth')->group(function() {
-      Route::post('/token/refresh', 'TransientTokenController@refresh')->name('token.refresh');
-    });
-
-    /**
-     * Scopes
-     */
-    Route::namespace('\Laravel\Passport\Http\Controllers')->middleware('auth')->group(function() {
-      Route::get('/scopes', 'ScopeController@all')->name('scopes.index');
-    });
-
-    /**
-     * Personal Access Tokens
-     */
-    Route::namespace('OAuth')->middleware('auth')->group(function() {
-      Route::get('/personal-access-tokens', 'PersonalAccessTokenController@forUser')->name('personal.tokens.index');
-      Route::post('/personal-access-tokens', 'PersonalAccessTokenController@store')->name('personal.tokens.store');
-      Route::delete('/personal-access-tokens/{token_id}', 'PersonalAccessTokenController@destroy')->name('personal.tokens.destroy');
-    });
-
-    /**
-     * Clients
-     */
-    Route::namespace('OAuth')->middleware('auth')->group(function() {
-      Route::get('/clients', 'ClientController@forUser')->name('clients.index');
-      Route::post('/clients', 'ClientController@store')->name('clients.store');
-      Route::put('/clients/{client_id}', 'ClientController@update')->name('clients.update');
-      Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('clients.destroy');
-    });
-  });
-
-  Route::get('/test', function() {
-    dd(request());
-  });
-
-  /**
    * 404 catch
    */
   Route::fallback(function(){

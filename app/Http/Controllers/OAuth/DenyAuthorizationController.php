@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Api\OAuth;
+namespace App\Http\Controllers\OAuth;
 
 use App\Exceptions\OAuth\InvalidAuthorizationRequestException;
 use Exception;

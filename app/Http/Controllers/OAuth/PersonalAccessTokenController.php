@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\OAuth;
+namespace App\Http\Controllers\OAuth;
 
 use App\Contracts\Token\TokenActions;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
@@ -20,7 +20,7 @@ class PersonalAccessTokenController
   /**
    * The token repository implementation.
    *
-   * @var \App\Repositories\Eloquent\TokenRepository
+   * @var \App\Repositories\TokenRepository
    */
   protected $tokenRepository;
 
@@ -28,7 +28,7 @@ class PersonalAccessTokenController
    * Create a controller instance.
    *
    * @param \Illuminate\Contracts\Validation\Factory $validation
-   * @param  \App\Repositories\Eloquent\TokenRepository $tokenRepository
+   * @param  \App\Repositories\TokenRepository $tokenRepository
    * @return void
    */
   public function __construct(

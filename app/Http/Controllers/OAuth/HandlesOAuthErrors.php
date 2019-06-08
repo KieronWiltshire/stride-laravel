@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\OAuth;
+namespace App\Http\Controllers\OAuth;
 
 use \Laravel\Passport\Http\Controllers\ConvertsPsrResponses;
 

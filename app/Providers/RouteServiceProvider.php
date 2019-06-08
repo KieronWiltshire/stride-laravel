@@ -37,6 +37,8 @@ class RouteServiceProvider extends ServiceProvider
   {
     $this->mapApiRoutes();
 
+    $this->mapOAuthRoutes();
+
     $this->mapWebRoutes();
 
     //
@@ -69,5 +71,21 @@ class RouteServiceProvider extends ServiceProvider
       ->middleware('api')
       ->namespace($this->namespace)
       ->group(base_path('routes/api.php'));
+  }
+
+  /**
+   * Define the "oauth" routes for the application.
+   *
+   * These routes are specifically for routing OAuth calls
+   * in order to make the API accessible.
+   *
+   * @return void
+   */
+  protected function mapOAuthRoutes()
+  {
+    Route::prefix('oauth')
+      ->middleware('oauth')
+      ->namespace($this->namespace)
+      ->group(base_path('routes/oauth.php'));
   }
 }

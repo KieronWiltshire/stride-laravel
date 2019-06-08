@@ -411,7 +411,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImUwMDJmMTdjOWRjNGM0MjhlOWFiNTgzNmQyNjc2YjBkNTk5NjAxNWMwOWYxMzQ0MTM5ZTk0Nzk5MGViMjc4ZWJiZGU1OTlkOTFkODEyMWZlIn0.eyJhdWQiOiIxIiwianRpIjoiZTAwMmYxN2M5ZGM0YzQyOGU5YWI1ODM2ZDI2NzZiMGQ1OTk2MDE1YzA5ZjEzNDQxMzllOTQ3OTkwZWIyNzhlYmJkZTU5OWQ5MWQ4MTIxZmUiLCJpYXQiOjE1NjAwMzY5MzIsIm5iZiI6MTU2MDAzNjkzMiwiZXhwIjoxNTkxNjU5MzMyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.gzjlAYteX0RsiCNBpaHAvN_Wtf5erUnM57d60IhU7nzY1h_S9B8ihoo8h4SoNDm1G267f9dV57PKmllY2JXvYuzUnMZQ9nz15MbDxH3im82QBORNW0LAJJCjDeNJec0I_-xOH_i90A6tGnZMC2uZ1t9qEhHhJnHP64g07PCXRdSjIgv0C8bAkgzlEtsmRKMa7J9bzeTo4V86qo-MIIXXMljkdJoSsjkDd75prF_izvz1O5kQq-5wfsG1eHR4fn2MK2WCirBrETUZW-m_crjLOnbRIvlS0-rLm6f559xRkW8bJbQWpcFFoNtnwh43pD5sZlcxrlKYeZa6jYUygfkF9wjd7bunCIOYoYdJgkDDjpG4dJFYBheVXY7mtITbT3bJXDIaJCD8ZkOTPzIFDhmMQhS1WgDEjQVmHAYHobDxt2D_iFfCDJjDUB60Df5a7xGzMHu55B1-xaJweWqfGJ2oHY_uIHWitPwO0GvreGTn6ULgC_-sdfl71_CnTqGSNZvcHSiWzr-HO-zNn0na0ZJ6HvZ2Zj4qJPNqCK3VvN74mpVoO5rNY2aNR6pucvL0SUrw6-U2fGK4sw_1wiy9iNxLJsdpS9nbUJpn-e4egkYr2dLKo9E8abDWjV82PRqojD7_VDYE4ZHsTYLj3w40ZYXcnf1Zz_XBZUeCMHdLVUE3tN0",
 									"type": "string"
 								}
 							]
@@ -419,12 +419,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/oauth/authorize?client_id=5&redirect_uri=http://localhost:8000/callback&response_type=code&scope=*",
+							"raw": "{{url}}/oauth/authorize?client_id=5&redirect_uri=http://localhost:8000/callback&response_type=code&scope=*",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"authorize"
 							],
@@ -549,7 +548,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImUwMDJmMTdjOWRjNGM0MjhlOWFiNTgzNmQyNjc2YjBkNTk5NjAxNWMwOWYxMzQ0MTM5ZTk0Nzk5MGViMjc4ZWJiZGU1OTlkOTFkODEyMWZlIn0.eyJhdWQiOiIxIiwianRpIjoiZTAwMmYxN2M5ZGM0YzQyOGU5YWI1ODM2ZDI2NzZiMGQ1OTk2MDE1YzA5ZjEzNDQxMzllOTQ3OTkwZWIyNzhlYmJkZTU5OWQ5MWQ4MTIxZmUiLCJpYXQiOjE1NjAwMzY5MzIsIm5iZiI6MTU2MDAzNjkzMiwiZXhwIjoxNTkxNjU5MzMyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.gzjlAYteX0RsiCNBpaHAvN_Wtf5erUnM57d60IhU7nzY1h_S9B8ihoo8h4SoNDm1G267f9dV57PKmllY2JXvYuzUnMZQ9nz15MbDxH3im82QBORNW0LAJJCjDeNJec0I_-xOH_i90A6tGnZMC2uZ1t9qEhHhJnHP64g07PCXRdSjIgv0C8bAkgzlEtsmRKMa7J9bzeTo4V86qo-MIIXXMljkdJoSsjkDd75prF_izvz1O5kQq-5wfsG1eHR4fn2MK2WCirBrETUZW-m_crjLOnbRIvlS0-rLm6f559xRkW8bJbQWpcFFoNtnwh43pD5sZlcxrlKYeZa6jYUygfkF9wjd7bunCIOYoYdJgkDDjpG4dJFYBheVXY7mtITbT3bJXDIaJCD8ZkOTPzIFDhmMQhS1WgDEjQVmHAYHobDxt2D_iFfCDJjDUB60Df5a7xGzMHu55B1-xaJweWqfGJ2oHY_uIHWitPwO0GvreGTn6ULgC_-sdfl71_CnTqGSNZvcHSiWzr-HO-zNn0na0ZJ6HvZ2Zj4qJPNqCK3VvN74mpVoO5rNY2aNR6pucvL0SUrw6-U2fGK4sw_1wiy9iNxLJsdpS9nbUJpn-e4egkYr2dLKo9E8abDWjV82PRqojD7_VDYE4ZHsTYLj3w40ZYXcnf1Zz_XBZUeCMHdLVUE3tN0",
 									"type": "string"
 								}
 							]
@@ -579,17 +578,16 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/oauth/authorize",
+							"raw": "{{url}}/oauth/authorize",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"authorize"
 							]
 						},
-						"description": "This request can fail in postman as the returned response is a redirect which cannot be performed in postman."
+						"description": "This request will pass a 'Location' header with the value of the 'redirect_uri.'\nThe link will contain the authorization code required for converting authorization codes into access tokens."
 					},
 					"response": []
 				},
@@ -631,12 +629,11 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/oauth/authorize",
+							"raw": "{{url}}/oauth/authorize",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"authorize"
 							]
@@ -661,12 +658,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/oauth/clients",
+							"raw": "{{url}}/oauth/clients",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"clients"
 							]
@@ -712,12 +708,11 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/oauth/clients",
+							"raw": "{{url}}/oauth/clients",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"clients"
 							]
@@ -741,12 +736,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/oauth/clients/1",
+							"raw": "{{url}}/oauth/clients/1",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"clients",
 								"1"
@@ -771,12 +765,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/oauth/scopes",
+							"raw": "{{url}}/oauth/scopes",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"scopes"
 							]
@@ -800,12 +793,11 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/oauth/personal-access-tokens",
+							"raw": "{{url}}/oauth/personal-access-tokens",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"personal-access-tokens"
 							]
@@ -852,12 +844,11 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/oauth/personal-access-tokens",
+							"raw": "{{url}}/oauth/personal-access-tokens",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"personal-access-tokens"
 							]
@@ -881,12 +872,11 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/oauth/personal-access-tokens/aee4e7cb863d91977edcffc150072cffccfd92436c5c295c3e8aeda90916ea8f478f5d118b3b9862",
+							"raw": "{{url}}/oauth/personal-access-tokens/aee4e7cb863d91977edcffc150072cffccfd92436c5c295c3e8aeda90916ea8f478f5d118b3b9862",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"personal-access-tokens",
 								"aee4e7cb863d91977edcffc150072cffccfd92436c5c295c3e8aeda90916ea8f478f5d118b3b9862"
@@ -948,12 +938,11 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/oauth/token",
+							"raw": "{{url}}/oauth/token",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"token"
 							]
@@ -1014,86 +1003,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{url}}/api/oauth/token",
+							"raw": "{{url}}/oauth/token",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
-								"api",
 								"oauth",
 								"token"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Refresh transient session token",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"type": "text",
-								"value": "application/x-www-form-urlencoded"
-							}
-						],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "grant_type",
-									"value": "refresh_token",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "refresh_token",
-									"value": "def5020027f816c0c071ad1034be50def126e316a24f1b29eabd5a02d9649ab277408fcf20285882842708096127d21acccd6370eec2403f071a3bfebcd6a3e4fd97ee83b44a794e23959320d20f9ce2cf1ebf8abb61b03278a41d2fca44a5e319e4411f7abea94e19c3bc709f8bbc57fd283a7e40d5a3efce3ebe35c537ea79658b6fa3d6799fac44e743d554c09131918e5cc0e4fb9a784ae5c6a8de07870f5607aa60e635de8a18583115764382e4deaa949e8b31433a69e62c7f8b93d06eb325b5da57dac811ea5e42a03f6b34c91c3f8bf0373e591a1327087a1ce30a592af8c3b11e0f49f10a72527cb49804828f428fa3a2024b5688ee479e58da34c3b7b17860ef3ac3085544e66618a4f96c3d9c46d9459eec8dbead86ebdf2eb3b2bb0ed1092ce5d4c9e3116d359b063d4f206d63be8a5465640eaaced30902c3b40db0758b302a5f7e88eca13702e8ad54923a0bf5c442754134bd3bb7a440c03a7b",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "client_id",
-									"value": "5",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "client_secret",
-									"value": "Gu5ek0pccZ57TzsnuX6zlBLNkywMGG5RhXl1siSM",
-									"type": "text",
-									"disabled": true
-								},
-								{
-									"key": "scope",
-									"value": "*",
-									"type": "text",
-									"disabled": true
-								}
-							]
-						},
-						"url": {
-							"raw": "{{url}}/api/oauth/token/refresh",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"api",
-								"oauth",
-								"token",
-								"refresh"
 							]
 						}
 					},
