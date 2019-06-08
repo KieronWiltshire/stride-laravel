@@ -24,7 +24,7 @@ class PrettyPrint
     $response = $next($request);
 
     if (method_exists($response, 'setEncodingOptions')) {
-      if ($request->query(self::queryParameter) == 'true') {
+      if ((bool) $request->query(self::queryParameter)) {
         $response->setEncodingOptions(JSON_PRETTY_PRINT);
       }
     }
