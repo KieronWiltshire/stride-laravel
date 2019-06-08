@@ -60,7 +60,9 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::namespace('\Laravel\Passport\Http\Controllers')->group(function() {
       Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index')->middleware('auth');
       Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy')->middleware('auth');
-      Route::post('/token/refresh', 'TransientTokenController@refresh')->name('token.refresh')->middleware('auth');
+    });
+    Route::namespace('OAuth')->group(function() {
+      Route::post('/token/refresh', 'TransientTokenController@refresh')->name('token.refresh')->middleware(['auth', 'web']);
     });
 
     /**
@@ -89,6 +91,10 @@ Route::namespace('Api')->name('api.')->group(function () {
       Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('clients.destroy')->middleware('auth');
     });
   });
+
+  Route::get('/test', function() {
+    dd(request()->session());
+  })->middleware('web');
 
   /**
    * 404 catch

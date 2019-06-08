@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api\OAuth;
 use App\Exceptions\OAuth\InvalidAuthorizationRequestException;
 use Exception;
 use Illuminate\Support\Arr;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Laravel\Passport\Http\Controllers\RetrievesAuthRequestFromSession;
 
@@ -34,13 +33,12 @@ class DenyAuthorizationController
   /**
    * Deny the authorization request.
    *
-   * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\RedirectResponse
    */
-  public function deny(Request $request)
+  public function deny()
   {
     try {
-      $authRequest = $this->getAuthRequestFromSession($request);
+      $authRequest = $this->getAuthRequestFromSession();
     } catch (Exception $e) {
       throw new InvalidAuthorizationRequestException();
     }
@@ -54,7 +52,7 @@ class DenyAuthorizationController
     $separator = $authRequest->getGrantTypeId() === 'implicit' ? '#' : (strstr($uri, '?') ? '&' : '?');
 
     return $this->response->redirectTo(
-      $uri.$separator.'error=access_denied&state='.$request->input('state')
+      $uri.$separator.'error=access_denied&state=' . request()->input('state')
     );
   }
 }

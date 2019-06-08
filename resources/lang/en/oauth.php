@@ -29,6 +29,8 @@ return [
 
   'id' => [
     'not_found' => 'We can\'t find a client with the specified identifier.',
-  ]
+  ],
+
+  'token_refreshed' => 'The token has been refreshed.',
 
 ];

@@ -419,7 +419,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/api/oauth/authorize?client_id=2&redirect_uri=http://localhost&response_type=token&scope=",
+							"raw": "{{url}}/api/oauth/authorize?client_id=5&redirect_uri=http://localhost:8000/callback&response_type=code&scope=*",
 							"host": [
 								"{{url}}"
 							],
@@ -431,24 +431,24 @@
 							"query": [
 								{
 									"key": "client_id",
-									"value": "2"
+									"value": "5"
 								},
 								{
 									"key": "redirect_uri",
-									"value": "http://localhost"
+									"value": "http://localhost:8000/callback"
 								},
 								{
 									"key": "response_type",
-									"value": "token"
-								},
-								{
-									"key": "response_type",
-									"value": "code",
+									"value": "token",
 									"disabled": true
 								},
 								{
+									"key": "response_type",
+									"value": "code"
+								},
+								{
 									"key": "scope",
-									"value": ""
+									"value": "*"
 								}
 							]
 						}
@@ -890,6 +890,210 @@
 								"oauth",
 								"personal-access-tokens",
 								"aee4e7cb863d91977edcffc150072cffccfd92436c5c295c3e8aeda90916ea8f478f5d118b3b9862"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Convert authorization code to an access token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "Gu5ek0pccZ57TzsnuX6zlBLNkywMGG5RhXl1siSM",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "{{url}}/callback",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "def5020067df3131b98c08cb403dae9bab82656603470d57cd8d20c9debb3b90b23c9ebc3cca6887b7592d76795eb5a608d5896e70103b8bb31598fa4c1be92eaa8e2602eddf1bddb8febf39b71ecdb04fa1d28f354773731fc36ed5fbb552a7c30ac1270b00b0f0cf6e68028d52248c580d2c055b0dc5ae575b62472ce0a79c57f3893e381a2a2ee9591e876e3b5f8d548892e5102e9466fd2fa0a2094197e4141ebcfe061413db8a2f1dc0ba844fa1eba662e0624033a3114d83413a9ab2af75da10f85fbec114c97eddf846cf22959f6b247008b4b7b15f036a932142fe40c76ea1f587cf1da1eb48f49c75c43dadcc52ded7da90e5a0ffc1485ed75660144257385ad060c7d1035661c3a1dc7cca2e2682244c68e8199e2649943d02a0b71bf376ced2499b4984dfd6f8317fe30c78fe100556625ed1322f14ba1a399b81b5094d1a9825a7f7ab55effc65b2685848c29ad68cff8b61f0c9553c902fa3af8d28d2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/oauth/token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh an access token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text"
+								},
+								{
+									"key": "refresh_token",
+									"value": "def5020027f816c0c071ad1034be50def126e316a24f1b29eabd5a02d9649ab277408fcf20285882842708096127d21acccd6370eec2403f071a3bfebcd6a3e4fd97ee83b44a794e23959320d20f9ce2cf1ebf8abb61b03278a41d2fca44a5e319e4411f7abea94e19c3bc709f8bbc57fd283a7e40d5a3efce3ebe35c537ea79658b6fa3d6799fac44e743d554c09131918e5cc0e4fb9a784ae5c6a8de07870f5607aa60e635de8a18583115764382e4deaa949e8b31433a69e62c7f8b93d06eb325b5da57dac811ea5e42a03f6b34c91c3f8bf0373e591a1327087a1ce30a592af8c3b11e0f49f10a72527cb49804828f428fa3a2024b5688ee479e58da34c3b7b17860ef3ac3085544e66618a4f96c3d9c46d9459eec8dbead86ebdf2eb3b2bb0ed1092ce5d4c9e3116d359b063d4f206d63be8a5465640eaaced30902c3b40db0758b302a5f7e88eca13702e8ad54923a0bf5c442754134bd3bb7a440c03a7b",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "Gu5ek0pccZ57TzsnuX6zlBLNkywMGG5RhXl1siSM",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/oauth/token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh transient session token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImI0ZTk1NGU5ODZhYmQyYTMyNmQwZTY2Yzk1MDEyMTExMjkxMWJjOWU1NWIzZWQ4MTA3MjRhNmU5OTA4Y2VjNGI2M2IzOTk4ODk4ZTc0YzQwIn0.eyJhdWQiOiIxIiwianRpIjoiYjRlOTU0ZTk4NmFiZDJhMzI2ZDBlNjZjOTUwMTIxMTEyOTExYmM5ZTU1YjNlZDgxMDcyNGE2ZTk5MDhjZWM0YjYzYjM5OTg4OThlNzRjNDAiLCJpYXQiOjE1NTk0MDg1NDgsIm5iZiI6MTU1OTQwODU0OCwiZXhwIjoxNTkxMDMwOTQ4LCJzdWIiOiIxIiwic2NvcGVzIjpbIioiXX0.M1PhrosaA5b3rviIkDsh5fHjyqGdEFYsH8fURkFPsut8meuOOdkhflllp9tqF82IYPZHTDyHIWOPKeH5E-zIMkJa0HmmTD6kVT1NEHiQrNfx_AdynY5fGzwkTIWC2HPdUCNoPixrbXOy8yRmMfNJCPoDeXdkWHufItAa0tXo_L5bNwLsAS03U3uw4glpMD7YqXx4-XbtmERZ5d0bq-4jJRKFCdmTd5Y1tjrRc2OBSAq3cRjG-mNa7jnJRSknkd2NjP7TkXJGTpDekomm-UBK-YCCdEPUXbYZXP0E_qGdLOQGHiDZZuQeWk6pIezkBcG9gxbMnOdxAIfVhEDubXHzpaDLvddigJoCxO5P8L2KC4vOmplFXnfBtGcKVW2dO3U7XRSD8CT0_SCsVq5JIETBzBfEoOf1dEL7iN08uarkmQLO3RWaAnKaZBvqXqPgo3QjmPBAmpTC67aBXOO7F_BQjr1WxR3XM2pQnIpWYlpHe1NF8tdflZfAg1gH3scdyENIi84EFLA3sZp9GVb4uI-S90wcLvjmSLD90yzc9Cudfv__2XtIeg3lLGNMrTAh79f0qEsAVCylOKL9o0TqCZq-aruAVsjmXHMhls5qd28Y_jppQhNPW4AiFsIyotgHVTjDoJSoyumWpFItUSs_ZazYLoxz1n_dl1kv6SlGF9_SFd8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "refresh_token",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "refresh_token",
+									"value": "def5020027f816c0c071ad1034be50def126e316a24f1b29eabd5a02d9649ab277408fcf20285882842708096127d21acccd6370eec2403f071a3bfebcd6a3e4fd97ee83b44a794e23959320d20f9ce2cf1ebf8abb61b03278a41d2fca44a5e319e4411f7abea94e19c3bc709f8bbc57fd283a7e40d5a3efce3ebe35c537ea79658b6fa3d6799fac44e743d554c09131918e5cc0e4fb9a784ae5c6a8de07870f5607aa60e635de8a18583115764382e4deaa949e8b31433a69e62c7f8b93d06eb325b5da57dac811ea5e42a03f6b34c91c3f8bf0373e591a1327087a1ce30a592af8c3b11e0f49f10a72527cb49804828f428fa3a2024b5688ee479e58da34c3b7b17860ef3ac3085544e66618a4f96c3d9c46d9459eec8dbead86ebdf2eb3b2bb0ed1092ce5d4c9e3116d359b063d4f206d63be8a5465640eaaced30902c3b40db0758b302a5f7e88eca13702e8ad54923a0bf5c442754134bd3bb7a440c03a7b",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "client_id",
+									"value": "5",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "client_secret",
+									"value": "Gu5ek0pccZ57TzsnuX6zlBLNkywMGG5RhXl1siSM",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "scope",
+									"value": "*",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/oauth/token/refresh",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"oauth",
+								"token",
+								"refresh"
 							]
 						}
 					},

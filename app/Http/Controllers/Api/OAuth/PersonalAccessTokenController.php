@@ -74,7 +74,7 @@ class PersonalAccessTokenController
   /**
    * Delete the given token.
    *
-   * @param  string  $tokenId
+   * @param string $tokenId
    * @return \Illuminate\Http\Response
    *
    * @throws \App\Exceptions\OAuth\TokenNotFoundException
