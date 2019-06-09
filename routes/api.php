@@ -40,14 +40,29 @@ Route::namespace('Api')->name('api.')->group(function () {
   });
 
   /**
-   * OAuth
+   * Laravel Passport (OAuth)
    */
   Route::namespace('OAuth')->name('oauth.')->prefix('oauth')->group(function() {
+    /**
+     * Authorize
+     */
+    Route::name('authorizations.')->middleware('auth')->group(function () {
+      Route::get('/authorize', 'AuthorizationController@authorize')->name('authorize');
+      Route::post('/authorize', 'ApproveAuthorizationController@approve')->name('approve');
+      Route::delete('/authorize', 'DenyAuthorizationController@deny')->name('deny');
+    });
+
+    /**
+     * Scopes
+     */
+    Route::name('scopes.')->middleware('auth')->group(function () {
+      Route::get('/scopes', '\Laravel\Passport\Http\Controllers\ScopeController@all')->name('index');
+    });
 
     /**
      * Personal Access Tokens
      */
-    Route::name('personal-access-tokens.')->group(function() {
+    Route::name('personal-access-tokens.')->middleware('auth')->group(function() {
       Route::get('/personal-access-tokens', 'PersonalAccessTokenController@forUser')->name('index');
       Route::post('/personal-access-tokens', 'PersonalAccessTokenController@store')->name('store');
       Route::delete('/personal-access-tokens/{token_id}', 'PersonalAccessTokenController@destroy')->name('destroy');
@@ -56,7 +71,7 @@ Route::namespace('Api')->name('api.')->group(function () {
     /**
      * Clients
      */
-    Route::name('clients.')->group(function() {
+    Route::name('clients.')->middleware('auth')->group(function() {
       Route::get('/clients', 'ClientController@forUser')->name('index');
       Route::post('/clients', 'ClientController@store')->name('store');
       Route::put('/clients/{client_id}', 'ClientController@update')->name('update');
@@ -66,10 +81,15 @@ Route::namespace('Api')->name('api.')->group(function () {
     /**
      * Tokens
      */
-    Route::name('tokens.')->group(function() {
+    Route::name('tokens.')->middleware('auth')->group(function() {
       Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('index');
       Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('destroy');
     });
+
+    /**
+     * Issue tokens (non authenticated)
+     */
+    Route::post('/token', 'AccessTokenController@issueToken')->name('token');
 
   });
 
