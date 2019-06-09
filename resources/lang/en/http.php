@@ -18,6 +18,7 @@ return [
     'not_found' => 'The intended resource could not be found.',
     'unauthorized' => 'You are unauthorized to make that request.',
     'validation' => 'A validation concern exists within the request context.',
+    'too_many_requests' => 'Too many requests have been received in too short amount of time.'
   ],
 
 ];

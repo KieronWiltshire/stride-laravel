@@ -134,7 +134,7 @@ class TokenRepository extends PassportTokenRepository
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
-  public function forUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
+  public function personalAccessTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
   {
     $this->validatePaginationParameters($this->validation, $limit, $offset);
 
@@ -143,7 +143,68 @@ class TokenRepository extends PassportTokenRepository
       ->where('user_id', $userId)
       ->where('revoked', false)
       ->whereHas('client', function ($subQuery) {
-        $subQuery->where('personal_access_client', '=', true);
+        $subQuery->where('personal_access_client', true);
+      });
+
+    if ($limit) {
+      return $query->paginate($limit, ['*'], 'page', $offset);
+    } else {
+      $tokens = $query->get();
+
+      return new LengthAwarePaginator($tokens->all(), $tokens->count(), max($tokens->count(), 1), 1);
+    }
+  }
+
+  /**
+   * Get the token instances for the given user ID.
+   *
+   * @param mixed $userId
+   * @param integer $limit
+   * @param integer $offset
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   */
+  public function passwordTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
+  {
+    $this->validatePaginationParameters($this->validation, $limit, $offset);
+
+    $query = Passport::token()
+      ->with('client')
+      ->where('user_id', $userId)
+      ->whereHas('client', function ($subQuery) {
+        $subQuery->where('password_client', true);
+      });
+
+    if ($limit) {
+      return $query->paginate($limit, ['*'], 'page', $offset);
+    } else {
+      $tokens = $query->get();
+
+      return new LengthAwarePaginator($tokens->all(), $tokens->count(), max($tokens->count(), 1), 1);
+    }
+  }
+
+  /**
+   * Get the token instances for the given user ID.
+   *
+   * @param mixed $userId
+   * @param integer $limit
+   * @param integer $offset
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   */
+  public function personalAccessOrPasswordTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
+  {
+    $this->validatePaginationParameters($this->validation, $limit, $offset);
+
+    $query = Passport::token()
+      ->with('client')
+      ->where('user_id', $userId)
+      ->whereHas('client', function ($subQuery) {
+        $subQuery->where('personal_access_client', true);
+        $subQuery->orWhere('password_client', true);
       });
 
     if ($limit) {

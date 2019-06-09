@@ -39,6 +39,38 @@ Route::namespace('Api')->name('api.')->group(function () {
   });
 
   /**
+   * OAuth
+   */
+  Route::namespace('OAuth')->name('oauth.')->prefix('oauth')->group(function() {
+    /**
+     * Personal Access Tokens
+     */
+    Route::name('personal-access-tokens.')->group(function() {
+      Route::get('/personal-access-tokens', 'PersonalAccessTokenController@forUser')->name('index');
+      Route::post('/personal-access-tokens', 'PersonalAccessTokenController@store')->name('store');
+      Route::delete('/personal-access-tokens/{token_id}', 'PersonalAccessTokenController@destroy')->name('destroy');
+    });
+
+    /**
+     * Clients
+     */
+    Route::name('clients.')->group(function() {
+      Route::get('/clients', 'ClientController@forUser')->name('index');
+      Route::post('/clients', 'ClientController@store')->name('store');
+      Route::put('/clients/{client_id}', 'ClientController@update')->name('update');
+      Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('destroy');
+    });
+
+    /**
+     * Tokens
+     */
+    Route::name('tokens.')->group(function() {
+      Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index');
+      Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy');
+    });
+  });
+
+  /**
    * 404 catch
    */
   Route::fallback(function(){

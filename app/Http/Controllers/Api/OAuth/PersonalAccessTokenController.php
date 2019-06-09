@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\OAuth;
+namespace App\Http\Controllers\Api\OAuth;
 
 use App\Contracts\Token\TokenActions;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
@@ -48,7 +48,12 @@ class PersonalAccessTokenController
    */
   public function forUser()
   {
-    return $this->tokenRepository->forUserAsPaginatedWithClientAndTokenNotRevoked(request()->user()->getKey(), request()->input('limit'), request()->input('offset'));
+    return $this->tokenRepository->personalAccessTokensForUserAsPaginatedWithClientAndTokenNotRevoked(request()->user()->getKey(), request()->input('limit'), request()->input('offset'))
+      ->setPath(route('api.oauth.personal-access-tokens.index'))
+      ->setPageName('offset')
+      ->appends([
+        'limit' => request()->query('limit')
+      ]);
   }
 
   /**

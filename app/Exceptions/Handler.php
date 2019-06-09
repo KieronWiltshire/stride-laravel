@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Exceptions\Http\TooManyRequestsError;
+use Exception;
 use App\Exceptions\Auth\AuthenticationFailedException;
 use App\Exceptions\OAuth\InvalidClientException;
 use App\Exceptions\OAuth\InvalidGrantException;
@@ -9,8 +11,6 @@ use App\Exceptions\OAuth\InvalidRefreshTokenException;
 use App\Exceptions\OAuth\InvalidScopeException;
 use App\Exceptions\OAuth\UnsupportedGrantTypeException;
 use App\Exceptions\Request\InvalidRequestException;
-use Exception;
-use App\Exceptions\AppError;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\Http\ForbiddenError;
@@ -64,7 +64,6 @@ class Handler extends ExceptionHandler
    */
   public function render($request, Exception $exception)
   {
-    dd($exception);
     $conform = $this->conform($exception);
     $render = $conform->render();
 
@@ -79,9 +78,9 @@ class Handler extends ExceptionHandler
    * Conform the exception to an application standard.
    * 
    * @param \Exception $exception
-   * @return \App\Exceptions\AppException
+   * @return \App\Exceptions\AppError
    */
-  public function conform($exception)
+  public function conform(Exception $exception)
   {
     $error = null;
 
@@ -96,7 +95,7 @@ class Handler extends ExceptionHandler
     |
     */
     if ($exception instanceof HttpException) {
-      $error = $this->getHttpErrorFromStatusCode($exception->getStatusCode());
+      $error = $this->conformExceptionToHttpError($exception);
     }
 
     /*
@@ -148,7 +147,7 @@ class Handler extends ExceptionHandler
           $error = new InvalidGrantException();
           break;
         default:
-          $error = $this->getHttpErrorFromStatusCode($exception->getHttpStatusCode());
+          $error = $this->conformExceptionToHttpError($exception);
           break;
       }
     }
@@ -172,9 +171,15 @@ class Handler extends ExceptionHandler
     return $error;
   }
 
-  public function getHttpErrorFromStatusCode($statusCode = 400)
+  /**
+   * Conform the exception to an application standard HTTP error.
+   *
+   * @param \Symfony\Component\HttpKernel\Exception\HttpException $exception
+   * @return \App\Exceptions\AppError
+   */
+  public function conformExceptionToHttpError(HttpException $exception)
   {
-    switch ($statusCode) {
+    switch ($exception->getStatusCode()) {
       case 400:
         return new BadRequestError();
       case 401:
@@ -185,6 +190,15 @@ class Handler extends ExceptionHandler
         return new NotFoundError();
       case 422:
         return new ValidationError();
+      case 429:
+        $headers = $exception->getHeaders();
+
+        return (new TooManyRequestsError(null))->setContext([
+          'limit' => $headers['X-RateLimit-Limit'],
+          'remaining' => $headers['X-RateLimit-Remaining'],
+          'retryAfter' => $headers['Retry-After'],
+          'resetAt' => $headers['X-RateLimit-Reset']
+        ]);
       case 500:
       default:
         return new InternalServerError();

@@ -47,7 +47,7 @@ abstract class AppError extends Exception
 
     $this->uuid = Uuid::generate();
     $this->type = ($type) ? $type : $class->getShortName();
-    $this->cause = str_replace('_exception', '', strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class->getShortName())));
+    $this->cause = str_replace('_error', '', strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class->getShortName())));
     $this->httpStatus = $httpStatus;
     $this->context = [];
   }
