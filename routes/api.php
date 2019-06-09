@@ -67,8 +67,8 @@ Route::namespace('Api')->name('api.')->group(function () {
      * Tokens
      */
     Route::name('tokens.')->group(function() {
-      Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index');
-      Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy');
+      Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('index');
+      Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('destroy');
     });
 
   });

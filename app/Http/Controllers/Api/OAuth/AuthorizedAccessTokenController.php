@@ -33,7 +33,7 @@ class AuthorizedAccessTokenController
   {
     $userId = request()->user()->getKey();
 
-    return $this->clients->personalAccessOrPasswordTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, request()->query('limit'), request()->query('offset'))
+    return $this->tokenRepository->personalAccessOrPasswordTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.oauth.tokens.index'))
       ->setPageName('offset')
       ->appends([

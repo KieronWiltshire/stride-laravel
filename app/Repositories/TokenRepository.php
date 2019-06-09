@@ -172,6 +172,7 @@ class TokenRepository extends PassportTokenRepository
     $query = Passport::token()
       ->with('client')
       ->where('user_id', $userId)
+      ->where('revoked', false)
       ->whereHas('client', function ($subQuery) {
         $subQuery->where('password_client', true);
       });
@@ -202,6 +203,7 @@ class TokenRepository extends PassportTokenRepository
     $query = Passport::token()
       ->with('client')
       ->where('user_id', $userId)
+      ->where('revoked', false)
       ->whereHas('client', function ($subQuery) {
         $subQuery->where('personal_access_client', true);
         $subQuery->orWhere('password_client', true);
