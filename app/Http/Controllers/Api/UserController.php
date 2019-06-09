@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\User\UserRepositoryInterface;
+use App\Contracts\UserRepositoryInterface;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
@@ -13,14 +13,14 @@ use App\Exceptions\User\InvalidEmailVerificationTokenException;
 class UserController extends Controller
 {
   /**
-   * @var \App\Contracts\User\UserRepositoryInterface
+   * @var \App\Contracts\UserRepositoryInterface
    */
   private $users;
 
   /**
    * Create a new user controller instance
    *
-   * @param \App\Contracts\User\UserRepositoryInterface $users
+   * @param \App\Contracts\UserRepositoryInterface $users
    * @return void
    */
   public function __construct(

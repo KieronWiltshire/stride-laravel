@@ -2,12 +2,15 @@
 
 namespace App\Repositories;
 
-use App\Contracts\Pagination\PaginationActions;
-use App\Contracts\User\UserActions;
-use App\Contracts\User\UserRepositoryInterface;
+use App\Contracts\UserRepositoryInterface;
 use App\Entities\User;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\UserNotFoundException;
+use App\Validation\Pagination\PaginationValidator;
+use App\Validation\User\UserCreateValidator;
+use App\Validation\User\UserEmailValidator;
+use App\Validation\User\UserPasswordValidator;
+use App\Validation\User\UserUpdateValidator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Exception;
 use App\Events\User\UserCreatedEvent;
@@ -22,37 +25,63 @@ use App\Events\User\EmailVerificationTokenGeneratedEvent;
 use App\Events\User\UserEmailVerifiedEvent;
 use App\Events\User\UserPasswordResetEvent;
 use App\Events\User\PasswordResetTokenGeneratedEvent;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 
 class UserRepository implements UserRepositoryInterface
 {
-  use PaginationActions, UserActions;
+  /**
+   * @var \App\Validation\Pagination\PaginationValidator
+   */
+  protected $paginationValidator;
 
   /**
-   * The validation factory implementation.
-   *
-   * @var \Illuminate\Contracts\Validation\Factory
+   * @var \App\Validation\User\UserCreateValidator
    */
-  protected $validation;
+  protected $userCreateValidator;
+
+  /**
+   * @var \App\Validation\User\UserUpdateValidator
+   */
+  protected $userUpdateValidator;
+
+  /**
+   * @var \App\Validation\User\UserEmailValidator
+   */
+  protected $userEmailValidator;
+
+  /**
+   * @var \App\Validation\User\UserPasswordValidator
+   */
+  protected $userPasswordValidator;
 
   /**
    * Create a new user repository instance.
-   * 
-   * @param  \Illuminate\Contracts\Validation\Factory  $validation
+   *
+   * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
+   * @param \App\Validation\User\UserCreateValidator $userCreateValidator
+   * @param \App\Validation\User\UserUpdateValidator $userUpdateValidator
+   * @param \App\Validation\User\UserEmailValidator $userEmailValidator
+   * @param \App\Validation\User\UserPasswordValidator $userPasswordValidator
+   *
    * @return void
    */
   public function __construct(
-    ValidationFactory $validation
+    PaginationValidator $paginationValidator,
+    UserCreateValidator $userCreateValidator,
+    UserUpdateValidator $userUpdateValidator,
+    UserEmailValidator $userEmailValidator,
+    UserPasswordValidator $userPasswordValidator
   ) {
-    $this->validation = $validation;
+    $this->paginationValidator = $paginationValidator;
+    $this->userCreateValidator = $userCreateValidator;
+    $this->userUpdateValidator = $userUpdateValidator;
+    $this->userEmailValidator = $userEmailValidator;
+    $this->userPasswordValidator = $userPasswordValidator;
   }
 
   /**
    * Retrieve all of the users.
    *a
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\User>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
   public function all()
   {
@@ -70,7 +99,10 @@ class UserRepository implements UserRepositoryInterface
    */
   public function allAsPaginated($limit = null, $offset = 1)
   {
-    $this->validatePaginationParameters($this->validation, $limit, $offset);
+    $this->paginationValidator->validate([
+      'limit' => $limit,
+      'offset' => $offset
+    ]);
 
     if ($limit) {
       return User::paginate($limit, ['*'], 'page', $offset);
@@ -95,7 +127,7 @@ class UserRepository implements UserRepositoryInterface
       $attributes['email_verification_token'] = $this->generateEmailVerificationToken($attributes['email']);
     }
 
-    $this->validateUserCreateParameters($this->validation, $attributes);
+    $this->userCreateValidator->validate($attributes);
 
     if ($user = User::create($attributes)) {
       event(new UserCreatedEvent($user));
@@ -136,9 +168,16 @@ class UserRepository implements UserRepositoryInterface
    * @param integer $limit
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
   public function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1)
   {
+    $this->paginationValidator->validate([
+      'limit' => $limit,
+      'offset' => $offset
+    ]);
+
     $query = User::query();
 
     if ($regex) {
@@ -206,7 +245,7 @@ class UserRepository implements UserRepositoryInterface
   public function update(User $user, $attributes)
   {
     if ($user instanceof User) {
-      $this->validateUserUpdateParameters($this->validation, $attributes);
+      $this->userUpdateValidator->validate($attributes);
 
       if (isset($attributes['email'])) {
         $user->email = $attributes['email'];
@@ -239,7 +278,9 @@ class UserRepository implements UserRepositoryInterface
   public function requestEmailChange(User $user, $email)
   {
     if ($user instanceof User) {
-      $this->validateUserEmailParameter($this->validation, $email);
+      $this->userEmailValidator->validate([
+        'email' => $email
+      ]);
 
       $user->email_verification_token = $this->generateEmailVerificationToken($email);
 
@@ -270,7 +311,9 @@ class UserRepository implements UserRepositoryInterface
       $decodedToken = $this->decodeEmailVerificationToken($emailVerificationToken);
 
       if ($emailVerificationToken && $decodedToken && $user->email_verification_token == $emailVerificationToken) {
-        $this->validateUserEmailParameter($this->validation, $decodedToken->email);
+        $this->userEmailValidator->validate([
+          'email' => $decodedToken->email
+        ]);
 
         $oldEmail = $user->email;
 
@@ -379,7 +422,9 @@ class UserRepository implements UserRepositoryInterface
 
       if ($passwordResetToken && $decodedToken && $user->password_reset_token == $passwordResetToken) {
         if (Carbon::now()->lessThan(new Carbon($decodedToken->expiry))) {
-          $this->validateUserPasswordParameter($this->validation, $password);
+          $this->userPasswordValidator->validate([
+            'password' => $password
+          ]);
 
           $user->password = $password;
           $user->password_reset_token = null;

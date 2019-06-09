@@ -27,10 +27,16 @@ return [
     'token_not_found' => 'Unable to find the specified token'
   ],
 
-  'id' => [
-    'not_found' => 'We can\'t find a client with the specified identifier.',
+  'client' => [
+    'id' => [
+      'not_found' => 'We can\'t find a client with the specified identifier.',
+    ],
   ],
 
-  'token_refreshed' => 'The token has been refreshed.',
+  'token' => [
+    'id' => [
+      'not_found' => 'We can\'t find a token with the specified identifier.',
+    ],
+  ],
 
 ];

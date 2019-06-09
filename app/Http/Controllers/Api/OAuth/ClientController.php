@@ -90,10 +90,10 @@ class ClientController
   {
     $client = $this->clients->findForUser($clientId, request()->user()->getKey());
 
-    if (!$client || $client->revoked) {
+    if ($client->revoked) {
       throw (new ClientNotFoundException())->setContext([
         'id' => [
-          __('oauth.id.not_found')
+          __('oauth.client.id.not_found')
         ]
       ]);
     }

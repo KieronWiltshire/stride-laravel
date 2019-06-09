@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contracts\User;
+namespace App\Contracts;
 
 use App\Entities\User;
 
@@ -11,8 +11,6 @@ interface UserRepositoryInterface
    * Retrieve all of the users.
    *
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\User>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
   function all();
 
@@ -56,6 +54,8 @@ interface UserRepositoryInterface
    * @param integer $limit
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
   function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1);
 

@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Api\OAuth;
 
 use App\Contracts\Token\TokenActions;
+use App\Exceptions\OAuth\ClientNotFoundException;
+use App\Exceptions\OAuth\TokenNotFoundException;
+use App\Validation\OAuth\Token\TokenCreateValidator;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use App\Repositories\TokenRepository;
 
 class PersonalAccessTokenController
 {
-  use TokenActions;
-
   /**
-   * The validation factory implementation.
-   *
-   * @var \Illuminate\Contracts\Validation\Factory
+   * @var \App\Validation\OAuth\Token\TokenCreateValidator
    */
-  protected $validation;
+  protected $tokenCreateValidator;
 
   /**
    * The token repository implementation.
@@ -27,15 +26,15 @@ class PersonalAccessTokenController
   /**
    * Create a controller instance.
    *
-   * @param \Illuminate\Contracts\Validation\Factory $validation
+   * @param \App\Validation\OAuth\Token\TokenCreateValidator $tokenCreateValidator
    * @param  \App\Repositories\TokenRepository $tokenRepository
    * @return void
    */
   public function __construct(
-    ValidationFactory $validation,
+    TokenCreateValidator $tokenCreateValidator,
     TokenRepository $tokenRepository
   ) {
-    $this->validation = $validation;
+    $this->tokenCreateValidator = $tokenCreateValidator;
     $this->tokenRepository = $tokenRepository;
   }
 
@@ -68,7 +67,7 @@ class PersonalAccessTokenController
     $name = request()->input('name');
     $scopes = request()->input('scopes', []);
 
-    $this->validateTokenCreateParameters($this->validation, [
+    $this->tokenCreateValidator->validate([
       'name' => $name,
       'scopes' => $scopes
     ]);
@@ -87,6 +86,15 @@ class PersonalAccessTokenController
   public function destroy($tokenId)
   {
     $token = $this->tokenRepository->findForUser($tokenId, request()->user()->getKey());
+
+    if ($token->revoked) {
+      throw (new TokenNotFoundException())->setContext([
+        'id' => [
+          __('oauth.token.id.not_found')
+        ]
+      ]);
+    }
+
     $token->revoke();
 
     return response('', 204);

@@ -2,8 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Contracts\Client\ClientActions;
-use App\Contracts\Pagination\PaginationActions;
+use App\Validation\OAuth\Client\ClientCreateValidator;
+use App\Validation\OAuth\Client\ClientUpdateValidator;
+use App\Validation\Pagination\PaginationValidator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\ClientRepository as PassportClientRepository;
 use App\Exceptions\OAuth\ClientNotFoundException;
@@ -13,25 +14,37 @@ use Laravel\Passport\Passport;
 
 class ClientRepository extends PassportClientRepository
 {
-  use PaginationActions, ClientActions;
+  /**
+   * @var \App\Validation\Pagination\PaginationValidator
+   */
+  protected $paginationValidator;
 
   /**
-   * The validation factory implementation.
-   *
-   * @var \Illuminate\Contracts\Validation\Factory
+ * @var \App\Validation\OAuth\Client\ClientCreateValidator
+ */
+  protected $clientCreateValidator;
+
+  /**
+   * @var \App\Validation\OAuth\Client\ClientUpdateValidator
    */
-  protected $validation;
+  protected $clientUpdateValidator;
 
   /**
    * Create a new client repository instance.
    *
-   * @param \Illuminate\Contracts\Validation\Factory $validation
+   * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
+   * @param \App\Validation\OAuth\Client\ClientCreateValidator $clientCreateValidator
+   * @param \App\Validation\OAuth\Client\ClientUpdateValidator $clientUpdateValidator
    * @return void
    */
   public function __construct(
-    ValidationFactory $validation
+    PaginationValidator $paginationValidator,
+    ClientCreateValidator $clientCreateValidator,
+    ClientUpdateValidator $clientUpdateValidator
   ) {
-    $this->validation = $validation;
+    $this->paginationValidator = $paginationValidator;
+    $this->clientCreateValidator = $clientCreateValidator;
+    $this->clientUpdateValidator = $clientUpdateValidator;
   }
 
   /**
@@ -115,7 +128,10 @@ class ClientRepository extends PassportClientRepository
    */
   public function forUserAsPaginated($userId, $limit = null, $offset = 1)
   {
-    $this->validatePaginationParameters($this->validation, $limit, $offset);
+    $this->paginationValidator->validate([
+      'limit' => $limit,
+      'offset' => $offset
+    ]);
 
     $query = Passport::client()
       ->where('user_id', $userId)
@@ -153,7 +169,10 @@ class ClientRepository extends PassportClientRepository
    */
   public function activeForUserAsPaginated($userId, $limit = null, $offset = 1)
   {
-    $this->validatePaginationParameters($this->validation, $limit, $offset);
+    $this->paginationValidator->validate([
+      'limit' => $limit,
+      'offset' => $offset
+    ]);
 
     $query = Passport::client()
       ->where('user_id', $userId)
@@ -206,7 +225,7 @@ class ClientRepository extends PassportClientRepository
    */
   public function create($userId, $name, $redirect, $personalAccess = false, $password = false)
   {
-    $this->validateClientCreateParameters($this->validation, [
+    $this->clientCreateValidator->validate([
       'name' => $name,
       'redirect' => $redirect
     ]);
@@ -252,7 +271,7 @@ class ClientRepository extends PassportClientRepository
    */
   public function update(Client $client, $name, $redirect)
   {
-    $this->validateClientUpdateParameters($this->validation, [
+    $this->clientUpdateValidator->validate([
       'name' => $name,
       'redirect' => $redirect
     ]);

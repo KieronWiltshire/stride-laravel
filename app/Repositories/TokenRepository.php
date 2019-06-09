@@ -2,36 +2,39 @@
 
 namespace App\Repositories;
 
-use App\Contracts\Pagination\PaginationActions;
-use App\Contracts\Token\TokenActions;
 use App\Exceptions\OAuth\TokenNotFoundException;
+use App\Validation\OAuth\Token\TokenCreateValidator;
+use App\Validation\Pagination\PaginationValidator;
 use Laravel\Passport\Token;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\TokenRepository as PassportTokenRepository;
 use Laravel\Passport\Passport;
 
 class TokenRepository extends PassportTokenRepository
 {
-  use PaginationActions, TokenActions;
+  /**
+   * @var \App\Validation\Pagination\PaginationValidator
+   */
+  protected $paginationValidator;
 
   /**
-   * The validation factory implementation.
-   *
-   * @var \Illuminate\Contracts\Validation\Factory
+   * @var \App\Validation\OAuth\Token\TokenCreateValidator
    */
-  protected $validation;
+  protected $tokenCreateValidator;
 
   /**
    * Create a new token repository instance.
    *
-   * @param \Illuminate\Contracts\Validation\Factory $validation
+   * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
+   * @param \App\Validation\OAuth\Token\TokenCreateValidator $tokenCreateValidator
    * @return void
    */
   public function __construct(
-    ValidationFactory $validation
+    PaginationValidator $paginationValidator,
+    TokenCreateValidator $tokenCreateValidator
   ) {
-    $this->validation = $validation;
+    $this->paginationValidator = $paginationValidator;
+    $this->tokenCreateValidator = $tokenCreateValidator;
   }
 
   /**
@@ -44,7 +47,7 @@ class TokenRepository extends PassportTokenRepository
    */
   public function create($attributes)
   {
-    $this->validateTokenCreateParameters($this->validation, $attributes);
+    $this->tokenCreateValidator->validate($attributes);
     return parent::create($attributes);
   }
 
@@ -110,7 +113,10 @@ class TokenRepository extends PassportTokenRepository
    */
   public function forUserAsPaginated($userId, $limit = null, $offset = 1)
   {
-    $this->validatePaginationParameters($this->validation, $limit, $offset);
+    $this->paginationValidator->validate([
+      'limit' => $limit,
+      'offset' => $offset
+    ]);
 
     $query = Passport::token()
       ->where('user_id', $userId);
@@ -136,7 +142,10 @@ class TokenRepository extends PassportTokenRepository
    */
   public function personalAccessTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
   {
-    $this->validatePaginationParameters($this->validation, $limit, $offset);
+    $this->paginationValidator->validate([
+      'limit' => $limit,
+      'offset' => $offset
+    ]);
 
     $query = Passport::token()
       ->with('client')
@@ -167,7 +176,10 @@ class TokenRepository extends PassportTokenRepository
    */
   public function passwordTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
   {
-    $this->validatePaginationParameters($this->validation, $limit, $offset);
+    $this->paginationValidator->validate([
+      'limit' => $limit,
+      'offset' => $offset
+    ]);
 
     $query = Passport::token()
       ->with('client')
@@ -198,7 +210,10 @@ class TokenRepository extends PassportTokenRepository
    */
   public function personalAccessOrPasswordTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
   {
-    $this->validatePaginationParameters($this->validation, $limit, $offset);
+    $this->paginationValidator->validate([
+      'limit' => $limit,
+      'offset' => $offset
+    ]);
 
     $query = Passport::token()
       ->with('client')
