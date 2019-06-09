@@ -43,13 +43,13 @@ class Handler extends ExceptionHandler
     'password_confirmation',
   ];
 
-    /**
-     * Report or log an exception.
-     *
-     * @param \Exception $exception
-     * @return void
-     * @throws \Exception
-     */
+  /**
+   * Report or log an exception.
+   *
+   * @param \Exception $exception
+   * @return void
+   * @throws \Exception
+   */
   public function report(Exception $exception)
   {
     parent::report($exception);
@@ -64,6 +64,7 @@ class Handler extends ExceptionHandler
    */
   public function render($request, Exception $exception)
   {
+    dd($exception);
     $conform = $this->conform($exception);
     $render = $conform->render();
 

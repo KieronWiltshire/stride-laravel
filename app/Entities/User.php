@@ -2,14 +2,19 @@
 
 namespace App\Entities;
 
+use Laratrust\Traits\LaratrustUserTrait;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Auth\Access\Authorizable;
 
 class User extends Authenticatable
 {
-  use HasApiTokens, Notifiable;
+  use HasApiTokens, Notifiable, LaratrustUserTrait, Authorizable {
+    Authorizable::can insteadof LaratrustUserTrait;
+    LaratrustUserTrait::can as laratrustCan;
+  }
 
   /**
    * The attributes that are mass assignable.
