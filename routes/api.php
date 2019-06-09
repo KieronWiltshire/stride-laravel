@@ -12,6 +12,7 @@
 */
 
 Route::namespace('Api')->name('api.')->group(function () {
+
   /**
    * User routes
    */
@@ -42,6 +43,7 @@ Route::namespace('Api')->name('api.')->group(function () {
    * OAuth
    */
   Route::namespace('OAuth')->name('oauth.')->prefix('oauth')->group(function() {
+
     /**
      * Personal Access Tokens
      */
@@ -68,6 +70,7 @@ Route::namespace('Api')->name('api.')->group(function () {
       Route::get('/tokens', 'AuthorizedAccessTokenController@forUser')->name('tokens.index');
       Route::delete('/tokens/{token_id}', 'AuthorizedAccessTokenController@destroy')->name('tokens.destroy');
     });
+
   });
 
   /**
@@ -76,4 +79,5 @@ Route::namespace('Api')->name('api.')->group(function () {
   Route::fallback(function(){
     throw new App\Exceptions\Router\UnableToLocateRequestRouteException();
   })->name('fallback.404');
+
 });

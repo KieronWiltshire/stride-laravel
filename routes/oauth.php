@@ -12,6 +12,7 @@
 */
 
 Route::namespace('OAuth')->name('oauth.')->group(function () {
+
   /**
    * Laravel Passport (OAuth)
    */
@@ -37,9 +38,14 @@ Route::namespace('OAuth')->name('oauth.')->group(function () {
   /**
    * 404 catch
    *
-   * Callback to the front-end, bypassing "web" routes
+   * It is important that personal access and password clients
+   * are redirected to this route which is "/oauth" in order to bypass
+   * the "web" routes and "middleware" which make use of the "session"
+   * authentication guard. This will cause issues with the "passport"
+   * authentication guard which is used by default.
    */
   Route::fallback(function () {
     return view('app');
   });
+
 });
