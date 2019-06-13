@@ -13,6 +13,7 @@
     "laravel/framework": "5.8.*",
     "laravel/passport": "^7.3",
     "laravel/tinker": "^1.0",
+    "pragmarx/version": "^0.2.9",
     "santigarcor/laratrust": "5.2.*",
     "webpatser/laravel-uuid": "^3.0"
   },
@@ -53,7 +54,8 @@
   "scripts": {
     "post-autoload-dump": [
       "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-      "@php artisan package:discover --ansi"
+      "@php artisan package:discover --ansi",
+      "@php artisan version:refresh"
     ],
     "post-root-package-install": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""

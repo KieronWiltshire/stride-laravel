@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Webpatser\Uuid\Uuid;
+use PragmaRX\Version\Package\Facade as Version;
 
 abstract class AppError extends Exception
 {
@@ -126,6 +127,16 @@ abstract class AppError extends Exception
   }
 
   /**
+   * Retrieve the current application version.
+   *
+   * @return string
+   */
+  public function getVersion()
+  {
+    return Version::compact();
+  }
+
+  /**
    * Render the error.
    *
    * @return array
@@ -138,8 +149,12 @@ abstract class AppError extends Exception
       'cause' => $this->getCause(),
       'context' => $this->getContext(),
       'meta' => [
-        'id' => $this->getId(),
-      ]
+        'request' => [
+          'id' => $this->getId(),
+          'status' => $this->getHttpStatus(),
+        ],
+        'version' => $this->getVersion()
+      ],
     ];
   }
 }

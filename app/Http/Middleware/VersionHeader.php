@@ -3,14 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use PragmaRX\Version\Package\Facade as Version;
 
-class PrettyPrint
+class VersionHeader
 {
-  /**
-   * @var string the query parameter
-   */
-  const queryParameter = 'pretty';
-
   /**
    * Handle an incoming request.
    *
@@ -22,11 +18,9 @@ class PrettyPrint
   {
     $response = $next($request);
 
-    if (method_exists($response, 'setEncodingOptions')) {
-      if ((bool) $request->query(self::queryParameter)) {
-        $response->setEncodingOptions(JSON_PRETTY_PRINT);
-      }
-    }
+    $response->headers->add([
+      'X-Version' => Version::compact()
+    ]);
 
     return $response;
   }
