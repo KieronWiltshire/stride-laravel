@@ -68,7 +68,9 @@ class Handler extends ExceptionHandler
     $render = $conform->render();
 
     if (app()->environment(['local', 'development'])) {
-      $render['stack'] = $exception->getTrace();
+      if ($request->has('dump')) {
+        dd($exception, $conform);
+      }
     }
 
     return response($render, $conform->getHttpStatus());
