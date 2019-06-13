@@ -8,8 +8,6 @@ class AuthenticationFailedException extends UnauthorizedError
 {
   /**
    * Create a new authentication failed exception instance.
-   * 
-   * @return void
    */
   public function __construct() {
     parent::__construct(__('auth.exceptions.authentication_failed'));

@@ -27,7 +27,6 @@ class TokenRepository extends PassportTokenRepository
    *
    * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
    * @param \App\Validation\OAuth\Token\TokenCreateValidator $tokenCreateValidator
-   * @return void
    */
   public function __construct(
     PaginationValidator $paginationValidator,

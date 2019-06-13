@@ -35,7 +35,6 @@ class ClientRepository extends PassportClientRepository
    * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
    * @param \App\Validation\OAuth\Client\ClientCreateValidator $clientCreateValidator
    * @param \App\Validation\OAuth\Client\ClientUpdateValidator $clientUpdateValidator
-   * @return void
    */
   public function __construct(
     PaginationValidator $paginationValidator,

@@ -8,8 +8,6 @@ class UserNotFoundException extends NotFoundError
 {
   /**
    * Create a new user not found exception instance.
-   * 
-   * @return void
    */
   public function __construct() {
     parent::__construct(__('user.exceptions.not_found'));

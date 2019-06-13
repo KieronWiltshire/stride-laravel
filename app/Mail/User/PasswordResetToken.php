@@ -20,7 +20,6 @@ class PasswordResetToken extends Mailable
    *
    * @param string $to
    * @param string $passwordResetToken
-   * @return void
    */
   public function __construct($passwordResetToken)
   {

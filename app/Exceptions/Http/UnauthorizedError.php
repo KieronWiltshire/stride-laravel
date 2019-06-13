@@ -10,7 +10,6 @@ class UnauthorizedError extends AppError
    * Create a new unauthorized error instance.
    *
    * @param string $message
-   * @return void
    */
   public function __construct($message = null)
   {

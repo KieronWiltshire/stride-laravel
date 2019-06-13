@@ -26,7 +26,6 @@ class UserUpdatedEvent
    *
    * @param \App\Entities\User $user
    * @param Array $attributes
-   * @return void
    */
   public function __construct(User $user, $attributes)
   {

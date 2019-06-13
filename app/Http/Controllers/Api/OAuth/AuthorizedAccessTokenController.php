@@ -17,7 +17,6 @@ class AuthorizedAccessTokenController
    * Create a new controller instance.
    *
    * @param  \App\Repositories\TokenRepository  $tokenRepository
-   * @return void
    */
   public function __construct(TokenRepository $tokenRepository)
   {

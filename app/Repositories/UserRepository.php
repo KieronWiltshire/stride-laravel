@@ -61,8 +61,6 @@ class UserRepository implements UserRepositoryInterface
    * @param \App\Validation\User\UserUpdateValidator $userUpdateValidator
    * @param \App\Validation\User\UserEmailValidator $userEmailValidator
    * @param \App\Validation\User\UserPasswordValidator $userPasswordValidator
-   *
-   * @return void
    */
   public function __construct(
     PaginationValidator $paginationValidator,

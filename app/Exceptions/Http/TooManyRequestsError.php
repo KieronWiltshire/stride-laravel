@@ -10,7 +10,6 @@ class TooManyRequestsError extends AppError
    * Create a new validation error instance.
    *
    * @param string $message
-   * @return void
    */
   public function __construct($message = null)
   {

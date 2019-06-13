@@ -20,7 +20,6 @@ class UserPasswordResetEvent
    * Create a new event instance.
    *
    * @param \App\Entities\User $user
-   * @return void
    */
   public function __construct(User $user)
   {

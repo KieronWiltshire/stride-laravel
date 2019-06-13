@@ -10,7 +10,6 @@ class NotFoundError extends AppError
    * Create a new not found error instance.
    *
    * @param string $message
-   * @return void
    */
   public function __construct($message = null)
   {

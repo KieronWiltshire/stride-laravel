@@ -21,7 +21,6 @@ class EmailVerificationTokenGeneratedEvent
    *
    * @param \App\Entities\User $user
    * @param string $email
-   * @return void
    */
   public function __construct(User $user)
   {

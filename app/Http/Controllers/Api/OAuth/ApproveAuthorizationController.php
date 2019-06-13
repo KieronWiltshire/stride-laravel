@@ -24,7 +24,6 @@ class ApproveAuthorizationController
    * Create a new controller instance.
    *
    * @param \League\OAuth2\Server\AuthorizationServer $server
-   * @return void
    */
   public function __construct(
     AuthorizationServer $server

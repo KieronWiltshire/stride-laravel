@@ -8,8 +8,6 @@ class UnsupportedGrantTypeException extends BadRequestError
 {
   /**
    * Create a new unsupported grant type exception instance.
-   * 
-   * @return void
    */
   public function __construct() {
     parent::__construct(__('oauth.exceptions.unsupported_grant_type'));

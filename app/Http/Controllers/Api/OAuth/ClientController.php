@@ -18,7 +18,6 @@ class ClientController
    * Create a client controller instance.
    *
    * @param \App\Repositories\ClientRepository $clients
-   * @return void
    */
   public function __construct(
     ClientRepository $clients

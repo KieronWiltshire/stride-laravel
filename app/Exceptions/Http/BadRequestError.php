@@ -10,7 +10,6 @@ class BadRequestError extends AppError
    * Create a new bad request error instance.
    *
    * @param string $message
-   * @return void
    */
   public function __construct($message = null)
   {

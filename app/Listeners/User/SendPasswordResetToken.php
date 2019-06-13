@@ -17,7 +17,6 @@ class SendPasswordResetToken
    * Create the event listener.
    *
    * @param \App\Contracts\UserRepositoryInterface $users
-   * @return void
    */
   public function __construct(UserRepositoryInterface $users)
   {

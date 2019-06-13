@@ -28,7 +28,6 @@ class PersonalAccessTokenController
    *
    * @param \App\Validation\OAuth\Token\TokenCreateValidator $tokenCreateValidator
    * @param  \App\Repositories\TokenRepository $tokenRepository
-   * @return void
    */
   public function __construct(
     TokenCreateValidator $tokenCreateValidator,

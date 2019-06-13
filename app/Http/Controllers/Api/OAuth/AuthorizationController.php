@@ -35,7 +35,6 @@ class AuthorizationController
    *
    * @param \League\OAuth2\Server\AuthorizationServer $server
    * @param \Illuminate\Contracts\Routing\ResponseFactory $response
-   * @return void
    */
   public function __construct(
     AuthorizationServer $server, 
