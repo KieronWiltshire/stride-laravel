@@ -9,6 +9,7 @@ use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
 use App\Exceptions\User\InvalidEmailVerificationTokenException;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -31,24 +32,37 @@ class UserController extends Controller
   /**
    * Retrieve an index of users.
    *
-   * @return \Illuminate\Http\Response|\Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
   public function index()
   {
-    return $this->users->allAsPaginated(request()->query('limit'), request()->query('offset'))
+    $paginated = $this->users->allAsPaginated(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.index'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
+
+
+    $paginated->setCollection(
+      $paginated->getCollection()->each(function ($user) {
+        if (Gate::allows('user.view', $user)) {
+          $user->makeVisible([
+            'email'
+          ]);
+        }
+      })
+    );
+
+    return $paginated;
   }
 
   /**
    * Create a new user.
    *
-   * @return \Illuminate\Http\Response|\App\Entities\User
+   * @return \App\Entities\User
    *
    * @throws \App\Exceptions\User\CannotCreateUserException
    */
@@ -57,6 +71,8 @@ class UserController extends Controller
     return $this->users->create([
       'email' => request()->input('email'),
       'password' => request()->input('password')
+    ])->makeVisible([
+      'email'
     ]);
   }
 
@@ -64,14 +80,22 @@ class UserController extends Controller
    * Retrieve a user by id.
    *
    * @param integer $id
-   * @return \Illuminate\Http\Response|\App\Entities\User
+   * @return \App\Entities\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    */
   public function getById($id)
   {
     try {
-      return $this->users->findById($id);
+      $user = $this->users->findById($id);
+
+      if (Gate::allows('user.view', $user)) {
+        $user->makeVisible([
+          'email'
+        ]);
+      }
+
+      return $user;
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -85,14 +109,16 @@ class UserController extends Controller
    * Retrieve a user by email.
    *
    * @param string $email
-   * @return \Illuminate\Http\Response|\App\Entities\User
+   * @return \App\Entities\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    */
   public function getByEmail($email)
   {
     try {
-      return $this->users->findByEmail($email);
+      return $this->users->findByEmail($email)->makeVisible([
+        'email'
+      ]);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -105,7 +131,7 @@ class UserController extends Controller
   /**
    * Retrieve an index of users matching a particular search phrase.
    *
-   * @return \Illuminate\Http\Response|\Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
    *
    * @throws \App\Exceptions\Http\BadRequestError
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
@@ -124,19 +150,31 @@ class UserController extends Controller
         ]);
     }
 
-    return $this->users->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
+    $paginated = $this->users->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.search'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
+
+    $paginated->setCollection(
+      $paginated->getCollection()->each(function ($user) {
+        if (Gate::allows('user.view', $user)) {
+          $user->makeVisible([
+            'email'
+          ]);
+        }
+      })
+    );
+
+    return $paginated;
   }
 
   /**
    * Update a user.
    *
    * @param integer $id
-   * @return \Illuminate\Http\Response|\App\Entities\User
+   * @return \App\Entities\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    * @throws \App\Exceptions\User\CannotUpdateUserException
@@ -145,10 +183,19 @@ class UserController extends Controller
   {
     try {
       $user = $this->users->findById($id);
+      $this->authorize('user.update', $user);
 
-      return $this->users->update($user, [
+      $user = $this->users->update($user, [
         'password' => request()->input('password')
       ]);
+
+      if (Gate::allows('user.view', $user)) {
+        $user->makeVisible([
+          'email'
+        ]);
+      }
+
+      return $user;
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -162,7 +209,7 @@ class UserController extends Controller
    * Router a change to the specified email.
    *
    * @param integer $id
-   * @return \Illuminate\Http\Response|\App\Entities\User
+   * @return \Illuminate\Http\JsonResponse
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    * @throws \App\Exceptions\User\InvalidEmailException
@@ -171,6 +218,7 @@ class UserController extends Controller
   {
     try {
       $user = $this->users->findById($id);
+      $this->authorize('user.update', $user);
 
       if ($this->users->requestEmailChange($user, request()->input('email'))) {
         return response()->json([
@@ -190,7 +238,7 @@ class UserController extends Controller
    * Verify the user's email.
    *
    * @param string $email
-   * @return \Illuminate\Http\Response|\App\Entities\User
+   * @return \App\Entities\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    * @throws \App\Exceptions\User\InvalidEmailException
@@ -200,8 +248,15 @@ class UserController extends Controller
   {
     try {
       $user = $this->users->findByEmail($email);
+      $user = $this->users->verifyEmail($user, request()->query('email_verification_token'));
 
-      return $this->users->verifyEmail($user, request()->query('email_verification_token'));
+      if (Gate::allows('user.view', $user)) {
+        $user->makeVisible([
+          'email'
+        ]);
+      }
+
+      return $user;
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
@@ -215,7 +270,7 @@ class UserController extends Controller
    * Resend the user's email verification token.
    *
    * @param string $email
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Http\JsonResponse
    *
    * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
    * @throws \App\Exceptions\User\UserNotFoundException
@@ -248,7 +303,7 @@ class UserController extends Controller
    * Send the user a password reset token.
    *
    * @param string $email
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Http\JsonResponse
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    */
@@ -274,7 +329,7 @@ class UserController extends Controller
    * Reset the user's password using the password reset token.
    *
    * @param string $email
-   * @return \Illuminate\Http\Response|\App\Entities\User
+   * @return \App\Entities\User
    *
    * @throws \App\Exceptions\User\UserNotFoundException
    * @throws \App\Exceptions\User\PasswordResetTokenExpiredException
@@ -284,8 +339,15 @@ class UserController extends Controller
   {
     try {
       $user = $this->users->findByEmail($email);
+      $user = $this->users->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
 
-      return $this->users->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
+      if (Gate::allows('user.view', $user)) {
+        $user->makeVisible([
+          'email'
+        ]);
+      }
+
+      return $user;
     } catch (InvalidPasswordResetTokenException $e) {
       throw $e->setContext([
         'password_reset_token' => [

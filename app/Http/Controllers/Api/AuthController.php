@@ -28,9 +28,9 @@ class AuthController extends Controller
   }
 
   /**
-   * Retrieve an index of users.
+   * Retrieve an authentication token.
    *
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Http\JsonResponse
    */
   public function login()
   {
@@ -64,7 +64,7 @@ class AuthController extends Controller
   /**
    * Get the authenticated User.
    *
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Http\JsonResponse
    */
   public function me()
   {
@@ -74,7 +74,7 @@ class AuthController extends Controller
   /**
    * Log the user out (Invalidate the token).
    *
-   * @return \Illuminate\Http\Response
+   * @return \Illuminate\Http\JsonResponse
    */
   public function logout()
   {
