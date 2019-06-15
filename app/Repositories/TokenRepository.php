@@ -139,7 +139,7 @@ class TokenRepository extends PassportTokenRepository
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
-  public function personalAccessTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
+  public function personalAccessTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
   {
     $this->paginationValidator->validate([
       'limit' => $limit,
@@ -173,7 +173,7 @@ class TokenRepository extends PassportTokenRepository
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
-  public function passwordTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
+  public function passwordTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
   {
     $this->paginationValidator->validate([
       'limit' => $limit,
@@ -207,7 +207,7 @@ class TokenRepository extends PassportTokenRepository
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
-  public function personalAccessOrPasswordTokensForUserAsPaginatedWithClientAndTokenNotRevoked($userId, $limit = null, $offset = 1)
+  public function personalAccessOrPasswordTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
   {
     $this->paginationValidator->validate([
       'limit' => $limit,

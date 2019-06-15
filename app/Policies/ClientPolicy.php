@@ -54,7 +54,6 @@ class ClientPolicy
    * Determine if the specified user can create an oauth client.
    *
    * @param \App\Entities\User $user
-   * @param \Laravel\Passport\Client $client
    * @return bool
    */
   public function create(User $user)

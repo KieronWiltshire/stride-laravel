@@ -46,7 +46,7 @@ class PersonalAccessTokenController
    */
   public function forUser()
   {
-    return $this->tokenRepository->personalAccessTokensForUserAsPaginatedWithClientAndTokenNotRevoked(request()->user()->getKey(), request()->input('limit'), request()->input('offset'))
+    return $this->tokenRepository->personalAccessTokensForUserWithClientAndTokenNotRevokedAsPaginated(request()->user()->getKey(), request()->input('limit'), request()->input('offset'))
       ->setPath(route('api.oauth.personal-access-tokens.index'))
       ->setPageName('offset')
       ->appends([
