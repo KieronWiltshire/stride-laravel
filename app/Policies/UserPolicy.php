@@ -30,8 +30,8 @@ class UserPolicy
   public function view(?User $user, User $userToView)
   {
     return (
-      ($user->laratrustCan('user.view.self') && $user->id === $userToView->id)
-      || ($user->laratrustCan('user.view.other'))
+      ($user->laratrustCan('user.view.me') && $user->id === $userToView->id)
+      || ($user->laratrustCan('user.view.all'))
     );
   }
 
@@ -45,8 +45,8 @@ class UserPolicy
   public function update(User $user, User $userToUpdate)
   {
     return (
-      ($user->laratrustCan('user.update.self') && $user->id === $userToUpdate->id)
-      || ($user->laratrustCan('user.update.other'))
+      ($user->laratrustCan('user.update.me') && $user->id === $userToUpdate->id)
+      || ($user->laratrustCan('user.update.all'))
     );
   }
 }

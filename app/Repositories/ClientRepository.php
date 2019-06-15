@@ -9,7 +9,6 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\ClientRepository as PassportClientRepository;
 use App\Exceptions\OAuth\ClientNotFoundException;
 use Laravel\Passport\Client;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use Laravel\Passport\Passport;
 
 class ClientRepository extends PassportClientRepository

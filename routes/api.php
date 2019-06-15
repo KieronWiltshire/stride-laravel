@@ -72,10 +72,11 @@ Route::namespace('Api')->name('api.')->group(function () {
      * Clients
      */
     Route::name('clients.')->middleware('auth')->group(function() {
-      Route::get('/clients', 'ClientController@forUser')->name('index');
+      Route::get('/user/me/clients', 'ClientController@forAuthenticatedUser')->name('index');
+      Route::get('/user/{id}/clients', 'ClientController@forUser')->where('id', '[0-9]+')->name('index');
       Route::post('/clients', 'ClientController@store')->name('store');
-      Route::put('/clients/{client_id}', 'ClientController@update')->name('update');
-      Route::delete('/clients/{client_id}', 'ClientController@destroy')->name('destroy');
+      Route::put('/clients/{id}', 'ClientController@update')->name('update');
+      Route::delete('/clients/{id}', 'ClientController@destroy')->name('destroy');
     });
 
     /**

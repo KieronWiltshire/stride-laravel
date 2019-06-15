@@ -11,6 +11,7 @@ use App\Exceptions\OAuth\InvalidRefreshTokenException;
 use App\Exceptions\OAuth\InvalidScopeException;
 use App\Exceptions\OAuth\UnsupportedGrantTypeException;
 use App\Exceptions\Request\InvalidRequestException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\ValidationException;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\Http\ForbiddenError;
@@ -64,14 +65,14 @@ class Handler extends ExceptionHandler
    */
   public function render($request, Exception $exception)
   {
-    $conform = $this->conform($exception);
-    $render = $conform->render();
-
     if (app()->environment(['local', 'development'])) {
       if ($request->has('dump')) {
-        dd($exception, $conform);
+        dd($exception);
       }
     }
+
+    $conform = $this->conform($exception);
+    $render = $conform->render();
 
     return response($render, $conform->getHttpStatus());
   }
@@ -97,7 +98,21 @@ class Handler extends ExceptionHandler
     |
     */
     if ($exception instanceof HttpException) {
-      $error = $this->conformExceptionToHttpError($exception);
+      $error = $this->conformHttpExceptionToAppError($exception);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Handling AuthorizationException
+    |--------------------------------------------------------------------------
+    |
+    | This default exception thrown by the Laravel framework does
+    | not conform to the application's error response structure,
+    | therefore we swap it out for an application defined error.
+    |
+    */
+    if ($exception instanceof AuthorizationException) {
+      $error = $this->conformAuthorizationExceptionToAppError($exception);
     }
 
     /*
@@ -149,7 +164,7 @@ class Handler extends ExceptionHandler
           $error = new InvalidGrantException();
           break;
         default:
-          $error = $this->conformExceptionToHttpError($exception);
+          $error = $this->conformHttpExceptionToAppError($exception);
           break;
       }
     }
@@ -174,12 +189,12 @@ class Handler extends ExceptionHandler
   }
 
   /**
-   * Conform the exception to an application standard HTTP error.
+   * Conform the http exception to an application standard error.
    *
    * @param \Symfony\Component\HttpKernel\Exception\HttpException $exception
    * @return \App\Exceptions\AppError
    */
-  public function conformExceptionToHttpError(HttpException $exception)
+  public function conformHttpExceptionToAppError(HttpException $exception)
   {
     switch ($exception->getStatusCode()) {
       case 400:
@@ -205,5 +220,16 @@ class Handler extends ExceptionHandler
       default:
         return new InternalServerError();
     }
+  }
+
+  /**
+   * Conform the authorization exception to an application standard error.
+   *
+   * @param \Illuminate\Auth\Access\AuthorizationException $exception
+   * @return \App\Exceptions\AppError
+   */
+  public function conformAuthorizationExceptionToAppError(AuthorizationException $exception)
+  {
+    return new ForbiddenError();
   }
 }
