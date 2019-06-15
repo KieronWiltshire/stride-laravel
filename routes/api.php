@@ -42,7 +42,7 @@ Route::namespace('Api')->name('api.')->group(function () {
   /**
    * Laravel Passport (OAuth)
    */
-  Route::namespace('OAuth')->name('oauth.')->prefix('oauth')->group(function() {
+  Route::namespace('OAuth')->middleware('oauth')->name('oauth.')->prefix('oauth')->group(function() {
     /**
      * Authorize
      */

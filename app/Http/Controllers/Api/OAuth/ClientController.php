@@ -50,9 +50,9 @@ class ClientController extends Controller
       $user = $this->users->findById($id);
       $this->authorize('client.for', $user);
 
-      $resource = $this->clients->activeForUserAsPaginated($user->getKey(), request()->query('limit'), request()->query('offset'));
+      $paginated = $this->clients->activeForUserAsPaginated($user->getKey(), request()->query('limit'), request()->query('offset'));
 
-      $resource->getCollection()->each(function ($client) {
+      $paginated->getCollection()->each(function ($client) {
         if (Gate::allows('client.view', $client)) {
           $client->makeVisible([
             'secret'
@@ -60,7 +60,7 @@ class ClientController extends Controller
         }
       });
 
-      return $resource
+      return $paginated
         ->setPath(route('api.oauth.clients.index'))
         ->setPageName('offset')
         ->appends([

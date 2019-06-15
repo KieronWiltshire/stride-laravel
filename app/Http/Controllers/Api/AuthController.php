@@ -14,17 +14,17 @@ class AuthController extends Controller
   /**
    * @var \App\Contracts\UserRepositoryInterface
    */
-  private $users;
+  private $userRepository;
 
   /**
    * Create a new auth controller instance
    *
-   * @param \App\Contracts\UserRepositoryInterface $users
+   * @param \App\Contracts\UserRepositoryInterface $userRepository
    */
   public function __construct(
-    UserRepositoryInterface $users
+    UserRepositoryInterface $userRepository
   ) {
-    $this->users = $users;
+    $this->userRepository = $userRepository;
   }
 
   /**
@@ -35,7 +35,7 @@ class AuthController extends Controller
   public function login()
   {
     try {
-      $user = $this->users->findByEmail(request()->input('email'));
+      $user = $this->userRepository->findByEmail(request()->input('email'));
 
       if (Hash::check(request()->input('password'), $user->password)) {
         $token = $user->createToken('login');

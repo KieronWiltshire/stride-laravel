@@ -43,6 +43,10 @@ class AuthServiceProvider extends ServiceProvider
     Gate::define('user.view', 'App\Policies\UserPolicy@view');
     Gate::define('user.update', 'App\Policies\UserPolicy@update');
 
+    Gate::define('personal-access-token.for', 'App\Policies\PersonalAccessTokenPolicy@for');
+    Gate::define('personal-access-token.create', 'App\Policies\PersonalAccessTokenPolicy@create');
+    Gate::define('personal-access-token.delete', 'App\Policies\PersonalAccessTokenPolicy@delete');
+
     Gate::define('client.for', 'App\Policies\ClientPolicy@for');
     Gate::define('client.view', 'App\Policies\ClientPolicy@view');
     Gate::define('client.create', 'App\Policies\ClientPolicy@create');
