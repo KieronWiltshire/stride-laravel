@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Entities\User;
-use App\Policies\ClientPolicy;
 use App\Policies\UserPolicy;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
@@ -31,6 +30,9 @@ class AuthServiceProvider extends ServiceProvider
     $this->registerGates();
 
     Passport::enableImplicitGrant();
+    Passport::tokensCan(collect(Gate::abilities())->map(function($gate, $ability) {
+      return __('permissions.' . $ability, [], request()->server('HTTP_ACCEPT_LANGUAGE'));
+    })->toArray());
   }
 
   /**
@@ -52,5 +54,9 @@ class AuthServiceProvider extends ServiceProvider
     Gate::define('client.create', 'App\Policies\ClientPolicy@create');
     Gate::define('client.update', 'App\Policies\ClientPolicy@update');
     Gate::define('client.delete', 'App\Policies\ClientPolicy@delete');
+
+    Gate::after(function ($user, $ability, $result) {
+      return ($result && $user->tokenCan($ability));
+    });
   }
 }

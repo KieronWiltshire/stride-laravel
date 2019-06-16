@@ -29,10 +29,10 @@ class UserPolicy
    */
   public function view(?User $user, User $userToView)
   {
-    return (
+    return ($user) ? (
       ($user->laratrustCan('user.view.me') && $user->id === $userToView->id)
       || ($user->laratrustCan('user.view.all'))
-    );
+    ) : false;
   }
 
   /**

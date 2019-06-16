@@ -38,7 +38,7 @@ class AuthController extends Controller
       $user = $this->userRepository->findByEmail(request()->input('email'));
 
       if (Hash::check(request()->input('password'), $user->password)) {
-        $token = $user->createToken('login');
+        $token = $user->createToken('login', ['*']);
 
         return response()->json([
           'access_token' => $token->accessToken,
