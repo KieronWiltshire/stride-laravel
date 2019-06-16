@@ -39,7 +39,6 @@ class UserController extends Controller
    */
   public function index()
   {
-    dd(request()->getLocale(), new InvalidEmailException());
     $paginated = $this->users->allAsPaginated(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.index'))
       ->setPageName('offset')
