@@ -63,7 +63,8 @@ Route::namespace('Api')->name('api.')->group(function () {
      * Personal Access Tokens
      */
     Route::name('personal-access-tokens.')->middleware('auth')->group(function() {
-      Route::get('/personal-access-tokens', 'PersonalAccessTokenController@forUser')->name('index');
+      Route::get('/user/me/personal-access-tokens', 'PersonalAccessTokenController@forAuthenticatedUser')->name('index');
+      Route::get('/user/{id}/personal-access-tokens', 'PersonalAccessTokenController@forUser')->where('id', '[0-9]+')->name('index');
       Route::post('/personal-access-tokens', 'PersonalAccessTokenController@store')->name('store');
       Route::delete('/personal-access-tokens/{token_id}', 'PersonalAccessTokenController@destroy')->name('destroy');
     });
