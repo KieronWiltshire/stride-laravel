@@ -24,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
    */
   public function boot()
   {
-    //
+    app()->setLocale(request()->server('HTTP_ACCEPT_LANGUAGE'));
   }
 }

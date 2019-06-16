@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
 
     Passport::enableImplicitGrant();
     Passport::tokensCan(collect(Gate::abilities())->map(function($gate, $ability) {
-      return __('permissions.' . $ability, [], request()->server('HTTP_ACCEPT_LANGUAGE'));
+      return __('permissions.' . $ability, [], app()->getLocale());
     })->toArray());
   }
 

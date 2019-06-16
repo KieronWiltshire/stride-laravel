@@ -1,6 +1,7 @@
 <?php
 
 use App\Providers\ClientServiceProvider;
+use App\Providers\LocaleServiceProvider;
 
 return [
 

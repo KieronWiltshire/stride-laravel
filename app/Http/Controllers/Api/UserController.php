@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Exceptions\User\InvalidEmailException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Contracts\UserRepositoryInterface;
@@ -38,6 +39,7 @@ class UserController extends Controller
    */
   public function index()
   {
+    dd(request()->getLocale(), new InvalidEmailException());
     $paginated = $this->users->allAsPaginated(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.index'))
       ->setPageName('offset')
