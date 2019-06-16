@@ -1,12 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Gate;
-
 return [
 
   /*
   |--------------------------------------------------------------------------
-  | Permission Language Lines
+  | Gate Language Lines
   |--------------------------------------------------------------------------
   |
   | The following language lines are used during authorization process for various
