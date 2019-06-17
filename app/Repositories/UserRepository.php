@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Contracts\UserRepositoryInterface;
+use App\Contracts\Repositories\UserRepository as UserRepositoryInterface;
 use App\Entities\User;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\UserNotFoundException;

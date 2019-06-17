@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\User\InvalidEmailException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\UserRepositoryInterface;
+use App\Contracts\Repositories\UserRepository;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
@@ -15,17 +14,17 @@ use Illuminate\Support\Facades\Gate;
 class UserController extends Controller
 {
   /**
-   * @var \App\Contracts\UserRepositoryInterface
+   * @var \App\Contracts\Repositories\UserRepository
    */
   private $users;
 
   /**
    * Create a new user controller instance
    *
-   * @param \App\Contracts\UserRepositoryInterface $users
+   * @param \App\Contracts\Repositories\UserRepository $users
    */
   public function __construct(
-    UserRepositoryInterface $users
+    UserRepository $users
   ) {
     $this->users = $users;
   }
@@ -45,7 +44,6 @@ class UserController extends Controller
       ->appends([
         'limit' => request()->query('limit')
       ]);
-
 
     $paginated->setCollection(
       $paginated->getCollection()->each(function ($user) {
@@ -335,6 +333,7 @@ class UserController extends Controller
    * @throws \App\Exceptions\User\UserNotFoundException
    * @throws \App\Exceptions\User\PasswordResetTokenExpiredException
    * @throws \App\Exceptions\User\InvalidPasswordResetTokenException
+   * @throws \App\Exceptions\User\InvalidPasswordException
    */
   public function resetPassword($email)
   {

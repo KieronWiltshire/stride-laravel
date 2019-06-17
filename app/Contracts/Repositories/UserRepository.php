@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Contracts\Repositories;
 
 use App\Entities\User;
 
-interface UserRepositoryInterface
+interface UserRepository
 {
 
   /**

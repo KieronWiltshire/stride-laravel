@@ -5,24 +5,24 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\Auth\AuthenticationFailedException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\UserRepositoryInterface;
+use App\Contracts\Repositories\UserRepository;
 use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Parser;
 
 class AuthController extends Controller
 {
   /**
-   * @var \App\Contracts\UserRepositoryInterface
+   * @var \App\Contracts\Repositories\UserRepository
    */
   private $userRepository;
 
   /**
    * Create a new auth controller instance
    *
-   * @param \App\Contracts\UserRepositoryInterface $userRepository
+   * @param \App\Contracts\Repositories\UserRepository $userRepository
    */
   public function __construct(
-    UserRepositoryInterface $userRepository
+    UserRepository $userRepository
   ) {
     $this->userRepository = $userRepository;
   }

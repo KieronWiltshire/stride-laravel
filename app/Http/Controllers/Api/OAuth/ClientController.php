@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Contracts\UserRepositoryInterface;
+use App\Contracts\Repositories\UserRepository;
 use App\Exceptions\OAuth\ClientNotFoundException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
@@ -17,7 +17,7 @@ class ClientController extends Controller
   protected $clients;
 
   /**
-   * @var \App\Contracts\UserRepositoryInterface
+   * @var \App\Contracts\Repositories\UserRepository
    */
   private $users;
 
@@ -25,11 +25,11 @@ class ClientController extends Controller
    * Create a client controller instance.
    *
    * @param \App\Repositories\ClientRepository $clients
-   * @param \App\Contracts\UserRepositoryInterface $users
+   * @param \App\Contracts\Repositories\UserRepository $users
    */
   public function __construct(
     ClientRepository $clients,
-    UserRepositoryInterface $users
+    UserRepository $users
   ) {
     $this->clients = $clients;
     $this->users = $users;

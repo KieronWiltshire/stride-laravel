@@ -2,15 +2,11 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Contracts\Token\TokenActions;
-use App\Contracts\UserRepositoryInterface;
-use App\Exceptions\OAuth\ClientNotFoundException;
+use App\Contracts\Repositories\UserRepository;
 use App\Exceptions\OAuth\TokenNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Validation\OAuth\Token\TokenCreateValidator;
-use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use App\Repositories\TokenRepository;
-use Illuminate\Support\Facades\Gate;
 
 class PersonalAccessTokenController extends Controller
 {
@@ -29,7 +25,7 @@ class PersonalAccessTokenController extends Controller
   /**
    * The user repository implementation.
    *
-   * @var \App\Contracts\UserRepositoryInterface
+   * @var \App\Contracts\Repositories\UserRepository
    */
   protected $userRepository;
 
@@ -38,12 +34,12 @@ class PersonalAccessTokenController extends Controller
    *
    * @param \App\Validation\OAuth\Token\TokenCreateValidator $tokenCreateValidator
    * @param \App\Repositories\TokenRepository $tokenRepository
-   * @param \App\Contracts\UserRepositoryInterface $userRepository
+   * @param \App\Contracts\Repositories\UserRepository $userRepository
    */
   public function __construct(
     TokenCreateValidator $tokenCreateValidator,
     TokenRepository $tokenRepository,
-    UserRepositoryInterface $userRepository
+    UserRepository $userRepository
   ) {
     $this->tokenCreateValidator = $tokenCreateValidator;
     $this->tokenRepository = $tokenRepository;
