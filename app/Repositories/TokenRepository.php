@@ -10,6 +10,13 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\TokenRepository as PassportTokenRepository;
 use Laravel\Passport\Passport;
 
+/**
+ * This repository was created in order to standardize Laravel's Passport
+ * with the application's architecture and design philosophy.
+ *
+ * Class TokenRepository
+ * @package App\Repositories
+ */
 class TokenRepository extends PassportTokenRepository
 {
   /**

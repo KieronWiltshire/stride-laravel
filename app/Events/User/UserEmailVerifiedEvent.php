@@ -37,7 +37,7 @@ class UserEmailVerifiedEvent
    * 
    * @return \App\Entities\User
    */
-  public function getUser()
+  public function user()
   {
     return $this->user;
   }
@@ -47,7 +47,7 @@ class UserEmailVerifiedEvent
    * 
    * @return string
    */
-  public function getOldEmail()
+  public function oldEmail()
   {
     return $this->oldEmail;
   }

@@ -91,7 +91,7 @@ class UserRepository implements UserRepositoryInterface
    * 
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
    * 
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -165,7 +165,7 @@ class UserRepository implements UserRepositoryInterface
    * @param boolean $regex
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */

@@ -31,7 +31,7 @@ class UserCreatedEvent
    * 
    * @return \App\Entities\User
    */
-  public function getUser()
+  public function user()
   {
     return $this->user;
   }

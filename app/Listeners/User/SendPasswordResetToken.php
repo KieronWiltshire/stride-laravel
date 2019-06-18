@@ -3,24 +3,24 @@
 namespace App\Listeners\User;
 
 use App\Events\User\PasswordResetTokenGeneratedEvent;
-use App\Contracts\UserRepository;
+use App\Contracts\Repositories\UserRepository;
 use Exception;
 
 class SendPasswordResetToken
 {
   /**
-   * @var \App\Contracts\UserRepository
+   * @var \App\Contracts\Repositories\UserRepository
    */
-  private $users;
+  private $userRepository;
 
   /**
    * Create the event listener.
    *
-   * @param \App\Contracts\UserRepository $users
+   * @param \App\Contracts\Repositories\UserRepository $userRepository
    */
-  public function __construct(UserRepository $users)
+  public function __construct(UserRepository $userRepository)
   {
-    $this->users = $users;
+    $this->userRepository = $userRepository;
   }
 
   /**
@@ -31,6 +31,6 @@ class SendPasswordResetToken
    */
   public function handle(PasswordResetTokenGeneratedEvent $event)
   {
-    $this->users->sendPasswordResetToken($event->getUser());
+    $this->userRepository->sendPasswordResetToken($event->user());
   }
 }

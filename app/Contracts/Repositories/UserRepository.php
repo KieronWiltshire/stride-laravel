@@ -19,7 +19,7 @@ interface UserRepository
    *
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
@@ -53,7 +53,7 @@ interface UserRepository
    * @param boolean $regex
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */

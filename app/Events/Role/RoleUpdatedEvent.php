@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Events\User;
+namespace App\Events\Role;
 
-use App\Entities\User;
+use App\Entities\Role;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class UserUpdatedEvent
+class RoleUpdatedEvent
 {
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \App\Entities\User
+   * @var \App\Entities\Role
    */
-  private $user;
+  private $role;
 
   /**
    * @var array
@@ -24,28 +24,28 @@ class UserUpdatedEvent
   /**
    * Create a new event instance.
    *
-   * @param \App\Entities\User $user
+   * @param \App\Entities\Role $role
    * @param array $attributes
    */
-  public function __construct(User $user, $attributes)
+  public function __construct(Role $role, $attributes)
   {
-    $this->user = $user;
+    $this->role = $role;
     $this->attributes = $attributes;
   }
 
   /**
-   * Retrieve the updated user.
-   * 
-   * @return \App\Entities\User
+   * Retrieve the updated role.
+   *
+   * @return \App\Entities\Role
    */
-  public function user()
+  public function role()
   {
-    return $this->user;
+    return $this->role;
   }
 
   /**
    * Retrieve the attributes that were updated.
-   * 
+   *
    * @return array
    */
   public function attributes()

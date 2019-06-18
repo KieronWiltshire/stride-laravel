@@ -11,6 +11,13 @@ use App\Exceptions\OAuth\ClientNotFoundException;
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 
+/**
+ * This repository was created in order to standardize Laravel's Passport
+ * with the application's architecture and design philosophy.
+ *
+ * Class ClientRepository
+ * @package App\Repositories
+ */
 class ClientRepository extends PassportClientRepository
 {
   /**

@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class UserServiceProvider extends ServiceProvider
+class RepositoryServiceProvider extends ServiceProvider
 {
   /**
    * Register services.
@@ -16,6 +16,10 @@ class UserServiceProvider extends ServiceProvider
     $this->app->bind(
       'App\Contracts\UserRepository',
       'App\Repositories\UserRepository'
+    );
+    $this->app->bind(
+      'App\Contracts\RoleRepository',
+      'App\Repositories\RoleRepository'
     );
   }
 

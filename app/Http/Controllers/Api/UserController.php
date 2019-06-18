@@ -16,17 +16,17 @@ class UserController extends Controller
   /**
    * @var \App\Contracts\Repositories\UserRepository
    */
-  private $users;
+  private $userRepository;
 
   /**
    * Create a new user controller instance
    *
-   * @param \App\Contracts\Repositories\UserRepository $users
+   * @param \App\Contracts\Repositories\UserRepository $userRepository
    */
   public function __construct(
-    UserRepository $users
+    UserRepository $userRepository
   ) {
-    $this->users = $users;
+    $this->userRepository = $userRepository;
   }
 
   /**
@@ -38,7 +38,7 @@ class UserController extends Controller
    */
   public function index()
   {
-    $paginated = $this->users->allAsPaginated(request()->query('limit'), request()->query('offset'))
+    $paginated = $this->userRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.index'))
       ->setPageName('offset')
       ->appends([
@@ -67,7 +67,7 @@ class UserController extends Controller
    */
   public function create()
   {
-    return $this->users->create([
+    return $this->userRepository->create([
       'email' => request()->input('email'),
       'password' => request()->input('password')
     ])->makeVisible([
@@ -86,7 +86,7 @@ class UserController extends Controller
   public function getById($id)
   {
     try {
-      $user = $this->users->findById($id);
+      $user = $this->userRepository->findById($id);
 
       if (Gate::allows('user.view', $user)) {
         $user->makeVisible([
@@ -115,7 +115,7 @@ class UserController extends Controller
   public function getByEmail($email)
   {
     try {
-      return $this->users->findByEmail($email)->makeVisible([
+      return $this->userRepository->findByEmail($email)->makeVisible([
         'email'
       ]);
     } catch (UserNotFoundException $e) {
@@ -149,7 +149,7 @@ class UserController extends Controller
         ]);
     }
 
-    $paginated = $this->users->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
+    $paginated = $this->userRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.search'))
       ->setPageName('offset')
       ->appends([
@@ -181,10 +181,10 @@ class UserController extends Controller
   public function update($id)
   {
     try {
-      $user = $this->users->findById($id);
+      $user = $this->userRepository->findById($id);
       $this->authorize('user.update', $user);
 
-      $user = $this->users->update($user, [
+      $user = $this->userRepository->update($user, [
         'password' => request()->input('password')
       ]);
 
@@ -216,7 +216,7 @@ class UserController extends Controller
   public function requestEmailChange($id)
   {
     try {
-      $user = $this->users->findById($id);
+      $user = $this->userRepository->findById($id);
       $this->authorize('user.update', $user);
 
       if ($this->users->requestEmailChange($user, request()->input('email'))) {
@@ -246,8 +246,8 @@ class UserController extends Controller
   public function verifyEmail($email)
   {
     try {
-      $user = $this->users->findByEmail($email);
-      $user = $this->users->verifyEmail($user, request()->query('email_verification_token'));
+      $user = $this->userRepository->findByEmail($email);
+      $user = $this->userRepository->verifyEmail($user, request()->query('email_verification_token'));
 
       if (Gate::allows('user.view', $user)) {
         $user->makeVisible([
@@ -277,8 +277,8 @@ class UserController extends Controller
   public function resendEmailVerificationToken($email)
   {
     try {
-      $user = $this->users->findByEmail($email);
-      $this->users->sendEmailVerificationToken($user);
+      $user = $this->userRepository->findByEmail($email);
+      $this->userRepository->sendEmailVerificationToken($user);
 
       return response()->json([
         'message' => __('email.email_verification_resent')
@@ -309,8 +309,8 @@ class UserController extends Controller
   public function forgotPassword($email)
   {
     try {
-      $user = $this->users->findByEmail($email);
-      $this->users->forgotPassword($user);
+      $user = $this->userRepository->findByEmail($email);
+      $this->userRepository->forgotPassword($user);
 
       return response([
         'message' => __('passwords.sent')
@@ -338,8 +338,8 @@ class UserController extends Controller
   public function resetPassword($email)
   {
     try {
-      $user = $this->users->findByEmail($email);
-      $user = $this->users->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
+      $user = $this->userRepository->findByEmail($email);
+      $user = $this->userRepository->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
 
       if (Gate::allows('user.view', $user)) {
         $user->makeVisible([
