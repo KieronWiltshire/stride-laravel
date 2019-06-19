@@ -6,7 +6,6 @@ use App\Entities\Role;
 
 interface RoleRepository
 {
-
   /**
    * Retrieve all of the roles.
    *

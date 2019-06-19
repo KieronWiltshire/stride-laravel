@@ -6,7 +6,6 @@ use App\Entities\User;
 
 interface UserRepository
 {
-
   /**
    * Retrieve all of the users.
    *

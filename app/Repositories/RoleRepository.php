@@ -4,11 +4,11 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\RoleRepository as RoleRepositoryInterface;
 use App\Entities\Role;
-use App\Events\Role\RoleCreatedEvent;
+use App\Events\Role\PermissionCreatedEvent;
 use App\Exceptions\Role\RoleNotFoundException;
 use App\Validation\Pagination\PaginationValidator;
 use App\Validation\Role\RoleCreateValidator;
-use App\Validation\Role\RoleUpdateValidator;
+use App\Validation\Role\PermissionUpdateValidator;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -25,7 +25,7 @@ class RoleRepository implements RoleRepositoryInterface
   protected $roleCreateValidator;
 
   /**
-   * @var \App\Validation\Role\RoleUpdateValidator
+   * @var \App\Validation\Role\PermissionUpdateValidator
    */
   protected $roleUpdateValidator;
 
@@ -34,12 +34,12 @@ class RoleRepository implements RoleRepositoryInterface
    *
    * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
    * @param \App\Validation\Role\RoleCreateValidator $roleCreateValidator
-   * @param \App\Validation\Role\RoleUpdateValidator $roleUpdateValidator
+   * @param \App\Validation\Role\PermissionUpdateValidator $roleUpdateValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,
     RoleCreateValidator $roleCreateValidator,
-    RoleUpdateValidator $roleUpdateValidator
+    PermissionUpdateValidator $roleUpdateValidator
   ) {
     $this->paginationValidator = $paginationValidator;
     $this->roleCreateValidator = $roleCreateValidator;
@@ -94,7 +94,7 @@ class RoleRepository implements RoleRepositoryInterface
     $this->roleCreateValidator->validate($attributes);
 
     if ($role = Role::create($attributes)) {
-      event(new RoleCreatedEvent($role));
+      event(new PermissionCreatedEvent($role));
 
       return $role;
     }

@@ -20,8 +20,9 @@ class RoleCreateValidator extends AppValidator
   public function rules()
   {
     return [
-//      'email' => 'required|unique:users|email',
-//      'password' => 'required|min:6',
+      'name' => 'required|unique:roles|alpha_dash',
+      'display_name' => '',
+      'description' => '',
     ];
   }
 }

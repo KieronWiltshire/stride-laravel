@@ -14,12 +14,16 @@ class RepositoryServiceProvider extends ServiceProvider
   public function register()
   {
     $this->app->bind(
-      'App\Contracts\UserRepository',
+      'App\Contracts\Repositories\UserRepository',
       'App\Repositories\UserRepository'
     );
     $this->app->bind(
-      'App\Contracts\RoleRepository',
+      'App\Contracts\Repositories\RoleRepository',
       'App\Repositories\RoleRepository'
+    );
+    $this->app->bind(
+      'App\Contracts\Repositories\PermissionRepository',
+      'App\Repositories\PermissionRepository'
     );
   }
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Validation\Role;
+namespace App\Validation\Permission;
 
-use App\Exceptions\Role\CannotUpdateRoleException;
+use App\Exceptions\Permission\CannotUpdatePermissionException;
 use App\Validation\AppValidator;
 
-class RoleUpdateValidator extends AppValidator
+class PermissionUpdateValidator extends AppValidator
 {
   /**
    * @var \App\Exceptions\AppError
    */
-  protected $exception = CannotUpdateRoleException::class;
+  protected $exception = CannotUpdatePermissionException::class;
 
   /**
    * Retrieve the rules set for the validator.
@@ -20,7 +20,7 @@ class RoleUpdateValidator extends AppValidator
   public function rules()
   {
     return [
-      'name' => 'unique:roles|alpha_dash',
+      'name' => 'unique:permissions|alpha_dash',
       'display_name' => '',
       'description' => '',
     ];
