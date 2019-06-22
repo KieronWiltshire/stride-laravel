@@ -6,6 +6,7 @@ use App\Exceptions\Auth\AuthenticationFailedException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Contracts\Repositories\UserRepository;
+use App\Transformers\UserTransformer;
 use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Parser;
 
@@ -17,14 +18,22 @@ class AuthController extends Controller
   private $userRepository;
 
   /**
+   * @var \App\Transformers\UserTransformer
+   */
+  private $userTransformer;
+
+  /**
    * Create a new auth controller instance
    *
    * @param \App\Contracts\Repositories\UserRepository $userRepository
+   * @param \App\Transformers\UserTransformer $userTransformer
    */
   public function __construct(
-    UserRepository $userRepository
+    UserRepository $userRepository,
+    UserTransformer $userTransformer
   ) {
     $this->userRepository = $userRepository;
+    $this->userTransformer = $userTransformer;
   }
 
   /**
@@ -68,7 +77,7 @@ class AuthController extends Controller
    */
   public function me()
   {
-    return response()->json(auth()->user());
+    return fractal(auth()->user(), $this->userTransformer)->toArray();
   }
 
   /**

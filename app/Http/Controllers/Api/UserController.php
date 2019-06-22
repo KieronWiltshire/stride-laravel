@@ -9,6 +9,7 @@ use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
 use App\Exceptions\User\InvalidEmailVerificationTokenException;
+use App\Transformers\UserTransformer;
 use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
@@ -19,14 +20,22 @@ class UserController extends Controller
   private $userRepository;
 
   /**
+   * @var \App\Transformers\UserTransformer
+   */
+  private $userTransformer;
+
+  /**
    * Create a new user controller instance
    *
    * @param \App\Contracts\Repositories\UserRepository $userRepository
+   * @param \App\Transformers\UserTransformer $userTransformer
    */
   public function __construct(
-    UserRepository $userRepository
+    UserRepository $userRepository,
+    UserTransformer $userTransformer
   ) {
     $this->userRepository = $userRepository;
+    $this->userTransformer = $userTransformer;
   }
 
   /**
@@ -38,24 +47,14 @@ class UserController extends Controller
    */
   public function index()
   {
-    $paginated = $this->userRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
+    $users = $this->userRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.index'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
 
-    $paginated->setCollection(
-      $paginated->getCollection()->each(function ($user) {
-        if (Gate::allows('user.view', $user)) {
-          $user->makeVisible([
-            'email'
-          ]);
-        }
-      })
-    );
-
-    return $paginated;
+    return fractal($users, $this->userTransformer)->toArray();
   }
 
   /**
@@ -67,12 +66,13 @@ class UserController extends Controller
    */
   public function create()
   {
-    return $this->userRepository->create([
+    $user = $this->userRepository->create([
       'email' => request()->input('email'),
       'password' => request()->input('password')
-    ])->makeVisible([
-      'email'
     ]);
+
+    return response([], 201)
+      ->header('Location', route('api.user.get', $user->id));
   }
 
   /**
@@ -86,15 +86,7 @@ class UserController extends Controller
   public function getById($id)
   {
     try {
-      $user = $this->userRepository->findById($id);
-
-      if (Gate::allows('user.view', $user)) {
-        $user->makeVisible([
-          'email'
-        ]);
-      }
-
-      return $user;
+      return fractal($this->userRepository->findById($id), $this->userTransformer)->toArray();
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -115,9 +107,7 @@ class UserController extends Controller
   public function getByEmail($email)
   {
     try {
-      return $this->userRepository->findByEmail($email)->makeVisible([
-        'email'
-      ]);
+      return fractal($this->userRepository->findByEmail($email), $this->userTransformer)->toArray();
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -149,24 +139,14 @@ class UserController extends Controller
         ]);
     }
 
-    $paginated = $this->userRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
+    $users = $this->userRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.user.search'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
 
-    $paginated->setCollection(
-      $paginated->getCollection()->each(function ($user) {
-        if (Gate::allows('user.view', $user)) {
-          $user->makeVisible([
-            'email'
-          ]);
-        }
-      })
-    );
-
-    return $paginated;
+    return fractal($users, $this->userTransformer)->toArray();
   }
 
   /**
@@ -188,13 +168,7 @@ class UserController extends Controller
         'password' => request()->input('password')
       ]);
 
-      if (Gate::allows('user.view', $user)) {
-        $user->makeVisible([
-          'email'
-        ]);
-      }
-
-      return $user;
+      return fractal($user, $this->userTransformer);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -249,13 +223,7 @@ class UserController extends Controller
       $user = $this->userRepository->findByEmail($email);
       $user = $this->userRepository->verifyEmail($user, request()->query('email_verification_token'));
 
-      if (Gate::allows('user.view', $user)) {
-        $user->makeVisible([
-          'email'
-        ]);
-      }
-
-      return $user;
+      return fractal($user, $this->userTransformer)->toArray();
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
@@ -341,13 +309,7 @@ class UserController extends Controller
       $user = $this->userRepository->findByEmail($email);
       $user = $this->userRepository->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
 
-      if (Gate::allows('user.view', $user)) {
-        $user->makeVisible([
-          'email'
-        ]);
-      }
-
-      return $user;
+      return fractal($user, $this->userTransformer)->toArray();
     } catch (InvalidPasswordResetTokenException $e) {
       throw $e->setContext([
         'password_reset_token' => [

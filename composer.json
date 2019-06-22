@@ -15,6 +15,7 @@
     "laravel/tinker": "^1.0",
     "pragmarx/version": "^0.2.9",
     "santigarcor/laratrust": "5.2.*",
+    "spatie/laravel-fractal": "^5.5",
     "webpatser/laravel-uuid": "^3.0"
   },
   "require-dev": {
