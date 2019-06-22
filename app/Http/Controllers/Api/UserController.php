@@ -10,7 +10,6 @@ use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
 use App\Exceptions\User\InvalidEmailVerificationTokenException;
 use App\Transformers\UserTransformer;
-use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {

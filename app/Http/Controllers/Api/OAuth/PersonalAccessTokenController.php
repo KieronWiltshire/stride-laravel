@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\OAuth;
 use App\Contracts\Repositories\UserRepository;
 use App\Exceptions\OAuth\TokenNotFoundException;
 use App\Http\Controllers\Controller;
+use App\Transformers\TokenTransformer;
 use App\Validation\OAuth\Token\TokenCreateValidator;
 use App\Repositories\TokenRepository;
 
@@ -16,18 +17,19 @@ class PersonalAccessTokenController extends Controller
   protected $tokenCreateValidator;
 
   /**
-   * The token repository implementation.
-   *
    * @var \App\Repositories\TokenRepository
    */
   protected $tokenRepository;
 
   /**
-   * The user repository implementation.
-   *
    * @var \App\Contracts\Repositories\UserRepository
    */
   protected $userRepository;
+
+  /**
+   * @var \App\Transformers\TokenTransformer
+   */
+  protected $tokenTransformer;
 
   /**
    * Create a controller instance.
@@ -35,15 +37,18 @@ class PersonalAccessTokenController extends Controller
    * @param \App\Validation\OAuth\Token\TokenCreateValidator $tokenCreateValidator
    * @param \App\Repositories\TokenRepository $tokenRepository
    * @param \App\Contracts\Repositories\UserRepository $userRepository
+   * @param \App\Transformers\TokenTransformer $tokenTransformer
    */
   public function __construct(
     TokenCreateValidator $tokenCreateValidator,
     TokenRepository $tokenRepository,
-    UserRepository $userRepository
+    UserRepository $userRepository,
+    TokenTransformer $tokenTransformer
   ) {
     $this->tokenCreateValidator = $tokenCreateValidator;
     $this->tokenRepository = $tokenRepository;
     $this->userRepository = $userRepository;
+    $this->tokenTransformer = $tokenTransformer;
   }
 
   /**
@@ -71,14 +76,16 @@ class PersonalAccessTokenController extends Controller
   public function forUser($id)
   {
     $user = $this->userRepository->findById($id);
-    $this->authorize('personal-access-token.for', $user);
+//    $this->authorize('personal-access-token.for', $user);
 
-    return $this->tokenRepository->personalAccessTokensForUserWithClientAndTokenNotRevokedAsPaginated($user->id, request()->input('limit'), request()->input('offset'))
-      ->setPath(route('api.oauth.personal-access-tokens.index'))
+    $tokens = $this->tokenRepository->personalAccessTokensForUserWithClientAndTokenNotRevokedAsPaginated($user->id, request()->input('limit'), request()->input('offset'))
+      ->setPath(route('api.oauth.personal-access-tokens.get', $user->id))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
+
+    return fractal($tokens, $this->tokenTransformer)->parseIncludes(['client'])->toArray();
   }
 
   /**
@@ -100,7 +107,7 @@ class PersonalAccessTokenController extends Controller
       'scopes' => $scopes
     ]);
 
-    return request()->user()->createToken($name, $scopes);
+    return fractal(request()->user()->createToken($name, $scopes), $this->tokenTransformer)->toArray();
   }
 
   /**

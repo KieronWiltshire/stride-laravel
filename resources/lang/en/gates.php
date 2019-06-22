@@ -26,4 +26,10 @@ return [
   'client.update' => 'Update an OAuth client\'s data.',
   'client.delete' => 'Delete an OAuth client',
 
+  'role.create' => 'Create a role.',
+  'role.update' => 'Update a role.',
+
+  'permission.create' => 'Create a permission.',
+  'permission.update' => 'Update a permission.',
+
 ];

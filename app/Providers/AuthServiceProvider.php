@@ -45,12 +45,6 @@ class AuthServiceProvider extends ServiceProvider
     Gate::define('user.view', 'App\Policies\UserPolicy@view');
     Gate::define('user.update', 'App\Policies\UserPolicy@update');
 
-    Gate::define('role.create', 'App\Policies\RolePolicy@create');
-    Gate::define('role.update', 'App\Policies\RolePolicy@update');
-
-    Gate::define('permission.create', 'App\Policies\PermissionPolicy@create');
-    Gate::define('permission.update', 'App\Policies\PermissionPolicy@update');
-
     Gate::define('personal-access-token.for', 'App\Policies\PersonalAccessTokenPolicy@for');
     Gate::define('personal-access-token.create', 'App\Policies\PersonalAccessTokenPolicy@create');
     Gate::define('personal-access-token.delete', 'App\Policies\PersonalAccessTokenPolicy@delete');
@@ -60,6 +54,12 @@ class AuthServiceProvider extends ServiceProvider
     Gate::define('client.create', 'App\Policies\ClientPolicy@create');
     Gate::define('client.update', 'App\Policies\ClientPolicy@update');
     Gate::define('client.delete', 'App\Policies\ClientPolicy@delete');
+
+    Gate::define('role.create', 'App\Policies\RolePolicy@create');
+    Gate::define('role.update', 'App\Policies\RolePolicy@update');
+
+    Gate::define('permission.create', 'App\Policies\PermissionPolicy@create');
+    Gate::define('permission.update', 'App\Policies\PermissionPolicy@update');
 
     Gate::after(function ($user, $ability, $result) {
       return ($result && $user->tokenCan($ability));

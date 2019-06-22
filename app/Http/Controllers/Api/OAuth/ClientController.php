@@ -7,6 +7,7 @@ use App\Exceptions\OAuth\ClientNotFoundException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Repositories\ClientRepository;
+use App\Transformers\ClientTransformer;
 use Illuminate\Support\Facades\Gate;
 
 class ClientController extends Controller
@@ -14,25 +15,33 @@ class ClientController extends Controller
   /**
    * @var \App\Repositories\ClientRepository
    */
-  protected $clients;
+  protected $clientRepository;
 
   /**
    * @var \App\Contracts\Repositories\UserRepository
    */
-  private $users;
+  private $userRepository;
+
+  /**
+   * @var \App\Transformers\ClientTransformer
+   */
+  private $clientTransformer;
 
   /**
    * Create a client controller instance.
    *
-   * @param \App\Repositories\ClientRepository $clients
-   * @param \App\Contracts\Repositories\UserRepository $users
+   * @param \App\Repositories\ClientRepository $clientRepository
+   * @param \App\Contracts\Repositories\UserRepository $userRepository
+   * @param \App\Transformers\ClientTransformer $clientTransformer
    */
   public function __construct(
-    ClientRepository $clients,
-    UserRepository $users
+    ClientRepository $clientRepository,
+    UserRepository $userRepository,
+    ClientTransformer $clientTransformer
   ) {
-    $this->clients = $clients;
-    $this->users = $users;
+    $this->clientRepository = $clientRepository;
+    $this->userRepository = $userRepository;
+    $this->clientTransformer = $clientTransformer;
   }
 
   /**
@@ -47,25 +56,17 @@ class ClientController extends Controller
   public function forUser($id)
   {
     try {
-      $user = $this->users->findById($id);
+      $user = $this->userRepository->findById($id);
       $this->authorize('client.for', $user);
 
-      $paginated = $this->clients->activeForUserAsPaginated($user->getKey(), request()->query('limit'), request()->query('offset'));
-
-      $paginated->getCollection()->each(function ($client) {
-        if (Gate::allows('client.view', $client)) {
-          $client->makeVisible([
-            'secret'
-          ]);
-        }
-      });
-
-      return $paginated
+      $clients = $this->clientRepository->activeForUserAsPaginated($user->getKey(), request()->query('limit'), request()->query('offset'))
         ->setPath(route('api.oauth.clients.index'))
         ->setPageName('offset')
         ->appends([
           'limit' => request()->query('limit')
         ]);
+
+      return fractal($clients, $this->clientTransformer)->toArray();
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -98,7 +99,10 @@ class ClientController extends Controller
   {
     $this->authorize('client.create');
 
-    return $this->clients->create(request()->user()->getKey(), request()->input('name'), request()->input('redirect'))->makeVisible('secret');
+    $client = $this->clientRepository->create(request()->user()->getKey(), request()->input('name'), request()->input('redirect'))->makeVisible('secret');
+
+    return response([], 201)
+      ->header('Location', route('api.oauth.client.get', $client->id));
   }
 
   /**
@@ -109,7 +113,7 @@ class ClientController extends Controller
    */
   public function update($id)
   {
-    $client = $this->clients->findForUser($id, request()->user()->getKey());
+    $client = $this->clientRepository->findForUser($id, request()->user()->getKey());
     $this->authorize('client.update', $client);
 
     if (!$client) {
@@ -120,26 +124,21 @@ class ClientController extends Controller
       ]);
     }
 
-    $client = $this->clients->update($client, request()->input('name'), request()->input('redirect'));
+    $client = $this->clientRepository->update($client, request()->input('name'), request()->input('redirect'));
 
-    if (Gate::allows('client.view', $client)) {
-      $client->makeVisible([
-        'secret'
-      ]);
-    }
-
-    return $client;
+    return fractal($client, $this->clientTransformer)->toArray();
   }
 
   /**
    * Delete the given client.
+   *
    *
    * @param string $id
    * @return \Illuminate\Http\Response
    */
   public function destroy($id)
   {
-    $client = $this->clients->findForUser($id, request()->user()->getKey());
+    $client = $this->clientRepository->findForUser($id, request()->user()->getKey());
     $this->authorize('client.delete', $client);
 
     if ($client->revoked) {
@@ -150,7 +149,7 @@ class ClientController extends Controller
       ]);
     }
 
-    $this->clients->delete($client);
+    $this->clientRepository->delete($client);
 
     return response('', 204);
   }

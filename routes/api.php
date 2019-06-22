@@ -63,8 +63,8 @@ Route::namespace('Api')->name('api.')->group(function () {
      * Personal Access Tokens
      */
     Route::name('personal-access-tokens.')->middleware('auth')->group(function() {
-      Route::get('/user/me/personal-access-tokens', 'PersonalAccessTokenController@forAuthenticatedUser')->name('index');
-      Route::get('/user/{id}/personal-access-tokens', 'PersonalAccessTokenController@forUser')->where('id', '[0-9]+')->name('index');
+      Route::get('/user/me/personal-access-tokens', 'PersonalAccessTokenController@forAuthenticatedUser')->name('get');
+      Route::get('/user/{id}/personal-access-tokens', 'PersonalAccessTokenController@forUser')->where('id', '[0-9]+')->name('get');
       Route::post('/personal-access-tokens', 'PersonalAccessTokenController@store')->name('store');
       Route::delete('/personal-access-tokens/{token_id}', 'PersonalAccessTokenController@destroy')->name('destroy');
     });
@@ -73,8 +73,8 @@ Route::namespace('Api')->name('api.')->group(function () {
      * Clients
      */
     Route::name('clients.')->middleware('auth')->group(function() {
-      Route::get('/user/me/clients', 'ClientController@forAuthenticatedUser')->name('index');
-      Route::get('/user/{id}/clients', 'ClientController@forUser')->where('id', '[0-9]+')->name('index');
+      Route::get('/user/me/clients', 'ClientController@forAuthenticatedUser')->name('get');
+      Route::get('/user/{id}/clients', 'ClientController@forUser')->where('id', '[0-9]+')->name('get');
       Route::post('/clients', 'ClientController@store')->name('store');
       Route::put('/clients/{id}', 'ClientController@update')->name('update');
       Route::delete('/clients/{id}', 'ClientController@destroy')->name('destroy');
