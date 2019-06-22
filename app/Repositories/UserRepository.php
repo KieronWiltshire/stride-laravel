@@ -6,11 +6,11 @@ use App\Contracts\Repositories\UserRepository as UserRepositoryInterface;
 use App\Entities\User;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\UserNotFoundException;
-use App\Validation\Pagination\PaginationValidator;
-use App\Validation\User\UserCreateValidator;
-use App\Validation\User\UserEmailValidator;
-use App\Validation\User\UserPasswordValidator;
-use App\Validation\User\UserUpdateValidator;
+use App\Validators\Pagination\PaginationValidator;
+use App\Validators\User\UserCreateValidator;
+use App\Validators\User\UserEmailValidator;
+use App\Validators\User\UserPasswordValidator;
+use App\Validators\User\UserUpdateValidator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Exception;
 use App\Events\User\UserCreatedEvent;
@@ -29,38 +29,38 @@ use App\Events\User\PasswordResetTokenGeneratedEvent;
 class UserRepository implements UserRepositoryInterface
 {
   /**
-   * @var \App\Validation\Pagination\PaginationValidator
+   * @var \App\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
   /**
-   * @var \App\Validation\User\UserCreateValidator
+   * @var \App\Validators\User\UserCreateValidator
    */
   protected $userCreateValidator;
 
   /**
-   * @var \App\Validation\User\UserUpdateValidator
+   * @var \App\Validators\User\UserUpdateValidator
    */
   protected $userUpdateValidator;
 
   /**
-   * @var \App\Validation\User\UserEmailValidator
+   * @var \App\Validators\User\UserEmailValidator
    */
   protected $userEmailValidator;
 
   /**
-   * @var \App\Validation\User\UserPasswordValidator
+   * @var \App\Validators\User\UserPasswordValidator
    */
   protected $userPasswordValidator;
 
   /**
    * Create a new user repository instance.
    *
-   * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
-   * @param \App\Validation\User\UserCreateValidator $userCreateValidator
-   * @param \App\Validation\User\UserUpdateValidator $userUpdateValidator
-   * @param \App\Validation\User\UserEmailValidator $userEmailValidator
-   * @param \App\Validation\User\UserPasswordValidator $userPasswordValidator
+   * @param \App\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \App\Validators\User\UserCreateValidator $userCreateValidator
+   * @param \App\Validators\User\UserUpdateValidator $userUpdateValidator
+   * @param \App\Validators\User\UserEmailValidator $userEmailValidator
+   * @param \App\Validators\User\UserPasswordValidator $userPasswordValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,

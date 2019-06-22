@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Validation\User;
+namespace App\Validators\User;
 
 use App\Exceptions\User\InvalidPasswordException;
-use App\Validation\AppValidator;
+use App\Validators\AppValidator;
 
 class UserPasswordValidator extends AppValidator
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Validation\User;
+namespace App\Validators\User;
 
 use App\Exceptions\User\InvalidEmailException;
-use App\Validation\AppValidator;
+use App\Validators\AppValidator;
 
 class UserEmailValidator extends AppValidator
 {

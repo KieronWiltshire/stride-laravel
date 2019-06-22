@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Validation\OAuth\Client;
+namespace App\Validators\OAuth\Client;
 
-use App\Exceptions\OAuth\CannotCreateClientException;
-use App\Validation\AppValidator;
+use App\Exceptions\OAuth\CannotUpdateClientException;
+use App\Validators\AppValidator;
 
-class ClientCreateValidator extends AppValidator
+class ClientUpdateValidator extends AppValidator
 {
   /**
    * @var \App\Exceptions\AppError
    */
-  protected $exception = CannotCreateClientException::class;
+  protected $exception = CannotUpdateClientException::class;
 
   /**
    * Retrieve the rules set for the validator.

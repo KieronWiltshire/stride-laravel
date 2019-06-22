@@ -6,13 +6,13 @@ use App\Contracts\Repositories\UserRepository;
 use App\Exceptions\OAuth\TokenNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Transformers\TokenTransformer;
-use App\Validation\OAuth\Token\TokenCreateValidator;
+use App\Validators\OAuth\Token\TokenCreateValidator;
 use App\Repositories\TokenRepository;
 
 class PersonalAccessTokenController extends Controller
 {
   /**
-   * @var \App\Validation\OAuth\Token\TokenCreateValidator
+   * @var \App\Validators\OAuth\Token\TokenCreateValidator
    */
   protected $tokenCreateValidator;
 
@@ -34,7 +34,7 @@ class PersonalAccessTokenController extends Controller
   /**
    * Create a controller instance.
    *
-   * @param \App\Validation\OAuth\Token\TokenCreateValidator $tokenCreateValidator
+   * @param \App\Validators\OAuth\Token\TokenCreateValidator $tokenCreateValidator
    * @param \App\Repositories\TokenRepository $tokenRepository
    * @param \App\Contracts\Repositories\UserRepository $userRepository
    * @param \App\Transformers\TokenTransformer $tokenTransformer

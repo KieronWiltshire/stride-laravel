@@ -3,8 +3,8 @@
 namespace App\Repositories;
 
 use App\Exceptions\OAuth\TokenNotFoundException;
-use App\Validation\OAuth\Token\TokenCreateValidator;
-use App\Validation\Pagination\PaginationValidator;
+use App\Validators\OAuth\Token\TokenCreateValidator;
+use App\Validators\Pagination\PaginationValidator;
 use Laravel\Passport\Token;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\TokenRepository as PassportTokenRepository;
@@ -20,20 +20,20 @@ use Laravel\Passport\Passport;
 class TokenRepository extends PassportTokenRepository
 {
   /**
-   * @var \App\Validation\Pagination\PaginationValidator
+   * @var \App\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
   /**
-   * @var \App\Validation\OAuth\Token\TokenCreateValidator
+   * @var \App\Validators\OAuth\Token\TokenCreateValidator
    */
   protected $tokenCreateValidator;
 
   /**
    * Create a new token repository instance.
    *
-   * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
-   * @param \App\Validation\OAuth\Token\TokenCreateValidator $tokenCreateValidator
+   * @param \App\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \App\Validators\OAuth\Token\TokenCreateValidator $tokenCreateValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,

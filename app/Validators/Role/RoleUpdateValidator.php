@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Validation\Role;
+namespace App\Validators\Role;
 
 use App\Exceptions\Role\CannotUpdateRoleException;
-use App\Validation\AppValidator;
+use App\Validators\AppValidator;
 
 class RoleUpdateValidator extends AppValidator
 {

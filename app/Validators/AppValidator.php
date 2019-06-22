@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Validation;
+namespace App\Validators;
 
 use App\Exceptions\Http\ValidationError;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;

@@ -7,35 +7,35 @@ use App\Entities\Role;
 use App\Events\Role\RoleCreatedEvent;
 use App\Events\Role\RoleUpdatedEvent;
 use App\Exceptions\Role\RoleNotFoundException;
-use App\Validation\Pagination\PaginationValidator;
-use App\Validation\Role\RoleCreateValidator;
-use App\Validation\Role\RoleUpdateValidator;
+use App\Validators\Pagination\PaginationValidator;
+use App\Validators\Role\RoleCreateValidator;
+use App\Validators\Role\RoleUpdateValidator;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class RoleRepository implements RoleRepositoryInterface
 {
   /**
-   * @var \App\Validation\Pagination\PaginationValidator
+   * @var \App\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
   /**
-   * @var \App\Validation\Role\RoleCreateValidator
+   * @var \App\Validators\Role\RoleCreateValidator
    */
   protected $roleCreateValidator;
 
   /**
-   * @var \App\Validation\Role\RoleUpdateValidator
+   * @var \App\Validators\Role\RoleUpdateValidator
    */
   protected $roleUpdateValidator;
 
   /**
    * Create a new role repository instance.
    *
-   * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
-   * @param \App\Validation\Role\RoleCreateValidator $roleCreateValidator
-   * @param \App\Validation\Role\RoleUpdateValidator $roleUpdateValidator
+   * @param \App\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \App\Validators\Role\RoleCreateValidator $roleCreateValidator
+   * @param \App\Validators\Role\RoleUpdateValidator $roleUpdateValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,

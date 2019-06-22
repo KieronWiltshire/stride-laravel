@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Validation\OAuth\Token;
+namespace App\Validators\OAuth\Token;
 
 use App\Exceptions\OAuth\CannotCreateTokenException;
-use App\Validation\AppValidator;
+use App\Validators\AppValidator;
 use Laravel\Passport\Passport;
 
 class TokenCreateValidator extends AppValidator

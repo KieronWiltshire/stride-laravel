@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Validation\Permission;
+namespace App\Validators\Permission;
 
 use App\Exceptions\Permission\CannotUpdatePermissionException;
-use App\Validation\AppValidator;
+use App\Validators\AppValidator;
 
 class PermissionUpdateValidator extends AppValidator
 {

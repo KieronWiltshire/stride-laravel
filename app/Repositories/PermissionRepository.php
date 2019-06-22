@@ -7,35 +7,35 @@ use App\Entities\Permission;
 use App\Events\Permission\PermissionCreatedEvent;
 use App\Events\Permission\PermissionUpdatedEvent;
 use App\Exceptions\Permission\PermissionNotFoundException;
-use App\Validation\Pagination\PaginationValidator;
-use App\Validation\Permission\PermissionCreateValidator;
-use App\Validation\Permission\PermissionUpdateValidator;
+use App\Validators\Pagination\PaginationValidator;
+use App\Validators\Permission\PermissionCreateValidator;
+use App\Validators\Permission\PermissionUpdateValidator;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class PermissionRepository implements PermissionRepositoryInterface
 {
   /**
-   * @var \App\Validation\Pagination\PaginationValidator
+   * @var \App\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
   /**
-   * @var \App\Validation\Permission\PermissionCreateValidator
+   * @var \App\Validators\Permission\PermissionCreateValidator
    */
   protected $permissionCreateValidator;
 
   /**
-   * @var \App\Validation\Permission\PermissionUpdateValidator
+   * @var \App\Validators\Permission\PermissionUpdateValidator
    */
   protected $permissionUpdateValidator;
 
   /**
    * Create a new role repository instance.
    *
-   * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
-   * @param \App\Validation\Permission\PermissionCreateValidator $permissionCreateValidator
-   * @param \App\Validation\Permission\PermissionUpdateValidator $permissionUpdateValidator
+   * @param \App\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \App\Validators\Permission\PermissionCreateValidator $permissionCreateValidator
+   * @param \App\Validators\Permission\PermissionUpdateValidator $permissionUpdateValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,

@@ -2,9 +2,9 @@
 
 namespace App\Repositories;
 
-use App\Validation\OAuth\Client\ClientCreateValidator;
-use App\Validation\OAuth\Client\ClientUpdateValidator;
-use App\Validation\Pagination\PaginationValidator;
+use App\Validators\OAuth\Client\ClientCreateValidator;
+use App\Validators\OAuth\Client\ClientUpdateValidator;
+use App\Validators\Pagination\PaginationValidator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\ClientRepository as PassportClientRepository;
 use App\Exceptions\OAuth\ClientNotFoundException;
@@ -21,26 +21,26 @@ use Laravel\Passport\Passport;
 class ClientRepository extends PassportClientRepository
 {
   /**
-   * @var \App\Validation\Pagination\PaginationValidator
+   * @var \App\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
   /**
- * @var \App\Validation\OAuth\Client\ClientCreateValidator
+ * @var \App\Validators\OAuth\Client\ClientCreateValidator
  */
   protected $clientCreateValidator;
 
   /**
-   * @var \App\Validation\OAuth\Client\ClientUpdateValidator
+   * @var \App\Validators\OAuth\Client\ClientUpdateValidator
    */
   protected $clientUpdateValidator;
 
   /**
    * Create a new client repository instance.
    *
-   * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
-   * @param \App\Validation\OAuth\Client\ClientCreateValidator $clientCreateValidator
-   * @param \App\Validation\OAuth\Client\ClientUpdateValidator $clientUpdateValidator
+   * @param \App\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \App\Validators\OAuth\Client\ClientCreateValidator $clientCreateValidator
+   * @param \App\Validators\OAuth\Client\ClientUpdateValidator $clientUpdateValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Validation\Pagination;
+namespace App\Validators\Pagination;
 
 use App\Exceptions\Pagination\InvalidPaginationException;
-use App\Validation\AppValidator;
+use App\Validators\AppValidator;
 
 class PaginationValidator extends AppValidator
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Validation\Permission;
+namespace App\Validators\Permission;
 
 use App\Exceptions\Permission\CannotCreatePermissionException;
-use App\Validation\AppValidator;
+use App\Validators\AppValidator;
 
 class PermissionCreateValidator extends AppValidator
 {
