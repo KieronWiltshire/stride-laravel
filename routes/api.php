@@ -96,6 +96,30 @@ Route::namespace('Api')->name('api.')->group(function () {
   });
 
   /**
+   * Role routes
+   */
+  Route::name('role.')->prefix('role')->group(function () {
+    Route::get('/', 'RoleController@index')->name('index');
+    Route::post('/', 'RoleController@create')->name('create')->middleware('auth');
+    Route::get('/search', 'RoleController@search')->name('search');
+    Route::get('/{id}', 'RoleController@getById')->name('get')->where('id', '[0-9]+');
+    Route::put('/{id}', 'RoleController@update')->name('update')->where('id', '[0-9]+')->middleware('auth');
+    Route::get('/{name}', 'RoleController@getByName')->name('get');
+  });
+
+  /**
+   * Permission routes
+   */
+  Route::name('permission.')->prefix('permission')->group(function () {
+    Route::get('/', 'PermissionController@index')->name('index');
+    Route::post('/', 'PermissionController@create')->name('create')->middleware('auth');
+    Route::get('/search', 'PermissionController@search')->name('search');
+    Route::get('/{id}', 'PermissionController@getById')->name('get')->where('id', '[0-9]+');
+    Route::put('/{id}', 'PermissionController@update')->name('update')->where('id', '[0-9]+')->middleware('auth');
+    Route::get('/{name}', 'PermissionController@getByName')->name('get');
+  });
+
+  /**
    * 404 catch
    */
   Route::fallback(function(){
