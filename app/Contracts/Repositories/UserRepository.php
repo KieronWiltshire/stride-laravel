@@ -35,6 +35,20 @@ interface UserRepository
   function create($attributes);
 
   /**
+   * Create a user if the specified search parameters could not find one
+   * with the matching criteria.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param array $attributes
+   * @return \App\Entities\User
+   *
+   * @throws \App\Exceptions\User\CannotCreateUserException
+   */
+  function firstOrCreate($parameter, $search, $regex = true, $attributes = []);
+
+  /**
    * Find a user by an unknown parameter.
    *
    * @param number|string $parameter

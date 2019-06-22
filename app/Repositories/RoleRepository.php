@@ -104,6 +104,33 @@ class RoleRepository implements RoleRepositoryInterface
   }
 
   /**
+   * Create a role if the specified search parameters could not find one
+   * with the matching criteria.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param array $attributes
+   * @return \App\Entities\Role
+   *
+   * @throws \App\Exceptions\Role\CannotCreateRoleException
+   */
+  public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
+  {
+    $query = Role::query();
+
+    if ($regex) {
+      $query->where($parameter, 'REGEXP', $search);
+    } else {
+      $query->where($parameter, $search);
+    }
+
+    $role = $query->first();
+
+    return ($role) ? $role : $this->create($attributes);
+  }
+
+  /**
    * Find a role by an unknown parameter.
    *
    * @param number|string $parameter
@@ -116,9 +143,9 @@ class RoleRepository implements RoleRepositoryInterface
     $query = Role::query();
 
     if ($regex) {
-      $query->where($parameter, 'REGEXP', $search)->get();
+      $query->where($parameter, 'REGEXP', $search);
     } else {
-      $query->where($parameter, $search)->get();
+      $query->where($parameter, $search);
     }
 
     return $query->get();

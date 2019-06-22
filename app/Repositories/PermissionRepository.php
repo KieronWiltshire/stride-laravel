@@ -104,6 +104,33 @@ class PermissionRepository implements PermissionRepositoryInterface
   }
 
   /**
+   * Create a permission if the specified search parameters could not find one
+   * with the matching criteria.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param array $attributes
+   * @return \App\Entities\Permission
+   *
+   * @throws \App\Exceptions\Permission\CannotCreatePermissionException
+   */
+  public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
+  {
+    $query = Permission::query();
+
+    if ($regex) {
+      $query->where($parameter, 'REGEXP', $search);
+    } else {
+      $query->where($parameter, $search);
+    }
+
+    $permission = $query->first();
+
+    return ($permission) ? $permission : $this->create($attributes);
+  }
+
+  /**
    * Find a permission by an unknown parameter.
    *
    * @param number|string $parameter
@@ -116,9 +143,9 @@ class PermissionRepository implements PermissionRepositoryInterface
     $query = Permission::query();
 
     if ($regex) {
-      $query->where($parameter, 'REGEXP', $search)->get();
+      $query->where($parameter, 'REGEXP', $search);
     } else {
-      $query->where($parameter, $search)->get();
+      $query->where($parameter, $search);
     }
 
     return $query->get();

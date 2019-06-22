@@ -35,6 +35,20 @@ interface RoleRepository
   function create($attributes);
 
   /**
+   * Create a role if the specified search parameters could not find one
+   * with the matching criteria.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param array $attributes
+   * @return \App\Entities\Role
+   *
+   * @throws \App\Exceptions\Role\CannotCreateRoleException
+   */
+  function firstOrCreate($parameter, $search, $regex = true, $attributes = []);
+
+  /**
    * Find a role by an unknown parameter.
    *
    * @param number|string $parameter

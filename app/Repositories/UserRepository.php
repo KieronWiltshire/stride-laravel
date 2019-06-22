@@ -114,7 +114,7 @@ class UserRepository implements UserRepositoryInterface
   /**
    * Create a new user.
    *
-   * @param Array $attributes
+   * @param array $attributes
    * @return \App\Entities\User
    * 
    * @throws \App\Exceptions\User\CannotCreateUserException
@@ -137,6 +137,33 @@ class UserRepository implements UserRepositoryInterface
   }
 
   /**
+   * Create a user if the specified search parameters could not find one
+   * with the matching criteria.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param array $attributes
+   * @return \App\Entities\User
+   *
+   * @throws \App\Exceptions\User\CannotCreateUserException
+   */
+  public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
+  {
+    $query = User::query();
+
+    if ($regex) {
+      $query->where($parameter, 'REGEXP', $search);
+    } else {
+      $query->where($parameter, $search);
+    }
+
+    $user = $query->first();
+
+    return ($user) ? $user : $this->create($attributes);
+  }
+
+  /**
    * Find a user by an unknown parameter.
    *
    * @param number|string $parameter
@@ -149,9 +176,9 @@ class UserRepository implements UserRepositoryInterface
     $query = User::query();
 
     if ($regex) {
-      $query->where($parameter, 'REGEXP', $search)->get();
+      $query->where($parameter, 'REGEXP', $search);
     } else {
-      $query->where($parameter, $search)->get();
+      $query->where($parameter, $search);
     }
 
     return $query->get();

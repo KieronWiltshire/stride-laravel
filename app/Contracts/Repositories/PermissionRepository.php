@@ -35,6 +35,20 @@ interface PermissionRepository
   function create($attributes);
 
   /**
+   * Create a permission if the specified search parameters could not find one
+   * with the matching criteria.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param array $attributes
+   * @return \App\Entities\Permission
+   *
+   * @throws \App\Exceptions\Permission\CannotCreatePermissionException
+   */
+  function firstOrCreate($parameter, $search, $regex = true, $attributes = []);
+
+  /**
    * Find a permission by an unknown parameter.
    *
    * @param number|string $parameter
