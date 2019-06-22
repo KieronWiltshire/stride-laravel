@@ -15,12 +15,12 @@ class AuthController extends Controller
   /**
    * @var \App\Contracts\Repositories\UserRepository
    */
-  private $userRepository;
+  protected $userRepository;
 
   /**
    * @var \App\Transformers\UserTransformer
    */
-  private $userTransformer;
+  protected $userTransformer;
 
   /**
    * Create a new auth controller instance
@@ -77,7 +77,7 @@ class AuthController extends Controller
    */
   public function me()
   {
-    return fractal(auth()->user(), $this->userTransformer)->toArray();
+    return fractal(auth()->user(), $this->userTransformer);
   }
 
   /**

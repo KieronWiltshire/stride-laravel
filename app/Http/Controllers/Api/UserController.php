@@ -16,12 +16,12 @@ class UserController extends Controller
   /**
    * @var \App\Contracts\Repositories\UserRepository
    */
-  private $userRepository;
+  protected $userRepository;
 
   /**
    * @var \App\Transformers\UserTransformer
    */
-  private $userTransformer;
+  protected $userTransformer;
 
   /**
    * Create a new user controller instance
@@ -53,7 +53,7 @@ class UserController extends Controller
         'limit' => request()->query('limit')
       ]);
 
-    return fractal($users, $this->userTransformer)->toArray();
+    return fractal($users, $this->userTransformer);
   }
 
   /**
@@ -85,7 +85,7 @@ class UserController extends Controller
   public function getById($id)
   {
     try {
-      return fractal($this->userRepository->findById($id), $this->userTransformer)->toArray();
+      return fractal($this->userRepository->findById($id), $this->userTransformer);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -145,7 +145,7 @@ class UserController extends Controller
         'limit' => request()->query('limit')
       ]);
 
-    return fractal($users, $this->userTransformer)->toArray();
+    return fractal($users, $this->userTransformer);
   }
 
   /**
@@ -192,11 +192,11 @@ class UserController extends Controller
       $user = $this->userRepository->findById($id);
       $this->authorize('user.update', $user);
 
-      if ($this->users->requestEmailChange($user, request()->input('email'))) {
-        return response()->json([
-          'message' => __('email.email_verification_sent')
-        ], 202);
-      }
+      $this->userRepository->requestEmailChange($user, request()->input('email'));
+
+      return response()->json([
+        'message' => __('email.email_verification_sent')
+      ], 202);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -222,7 +222,7 @@ class UserController extends Controller
       $user = $this->userRepository->findByEmail($email);
       $user = $this->userRepository->verifyEmail($user, request()->query('email_verification_token'));
 
-      return fractal($user, $this->userTransformer)->toArray();
+      return fractal($user, $this->userTransformer);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
@@ -308,7 +308,7 @@ class UserController extends Controller
       $user = $this->userRepository->findByEmail($email);
       $user = $this->userRepository->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
 
-      return fractal($user, $this->userTransformer)->toArray();
+      return fractal($user, $this->userTransformer);
     } catch (InvalidPasswordResetTokenException $e) {
       throw $e->setContext([
         'password_reset_token' => [

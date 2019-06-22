@@ -20,12 +20,12 @@ class ClientController extends Controller
   /**
    * @var \App\Contracts\Repositories\UserRepository
    */
-  private $userRepository;
+  protected $userRepository;
 
   /**
    * @var \App\Transformers\ClientTransformer
    */
-  private $clientTransformer;
+  protected $clientTransformer;
 
   /**
    * Create a client controller instance.
@@ -66,7 +66,7 @@ class ClientController extends Controller
           'limit' => request()->query('limit')
         ]);
 
-      return fractal($clients, $this->clientTransformer)->toArray();
+      return fractal($clients, $this->clientTransformer);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -126,7 +126,7 @@ class ClientController extends Controller
 
     $client = $this->clientRepository->update($client, request()->input('name'), request()->input('redirect'));
 
-    return fractal($client, $this->clientTransformer)->toArray();
+    return fractal($client, $this->clientTransformer);
   }
 
   /**

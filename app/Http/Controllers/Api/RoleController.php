@@ -6,23 +6,32 @@ use App\Exceptions\Role\RoleNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Contracts\Repositories\RoleRepository;
 use App\Exceptions\Http\BadRequestError;
+use App\Transformers\RoleTransformer;
 
 class RoleController extends Controller
 {
   /**
    * @var \App\Contracts\Repositories\RoleRepository
    */
-  private $roleRepository;
+  protected $roleRepository;
+
+  /**
+   * @var \App\Transformers\RoleTransformer
+   */
+  protected $roleTransformer;
 
   /**
    * Create a new role controller instance
    *
    * @param \App\Contracts\Repositories\RoleRepository $roleRepository
+   * @param \App\Transformers\RoleTransformer $roleTransformer
    */
   public function __construct(
-    RoleRepository $roleRepository
+    RoleRepository $roleRepository,
+    RoleTransformer $roleTransformer
   ) {
     $this->roleRepository = $roleRepository;
+    $this->roleTransformer = $roleTransformer;
   }
 
   /**
@@ -34,14 +43,14 @@ class RoleController extends Controller
    */
   public function index()
   {
-    $paginated = $this->roleRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
+    $roles = $this->roleRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.role.index'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
 
-    return $paginated;
+    return fractal($roles, $this->roleTransformer);
   }
 
   /**
@@ -55,11 +64,14 @@ class RoleController extends Controller
   {
     $this->authorize('role.create');
 
-    return $this->roleRepository->create([
+    $role = $this->roleRepository->create([
       'name' => request()->input('name'),
       'display_name' => request()->input('display_name'),
       'description' => request()->input('description')
     ]);
+
+    return response([], 201)
+      ->header('Location', route('api.role.get', $role->id));
   }
 
   /**
@@ -73,9 +85,7 @@ class RoleController extends Controller
   public function getById($id)
   {
     try {
-      $role = $this->roleRepository->findById($id);
-
-      return $role;
+      return fractal($this->roleRepository->findById($id), $this->roleTransformer);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -96,7 +106,7 @@ class RoleController extends Controller
   public function getByName($name)
   {
     try {
-      return $this->roleRepository->findByName($name);
+      return fractal($this->roleRepository->findByName($name), $this->roleTransformer);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -128,14 +138,14 @@ class RoleController extends Controller
         ]);
     }
 
-    $paginated = $this->roleRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
+    $roles = $this->roleRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.role.search'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
 
-    return $paginated;
+    return fractal($roles, $this->roleTransformer);
   }
 
   /**
@@ -153,11 +163,13 @@ class RoleController extends Controller
       $role = $this->roleRepository->findById($id);
       $this->authorize('role.update', $role);
 
-      return $this->roleRepository->update($role, [
+      $role = $this->roleRepository->update($role, [
         'name' => request()->input('name'),
         'display_name' => request()->input('display_name'),
         'description' => request()->input('description')
       ]);
+
+      return fractal($role, $this->roleTransformer);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [

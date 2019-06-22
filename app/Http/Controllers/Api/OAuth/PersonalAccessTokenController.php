@@ -85,7 +85,7 @@ class PersonalAccessTokenController extends Controller
         'limit' => request()->query('limit')
       ]);
 
-    return fractal($tokens, $this->tokenTransformer)->parseIncludes(['client'])->toArray();
+    return fractal($tokens, $this->tokenTransformer)->parseIncludes(['client']);
   }
 
   /**
@@ -107,7 +107,7 @@ class PersonalAccessTokenController extends Controller
       'scopes' => $scopes
     ]);
 
-    return fractal(request()->user()->createToken($name, $scopes), $this->tokenTransformer)->toArray();
+    return fractal(request()->user()->createToken($name, $scopes), $this->tokenTransformer);
   }
 
   /**

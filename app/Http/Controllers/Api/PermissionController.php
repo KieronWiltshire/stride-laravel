@@ -6,23 +6,32 @@ use App\Exceptions\Permission\PermissionNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Contracts\Repositories\PermissionRepository;
 use App\Exceptions\Http\BadRequestError;
+use App\Transformers\PermissionTransformer;
 
 class PermissionController extends Controller
 {
   /**
    * @var \App\Contracts\Repositories\PermissionRepository
    */
-  private $permissionRepository;
+  protected $permissionRepository;
+
+  /**
+   * @var \App\Transformers\PermissionTransformer
+   */
+  protected $permissionTransformer;
 
   /**
    * Create a new permission controller instance
    *
    * @param \App\Contracts\Repositories\PermissionRepository $permissionRepository
+   * @param \App\Transformers\PermissionTransformer $permissionTransformer
    */
   public function __construct(
-    PermissionRepository $permissionRepository
+    PermissionRepository $permissionRepository,
+    PermissionTransformer $permissionTransformer
   ) {
     $this->permissionRepository = $permissionRepository;
+    $this->permissionTransformer = $permissionTransformer;
   }
 
   /**
@@ -34,14 +43,14 @@ class PermissionController extends Controller
    */
   public function index()
   {
-    $paginated = $this->permissionRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
+    $permissions = $this->permissionRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.permission.index'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
 
-    return $paginated;
+    return fractal($permissions, $this->permissionTransformer);
   }
 
   /**
@@ -55,11 +64,14 @@ class PermissionController extends Controller
   {
     $this->authorize('permission.create');
 
-    return $this->permissionRepository->create([
+    $permission = $this->permissionRepository->create([
       'name' => request()->input('name'),
       'display_name' => request()->input('display_name'),
       'description' => request()->input('description')
     ]);
+
+    return response([], 201)
+      ->header('Location', route('api.permission.get', $permission->id));
   }
 
   /**
@@ -73,9 +85,7 @@ class PermissionController extends Controller
   public function getById($id)
   {
     try {
-      $permission = $this->permissionRepository->findById($id);
-
-      return $permission;
+      return fractal($this->permissionRepository->findById($id), $this->permissionTransformer);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -96,7 +106,7 @@ class PermissionController extends Controller
   public function getByName($name)
   {
     try {
-      return $this->permissionRepository->findByName($name);
+      return fractal($this->permissionRepository->findByName($name), $this->permissionTransformer);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -128,14 +138,14 @@ class PermissionController extends Controller
         ]);
     }
 
-    $paginated = $this->permissionRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
+    $permissions = $this->permissionRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.permission.search'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
 
-    return $paginated;
+    return fractal($permissions, $this->permissionTransformer);
   }
 
   /**
@@ -153,11 +163,13 @@ class PermissionController extends Controller
       $permission = $this->permissionRepository->findById($id);
       $this->authorize('permission.update', $permission);
 
-      return $this->permissionRepository->update($permission, [
+      $permission = $this->permissionRepository->update($permission, [
         'name' => request()->input('name'),
         'display_name' => request()->input('display_name'),
         'description' => request()->input('description')
       ]);
+
+      return fractal($permission, $this->permissionTransformer);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
         'id' => [
