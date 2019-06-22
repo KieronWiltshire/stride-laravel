@@ -17,7 +17,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/api/user?dump",
+									"raw": "{{url}}/api/user",
 									"host": [
 										"{{url}}"
 									],
@@ -35,10 +35,6 @@
 											"key": "offset",
 											"value": "0",
 											"disabled": true
-										},
-										{
-											"key": "dump",
-											"value": null
 										}
 									]
 								}
@@ -125,7 +121,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/api/user/1?dump",
+									"raw": "{{url}}/api/user/1",
 									"host": [
 										"{{url}}"
 									],
@@ -133,12 +129,6 @@
 										"api",
 										"user",
 										"1"
-									],
-									"query": [
-										{
-											"key": "dump",
-											"value": null
-										}
 									]
 								}
 							},
@@ -313,6 +303,416 @@
 											"key": "email",
 											"value": "john.doe@example.com"
 										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Role",
+					"item": [
+						{
+							"name": "Retrieve all of the roles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/role",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "50",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "0",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new role",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "very-important-people",
+											"type": "text"
+										},
+										{
+											"key": "display_name",
+											"value": "VIP",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "A role which should be given to very important people.",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/role",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search for a role",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/role/search?parameter=name&search=(very-important-people)&regex=true",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"search"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "name"
+										},
+										{
+											"key": "search",
+											"value": "(very-important-people)"
+										},
+										{
+											"key": "regex",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a role by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/user/1?",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1"
+									],
+									"query": [
+										{
+											"key": "dump",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a role by name",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/role/very-important-people",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"very-important-people"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a role",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjE1ODJmYTc4MzY5NzE5MzE5ZjdmNjNjYTNiZTViMDc5YTY0NDM0Y2VmOWYxZjk1ZWI1OGMyMTJkNjUxNGQ0M2VjYzc1MmNjODMxNzhmZTY1In0.eyJhdWQiOiIxIiwianRpIjoiMTU4MmZhNzgzNjk3MTkzMTlmN2Y2M2NhM2JlNWIwNzlhNjQ0MzRjZWY5ZjFmOTVlYjU4YzIxMmQ2NTE0ZDQzZWNjNzUyY2M4MzE3OGZlNjUiLCJpYXQiOjE1NjA2NDEyMTMsIm5iZiI6MTU2MDY0MTIxMywiZXhwIjoxNTkyMjYzNjEzLCJzdWIiOiI0Iiwic2NvcGVzIjpbIioiXX0.sHZqhIgVpDyC2krl-qsJjB-Cp2Zav60U8Xk3FJGqLhqvA0kJd7HdPFD3hOz4VSfFLswB50mWD3dPrklWYhqegwm9TY2qZfVT8mlD_0ajkQc683-FYotW-UqV5Evrmp4YzTxSXOy1UJ066TKyRu_XnkYIvb7gfSpCi5oI9_dd0amD06odbTqWLSKDbpIuUVmfZyb3a6yMqhd1fS52qnFDVk_H95uLzDimXD0JYNK_fd151K8YieEb9Qi5yZDAlMIJtq7F-gRmVkJirpKp1iIPBUOvw4ux33_-DRRRILdHPAubhsPu8z4sEN8Rv3T5w-CQEI5XNZawOvz1PMSnuS4kTVoSRbwoNCJ8Gs2aP7OVmw4CFc8WVddhUBNLIjFnRxrQP-hmqpNpz-P2EuEJeIT05ip1mNlyJdYhmMXD0eypMXWj0mRdr5S6L3kf-_zAzrm2rAmGPufaFLz-vDHhbDSMIRfgEK5lFVufWWMRY1jKGZhwEoM2rPEW9NavG_DQVTg3QtCm4qFP7aBvseJesl_YGohq2QNkwy64hT4odug9b7WKME65h199JNjqD7hKt7CE1ce-0RhG6q1ozR13mXXlD4fpRHSVOD6TnGZIed6mir7AmJxqvCgKU1uJYozQolQiQC9kg7Yl748_gde1dD7p8q0zKQdlYmuPdg_70InqtlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "description",
+											"value": "The description was changed.",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/role/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Permission",
+					"item": [
+						{
+							"name": "Retrieve all of the permissions",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/permission",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"permission"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "50",
+											"disabled": true
+										},
+										{
+											"key": "offset",
+											"value": "0",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a new permission",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "name",
+											"value": "very.important.people",
+											"type": "text"
+										},
+										{
+											"key": "display_name",
+											"value": "VIP",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "A permission which should be given to very important people.",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/permission",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"permission"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search for a permission",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/permission/search?parameter=name&search=(very.important.people)&regex=true",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"permission",
+										"search"
+									],
+									"query": [
+										{
+											"key": "parameter",
+											"value": "name"
+										},
+										{
+											"key": "search",
+											"value": "(very.important.people)"
+										},
+										{
+											"key": "regex",
+											"value": "true"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a permission by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/permission/1?",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"permission",
+										"1"
+									],
+									"query": [
+										{
+											"key": "dump",
+											"value": null,
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Retrieve a permission by name",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/permission/very.important.people",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"permission",
+										"very.important.people"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update a permission",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjE1ODJmYTc4MzY5NzE5MzE5ZjdmNjNjYTNiZTViMDc5YTY0NDM0Y2VmOWYxZjk1ZWI1OGMyMTJkNjUxNGQ0M2VjYzc1MmNjODMxNzhmZTY1In0.eyJhdWQiOiIxIiwianRpIjoiMTU4MmZhNzgzNjk3MTkzMTlmN2Y2M2NhM2JlNWIwNzlhNjQ0MzRjZWY5ZjFmOTVlYjU4YzIxMmQ2NTE0ZDQzZWNjNzUyY2M4MzE3OGZlNjUiLCJpYXQiOjE1NjA2NDEyMTMsIm5iZiI6MTU2MDY0MTIxMywiZXhwIjoxNTkyMjYzNjEzLCJzdWIiOiI0Iiwic2NvcGVzIjpbIioiXX0.sHZqhIgVpDyC2krl-qsJjB-Cp2Zav60U8Xk3FJGqLhqvA0kJd7HdPFD3hOz4VSfFLswB50mWD3dPrklWYhqegwm9TY2qZfVT8mlD_0ajkQc683-FYotW-UqV5Evrmp4YzTxSXOy1UJ066TKyRu_XnkYIvb7gfSpCi5oI9_dd0amD06odbTqWLSKDbpIuUVmfZyb3a6yMqhd1fS52qnFDVk_H95uLzDimXD0JYNK_fd151K8YieEb9Qi5yZDAlMIJtq7F-gRmVkJirpKp1iIPBUOvw4ux33_-DRRRILdHPAubhsPu8z4sEN8Rv3T5w-CQEI5XNZawOvz1PMSnuS4kTVoSRbwoNCJ8Gs2aP7OVmw4CFc8WVddhUBNLIjFnRxrQP-hmqpNpz-P2EuEJeIT05ip1mNlyJdYhmMXD0eypMXWj0mRdr5S6L3kf-_zAzrm2rAmGPufaFLz-vDHhbDSMIRfgEK5lFVufWWMRY1jKGZhwEoM2rPEW9NavG_DQVTg3QtCm4qFP7aBvseJesl_YGohq2QNkwy64hT4odug9b7WKME65h199JNjqD7hKt7CE1ce-0RhG6q1ozR13mXXlD4fpRHSVOD6TnGZIed6mir7AmJxqvCgKU1uJYozQolQiQC9kg7Yl748_gde1dD7p8q0zKQdlYmuPdg_70InqtlQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "description",
+											"value": "The description was changed.",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/permission/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"permission",
+										"1"
 									]
 								}
 							},
