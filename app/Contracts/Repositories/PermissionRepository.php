@@ -69,6 +69,16 @@ interface PermissionRepository
   function findById($id);
 
   /**
+   * Find a permission by name.
+   *
+   * @param string $name
+   * @return \App\Entities\Permission
+   *
+   * @throws \App\Exceptions\Permission\PermissionNotFoundException
+   */
+  function findByName($name);
+
+  /**
    * Update a permission.
    *
    * @param \App\Entities\Permission $permission

@@ -69,6 +69,16 @@ interface RoleRepository
   function findById($id);
 
   /**
+   * Find a role by name.
+   *
+   * @param string $name
+   * @return \App\Entities\Role
+   *
+   * @throws \App\Exceptions\Role\RoleNotFoundException
+   */
+  function findByName($name);
+
+  /**
    * Update a role.
    *
    * @param \App\Entities\Role $role

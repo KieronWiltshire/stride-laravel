@@ -21,4 +21,8 @@ return [
     'not_found' => 'We can\'t find a permission with the specified identifier.',
   ],
 
+  'name' => [
+    'not_found' => 'We can\'t find a permission with the specified name.',
+  ],
+
 ];

@@ -180,6 +180,25 @@ class PermissionRepository implements PermissionRepositoryInterface
   }
 
   /**
+   * Find a permission by name.
+   *
+   * @param string $name
+   * @return \App\Entities\Permission
+   *
+   * @throws \App\Exceptions\Permission\PermissionNotFoundException
+   */
+  function findByName($name)
+  {
+    $role = Permission::where('name', $name)->first();
+
+    if (!$role) {
+      throw new PermissionNotFoundException();
+    }
+
+    return $role;
+  }
+
+  /**
    * Update a permission.
    *
    * @param \App\Entities\Permission $permission

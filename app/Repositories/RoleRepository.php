@@ -4,11 +4,12 @@ namespace App\Repositories;
 
 use App\Contracts\Repositories\RoleRepository as RoleRepositoryInterface;
 use App\Entities\Role;
-use App\Events\Role\PermissionCreatedEvent;
+use App\Events\Role\RoleCreatedEvent;
+use App\Events\Role\RoleUpdatedEvent;
 use App\Exceptions\Role\RoleNotFoundException;
 use App\Validation\Pagination\PaginationValidator;
 use App\Validation\Role\RoleCreateValidator;
-use App\Validation\Role\PermissionUpdateValidator;
+use App\Validation\Role\RoleUpdateValidator;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -25,7 +26,7 @@ class RoleRepository implements RoleRepositoryInterface
   protected $roleCreateValidator;
 
   /**
-   * @var \App\Validation\Role\PermissionUpdateValidator
+   * @var \App\Validation\Role\RoleUpdateValidator
    */
   protected $roleUpdateValidator;
 
@@ -34,12 +35,12 @@ class RoleRepository implements RoleRepositoryInterface
    *
    * @param \App\Validation\Pagination\PaginationValidator $paginationValidator
    * @param \App\Validation\Role\RoleCreateValidator $roleCreateValidator
-   * @param \App\Validation\Role\PermissionUpdateValidator $roleUpdateValidator
+   * @param \App\Validation\Role\RoleUpdateValidator $roleUpdateValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,
     RoleCreateValidator $roleCreateValidator,
-    PermissionUpdateValidator $roleUpdateValidator
+    RoleUpdateValidator $roleUpdateValidator
   ) {
     $this->paginationValidator = $paginationValidator;
     $this->roleCreateValidator = $roleCreateValidator;
@@ -94,7 +95,7 @@ class RoleRepository implements RoleRepositoryInterface
     $this->roleCreateValidator->validate($attributes);
 
     if ($role = Role::create($attributes)) {
-      event(new PermissionCreatedEvent($role));
+      event(new RoleCreatedEvent($role));
 
       return $role;
     }
@@ -170,6 +171,25 @@ class RoleRepository implements RoleRepositoryInterface
   function findById($id)
   {
     $role = Role::find($id);
+
+    if (!$role) {
+      throw new RoleNotFoundException();
+    }
+
+    return $role;
+  }
+
+  /**
+   * Find a role by name.
+   *
+   * @param string $name
+   * @return \App\Entities\Role
+   *
+   * @throws \App\Exceptions\Role\RoleNotFoundException
+   */
+  function findByName($name)
+  {
+    $role = Role::where('name', $name)->first();
 
     if (!$role) {
       throw new RoleNotFoundException();
