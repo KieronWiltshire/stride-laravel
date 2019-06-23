@@ -102,4 +102,5 @@ interface PermissionRepository
    * @throws \App\Exceptions\Permission\CannotUpdatePermissionException
    */
   function update(Permission $permission, $attributes);
+
 }

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\RoleRepository as RoleRepositoryInterface;
+use App\Entities\Permission;
 use App\Entities\Role;
 use App\Events\Role\RoleCreatedEvent;
 use App\Events\Role\RoleUpdatedEvent;
@@ -249,5 +250,76 @@ class RoleRepository implements RoleRepositoryInterface
     }
 
     throw new Exception();
+  }
+
+  /**
+   * Add a permission to the specified role.
+   *
+   * @param Role $role
+   * @param Permission $permission
+   * @return boolean
+   */
+  public function addPermission(Role $role, Permission $permission)
+  {
+    // TODO: Implement addPermission() method.
+  }
+
+  /**
+   * Add multiple permissions to the specified role.
+   *
+   * @param Role $role
+   * @param array $permissions
+   * @return boolean
+   */
+  public function addPermissions(Role $role, array $permissions = [])
+  {
+    // TODO: Implement addPermissions() method.
+  }
+
+  /**
+   * Remove a permission from the specified role.
+   *
+   * @param Role $role
+   * @param Permission $permission
+   * @return boolean
+   */
+  public function removePermission(Role $role, Permission $permission)
+  {
+    // TODO: Implement removePermission() method.
+  }
+
+  /**
+   * Remove multiple permissions from the specified role.
+   *
+   * @param Role $role
+   * @param array $permissions
+   * @return boolean
+   */
+  public function removePermissions(Role $role, array $permissions = [])
+  {
+    // TODO: Implement removePermissions() method.
+  }
+
+  /**
+   * Set all of the permissions of the specified role.
+   *
+   * @param Role $role
+   * @param array $permissions
+   * @return boolean
+   */
+  public function setPermissions(Role $role, array $permissions = [])
+  {
+    // TODO: Implement setPermissions() method.
+  }
+
+  /**
+   * Retrieve all of the permissions for the specified role.
+   *
+   * @param Role $role
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Permission>
+   */
+  function getPermissions(Role $role)
+  {
+    // TODO: Implement getPermissions() method.
   }
 }

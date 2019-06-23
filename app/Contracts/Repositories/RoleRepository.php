@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Repositories;
 
+use App\Entities\Permission;
 use App\Entities\Role;
 
 interface RoleRepository
@@ -102,4 +103,57 @@ interface RoleRepository
    * @throws \App\Exceptions\Role\CannotUpdateRoleException
    */
   function update(Role $role, $attributes);
+
+  /**
+   * Add a permission to the specified role.
+   *
+   * @param Role $role
+   * @param Permission $permission
+   * @return boolean
+   */
+  function addPermission(Role $role, Permission $permission);
+
+  /**
+   * Add multiple permissions to the specified role.
+   *
+   * @param Role $role
+   * @param array $permissions
+   * @return boolean
+   */
+  function addPermissions(Role $role, array $permissions = []);
+
+  /**
+   * Remove a permission from the specified role.
+   *
+   * @param Role $role
+   * @param Permission $permission
+   * @return boolean
+   */
+  function removePermission(Role $role, Permission $permission);
+
+  /**
+   * Remove multiple permissions from the specified role.
+   *
+   * @param Role $role
+   * @param array $permissions
+   * @return boolean
+   */
+  function removePermissions(Role $role, array $permissions = []);
+
+  /**
+   * Set all of the permissions of the specified role.
+   *
+   * @param Role $role
+   * @param array $permissions
+   * @return boolean
+   */
+  function setPermissions(Role $role, array $permissions = []);
+
+  /**
+   * Retrieve all of the permissions for the specified role.
+   *
+   * @param Role $role
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Permission>
+   */
+  function getPermissions(Role $role);
 }

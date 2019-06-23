@@ -2,6 +2,8 @@
 
 namespace App\Contracts\Repositories;
 
+use App\Entities\Permission;
+use App\Entities\Role;
 use App\Entities\User;
 
 interface UserRepository
@@ -198,4 +200,110 @@ interface UserRepository
    * @return void
    */
   function sendPasswordResetToken(User $user);
+
+  /**
+   * Add a role to the user.
+   *
+   * @param User $user
+   * @param Role $role
+   * @return boolean
+   */
+  function addRole(User $user, Role $role);
+
+  /**
+   * Add roles to the user.
+   *
+   * @param User $user
+   * @param array $roles
+   * @return boolean
+   */
+  function addRoles(User $user, array $roles = []);
+
+  /**
+   * Remove a role from the user.
+   *
+   * @param User $user
+   * @param Role $role
+   * @return boolean
+   */
+  function removeRole(User $user, Role $role);
+
+  /**
+   * Remove roles from the user.
+   *
+   * @param User $user
+   * @param array $roles
+   * @return boolean
+   */
+  function removeRoles(User $user, array $roles = []);
+
+  /**
+   * Set all of the roles of the specified user.
+   *
+   * @param User $user
+   * @param array $roles
+   * @return boolean
+   */
+  function setRoles(User $user, array $roles = []);
+
+  /**
+   * Retrieve all of the roles for the specified user.
+   *
+   * @param User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Permission>
+   */
+  function getRoles(User $user);
+
+  /**
+   * Add a permission to the specified user.
+   *
+   * @param User $user
+   * @param Permission $permission
+   * @return boolean
+   */
+  function addPermission(User $user, Permission $permission);
+
+  /**
+   * Add multiple permissions to the specified user.
+   *
+   * @param User $user
+   * @param array $permissions
+   * @return boolean
+   */
+  function addPermissions(User $user, array $permissions = []);
+
+  /**
+   * Remove a permission from the specified user.
+   *
+   * @param User $user
+   * @param Permission $permission
+   * @return boolean
+   */
+  function removePermission(User $user, Permission $permission);
+
+  /**
+   * Remove multiple permissions from the specified user.
+   *
+   * @param User $user
+   * @param array $permissions
+   * @return boolean
+   */
+  function removePermissions(User $user, array $permissions = []);
+
+  /**
+   * Set all of the permissions of the specified user.
+   *
+   * @param User $user
+   * @param array $permissions
+   * @return boolean
+   */
+  function setPermissions(User $user, array $permissions = []);
+
+  /**
+   * Retrieve all of the permissions for the specified user.
+   *
+   * @param User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Permission>
+   */
+  function getPermissions(User $user);
 }

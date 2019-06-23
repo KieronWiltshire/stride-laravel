@@ -3,6 +3,8 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\UserRepository as UserRepositoryInterface;
+use App\Entities\Permission;
+use App\Entities\Role;
 use App\Entities\User;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\UserNotFoundException;
@@ -503,5 +505,147 @@ class UserRepository implements UserRepositoryInterface
   public function sendPasswordResetToken(User $user)
   {
     Mail::to($user->email)->send(new PasswordResetToken($user->password_reset_token));
+  }
+
+  /**
+   * Add a role to the user.
+   *
+   * @param User $user
+   * @param Role $role
+   * @return boolean
+   */
+  public function addRole(User $user, Role $role)
+  {
+    // TODO: Implement addRole() method.
+  }
+
+  /**
+   * Add roles to the user.
+   *
+   * @param User $user
+   * @param array $roles
+   * @return boolean
+   */
+  public function addRoles(User $user, array $roles = [])
+  {
+    // TODO: Implement addRoles() method.
+  }
+
+  /**
+   * Remove a role from the user.
+   *
+   * @param User $user
+   * @param Role $role
+   * @return boolean
+   */
+  public function removeRole(User $user, Role $role)
+  {
+    // TODO: Implement removeRole() method.
+  }
+
+  /**
+   * Remove roles from the user.
+   *
+   * @param User $user
+   * @param array $roles
+   * @return boolean
+   */
+  public function removeRoles(User $user, array $roles = [])
+  {
+    // TODO: Implement removeRoles() method.
+  }
+
+  /**
+   * Set all of the roles of the specified user.
+   *
+   * @param User $user
+   * @param array $roles
+   * @return boolean
+   */
+  public function setRoles(User $user, array $roles = [])
+  {
+    // TODO: Implement setRoles() method.
+  }
+
+  /**
+   * Retrieve all of the roles for the specified user.
+   *
+   * @param User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Permission>
+   */
+  function getRoles(User $user)
+  {
+    // TODO: Implement getRoles() method.
+  }
+
+  /**
+   * Add a permission to the specified user.
+   *
+   * @param User $user
+   * @param Permission $permission
+   * @return boolean
+   */
+  public function addPermission(User $user, Permission $permission)
+  {
+    // TODO: Implement addPermission() method.
+  }
+
+  /**
+   * Add multiple permissions to the specified user.
+   *
+   * @param User $user
+   * @param array $permissions
+   * @return boolean
+   */
+  public function addPermissions(User $user, array $permissions = [])
+  {
+    // TODO: Implement addPermissions() method.
+  }
+
+  /**
+   * Remove a permission from the specified user.
+   *
+   * @param User $user
+   * @param Permission $permission
+   * @return boolean
+   */
+  public function removePermission(User $user, Permission $permission)
+  {
+    // TODO: Implement removePermission() method.
+  }
+
+  /**
+   * Remove multiple permissions from the specified user.
+   *
+   * @param User $user
+   * @param array $permissions
+   * @return boolean
+   */
+  public function removePermissions(User $user, array $permissions = [])
+  {
+    // TODO: Implement removePermissions() method.
+  }
+
+  /**
+   * Set all of the permissions of the specified user.
+   *
+   * @param User $user
+   * @param array $permissions
+   * @return boolean
+   */
+  public function setPermissions(User $user, array $permissions = [])
+  {
+    // TODO: Implement setPermissions() method.
+  }
+
+  /**
+   * Retrieve all of the permissions for the specified user.
+   *
+   * @param User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Permission>
+   */
+  function getPermissions(User $user)
+  {
+    // TODO: Implement getPermissions() method.
   }
 }
