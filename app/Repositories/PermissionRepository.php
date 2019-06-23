@@ -236,18 +236,14 @@ class PermissionRepository implements PermissionRepositoryInterface
    */
   public function update(Permission $permission, $attributes)
   {
-    if ($permission instanceof Permission) {
-      $this->permissionUpdateValidator->validate($attributes);
+    $this->permissionUpdateValidator->validate($attributes);
 
-      // TODO:
+    // TODO:
 
-      if ($permission->save()) {
-        event(new PermissionUpdatedEvent($permission, $attributes));
+    if ($permission->save()) {
+      event(new PermissionUpdatedEvent($permission, $attributes));
 
-        return $permission;
-      }
+      return $permission;
     }
-
-    throw new Exception();
   }
 }

@@ -107,53 +107,93 @@ interface RoleRepository
   /**
    * Add a permission to the specified role.
    *
-   * @param Role $role
-   * @param Permission $permission
-   * @return boolean
+   * @param \App\Entities\Role $role
+   * @param \App\Entities\Permission $permission
+   * @return \App\Entities\Role
    */
   function addPermission(Role $role, Permission $permission);
 
   /**
    * Add multiple permissions to the specified role.
    *
-   * @param Role $role
+   * @param \App\Entities\Role $role
    * @param array $permissions
-   * @return boolean
+   * @return \App\Entities\Role
    */
   function addPermissions(Role $role, array $permissions = []);
 
   /**
    * Remove a permission from the specified role.
    *
-   * @param Role $role
-   * @param Permission $permission
-   * @return boolean
+   * @param \App\Entities\Role $role
+   * @param \App\Entities\Permission $permission
+   * @return \App\Entities\Role
    */
   function removePermission(Role $role, Permission $permission);
 
   /**
    * Remove multiple permissions from the specified role.
    *
-   * @param Role $role
+   * @param \App\Entities\Role $role
    * @param array $permissions
-   * @return boolean
+   * @return \App\Entities\Role
    */
   function removePermissions(Role $role, array $permissions = []);
 
   /**
    * Set all of the permissions of the specified role.
    *
-   * @param Role $role
+   * @param \App\Entities\Role $role
    * @param array $permissions
-   * @return boolean
+   * @return \App\Entities\Role
    */
   function setPermissions(Role $role, array $permissions = []);
 
   /**
    * Retrieve all of the permissions for the specified role.
    *
-   * @param Role $role
+   * @param \App\Entities\Role $role
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Permission>
    */
   function getPermissions(Role $role);
+
+  /**
+   * Retrieve all of the roles that have access to the specified permission.
+   *
+   * @param \App\Entities\Permission $permission
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Role>
+   */
+  function getRolesWithPermission(Permission $permission);
+
+  /**
+   * Retrieve all of the roles that have access to any of the specified permissions.
+   *
+   * @param array $permissions
+   * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Role>
+   */
+  function getRolesWithPermissions(array $permissions = []);
+
+  /**
+   * Retrieve all of the roles that have access to the specified permissions.
+   *
+   * @param \App\Entities\Permission $permission
+   * @param integer $limit
+   * @param integer $offset
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   */
+  function getRolesWithPermissionAsPaginated(Permission $permission, $limit = null, $offset = 1);
+
+  /**
+   * Retrieve all of the roles that have access to any of the specified permissions.
+   *
+   * @param array $permissions
+   * @param integer $limit
+   * @param integer $offset
+   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
+   *
+   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   */
+  function getRolesWithPermissionsAsPaginated(array $permissions, $limit = null, $offset = 1);
 }
