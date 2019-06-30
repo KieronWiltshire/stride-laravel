@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Services\Role;
+namespace App\Services\Permission;
 
-use App\Contracts\Services\Permission\PermissionService as PermissionServiceInterface;
 use App\Entities\Permission;
 use App\Repositories\Permission\PermissionRepository;
 
-class PermissionService implements PermissionServiceInterface
+class PermissionService
 {
   /**
    * @var \App\Contracts\Repositories\Role\RoleRepository

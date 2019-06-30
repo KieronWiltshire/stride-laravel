@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\Role\RoleNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Services\Role\RoleService;
+use App\Services\Role\RoleService;
 use App\Exceptions\Http\BadRequestError;
 use App\Transformers\Role\RoleTransformer;
 
 class RoleController extends Controller
 {
   /**
-   * @var \App\Contracts\Services\Role\RoleService
+   * @var \App\Services\Role\RoleService
    */
   protected $roleService;
 
@@ -23,7 +23,7 @@ class RoleController extends Controller
   /**
    * Create a new role controller instance
    *
-   * @param \App\Contracts\Services\Role\RoleService $roleService
+   * @param \App\Services\Role\RoleService $roleService
    * @param \App\Transformers\Role\RoleTransformer $roleTransformer
    */
   public function __construct(

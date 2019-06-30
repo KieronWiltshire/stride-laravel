@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Role\RoleService;
 use Illuminate\Support\ServiceProvider;
 
 class RoleServiceProvider extends ServiceProvider
@@ -16,10 +17,6 @@ class RoleServiceProvider extends ServiceProvider
     $this->app->bind(
       'App\Contracts\Repositories\Role\RoleRepository',
       'App\Repositories\Role\RoleRepository'
-    );
-    $this->app->bind(
-      'App\Contracts\Services\Role\RoleService',
-      'App\Services\Role\RoleService'
     );
   }
 

@@ -17,10 +17,6 @@ class UserServiceProvider extends ServiceProvider
       'App\Contracts\Repositories\User\UserRepository',
       'App\Repositories\User\UserRepository'
     );
-    $this->app->bind(
-      'App\Contracts\Services\User\UserService',
-      'App\Services\User\UserService'
-    );
   }
 
   /**

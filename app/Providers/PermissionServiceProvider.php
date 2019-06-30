@@ -17,10 +17,6 @@ class PermissionServiceProvider extends ServiceProvider
       'App\Contracts\Repositories\Permission\PermissionRepository',
       'App\Repositories\Permission\PermissionRepository'
     );
-    $this->app->bind(
-      'App\Contracts\Services\Permission\PermissionService',
-      'App\Services\Permission\PermissionService'
-    );
   }
 
   /**

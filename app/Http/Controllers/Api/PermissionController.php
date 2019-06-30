@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\Permission\PermissionNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Services\Permission\PermissionService;
+use App\Services\Permission\PermissionService;
 use App\Exceptions\Http\BadRequestError;
 use App\Transformers\Permission\PermissionTransformer;
 
 class PermissionController extends Controller
 {
   /**
-   * @var \App\Contracts\Services\Permission\PermissionService
+   * @var \App\Services\Permission\PermissionService
    */
   protected $permissionService;
 
@@ -23,7 +23,7 @@ class PermissionController extends Controller
   /**
    * Create a new permission controller instance
    *
-   * @param \App\Contracts\Services\Permission\PermissionService $permissionService
+   * @param \App\Services\Permission\PermissionService $permissionService
    * @param \App\Transformers\Permission\PermissionTransformer $permissionTransformer
    */
   public function __construct(

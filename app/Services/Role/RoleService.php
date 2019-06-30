@@ -2,11 +2,10 @@
 
 namespace App\Services\Role;
 
-use App\Contracts\Services\Role\RoleService as RoleServiceInterface;
 use App\Entities\Role;
 use App\Repositories\Role\RoleRepository;
 
-class RoleService implements RoleServiceInterface
+class RoleService
 {
   /**
    * @var \App\Contracts\Repositories\Role\RoleRepository

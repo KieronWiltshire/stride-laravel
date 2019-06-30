@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Services\User\UserService;
+use App\Services\User\UserService;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
@@ -14,7 +14,7 @@ use App\Transformers\User\UserTransformer;
 class UserController extends Controller
 {
   /**
-   * @var \App\Contracts\Services\User\UserService
+   * @var \App\Services\User\UserService
    */
   protected $userService;
 
@@ -26,7 +26,7 @@ class UserController extends Controller
   /**
    * Create a new user controller instance
    *
-   * @param \App\Contracts\Services\User\UserService $userService
+   * @param \App\Services\User\UserService $userService
    * @param \App\Transformers\User\UserTransformer $userTransformer
    */
   public function __construct(

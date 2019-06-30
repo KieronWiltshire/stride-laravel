@@ -2,7 +2,6 @@
 
 namespace App\Services\User;
 
-use App\Contracts\Services\User\UserService as UserServiceInterface;
 use App\Entities\User;
 use App\Events\User\EmailVerificationTokenGeneratedEvent;
 use App\Contracts\Repositories\User\UserRepository;
@@ -21,7 +20,7 @@ use Exception;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
-class UserService implements UserServiceInterface
+class UserService
 {
   /**
    * @var \App\Contracts\Repositories\User\UserRepository
