@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Exceptions\Auth\AuthenticationFailedException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Repositories\User\UserRepository;
+use App\Contracts\Services\User\UserService;
 use App\Transformers\User\UserTransformer;
 use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Parser;
@@ -13,9 +13,9 @@ use Lcobucci\JWT\Parser;
 class AuthController extends Controller
 {
   /**
-   * @var \App\Contracts\Repositories\User\UserRepository
+   * @var \App\Contracts\Services\User\UserService
    */
-  protected $userRepository;
+  protected $userService;
 
   /**
    * @var \App\Transformers\User\UserTransformer
@@ -25,14 +25,14 @@ class AuthController extends Controller
   /**
    * Create a new auth controller instance
    *
-   * @param \App\Contracts\Repositories\User\UserRepository $userRepository
+   * @param \App\Contracts\Services\User\UserService $userService
    * @param \App\Transformers\User\UserTransformer $userTransformer
    */
   public function __construct(
-    UserRepository $userRepository,
+    UserService $userService,
     UserTransformer $userTransformer
   ) {
-    $this->userRepository = $userRepository;
+    $this->userService = $userService;
     $this->userTransformer = $userTransformer;
   }
 
@@ -44,7 +44,7 @@ class AuthController extends Controller
   public function login()
   {
     try {
-      $user = $this->userRepository->findByEmail(request()->input('email'));
+      $user = $this->userService->findByEmail(request()->input('email'));
 
       if (Hash::check(request()->input('password'), $user->password)) {
         $token = $user->createToken('login', ['*']);

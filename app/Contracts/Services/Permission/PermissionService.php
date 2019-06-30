@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Contracts\Repositories\Permission;
+namespace App\Contracts\Services\Permission;
 
-use App\Contracts\Repositories\AppRepository;
 use App\Entities\Permission;
 
-interface PermissionRepository extends AppRepository
+interface PermissionService
 {
   /**
    * Retrieve all of the permissions.
@@ -78,4 +77,25 @@ interface PermissionRepository extends AppRepository
    * @throws \App\Exceptions\Permission\CannotUpdatePermissionException
    */
   function update(Permission $permission, $attributes);
+
+  /**
+   * Retrieve an index of the permissions.
+   *
+   * @param integer $limit
+   * @param integer $offset
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\Permission>
+   */
+  function index($limit = null, $offset = 1);
+
+  /**
+   * Search for permissions with the specified search parameters.
+   *
+   * @param number|string $parameter
+   * @param number|string $search
+   * @param boolean $regex
+   * @param integer $limit
+   * @param integer $offset
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\Permission>
+   */
+  function search($parameter, $search, $regex = true, $limit = null, $offset = 1);
 }

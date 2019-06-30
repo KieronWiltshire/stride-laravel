@@ -15,7 +15,7 @@ trait UsesRelationships
    * Specify the repository to include relationships.
    *
    * @param array|string $relations
-   * @return \App\Contracts\Repositories\AppRepository
+   * @return self
    */
   public function with($relations)
   {

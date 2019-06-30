@@ -2,6 +2,7 @@
 
 use App\Providers\ClientServiceProvider;
 use App\Providers\LocaleServiceProvider;
+use App\Providers\UserServiceProvider;
 
 return [
 
@@ -177,7 +178,13 @@ return [
     // App\Providers\BroadcastServiceProvider::class,
     App\Providers\EventServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
-    App\Providers\RepositoryServiceProvider::class,
+
+    /*
+     * Custom Service Providers...
+     */
+    App\Providers\UserServiceProvider::class,
+    App\Providers\RoleServiceProvider::class,
+    App\Providers\PermissionServiceProvider::class,
 
   ],
 

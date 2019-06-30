@@ -1,44 +1,44 @@
 <?php
 
+use App\Contracts\Services\Permission\PermissionService;
+use App\Contracts\Services\Role\RoleService;
+use App\Contracts\Services\User\UserService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Contracts\Repositories\UserRepository;
-use App\Contracts\Repositories\RoleRepository;
-use App\Contracts\Repositories\PermissionRepository;
 
 class LaratrustSeeder extends Seeder
 {
   /**
-   * @var \App\Contracts\Repositories\UserRepository
+   * @var \App\Contracts\Services\User\UserService
    */
-  private $userRepository;
+  private $userService;
 
   /**
-   * @var \App\Contracts\Repositories\RoleRepository
+   * @var \App\Contracts\Services\Role\RoleService
    */
-  private $roleRepository;
+  private $roleService;
 
   /**
-   * @var \App\Contracts\Repositories\PermissionRepository
+   * @var \App\Contracts\Services\Permission\PermissionService
    */
-  private $permissionRepository;
+  private $permissionService;
 
   /**
    * Create a new laratrust seeder instance
    *
-   * @param \App\Contracts\Repositories\UserRepository $userRepository
-   * @param \App\Contracts\Repositories\RoleRepository $roleRepository
-   * @param \App\Contracts\Repositories\PermissionRepository $permissionRepository
+   * @param \App\Contracts\Services\User\UserService $userService
+   * @param \App\Contracts\Services\Role\RoleService $roleService
+   * @param \App\Contracts\Services\Permission\PermissionService $permissionService
    */
   public function __construct(
-    UserRepository $userRepository,
-    RoleRepository $roleRepository,
-    PermissionRepository $permissionRepository
+    UserService $userService,
+    RoleService $roleService,
+    PermissionService $permissionService
   ) {
-    $this->userRepository = $userRepository;
-    $this->roleRepository = $roleRepository;
-    $this->permissionRepository = $permissionRepository;
+    $this->userService = $userService;
+    $this->roleService = $roleService;
+    $this->permissionService = $permissionService;
   }
 
   /**
@@ -58,7 +58,7 @@ class LaratrustSeeder extends Seeder
     foreach ($config as $key => $modules) {
 
       // Create a new role
-      $role = $this->roleRepository->firstOrCreate('name', $key, false, [
+      $role = $this->roleService->firstOrCreate('name', $key, false, [
         'name' => $key,
         'display_name' => ucwords(str_replace('_', ' ', $key)),
         'description' => ucwords(str_replace('_', ' ', $key))
@@ -76,7 +76,7 @@ class LaratrustSeeder extends Seeder
 
           $permissionName = $module . '.' . $permissionValue;
 
-          $permissions[] = $this->permissionRepository->firstOrCreate('name', $permissionName, false, [
+          $permissions[] = $this->permissionService->firstOrCreate('name', $permissionName, false, [
             'name' => $permissionName,
             'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
             'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
@@ -110,7 +110,7 @@ class LaratrustSeeder extends Seeder
           $userEmail = $key . '@' . strtolower(config('app.name', 'app')) . '.com';
 
           // Create default user for each permission set
-          $user = $this->userRepository->firstOrCreate('email', $userEmail, false, [
+          $user = $this->userService->firstOrCreate('email', $userEmail, false, [
             'email' => $userEmail,
             'password' => 'password',
           ]);
@@ -122,7 +122,7 @@ class LaratrustSeeder extends Seeder
 
             $permissionName = $module . '.' . $permissionValue;
 
-            $permissions[] = $this->permissionRepository->firstOrCreate('name', $permissionName, false, [
+            $permissions[] = $this->permissionService->firstOrCreate('name', $permissionName, false, [
               'name' => $permissionName,
               'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
               'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),

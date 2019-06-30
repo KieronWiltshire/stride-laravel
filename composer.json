@@ -16,7 +16,8 @@
     "pragmarx/version": "^0.2.9",
     "santigarcor/laratrust": "5.2.*",
     "spatie/laravel-fractal": "^5.5",
-    "webpatser/laravel-uuid": "^3.0"
+    "webpatser/laravel-uuid": "^3.0",
+    "ext-json": "*"
   },
   "require-dev": {
     "beyondcode/laravel-dump-server": "^1.0",

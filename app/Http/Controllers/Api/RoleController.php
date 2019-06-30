@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\Role\RoleNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Repositories\Role\RoleRepository;
+use App\Contracts\Services\Role\RoleService;
 use App\Exceptions\Http\BadRequestError;
 use App\Transformers\Role\RoleTransformer;
 
 class RoleController extends Controller
 {
   /**
-   * @var \App\Contracts\Repositories\Role\RoleRepository
+   * @var \App\Contracts\Services\Role\RoleService
    */
-  protected $roleRepository;
+  protected $roleService;
 
   /**
    * @var \App\Transformers\Role\RoleTransformer
@@ -23,14 +23,14 @@ class RoleController extends Controller
   /**
    * Create a new role controller instance
    *
-   * @param \App\Contracts\Repositories\Role\RoleRepository $roleRepository
+   * @param \App\Contracts\Services\Role\RoleService $roleService
    * @param \App\Transformers\Role\RoleTransformer $roleTransformer
    */
   public function __construct(
-    RoleRepository $roleRepository,
+    RoleService $roleService,
     RoleTransformer $roleTransformer
   ) {
-    $this->roleRepository = $roleRepository;
+    $this->roleService = $roleService;
     $this->roleTransformer = $roleTransformer;
   }
 
@@ -43,12 +43,8 @@ class RoleController extends Controller
    */
   public function index()
   {
-    $roles = $this->roleRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
-      ->setPath(route('api.role.index'))
-      ->setPageName('offset')
-      ->appends([
-        'limit' => request()->query('limit')
-      ]);
+    $roles = $this->roleService->index(request()->query('limit'), request()->query('offset'))
+      ->setPath(route('api.role.index'));
 
     return fractal($roles, $this->roleTransformer);
   }
@@ -64,7 +60,7 @@ class RoleController extends Controller
   {
     $this->authorize('role.create');
 
-    $role = $this->roleRepository->create([
+    $role = $this->roleService->create([
       'name' => request()->input('name'),
       'display_name' => request()->input('display_name'),
       'description' => request()->input('description')
@@ -85,7 +81,7 @@ class RoleController extends Controller
   public function getById($id)
   {
     try {
-      return fractal($this->roleRepository->findById($id), $this->roleTransformer);
+      return fractal($this->roleService->findById($id), $this->roleTransformer);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -106,7 +102,7 @@ class RoleController extends Controller
   public function getByName($name)
   {
     try {
-      return fractal($this->roleRepository->findByName($name), $this->roleTransformer);
+      return fractal($this->roleService->findByName($name), $this->roleTransformer);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -138,12 +134,13 @@ class RoleController extends Controller
         ]);
     }
 
-    $roles = $this->roleRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
-      ->setPath(route('api.role.search'))
-      ->setPageName('offset')
-      ->appends([
-        'limit' => request()->query('limit')
-      ]);
+    $roles = $this->roleService->search(
+      request()->query('parameter'),
+      request()->query('search'),
+      (bool) request()->query('regex'),
+      request()->query('limit'),
+      request()->query('offset')
+    )->setPath(route('api.role.search'));
 
     return fractal($roles, $this->roleTransformer);
   }
@@ -160,10 +157,10 @@ class RoleController extends Controller
   public function update($id)
   {
     try {
-      $role = $this->roleRepository->findById($id);
+      $role = $this->roleService->findById($id);
       $this->authorize('role.update', $role);
 
-      $role = $this->roleRepository->update($role, [
+      $role = $this->roleService->update($role, [
         'name' => request()->input('name'),
         'display_name' => request()->input('display_name'),
         'description' => request()->input('description')

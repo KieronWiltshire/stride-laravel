@@ -26,7 +26,7 @@ trait UsesPagination
    *
    * @param integer $limit
    * @param integer $offset
-   * @return \App\Contracts\Repositories\AppRepository
+   * @return self
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */

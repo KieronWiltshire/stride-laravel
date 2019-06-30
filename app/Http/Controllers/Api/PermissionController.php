@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\Permission\PermissionNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Repositories\Permission\PermissionRepository;
+use App\Contracts\Services\Permission\PermissionService;
 use App\Exceptions\Http\BadRequestError;
 use App\Transformers\Permission\PermissionTransformer;
 
 class PermissionController extends Controller
 {
   /**
-   * @var \App\Contracts\Repositories\Permission\PermissionRepository
+   * @var \App\Contracts\Services\Permission\PermissionService
    */
-  protected $permissionRepository;
+  protected $permissionService;
 
   /**
    * @var \App\Transformers\Permission\PermissionTransformer
@@ -23,14 +23,14 @@ class PermissionController extends Controller
   /**
    * Create a new permission controller instance
    *
-   * @param \App\Contracts\Repositories\Permission\PermissionRepository $permissionRepository
+   * @param \App\Contracts\Services\Permission\PermissionService $permissionService
    * @param \App\Transformers\Permission\PermissionTransformer $permissionTransformer
    */
   public function __construct(
-    PermissionRepository $permissionRepository,
+    PermissionService $permissionService,
     PermissionTransformer $permissionTransformer
   ) {
-    $this->permissionRepository = $permissionRepository;
+    $this->permissionService = $permissionService;
     $this->permissionTransformer = $permissionTransformer;
   }
 
@@ -43,12 +43,8 @@ class PermissionController extends Controller
    */
   public function index()
   {
-    $permissions = $this->permissionRepository->allAsPaginated(request()->query('limit'), request()->query('offset'))
-      ->setPath(route('api.permission.index'))
-      ->setPageName('offset')
-      ->appends([
-        'limit' => request()->query('limit')
-      ]);
+    $permissions = $this->permissionService->index(request()->query('limit'), request()->query('offset'))
+      ->setPath(route('api.permission.index'));
 
     return fractal($permissions, $this->permissionTransformer);
   }
@@ -64,7 +60,7 @@ class PermissionController extends Controller
   {
     $this->authorize('permission.create');
 
-    $permission = $this->permissionRepository->create([
+    $permission = $this->permissionService->create([
       'name' => request()->input('name'),
       'display_name' => request()->input('display_name'),
       'description' => request()->input('description')
@@ -85,7 +81,7 @@ class PermissionController extends Controller
   public function getById($id)
   {
     try {
-      return fractal($this->permissionRepository->findById($id), $this->permissionTransformer);
+      return fractal($this->permissionService->findById($id), $this->permissionTransformer);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -106,7 +102,7 @@ class PermissionController extends Controller
   public function getByName($name)
   {
     try {
-      return fractal($this->permissionRepository->findByName($name), $this->permissionTransformer);
+      return fractal($this->permissionService->findByName($name), $this->permissionTransformer);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -138,12 +134,13 @@ class PermissionController extends Controller
         ]);
     }
 
-    $permissions = $this->permissionRepository->findAsPaginated(request()->query('parameter'), request()->query('search'), (bool) request()->query('regex'), request()->query('limit'), request()->query('offset'))
-      ->setPath(route('api.permission.search'))
-      ->setPageName('offset')
-      ->appends([
-        'limit' => request()->query('limit')
-      ]);
+    $permissions = $this->permissionService->search(
+      request()->query('parameter'),
+      request()->query('search'),
+      (bool) request()->query('regex'),
+      request()->query('limit'),
+      request()->query('offset')
+    )->setPath(route('api.permission.search'));
 
     return fractal($permissions, $this->permissionTransformer);
   }
@@ -160,10 +157,10 @@ class PermissionController extends Controller
   public function update($id)
   {
     try {
-      $permission = $this->permissionRepository->findById($id);
+      $permission = $this->permissionService->findById($id);
       $this->authorize('permission.update', $permission);
 
-      $permission = $this->permissionRepository->update($permission, [
+      $permission = $this->permissionService->update($permission, [
         'name' => request()->input('name'),
         'display_name' => request()->input('display_name'),
         'description' => request()->input('description')

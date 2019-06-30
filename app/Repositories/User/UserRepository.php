@@ -40,38 +40,22 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
   protected $userUpdateValidator;
 
   /**
-   * @var \App\Validators\User\UserEmailValidator
-   */
-  protected $userEmailValidator;
-
-  /**
-   * @var \App\Validators\User\UserPasswordValidator
-   */
-  protected $userPasswordValidator;
-
-  /**
    * Create a new user repository instance.
    *
    * @param \App\Validators\User\UserCreateValidator $userCreateValidator
    * @param \App\Validators\User\UserUpdateValidator $userUpdateValidator
-   * @param \App\Validators\User\UserEmailValidator $userEmailValidator
-   * @param \App\Validators\User\UserPasswordValidator $userPasswordValidator
    */
   public function __construct(
     UserCreateValidator $userCreateValidator,
-    UserUpdateValidator $userUpdateValidator,
-    UserEmailValidator $userEmailValidator,
-    UserPasswordValidator $userPasswordValidator
+    UserUpdateValidator $userUpdateValidator
   ) {
     $this->userCreateValidator = $userCreateValidator;
     $this->userUpdateValidator = $userUpdateValidator;
-    $this->userEmailValidator = $userEmailValidator;
-    $this->userPasswordValidator = $userPasswordValidator;
   }
 
   /**
    * Retrieve all of the users.
-   *a
+   *
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\User>
    */
   public function all()
@@ -89,10 +73,6 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    */
   public function create($attributes)
   {
-    if (isset($attributes['email'])) {
-      $attributes['email_verification_token'] = $this->generateEmailVerificationToken($attributes['email']);
-    }
-
     $this->userCreateValidator->validate($attributes);
 
     if ($user = User::create($attributes)) {
@@ -118,10 +98,6 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    */
   public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
-    if (isset($attributes['email'])) {
-      $attributes['email_verification_token'] = $this->generateEmailVerificationToken($attributes['email']);
-    }
-
     $query = User::query();
 
     if ($regex) {
@@ -198,7 +174,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    * Update a user.
    * 
    * @param \App\Entities\User $user
-   * @param Array $attributes
+   * @param array $attributes
    * @return \App\Entities\User
    * 
    * @throws \App\Exceptions\User\CannotUpdateUserException
@@ -207,12 +183,8 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
   {
     $this->userUpdateValidator->validate($attributes);
 
-    if (isset($attributes['email'])) {
-      $user->email = $attributes['email'];
-    }
-
-    if (isset($attributes['password'])) {
-      $user->password = $attributes['password'];
+    foreach ($attributes as $attr => $value) {
+      $user->$attr = $value;
     }
 
     if ($user->save()) {
@@ -220,205 +192,6 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
 
       return $user;
     }
-  }
-
-  /**
-   * Router a new email verification token be generated with
-   * the user's new email address to verify.
-   * 
-   * @param \App\Entities\User $user
-   * @param string $email
-   * @return \App\Entities\User
-   * 
-   * @throws \App\Exceptions\User\InvalidEmailException
-   */
-  public function requestEmailChange(User $user, $email)
-  {
-    $this->userEmailValidator->validate([
-      'email' => $email
-    ]);
-
-    $user->email_verification_token = $this->generateEmailVerificationToken($email);
-
-    if ($user->save()) {
-      event(new EmailVerificationTokenGeneratedEvent($user));
-
-      return $user;
-    }
-  }
-
-  /**
-   * Verify the user's specified email address and set their
-   * email to the new one encoded within the token.
-   * 
-   * @param \App\Entities\User $user
-   * @param string $emailVerificationToken
-   * @return \App\Entities\User
-   * 
-   * @throws \App\Exceptions\User\InvalidEmailException
-   * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
-   */
-  public function verifyEmail(User $user, $emailVerificationToken)
-  {
-    $decodedToken = $this->decodeEmailVerificationToken($emailVerificationToken);
-
-    if ($emailVerificationToken && $decodedToken && $user->email_verification_token == $emailVerificationToken) {
-      $this->userEmailValidator->validate([
-        'email' => $decodedToken->email
-      ]);
-
-      $oldEmail = $user->email;
-
-      $user->email = $decodedToken->email;
-      $user->email_verified_at = now();
-      $user->email_verification_token = null;
-
-      if ($user->save()) {
-        event(new UserEmailVerifiedEvent($user, $oldEmail));
-
-        return $user;
-      }
-    } else {
-      throw new InvalidEmailVerificationTokenException();
-    }
-  }
-
-  /**
-   * Generate an email verification token for the specified email address.
-   *
-   * @param string $email
-   * @return string
-   */
-  public function generateEmailVerificationToken($email)
-  {
-    return base64_encode(json_encode([
-      'email' => $email,
-      'token' => str_random(32) // used to append randomness
-    ]));
-  }
-
-  /**
-   * Decode an email verification token.
-   *
-   * @param string $emailVerificationToken
-   * @return Object
-   */
-  public function decodeEmailVerificationToken($emailVerificationToken)
-  {
-    return json_decode(base64_decode($emailVerificationToken));
-  }
-
-  /**
-   * Send the email verification email.
-   *
-   * @param App\Entities\User $user
-   * @return void
-   * 
-   * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
-   */
-  public function sendEmailVerificationToken(User $user)
-  {
-    if ($user->email_verification_token) {
-      $decodedToken = $this->decodeEmailVerificationToken($user->email_verification_token);
-
-      if ($decodedToken) {
-        Mail::to($decodedToken->email)->send(new EmailVerificationToken($user->email_verification_token));
-      } else {
-        throw new Exception();
-      }
-    } else {
-      throw new InvalidEmailVerificationTokenException();
-    }
-  }
-
-  /**
-   * Create's a password reset token for the specified user.
-   *
-   * @param \App\Entities\User $user
-   * @return \App\Entities\User
-   */
-  public function forgotPassword(User $user)
-  {
-    $user->password_reset_token = $this->generatePasswordResetToken();
-
-    if ($user->save()) {
-      event(new PasswordResetTokenGeneratedEvent($user));
-
-      return $user;
-    }
-  }
-
-  /**
-   * Reset a user's password using the password reset token.
-   * 
-   * @param \App\Entities\User $user
-   * @param string $password
-   * @param string $passwordResetToken
-   * @return \App\Entities\User
-   * 
-   * @throws \App\Exceptions\User\InvalidPasswordException
-   * @throws \App\Exceptions\User\PasswordResetTokenExpiredException
-   * @throws \App\Exceptions\User\InvalidPasswordResetTokenException
-   */
-  public function resetPassword(User $user, $password, $passwordResetToken)
-  {
-    $decodedToken = $this->decodePasswordResetToken($passwordResetToken);
-
-    if ($passwordResetToken && $decodedToken && $user->password_reset_token == $passwordResetToken) {
-      if (Carbon::now()->lessThan(new Carbon($decodedToken->expiry))) {
-        $this->userPasswordValidator->validate([
-          'password' => $password
-        ]);
-
-        $user->password = $password;
-        $user->password_reset_token = null;
-
-        if ($user->save()) {
-          event(new UserPasswordResetEvent($user));
-
-          return $user;
-        }
-      } else {
-        throw new PasswordResetTokenExpiredException();
-      }
-    } else {
-      throw new InvalidPasswordResetTokenException();
-    }
-  }
-
-  /**
-   * Generate a password reset token.
-   *
-   * @return string
-   */
-  public function generatePasswordResetToken()
-  {
-    return base64_encode(json_encode([
-      'expiry' => Carbon::now()->addMinutes(config('auth.passwords.users.expire', 60)),
-      'token' => str_random(32) // used to append randomness
-    ]));
-  }
-
-  /**
-   * Decode a password reset token.
-   *
-   * @param string $passwordResetToken
-   * @return Object
-   */
-  public function decodePasswordResetToken($passwordResetToken)
-  {
-    return json_decode(base64_decode($passwordResetToken));
-  }
-
-  /**
-   * Send the user a password reset email.
-   *
-   * @param \App\Entities\User $user
-   * @return void
-   */
-  public function sendPasswordResetToken(User $user)
-  {
-    Mail::to($user->email)->send(new PasswordResetToken($user->password_reset_token));
   }
 
   /**
@@ -466,7 +239,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    *
    * @param \App\Entities\User $user
    * @param array $roles
-   * @return \App\Entities\Role
+   * @return \App\Entities\User
    */
   public function removeRoles(User $user, array $roles = [])
   {

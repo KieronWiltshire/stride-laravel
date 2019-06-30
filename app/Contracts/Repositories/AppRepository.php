@@ -8,7 +8,7 @@ interface AppRepository
    * Specify the repository to include relationships.
    *
    * @param array|string $relations
-   * @return \App\Contracts\Repositories\AppRepository
+   * @return self
    */
   function with($relations);
 
@@ -17,7 +17,7 @@ interface AppRepository
    *
    * @param integer $limit
    * @param integer $offset
-   * @return \App\Contracts\Repositories\AppRepository
+   * @return self
    *
    * @throws \App\Exceptions\Pagination\InvalidPaginationException
    */
