@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Providers;
+namespace App\User;
 
 use Illuminate\Support\ServiceProvider;
 
-class PermissionServiceProvider extends ServiceProvider
+class UserServiceProvider extends ServiceProvider
 {
   /**
    * Register services.
@@ -14,8 +14,8 @@ class PermissionServiceProvider extends ServiceProvider
   public function register()
   {
     $this->app->bind(
-      'App\Contracts\Repositories\Permission\PermissionRepository',
-      'App\Repositories\Permission\PermissionRepository'
+      'App\User\Contracts\Repositories\UserRepository',
+      'App\User\UserRepository'
     );
   }
 

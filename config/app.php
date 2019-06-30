@@ -2,7 +2,7 @@
 
 use App\Providers\ClientServiceProvider;
 use App\Providers\LocaleServiceProvider;
-use App\Providers\UserServiceProvider;
+use App\Providers\ServiceProvider;
 
 return [
 
@@ -182,7 +182,7 @@ return [
     /*
      * Custom Service Providers...
      */
-    App\Providers\UserServiceProvider::class,
+    App\User\UserServiceProvider::class,
     App\Providers\RoleServiceProvider::class,
     App\Providers\PermissionServiceProvider::class,
 
