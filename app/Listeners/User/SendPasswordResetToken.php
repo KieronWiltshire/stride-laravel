@@ -3,20 +3,20 @@
 namespace App\Listeners\User;
 
 use App\Events\User\PasswordResetTokenGeneratedEvent;
-use App\Contracts\Repositories\UserRepository;
+use App\Contracts\Repositories\User\UserRepository;
 use Exception;
 
 class SendPasswordResetToken
 {
   /**
-   * @var \App\Contracts\Repositories\UserRepository
+   * @var \App\Contracts\Repositories\User\UserRepository
    */
   private $userRepository;
 
   /**
    * Create the event listener.
    *
-   * @param \App\Contracts\Repositories\UserRepository $userRepository
+   * @param \App\Contracts\Repositories\User\UserRepository $userRepository
    */
   public function __construct(UserRepository $userRepository)
   {

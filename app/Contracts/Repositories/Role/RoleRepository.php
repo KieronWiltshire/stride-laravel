@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Contracts\Repositories;
+namespace App\Contracts\Repositories\Role;
 
+use App\Contracts\Repositories\AppRepository;
 use App\Entities\Permission;
 use App\Entities\Role;
 
-interface RoleRepository
+interface RoleRepository extends AppRepository
 {
   /**
    * Retrieve all of the roles.
@@ -13,17 +14,6 @@ interface RoleRepository
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Role>
    */
   function all();
-
-  /**
-   * Retrieve all of the roles.
-   *
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function allAsPaginated($limit = null, $offset = 1);
 
   /**
    * Create a new role.
@@ -58,20 +48,6 @@ interface RoleRepository
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Role>
    */
   function find($parameter, $search, $regex = true);
-
-  /**
-   * Find a role by an unknown parameter.
-   *
-   * @param number|string $parameter
-   * @param number|string $search
-   * @param boolean $regex
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1);
 
   /**
    * Find a role by identifier.
@@ -172,28 +148,4 @@ interface RoleRepository
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\Role>
    */
   function getRolesWithPermissions(array $permissions = []);
-
-  /**
-   * Retrieve all of the roles that have access to the specified permissions.
-   *
-   * @param \App\Entities\Permission $permission
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function getRolesWithPermissionAsPaginated(Permission $permission, $limit = null, $offset = 1);
-
-  /**
-   * Retrieve all of the roles that have access to any of the specified permissions.
-   *
-   * @param array $permissions
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function getRolesWithPermissionsAsPaginated(array $permissions, $limit = null, $offset = 1);
 }

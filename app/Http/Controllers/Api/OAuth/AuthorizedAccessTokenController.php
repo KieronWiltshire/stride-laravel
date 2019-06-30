@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Repositories\TokenRepository;
+use App\Repositories\Token\TokenRepository;
 
 class AuthorizedAccessTokenController
 {
   /**
    * The token repository implementation.
    *
-   * @var \App\Repositories\TokenRepository
+   * @var \App\Repositories\Token\TokenRepository
    */
   protected $tokenRepository;
 
   /**
    * Create a new controller instance.
    *
-   * @param  \App\Repositories\TokenRepository  $tokenRepository
+   * @param  \App\Repositories\Token\TokenRepository  $tokenRepository
    */
   public function __construct(TokenRepository $tokenRepository)
   {

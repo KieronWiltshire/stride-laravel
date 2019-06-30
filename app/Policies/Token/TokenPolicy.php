@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Token;
 
 use App\Entities\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Laravel\Passport\Client;
 use Laravel\Passport\Token;
 
-class PersonalAccessTokenPolicy
+class TokenPolicy
 {
   use HandlesAuthorization;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Client;
 
 use App\Validators\OAuth\Client\ClientCreateValidator;
 use App\Validators\OAuth\Client\ClientUpdateValidator;

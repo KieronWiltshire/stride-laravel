@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Permission;
 
 use App\Entities\User;
-use App\Entities\Role;
+use App\Entities\Permission;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RolePolicy
+class PermissionPolicy
 {
   use HandlesAuthorization;
 
@@ -21,7 +21,7 @@ class RolePolicy
   }
 
   /**
-   * Determine if the specified user can create a role.
+   * Determine if the specified user can create a permission.
    *
    * @param \App\Entities\User $user
    * @return bool
@@ -29,21 +29,21 @@ class RolePolicy
   public function create(User $user)
   {
     return (
-      $user->laratrustCan('role.create')
+      $user->laratrustCan('permission.create')
     );
   }
 
   /**
-   * Determine if the given role can be updated by the specified user.
+   * Determine if the given permission can be updated by the specified user.
    *
    * @param \App\Entities\User $user
-   * @param \App\Entities\Role $role
+   * @param \App\Entities\Permission $permission
    * @return bool
    */
-  public function update(User $user, Role $role)
+  public function update(User $user, Permission $permission)
   {
     return (
-      $user->laratrustCan('role.update.all')
+      $user->laratrustCan('permission.update.all')
     );
   }
 }

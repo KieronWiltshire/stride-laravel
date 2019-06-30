@@ -2,37 +2,37 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Contracts\Repositories\UserRepository;
+use App\Contracts\Repositories\User\UserRepository;
 use App\Exceptions\OAuth\ClientNotFoundException;
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Repositories\ClientRepository;
-use App\Transformers\ClientTransformer;
+use App\Repositories\Client\ClientRepository;
+use App\Transformers\Client\ClientTransformer;
 use Illuminate\Support\Facades\Gate;
 
 class ClientController extends Controller
 {
   /**
-   * @var \App\Repositories\ClientRepository
+   * @var \App\Repositories\Client\ClientRepository
    */
   protected $clientRepository;
 
   /**
-   * @var \App\Contracts\Repositories\UserRepository
+   * @var \App\Contracts\Repositories\User\UserRepository
    */
   protected $userRepository;
 
   /**
-   * @var \App\Transformers\ClientTransformer
+   * @var \App\Transformers\Client\ClientTransformer
    */
   protected $clientTransformer;
 
   /**
    * Create a client controller instance.
    *
-   * @param \App\Repositories\ClientRepository $clientRepository
-   * @param \App\Contracts\Repositories\UserRepository $userRepository
-   * @param \App\Transformers\ClientTransformer $clientTransformer
+   * @param \App\Repositories\Client\ClientRepository $clientRepository
+   * @param \App\Contracts\Repositories\User\UserRepository $userRepository
+   * @param \App\Transformers\Client\ClientTransformer $clientTransformer
    */
   public function __construct(
     ClientRepository $clientRepository,

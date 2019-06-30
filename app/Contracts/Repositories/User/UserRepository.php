@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Contracts\Repositories;
+namespace App\Contracts\Repositories\User;
 
+use App\Contracts\Repositories\AppRepository;
 use App\Entities\Permission;
 use App\Entities\Role;
 use App\Entities\User;
 
-interface UserRepository
+interface UserRepository extends AppRepository
 {
   /**
    * Retrieve all of the users.
@@ -14,17 +15,6 @@ interface UserRepository
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\User>
    */
   function all();
-
-  /**
-   * Retrieve all of the users.
-   *
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function allAsPaginated($limit = null, $offset = 1);
 
   /**
    * Create a new user.
@@ -59,20 +49,6 @@ interface UserRepository
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\User>
    */
   function find($parameter, $search, $regex = true);
-
-  /**
-   * Find a user by an unknown parameter.
-   *
-   * @param number|string $parameter
-   * @param number|string $search
-   * @param boolean $regex
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1);
 
   /**
    * Find a user by identifier.
@@ -324,30 +300,6 @@ interface UserRepository
   function getUsersWithRoles(array $roles = []);
 
   /**
-   * Retrieve all of the users that are associated with the specified role.
-   *
-   * @param \App\Entities\Role $role
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function getUsersWithRoleAsPaginated(Role $role, $limit = null, $offset = 1);
-
-  /**
-   * Retrieve all of the users that are associated with any of the specified roles.
-   *
-   * @param array $roles
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function getUsersWithRolesAsPaginated(array $roles = [], $limit = null, $offset = 1);
-
-  /**
    * Retrieve all of the users that have access to the specified permission.
    *
    * @param \App\Entities\Permission $permission
@@ -362,28 +314,4 @@ interface UserRepository
    * @return \Illuminate\Database\Eloquent\Collection<\App\Entities\User>
    */
   function getUsersWithPermissions(array $permissions = []);
-
-  /**
-   * Retrieve all of the users that have access to the specified permissions.
-   *
-   * @param \App\Entities\Permission $permission
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function getUsersWithPermissionAsPaginated(Permission $permission, $limit = null, $offset = 1);
-
-  /**
-   * Retrieve all of the users that have access to any of the specified permissions.
-   *
-   * @param array $permissions
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\User>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function getUsersWithPermissionsAsPaginated(array $permissions, $limit = null, $offset = 1);
 }

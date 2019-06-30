@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transformers;
+namespace App\Transformers\Client;
 
 use Laravel\Passport\Client;
 use Illuminate\Support\Facades\Gate;

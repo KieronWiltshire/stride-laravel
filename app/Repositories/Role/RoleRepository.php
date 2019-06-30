@@ -1,26 +1,22 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Role;
 
-use App\Contracts\Repositories\RoleRepository as RoleRepositoryInterface;
+use App\Contracts\Repositories\Role\RoleRepository as RoleRepositoryInterface;
 use App\Entities\Permission;
 use App\Entities\Role;
 use App\Events\Role\RoleCreatedEvent;
 use App\Events\Role\RoleUpdatedEvent;
 use App\Exceptions\Role\RoleNotFoundException;
+use App\Repositories\AppRepository;
 use App\Validators\Pagination\PaginationValidator;
 use App\Validators\Role\RoleCreateValidator;
 use App\Validators\Role\RoleUpdateValidator;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class RoleRepository implements RoleRepositoryInterface
+class RoleRepository extends AppRepository implements RoleRepositoryInterface
 {
-  /**
-   * @var \App\Validators\Pagination\PaginationValidator
-   */
-  protected $paginationValidator;
-
   /**
    * @var \App\Validators\Role\RoleCreateValidator
    */
@@ -34,16 +30,13 @@ class RoleRepository implements RoleRepositoryInterface
   /**
    * Create a new role repository instance.
    *
-   * @param \App\Validators\Pagination\PaginationValidator $paginationValidator
    * @param \App\Validators\Role\RoleCreateValidator $roleCreateValidator
    * @param \App\Validators\Role\RoleUpdateValidator $roleUpdateValidator
    */
   public function __construct(
-    PaginationValidator $paginationValidator,
     RoleCreateValidator $roleCreateValidator,
     RoleUpdateValidator $roleUpdateValidator
   ) {
-    $this->paginationValidator = $paginationValidator;
     $this->roleCreateValidator = $roleCreateValidator;
     $this->roleUpdateValidator = $roleUpdateValidator;
   }
@@ -55,32 +48,7 @@ class RoleRepository implements RoleRepositoryInterface
    */
   function all()
   {
-    return Role::all();
-  }
-
-  /**
-   * Retrieve all of the roles.
-   *
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\Role>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function allAsPaginated($limit = null, $offset = 1)
-  {
-    $this->paginationValidator->validate([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
-
-    if ($limit) {
-      return Role::paginate($limit, ['*'], 'page', $offset);
-    } else {
-      $roles = Role::all();
-
-      return new LengthAwarePaginator($roles->all(), $roles->count(), max($roles->count(), 1), 1);
-    }
+    return $this->execute(Role::query());
   }
 
   /**
@@ -126,7 +94,7 @@ class RoleRepository implements RoleRepositoryInterface
       $query->where($parameter, $search);
     }
 
-    $role = $query->first();
+    $role = $this->execute($query, true);
 
     return ($role) ? $role : $this->create($attributes);
   }
@@ -149,43 +117,7 @@ class RoleRepository implements RoleRepositoryInterface
       $query->where($parameter, $search);
     }
 
-    return $query->get();
-  }
-
-  /**
-   * Find a role by an unknown parameter.
-   *
-   * @param number|string $parameter
-   * @param number|string $search
-   * @param boolean $regex
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1)
-  {
-    $this->paginationValidator->validate([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
-
-    $query = Role::query();
-
-    if ($regex) {
-      $query->where($parameter, 'REGEXP', $search)->get();
-    } else {
-      $query->where($parameter, $search)->get();
-    }
-
-    if ($limit) {
-      return $query->paginate($limit, ['*'], 'page', $offset);
-    } else {
-      $roles = $query->get();
-
-      return new LengthAwarePaginator($roles->all(), $roles->count(), max($roles->count(), 1), 1);
-    }
+    return $this->execute($query);
   }
 
   /**
@@ -198,7 +130,7 @@ class RoleRepository implements RoleRepositoryInterface
    */
   function findById($id)
   {
-    $role = Role::find($id);
+    $role = $this->execute(Role::where('id', $id), true);
 
     if (!$role) {
       throw new RoleNotFoundException();
@@ -217,7 +149,7 @@ class RoleRepository implements RoleRepositoryInterface
    */
   function findByName($name)
   {
-    $role = Role::where('name', $name)->first();
+    $role = $this->execute(Role::where('name', $name), true);
 
     if (!$role) {
       throw new RoleNotFoundException();
@@ -352,52 +284,6 @@ class RoleRepository implements RoleRepositoryInterface
       }
     }
 
-    return $query->get();
-  }
-
-  /**
-   * Retrieve all of the roles that have access to the specified permissions.
-   *
-   * @param \App\Entities\Permission $permission
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function getRolesWithPermissionAsPaginated(Permission $permission, $limit = null, $offset = 1)
-  {
-   return $this->getRolesWithPermissionsAsPaginated([$permission], $limit, $offset);
-  }
-
-  /**
-   * Retrieve all of the roles that have access to any of the specified permissions.
-   *
-   * @param array $permissions
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Role>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  function getRolesWithPermissionsAsPaginated(array $permissions, $limit = null, $offset = 1)
-  {
-    $query = Role::query();
-
-    foreach ($permissions as $index => $permission) {
-      if ($index <= 0) {
-        $query->whereRoleIs($permission->name);
-      } else {
-        $query->orWhereRoleIs($permission->name);
-      }
-    }
-
-    if ($limit) {
-      return $query->paginate($limit, ['*'], 'page', $offset);
-    } else {
-      $roles = $query->get();
-
-      return new LengthAwarePaginator($roles->all(), $roles->count(), max($roles->count(), 1), 1);
-    }
+    return $this->execute($query);
   }
 }

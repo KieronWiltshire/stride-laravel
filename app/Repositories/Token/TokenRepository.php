@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Token;
 
 use App\Exceptions\OAuth\TokenNotFoundException;
 use App\Validators\OAuth\Token\TokenCreateValidator;
@@ -12,7 +12,11 @@ use Laravel\Passport\Passport;
 
 /**
  * This repository was created in order to standardize Laravel's Passport
- * with the application's architecture and design philosophy.
+ * package with the application's architecture and design philosophy.
+ *
+ * This repository was made in order to "hack" the response
+ * of the "PassportTokenRepository" so that it fits with
+ * the application's response.
  *
  * Class TokenRepository
  * @package App\Repositories

@@ -42,24 +42,24 @@ class AuthServiceProvider extends ServiceProvider
    */
   private function registerGates()
   {
-    Gate::define('user.view', 'App\Policies\UserPolicy@view');
-    Gate::define('user.update', 'App\Policies\UserPolicy@update');
+    Gate::define('user.view', 'App\Policies\User\UserPolicy@view');
+    Gate::define('user.update', 'App\Policies\User\UserPolicy@update');
 
-    Gate::define('personal-access-token.for', 'App\Policies\PersonalAccessTokenPolicy@for');
-    Gate::define('personal-access-token.create', 'App\Policies\PersonalAccessTokenPolicy@create');
-    Gate::define('personal-access-token.delete', 'App\Policies\PersonalAccessTokenPolicy@delete');
+    Gate::define('personal-access-token.for', 'App\Policies\Token\TokenPolicy@for');
+    Gate::define('personal-access-token.create', 'App\Policies\Token\TokenPolicy@create');
+    Gate::define('personal-access-token.delete', 'App\Policies\Token\TokenPolicy@delete');
 
-    Gate::define('client.for', 'App\Policies\ClientPolicy@for');
-    Gate::define('client.view', 'App\Policies\ClientPolicy@view');
-    Gate::define('client.create', 'App\Policies\ClientPolicy@create');
-    Gate::define('client.update', 'App\Policies\ClientPolicy@update');
-    Gate::define('client.delete', 'App\Policies\ClientPolicy@delete');
+    Gate::define('client.for', 'App\Policies\Client\ClientPolicy@for');
+    Gate::define('client.view', 'App\Policies\Client\ClientPolicy@view');
+    Gate::define('client.create', 'App\Policies\Client\ClientPolicy@create');
+    Gate::define('client.update', 'App\Policies\Client\ClientPolicy@update');
+    Gate::define('client.delete', 'App\Policies\Client\ClientPolicy@delete');
 
-    Gate::define('role.create', 'App\Policies\RolePolicy@create');
-    Gate::define('role.update', 'App\Policies\RolePolicy@update');
+    Gate::define('role.create', 'App\Policies\Role\RolePolicy@create');
+    Gate::define('role.update', 'App\Policies\Role\RolePolicy@update');
 
-    Gate::define('permission.create', 'App\Policies\PermissionPolicy@create');
-    Gate::define('permission.update', 'App\Policies\PermissionPolicy@update');
+    Gate::define('permission.create', 'App\Policies\Permission\PermissionPolicy@create');
+    Gate::define('permission.update', 'App\Policies\Permission\PermissionPolicy@update');
 
     Gate::after(function ($user, $ability, $result) {
       return ($result && $user->tokenCan($ability));

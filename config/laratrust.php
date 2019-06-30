@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Permission,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Permission
  */
 
 return [
@@ -27,7 +27,7 @@ return [
    |
    | Defines if you want to use the roles and permissions checker.
    | Available:
-   | - default: Check for the roles and permissions using the method that Laratrust
+   | - default: Check for the roles and permissions using the method that Permission
    |             has always used.
    | - query: Check for the roles and permissions using direct queries to the database.
    |           This method doesn't support cache yet.
@@ -40,7 +40,7 @@ return [
    | Cache
    |--------------------------------------------------------------------------
    |
-   | Manage Laratrust's cache configurations. It uses the driver defined in the
+   | Manage Permission's cache configurations. It uses the driver defined in the
    | config/cache.php file.
    |
    */
@@ -50,7 +50,7 @@ return [
     | Use cache in the package
     |--------------------------------------------------------------------------
     |
-    | Defines if Laratrust will use Laravel's Cache to cache the roles and permissions.
+    | Defines if Permission will use Laravel's Cache to cache the roles and permissions.
     | NOTE: Currently the database check does not use cache.
     |
     */
@@ -58,10 +58,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Time to store in cache Laratrust's roles and permissions.
+    | Time to store in cache Permission's roles and permissions.
     |--------------------------------------------------------------------------
     |
-    | Determines the time in SECONDS to store Laratrust's roles and permissions in the cache.
+    | Determines the time in SECONDS to store Permission's roles and permissions in the cache.
     |
     */
     'expiration_time' => 3600,
@@ -72,7 +72,7 @@ return [
   | Use teams feature in the package
   |--------------------------------------------------------------------------
   |
-  | Defines if Laratrust will use the teams feature.
+  | Defines if Permission will use the teams feature.
   | Please check the docs to see what you need to do in case you have the package already configured.
   |
   */
@@ -93,7 +93,7 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Laratrust User Models
+  | Permission User Models
   |--------------------------------------------------------------------------
   |
   | This is the array that contains the information of the user models.
@@ -109,11 +109,11 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Laratrust Models
+  | Permission Models
   |--------------------------------------------------------------------------
   |
-  | These are the models used by Laratrust to define the roles, permissions and teams.
-  | If you want the Laratrust models to be in a different namespace or
+  | These are the models used by Permission to define the roles, permissions and teams.
+  | If you want the Permission models to be in a different namespace or
   | to have a different name, you can do it here.
   |
   */
@@ -137,10 +137,10 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Laratrust Tables
+  | Permission Tables
   |--------------------------------------------------------------------------
   |
-  | These are the tables used by Laratrust to store all the authorization data.
+  | These are the tables used by Permission to store all the authorization data.
   |
   */
   'tables' => [
@@ -178,7 +178,7 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Laratrust Foreign Keys
+  | Permission Foreign Keys
   |--------------------------------------------------------------------------
   |
   | These are the foreign keys used by laratrust in the intermediate tables.
@@ -186,22 +186,22 @@ return [
   */
   'foreign_keys' => [
     /**
-     * User foreign key on Laratrust's role_user and permission_user tables.
+     * User foreign key on Permission's role_user and permission_user tables.
      */
     'user' => 'user_id',
 
     /**
-     * Role foreign key on Laratrust's role_user and permission_role tables.
+     * Role foreign key on Permission's role_user and permission_role tables.
      */
     'role' => 'role_id',
 
     /**
-     * Role foreign key on Laratrust's permission_user and permission_role tables.
+     * Role foreign key on Permission's permission_user and permission_role tables.
      */
     'permission' => 'permission_id',
 
     /**
-     * Role foreign key on Laratrust's role_user and permission_user tables.
+     * Role foreign key on Permission's role_user and permission_user tables.
      */
     'team' => 'team_id',
 
@@ -209,10 +209,10 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Laratrust Middleware
+  | Permission Middleware
   |--------------------------------------------------------------------------
   |
-  | This configuration helps to customize the Laratrust middleware behavior.
+  | This configuration helps to customize the Permission middleware behavior.
   |
   */
   'middleware' => [
@@ -256,7 +256,7 @@ return [
 
   /*
   |--------------------------------------------------------------------------
-  | Laratrust Magic 'can' Method
+  | Permission Magic 'can' Method
   |--------------------------------------------------------------------------
   |
   | Supported cases for the magic can method (Refer to the docs).

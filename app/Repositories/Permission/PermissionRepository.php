@@ -1,25 +1,21 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Permission;
 
-use App\Contracts\Repositories\PermissionRepository as PermissionRepositoryInterface;
+use App\Contracts\Repositories\Permission\PermissionRepository as PermissionRepositoryInterface;
 use App\Entities\Permission;
 use App\Events\Permission\PermissionCreatedEvent;
 use App\Events\Permission\PermissionUpdatedEvent;
 use App\Exceptions\Permission\PermissionNotFoundException;
+use App\Repositories\AppRepository;
 use App\Validators\Pagination\PaginationValidator;
 use App\Validators\Permission\PermissionCreateValidator;
 use App\Validators\Permission\PermissionUpdateValidator;
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class PermissionRepository implements PermissionRepositoryInterface
+class PermissionRepository extends AppRepository implements PermissionRepositoryInterface
 {
-  /**
-   * @var \App\Validators\Pagination\PaginationValidator
-   */
-  protected $paginationValidator;
-
   /**
    * @var \App\Validators\Permission\PermissionCreateValidator
    */
@@ -38,11 +34,9 @@ class PermissionRepository implements PermissionRepositoryInterface
    * @param \App\Validators\Permission\PermissionUpdateValidator $permissionUpdateValidator
    */
   public function __construct(
-    PaginationValidator $paginationValidator,
     PermissionCreateValidator $permissionCreateValidator,
     PermissionUpdateValidator $permissionUpdateValidator
   ) {
-    $this->paginationValidator = $paginationValidator;
     $this->permissionCreateValidator = $permissionCreateValidator;
     $this->permissionUpdateValidator = $permissionUpdateValidator;
   }
@@ -54,32 +48,7 @@ class PermissionRepository implements PermissionRepositoryInterface
    */
   public function all()
   {
-    return Permission::all();
-  }
-
-  /**
-   * Retrieve all of the permissions.
-   *
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Permission>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  public function allAsPaginated($limit = null, $offset = 1)
-  {
-    $this->paginationValidator->validate([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
-
-    if ($limit) {
-      return Permission::paginate($limit, ['*'], 'page', $offset);
-    } else {
-      $permissions = Permission::all();
-
-      return new LengthAwarePaginator($permissions->all(), $permissions->count(), max($permissions->count(), 1), 1);
-    }
+    return $this->execute(Permission::query());
   }
 
   /**
@@ -125,7 +94,7 @@ class PermissionRepository implements PermissionRepositoryInterface
       $query->where($parameter, $search);
     }
 
-    $permission = $query->first();
+    $permission = $this->execute($query, true);
 
     return ($permission) ? $permission : $this->create($attributes);
   }
@@ -148,43 +117,7 @@ class PermissionRepository implements PermissionRepositoryInterface
       $query->where($parameter, $search);
     }
 
-    return $query->get();
-  }
-
-  /**
-   * Find a permission by an unknown parameter.
-   *
-   * @param number|string $parameter
-   * @param number|string $search
-   * @param boolean $regex
-   * @param integer $limit
-   * @param integer $offset
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\App\Entities\Permission>
-   *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
-   */
-  public function findAsPaginated($parameter, $search, $regex = true, $limit = null, $offset = 1)
-  {
-    $this->paginationValidator->validate([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
-
-    $query = Permission::query();
-
-    if ($regex) {
-      $query->where($parameter, 'REGEXP', $search)->get();
-    } else {
-      $query->where($parameter, $search)->get();
-    }
-
-    if ($limit) {
-      return $query->paginate($limit, ['*'], 'page', $offset);
-    } else {
-      $permissions = $query->get();
-
-      return new LengthAwarePaginator($permissions->all(), $permissions->count(), max($permissions->count(), 1), 1);
-    }
+    return $this->execute($query);
   }
 
   /**
@@ -197,7 +130,7 @@ class PermissionRepository implements PermissionRepositoryInterface
    */
   public function findById($id)
   {
-    $permission = Permission::find($id);
+    $permission = $this->execute(Permission::where('id', $id), true);
 
     if (!$permission) {
       throw new PermissionNotFoundException();
@@ -216,7 +149,7 @@ class PermissionRepository implements PermissionRepositoryInterface
    */
   function findByName($name)
   {
-    $role = Permission::where('name', $name)->first();
+    $role = $this->execute(Permission::where('name', $name), true);
 
     if (!$role) {
       throw new PermissionNotFoundException();

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Transformers;
+namespace App\Transformers\Token;
 
 use Laravel\Passport\Token;
-use Illuminate\Support\Facades\Gate;
 use League\Fractal\TransformerAbstract;
 
 class TokenTransformer extends TransformerAbstract

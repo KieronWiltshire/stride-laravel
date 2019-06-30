@@ -14,23 +14,6 @@
 Route::namespace('Api')->name('api.')->group(function () {
 
   /**
-   * User routes
-   */
-  Route::name('user.')->prefix('user')->group(function () {
-    Route::get('/', 'UserController@index')->name('index');
-    Route::post('/', 'UserController@create')->name('create');
-    Route::get('/search', 'UserController@search')->name('search');
-    Route::get('/{id}', 'UserController@getById')->name('get')->where('id', '[0-9]+');
-    Route::put('/{id}', 'UserController@update')->name('update')->where('id', '[0-9]+')->middleware('auth');
-    Route::post('/{id}/email', 'UserController@requestEmailChange')->name('change_email')->where('id', '[0-9]+')->middleware('auth');
-    Route::get('/{email}', 'UserController@getByEmail')->name('get');
-    Route::get('/{email}/verify', 'UserController@verifyEmail')->name('verify_email');
-    Route::post('/{email}/resend', 'UserController@resendEmailVerificationToken')->name('resend_email_verification_token');
-    Route::post('/{email}/forgot', 'UserController@forgotPassword')->name('forgot_password');
-    Route::post('/{email}/reset', 'UserController@resetPassword')->name('reset_password');
-  });
-
-  /**
    * Authentication routes
    */
   Route::name('auth.')->prefix('auth')->group(function() {
@@ -93,6 +76,23 @@ Route::namespace('Api')->name('api.')->group(function () {
      */
     Route::post('/token', 'AccessTokenController@issueToken')->name('token');
 
+  });
+
+  /**
+   * User routes
+   */
+  Route::name('user.')->prefix('user')->group(function () {
+    Route::get('/', 'UserController@index')->name('index');
+    Route::post('/', 'UserController@create')->name('create');
+    Route::get('/search', 'UserController@search')->name('search');
+    Route::get('/{id}', 'UserController@getById')->name('get')->where('id', '[0-9]+');
+    Route::put('/{id}', 'UserController@update')->name('update')->where('id', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/email', 'UserController@requestEmailChange')->name('change_email')->where('id', '[0-9]+')->middleware('auth');
+    Route::get('/{email}', 'UserController@getByEmail')->name('get');
+    Route::get('/{email}/verify', 'UserController@verifyEmail')->name('verify_email');
+    Route::post('/{email}/resend', 'UserController@resendEmailVerificationToken')->name('resend_email_verification_token');
+    Route::post('/{email}/forgot', 'UserController@forgotPassword')->name('forgot_password');
+    Route::post('/{email}/reset', 'UserController@resetPassword')->name('reset_password');
   });
 
   /**

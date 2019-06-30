@@ -4,30 +4,30 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Repositories\UserRepository;
+use App\Contracts\Repositories\User\UserRepository;
 use App\Exceptions\Http\BadRequestError;
 use App\Exceptions\User\PasswordResetTokenExpiredException;
 use App\Exceptions\User\InvalidPasswordResetTokenException;
 use App\Exceptions\User\InvalidEmailVerificationTokenException;
-use App\Transformers\UserTransformer;
+use App\Transformers\User\UserTransformer;
 
 class UserController extends Controller
 {
   /**
-   * @var \App\Contracts\Repositories\UserRepository
+   * @var \App\Contracts\Repositories\User\UserRepository
    */
   protected $userRepository;
 
   /**
-   * @var \App\Transformers\UserTransformer
+   * @var \App\Transformers\User\UserTransformer
    */
   protected $userTransformer;
 
   /**
    * Create a new user controller instance
    *
-   * @param \App\Contracts\Repositories\UserRepository $userRepository
-   * @param \App\Transformers\UserTransformer $userTransformer
+   * @param \App\Contracts\Repositories\User\UserRepository $userRepository
+   * @param \App\Transformers\User\UserTransformer $userTransformer
    */
   public function __construct(
     UserRepository $userRepository,

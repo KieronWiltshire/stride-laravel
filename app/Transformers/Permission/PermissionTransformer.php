@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transformers;
+namespace App\Transformers\Permission;
 
 use App\Entities\Permission;
 use League\Fractal\TransformerAbstract;

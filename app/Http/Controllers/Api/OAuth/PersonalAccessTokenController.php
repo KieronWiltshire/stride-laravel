@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Contracts\Repositories\UserRepository;
+use App\Contracts\Repositories\User\UserRepository;
 use App\Exceptions\OAuth\TokenNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Transformers\TokenTransformer;
+use App\Transformers\Token\TokenTransformer;
 use App\Validators\OAuth\Token\TokenCreateValidator;
-use App\Repositories\TokenRepository;
+use App\Repositories\Token\TokenRepository;
 
 class PersonalAccessTokenController extends Controller
 {
@@ -17,17 +17,17 @@ class PersonalAccessTokenController extends Controller
   protected $tokenCreateValidator;
 
   /**
-   * @var \App\Repositories\TokenRepository
+   * @var \App\Repositories\Token\TokenRepository
    */
   protected $tokenRepository;
 
   /**
-   * @var \App\Contracts\Repositories\UserRepository
+   * @var \App\Contracts\Repositories\Token\UserRepository
    */
   protected $userRepository;
 
   /**
-   * @var \App\Transformers\TokenTransformer
+   * @var \App\Transformers\Token\TokenTransformer
    */
   protected $tokenTransformer;
 
@@ -35,9 +35,9 @@ class PersonalAccessTokenController extends Controller
    * Create a controller instance.
    *
    * @param \App\Validators\OAuth\Token\TokenCreateValidator $tokenCreateValidator
-   * @param \App\Repositories\TokenRepository $tokenRepository
-   * @param \App\Contracts\Repositories\UserRepository $userRepository
-   * @param \App\Transformers\TokenTransformer $tokenTransformer
+   * @param \App\Repositories\Token\TokenRepository $tokenRepository
+   * @param \App\Contracts\Repositories\User\UserRepository $userRepository
+   * @param \App\Transformers\Token\TokenTransformer $tokenTransformer
    */
   public function __construct(
     TokenCreateValidator $tokenCreateValidator,

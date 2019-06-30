@@ -4,27 +4,27 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\Permission\PermissionNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Repositories\PermissionRepository;
+use App\Contracts\Repositories\Permission\PermissionRepository;
 use App\Exceptions\Http\BadRequestError;
-use App\Transformers\PermissionTransformer;
+use App\Transformers\Permission\PermissionTransformer;
 
 class PermissionController extends Controller
 {
   /**
-   * @var \App\Contracts\Repositories\PermissionRepository
+   * @var \App\Contracts\Repositories\Permission\PermissionRepository
    */
   protected $permissionRepository;
 
   /**
-   * @var \App\Transformers\PermissionTransformer
+   * @var \App\Transformers\Permission\PermissionTransformer
    */
   protected $permissionTransformer;
 
   /**
    * Create a new permission controller instance
    *
-   * @param \App\Contracts\Repositories\PermissionRepository $permissionRepository
-   * @param \App\Transformers\PermissionTransformer $permissionTransformer
+   * @param \App\Contracts\Repositories\Permission\PermissionRepository $permissionRepository
+   * @param \App\Transformers\Permission\PermissionTransformer $permissionTransformer
    */
   public function __construct(
     PermissionRepository $permissionRepository,

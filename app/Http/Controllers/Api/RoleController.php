@@ -4,27 +4,27 @@ namespace App\Http\Controllers\Api;
 
 use App\Exceptions\Role\RoleNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Contracts\Repositories\RoleRepository;
+use App\Contracts\Repositories\Role\RoleRepository;
 use App\Exceptions\Http\BadRequestError;
-use App\Transformers\RoleTransformer;
+use App\Transformers\Role\RoleTransformer;
 
 class RoleController extends Controller
 {
   /**
-   * @var \App\Contracts\Repositories\RoleRepository
+   * @var \App\Contracts\Repositories\Role\RoleRepository
    */
   protected $roleRepository;
 
   /**
-   * @var \App\Transformers\RoleTransformer
+   * @var \App\Transformers\Role\RoleTransformer
    */
   protected $roleTransformer;
 
   /**
    * Create a new role controller instance
    *
-   * @param \App\Contracts\Repositories\RoleRepository $roleRepository
-   * @param \App\Transformers\RoleTransformer $roleTransformer
+   * @param \App\Contracts\Repositories\Role\RoleRepository $roleRepository
+   * @param \App\Transformers\Role\RoleTransformer $roleTransformer
    */
   public function __construct(
     RoleRepository $roleRepository,

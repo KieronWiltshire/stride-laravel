@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transformers;
+namespace App\Transformers\User;
 
 use App\Entities\User;
 use Illuminate\Support\Facades\Gate;
