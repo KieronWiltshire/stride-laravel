@@ -183,8 +183,6 @@ return [
      * Custom Service Providers...
      */
     App\User\UserServiceProvider::class,
-    App\Providers\RoleServiceProvider::class,
-    App\Providers\PermissionServiceProvider::class,
 
   ],
 

@@ -42,9 +42,6 @@ class AuthServiceProvider extends ServiceProvider
    */
   private function registerGates()
   {
-    Gate::define('user.view', 'App\Policies\User\UserPolicy@view');
-    Gate::define('user.update', 'App\Policies\User\UserPolicy@update');
-
     Gate::define('personal-access-token.for', 'App\Policies\Token\TokenPolicy@for');
     Gate::define('personal-access-token.create', 'App\Policies\Token\TokenPolicy@create');
     Gate::define('personal-access-token.delete', 'App\Policies\Token\TokenPolicy@delete');
