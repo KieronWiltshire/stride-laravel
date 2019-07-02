@@ -52,12 +52,6 @@ class AuthServiceProvider extends ServiceProvider
     Gate::define('client.update', 'App\Policies\Client\ClientPolicy@update');
     Gate::define('client.delete', 'App\Policies\Client\ClientPolicy@delete');
 
-    Gate::define('role.create', 'App\Policies\Role\RolePolicy@create');
-    Gate::define('role.update', 'App\Policies\Role\RolePolicy@update');
-
-    Gate::define('permission.create', 'App\Policies\Permission\PermissionPolicy@create');
-    Gate::define('permission.update', 'App\Policies\Permission\PermissionPolicy@update');
-
     Gate::after(function ($user, $ability, $result) {
       return ($result && $user->tokenCan($ability));
     });

@@ -2,6 +2,8 @@
 
 namespace Domain\User;
 
+use Domain\Permission\Permission;
+use Domain\Role\Role;
 use Infrastructure\Repositories\AppRepository;
 use Domain\User\Contracts\Repositories\UserRepository as UserRepositoryInterface;
 use Domain\User\Events\UserCreatedEvent;

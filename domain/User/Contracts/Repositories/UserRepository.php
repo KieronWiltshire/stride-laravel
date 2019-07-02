@@ -2,6 +2,9 @@
 
 namespace Domain\User\Contracts\Repositories;
 
+use Domain\Permission\Permission;
+use Domain\Role\Role;
+use Domain\User\User;
 use Infrastructure\Contracts\Repositories\AppRepository;
 
 interface UserRepository extends AppRepository
