@@ -2,13 +2,13 @@
 
 namespace Domain\User\Listeners;
 
-use App\Events\User\EmailVerificationTokenGeneratedEvent;
+use Domain\User\Events\EmailVerificationTokenGeneratedEvent;
 use Domain\User\UserService;
 
 class SendEmailVerificationToken
 {
   /**
-   * @var \App\Contracts\Repositories\User\UserRepository
+   * @var \Domain\User\Contracts\Repositories\UserRepository
    */
   private $userRepository;
 

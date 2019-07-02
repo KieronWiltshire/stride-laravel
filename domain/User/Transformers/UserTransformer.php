@@ -2,7 +2,7 @@
 
 namespace Domain\User\Transformers;
 
-use App\Entities\User;
+use Domain\User\User;
 use Illuminate\Support\Facades\Gate;
 use League\Fractal\TransformerAbstract;
 

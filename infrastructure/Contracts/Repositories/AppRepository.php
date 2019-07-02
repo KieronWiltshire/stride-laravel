@@ -19,7 +19,7 @@ interface AppRepository
    * @param integer $offset
    * @return self
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   function paginate($limit = null, $offset = 1);
 }

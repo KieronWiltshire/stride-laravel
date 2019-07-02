@@ -32,7 +32,7 @@ trait UsesPagination
    */
   function paginate($limit = null, $offset = 1)
   {
-    $validator = app()->make('App\Validators\Pagination\PaginationValidator');
+    $validator = app()->make('Infrastructure\Validators\Pagination\PaginationValidator');
 
     $validator->validate([
       'limit' => $limit,

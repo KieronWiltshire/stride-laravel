@@ -2,21 +2,20 @@
 
 namespace Domain\User\Listeners;
 
-use App\Events\User\PasswordResetTokenGeneratedEvent;
-use App\Contracts\Repositories\User\UserRepository;
-use Exception;
+use Domain\User\Contracts\Repositories\UserRepository;
+use Domain\User\Events\PasswordResetTokenGeneratedEvent;
 
 class SendPasswordResetToken
 {
   /**
-   * @var \App\Contracts\Repositories\User\UserRepository
+   * @var \Domain\User\Contracts\Repositories\UserRepository
    */
   private $userRepository;
 
   /**
    * Create the event listener.
    *
-   * @param \App\Contracts\Repositories\User\UserRepository $userRepository
+   * @param \Domain\User\Contracts\Repositories\UserRepository $userRepository
    */
   public function __construct(UserRepository $userRepository)
   {
@@ -26,7 +25,7 @@ class SendPasswordResetToken
   /**
    * Handle the event.
    *
-   * @param \App\Events\User\PasswordResetTokenGeneratedEvent $event
+   * @param \Domain\User\Events\PasswordResetTokenGeneratedEvent $event
    * @return void
    */
   public function handle(PasswordResetTokenGeneratedEvent $event)

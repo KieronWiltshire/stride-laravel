@@ -2,7 +2,7 @@
 
 namespace Domain\User\Events;
 
-use App\Entities\User;
+use Domain\User\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -12,7 +12,7 @@ class UserEmailVerifiedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \App\Entities\User
+   * @var \Domain\User\User
    */
   private $user;
 
@@ -24,7 +24,7 @@ class UserEmailVerifiedEvent
   /**
    * Create a new event instance.
    *
-   * @param \App\Entities\User $user
+   * @param \Domain\User\User $user
    */
   public function __construct(User $user, $oldEmail)
   {
@@ -35,7 +35,7 @@ class UserEmailVerifiedEvent
   /**
    * Retrieve the created user.
    * 
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    */
   public function user()
   {
