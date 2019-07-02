@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\Auth\AuthenticationRequiredException;
+use Infrastructure\Exceptions\Auth\AuthenticationRequiredException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware

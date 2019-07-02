@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\Permission\PermissionNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Services\Permission\PermissionService;
-use App\Exceptions\Http\BadRequestError;
-use App\Transformers\Permission\PermissionTransformer;
+use Domain\Permission\Exceptions\PermissionNotFoundException;
+use Domain\Permission\PermissionService;
+use Domain\Permission\Transformers\PermissionTransformer;
+use Infrastructure\Exceptions\Http\BadRequestError;
 
 class PermissionController extends Controller
 {
   /**
-   * @var \App\Services\Permission\PermissionService
+   * @var \Domain\Permission\PermissionService
    */
   protected $permissionService;
 
   /**
-   * @var \App\Transformers\Permission\PermissionTransformer
+   * @var \Domain\Permission\Transformers\PermissionTransformer
    */
   protected $permissionTransformer;
 
   /**
    * Create a new permission controller instance
    *
-   * @param \App\Services\Permission\PermissionService $permissionService
-   * @param \App\Transformers\Permission\PermissionTransformer $permissionTransformer
+   * @param \Domain\Permission\PermissionService $permissionService
+   * @param \Domain\Permission\Transformers\PermissionTransformer $permissionTransformer
    */
   public function __construct(
     PermissionService $permissionService,
@@ -37,9 +37,9 @@ class PermissionController extends Controller
   /**
    * Retrieve an index of permissions.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\Permission>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Permission\Permission>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function index()
   {
@@ -52,9 +52,9 @@ class PermissionController extends Controller
   /**
    * Create a new permission.
    *
-   * @return \App\Entities\Permission
+   * @return \Domain\Permission\Permission
    *
-   * @throws \App\Exceptions\Permission\CannotCreatePermissionException
+   * @throws \Domain\Permission\Exceptions\CannotCreatePermissionException
    */
   public function create()
   {
@@ -74,9 +74,9 @@ class PermissionController extends Controller
    * Retrieve a permission by id.
    *
    * @param integer $id
-   * @return \App\Entities\Permission
+   * @return \Domain\Permission\Permission
    *
-   * @throws \App\Exceptions\Permission\PermissionNotFoundException
+   * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
    */
   public function getById($id)
   {
@@ -95,9 +95,9 @@ class PermissionController extends Controller
    * Retrieve a permission by name.
    *
    * @param string $name
-   * @return \App\Entities\Permission
+   * @return \Domain\Permission\Permission
    *
-   * @throws \App\Exceptions\Permission\PermissionNotFoundException
+   * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
    */
   public function getByName($name)
   {
@@ -115,10 +115,10 @@ class PermissionController extends Controller
   /**
    * Retrieve an index of permissions matching a particular search phrase.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\Permission>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Permission\Permission>
    *
-   * @throws \App\Exceptions\Http\BadRequestError
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Http\BadRequestError
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function search()
   {
@@ -149,10 +149,10 @@ class PermissionController extends Controller
    * Update a permission.
    *
    * @param integer $id
-   * @return \App\Entities\Permission
+   * @return \Domain\Permission\Permission
    *
-   * @throws \App\Exceptions\Permission\PermissionNotFoundException
-   * @throws \App\Exceptions\Permission\CannotUpdatePermissionException
+   * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
+   * @throws \Domain\Permission\Exceptions\CannotUpdatePermissionException
    */
   public function update($id)
   {

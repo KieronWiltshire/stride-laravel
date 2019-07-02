@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Exceptions\OAuth;
+namespace Domain\OAuth\Exceptions;
 
-use App\Exceptions\Http\BadRequestError;
+use Infrastructure\Exceptions\Http\BadRequestError;
 
 class InvalidScopeException extends BadRequestError
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Permission\Permission;
+namespace Domain\Permission;
 
 use Domain\Permission\Contracts\Repositories\Permission\PermissionRepository as PermissionRepositoryInterface;
 use Domain\Permission\Permission;

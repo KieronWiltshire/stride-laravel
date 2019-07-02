@@ -2,32 +2,32 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Services\User\UserService;
-use App\Exceptions\Http\BadRequestError;
-use App\Exceptions\User\PasswordResetTokenExpiredException;
-use App\Exceptions\User\InvalidPasswordResetTokenException;
-use App\Exceptions\User\InvalidEmailVerificationTokenException;
-use App\Transformers\User\UserTransformer;
+use Domain\User\Exceptions\InvalidEmailVerificationTokenException;
+use Domain\User\Exceptions\InvalidPasswordResetTokenException;
+use Domain\User\Exceptions\PasswordResetTokenExpiredException;
+use Domain\User\Exceptions\UserNotFoundException;
+use Domain\User\Transformers\UserTransformer;
+use Domain\User\UserService;
+use Infrastructure\Exceptions\Http\BadRequestError;
 
 class UserController extends Controller
 {
   /**
-   * @var \App\Services\User\UserService
+   * @var \Domain\User\UserService
    */
   protected $userService;
 
   /**
-   * @var \App\Transformers\User\UserTransformer
+   * @var \Domain\User\Transformers\UserTransformer
    */
   protected $userTransformer;
 
   /**
    * Create a new user controller instance
    *
-   * @param \App\Services\User\UserService $userService
-   * @param \App\Transformers\User\UserTransformer $userTransformer
+   * @param \Domain\User\UserService $userService
+   * @param \Domain\User\Transformers\UserTransformer $userTransformer
    */
   public function __construct(
     UserService $userService,
@@ -40,9 +40,9 @@ class UserController extends Controller
   /**
    * Retrieve an index of users.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function index()
   {
@@ -54,9 +54,9 @@ class UserController extends Controller
   /**
    * Create a new user.
    *
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    *
-   * @throws \App\Exceptions\User\CannotCreateUserException
+   * @throws \Domain\User\Exceptions\CannotCreateUserException
    */
   public function create()
   {
@@ -73,9 +73,9 @@ class UserController extends Controller
    * Retrieve a user by id.
    *
    * @param integer $id
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
    */
   public function getById($id)
   {
@@ -94,9 +94,9 @@ class UserController extends Controller
    * Retrieve a user by email.
    *
    * @param string $email
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
    */
   public function getByEmail($email)
   {
@@ -114,10 +114,10 @@ class UserController extends Controller
   /**
    * Retrieve an index of users matching a particular search phrase.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\User>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
    *
-   * @throws \App\Exceptions\Http\BadRequestError
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Http\BadRequestError
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function search()
   {
@@ -148,10 +148,10 @@ class UserController extends Controller
    * Update a user.
    *
    * @param integer $id
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
-   * @throws \App\Exceptions\User\CannotUpdateUserException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws \Domain\User\Exceptions\CannotUpdateUserException
    */
   public function update($id)
   {
@@ -179,8 +179,8 @@ class UserController extends Controller
    * @param integer $id
    * @return \Illuminate\Http\JsonResponse
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
-   * @throws \App\Exceptions\User\InvalidEmailException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws \Domain\User\Exceptions\InvalidEmailException
    */
   public function requestEmailChange($id)
   {
@@ -206,11 +206,11 @@ class UserController extends Controller
    * Verify the user's email.
    *
    * @param string $email
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
-   * @throws \App\Exceptions\User\InvalidEmailException
-   * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws \Domain\User\Exceptions\InvalidEmailException
+   * @throws \Domain\User\Exceptions\InvalidEmailVerificationTokenException
    */
   public function verifyEmail($email)
   {
@@ -234,8 +234,8 @@ class UserController extends Controller
    * @param string $email
    * @return \Illuminate\Http\JsonResponse
    *
-   * @throws \App\Exceptions\User\InvalidEmailVerificationTokenException
-   * @throws \App\Exceptions\User\UserNotFoundException
+   * @throws \Domain\Exceptions\InvalidEmailVerificationTokenException
+   * @throws \Domain\Exceptions\UserNotFoundException
    */
   public function resendEmailVerificationToken($email)
   {
@@ -267,7 +267,7 @@ class UserController extends Controller
    * @param string $email
    * @return \Illuminate\Http\JsonResponse
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
    */
   public function forgotPassword($email)
   {
@@ -291,12 +291,12 @@ class UserController extends Controller
    * Reset the user's password using the password reset token.
    *
    * @param string $email
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
-   * @throws \App\Exceptions\User\PasswordResetTokenExpiredException
-   * @throws \App\Exceptions\User\InvalidPasswordResetTokenException
-   * @throws \App\Exceptions\User\InvalidPasswordException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws \Domain\User\Exceptions\PasswordResetTokenExpiredException
+   * @throws \Domain\User\Exceptions\InvalidPasswordResetTokenException
+   * @throws \Domain\User\Exceptions\InvalidPasswordException
    */
   public function resetPassword($email)
   {

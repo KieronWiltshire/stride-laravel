@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Policies\Client;
+namespace Domain\OAuth\Policies;
 
-use App\Entities\User;
+use Domain\User\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Laravel\Passport\Client;
 
@@ -23,8 +23,8 @@ class ClientPolicy
   /**
    * Determine if the given user can view a given user's oauth clients.
    *
-   * @param \App\Entities\User $user
-   * @param \App\Entities\User $userToView
+   * @param \Domain\User\User $user
+   * @param \Domain\User\User $userToView
    * @return bool
    */
   public function for(User $user, User $userToView)
@@ -38,7 +38,7 @@ class ClientPolicy
   /**
    * Determine if the given user can view oauth client details.
    *
-   * @param \App\Entities\User $user
+   * @param \Domain\User\User $user
    * @param \Laravel\Passport\Client $client
    * @return bool
    */
@@ -53,7 +53,7 @@ class ClientPolicy
   /**
    * Determine if the specified user can create an oauth client.
    *
-   * @param \App\Entities\User $user
+   * @param \Domain\User\User $user
    * @return bool
    */
   public function create(User $user)
@@ -66,7 +66,7 @@ class ClientPolicy
   /**
    * Determine if the given oauth client can be updated by the specified user.
    *
-   * @param \App\Entities\User $user
+   * @param \Domain\User\User $user
    * @param \Laravel\Passport\Client $client
    * @return bool
    */
@@ -81,7 +81,7 @@ class ClientPolicy
   /**
    * Determine if the given oauth client can be deleted by the specified user.
    *
-   * @param \App\Entities\User $user
+   * @param \Domain\User\User $user
    * @param \Laravel\Passport\Client $client
    * @return bool
    */

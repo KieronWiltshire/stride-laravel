@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transformers\Token;
+namespace Domain\OAuth\Transformers;
 
 use Laravel\Passport\Token;
 use League\Fractal\TransformerAbstract;
@@ -8,14 +8,14 @@ use League\Fractal\TransformerAbstract;
 class TokenTransformer extends TransformerAbstract
 {
   /**
-   * @var \App\Transformers\ClientTransformer
+   * @var \Domain\OAuth\Transformers\ClientTransformer
    */
   protected $clientTransformer;
 
   /**
    * Create a new token transformer instance
    *
-   * @param \App\Transformers\ClientTransformer $clientTransformer
+   * @param \Domain\OAuth\Transformers\ClientTransformer $clientTransformer
    */
   public function __construct(
     ClientTransformer $clientTransformer

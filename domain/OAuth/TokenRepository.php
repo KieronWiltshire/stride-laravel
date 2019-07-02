@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Token;
+namespace Domain\OAuth;
 
-use App\Exceptions\OAuth\TokenNotFoundException;
-use App\Validators\OAuth\Token\TokenCreateValidator;
-use App\Validators\Pagination\PaginationValidator;
+use Domain\OAuth\Exceptions\TokenNotFoundException;
+use Domain\OAuth\Validators\TokenCreateValidator;
+use Infrastructure\Validators\Pagination\PaginationValidator;
 use Laravel\Passport\Token;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\TokenRepository as PassportTokenRepository;
@@ -24,20 +24,20 @@ use Laravel\Passport\Passport;
 class TokenRepository extends PassportTokenRepository
 {
   /**
-   * @var \App\Validators\Pagination\PaginationValidator
+   * @var \Infrastructure\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
   /**
-   * @var \App\Validators\OAuth\Token\TokenCreateValidator
+   * @var \Domain\OAuth\Validators\TokenCreateValidator
    */
   protected $tokenCreateValidator;
 
   /**
    * Create a new token repository instance.
    *
-   * @param \App\Validators\Pagination\PaginationValidator $paginationValidator
-   * @param \App\Validators\OAuth\Token\TokenCreateValidator $tokenCreateValidator
+   * @param \Infrastructure\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \Domain\OAuth\Validators\TokenCreateValidator $tokenCreateValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,
@@ -53,7 +53,7 @@ class TokenRepository extends PassportTokenRepository
    * @param array $attributes
    * @return \Laravel\Passport\Token
    *
-   * @throws \App\Exceptions\OAuth\CannotCreateTokenException
+   * @throws \Domain\OAuth\Exceptions\CannotCreateTokenException
    */
   public function create($attributes)
   {
@@ -67,7 +67,7 @@ class TokenRepository extends PassportTokenRepository
    * @param string $id
    * @return \Laravel\Passport\Token
    *
-   * @throws \App\Exceptions\OAuth\TokenNotFoundException
+   * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
    */
   public function find($id)
   {
@@ -87,7 +87,7 @@ class TokenRepository extends PassportTokenRepository
    * @param int $userId
    * @return \Laravel\Passport\Token
    *
-   * @throws \App\Exceptions\OAuth\TokenNotFoundException
+   * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
    */
   public function findForUser($id, $userId)
   {
@@ -119,7 +119,7 @@ class TokenRepository extends PassportTokenRepository
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function forUserAsPaginated($userId, $limit = null, $offset = 1)
   {
@@ -148,7 +148,7 @@ class TokenRepository extends PassportTokenRepository
    * @param integer $offset
    * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function personalAccessTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
   {
@@ -182,7 +182,7 @@ class TokenRepository extends PassportTokenRepository
    * @param integer $offset
    * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function passwordTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
   {
@@ -216,7 +216,7 @@ class TokenRepository extends PassportTokenRepository
    * @param integer $offset
    * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function personalAccessOrPasswordTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
   {
@@ -250,7 +250,7 @@ class TokenRepository extends PassportTokenRepository
    * @param \Laravel\Passport\Client $client
    * @return \Laravel\Passport\Token
    *
-   * @throws \App\Exceptions\OAuth\TokenNotFoundException
+   * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
    */
   public function getValidToken($user, $client)
   {
@@ -304,7 +304,7 @@ class TokenRepository extends PassportTokenRepository
    * @param \Laravel\Passport\Client $client
    * @return \Laravel\Passport\Token
    *
-   * @throws \App\Exceptions\OAuth\TokenNotFoundException
+   * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
    */
   public function findValidToken($user, $client)
   {

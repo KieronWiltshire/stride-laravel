@@ -33,14 +33,14 @@ abstract class AppError extends Exception
    */
   private $context;
 
-    /**
-     * Constructor.
-     *
-     * @param string $message
-     * @param integer $httpStatus
-     * @param string $type
-     * @throws \Exception
-     */
+  /**
+   * Constructor.
+   *
+   * @param string $message
+   * @param integer $httpStatus
+   * @param string $type
+   * @throws \Exception
+   */
   public function __construct($message, $httpStatus = 200, $type = null)
   {
     parent::__construct($message, 0);
@@ -77,7 +77,7 @@ abstract class AppError extends Exception
    * Set the cause of the error.
    *
    * @param string $cause
-   * @return \App\Exceptions\AppError
+   * @return \Infrastructure\Exceptions\AppError
    */
   public function setCause($cause) {
     $this->cause = $cause;
@@ -108,7 +108,7 @@ abstract class AppError extends Exception
    * Set the context of the error.
    *
    * @param array $context
-   * @return \App\Exceptions\AppError
+   * @return \Infrastructure\Exceptions\AppError
    */
   public function setContext($context)
   {

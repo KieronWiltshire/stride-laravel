@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Exceptions\OAuth;
+namespace Domain\OAuth\Exceptions;
 
-use App\Exceptions\Http\UnauthorizedError;
+use Infrastructure\Exceptions\Http\UnauthorizedError;
 
 class InvalidRefreshTokenException extends UnauthorizedError
 {

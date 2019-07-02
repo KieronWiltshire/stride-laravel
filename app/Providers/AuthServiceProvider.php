@@ -42,18 +42,6 @@ class AuthServiceProvider extends ServiceProvider
    */
   private function registerGates()
   {
-    Gate::define('personal-access-token.for', 'App\Policies\Token\TokenPolicy@for');
-    Gate::define('personal-access-token.create', 'App\Policies\Token\TokenPolicy@create');
-    Gate::define('personal-access-token.delete', 'App\Policies\Token\TokenPolicy@delete');
 
-    Gate::define('client.for', 'App\Policies\Client\ClientPolicy@for');
-    Gate::define('client.view', 'App\Policies\Client\ClientPolicy@view');
-    Gate::define('client.create', 'App\Policies\Client\ClientPolicy@create');
-    Gate::define('client.update', 'App\Policies\Client\ClientPolicy@update');
-    Gate::define('client.delete', 'App\Policies\Client\ClientPolicy@delete');
-
-    Gate::after(function ($user, $ability, $result) {
-      return ($result && $user->tokenCan($ability));
-    });
   }
 }

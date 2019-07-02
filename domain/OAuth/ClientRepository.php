@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Repositories\Client;
+namespace Domain\OAuth;
 
-use App\Validators\OAuth\Client\ClientCreateValidator;
-use App\Validators\OAuth\Client\ClientUpdateValidator;
-use App\Validators\Pagination\PaginationValidator;
+use Domain\OAuth\Validators\ClientCreateValidator;
+use Domain\OAuth\Validators\ClientUpdateValidator;
+use Infrastructure\Validators\Pagination\PaginationValidator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\ClientRepository as PassportClientRepository;
-use App\Exceptions\OAuth\ClientNotFoundException;
+use Domain\OAuth\Exceptions\ClientNotFoundException;
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
 
@@ -21,26 +21,26 @@ use Laravel\Passport\Passport;
 class ClientRepository extends PassportClientRepository
 {
   /**
-   * @var \App\Validators\Pagination\PaginationValidator
+   * @var \Infrastructure\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
   /**
- * @var \App\Validators\OAuth\Client\ClientCreateValidator
+ * @var \Domain\OAuth\Validators\ClientCreateValidator
  */
   protected $clientCreateValidator;
 
   /**
-   * @var \App\Validators\OAuth\Client\ClientUpdateValidator
+   * @var \Domain\OAuth\Validators\ClientUpdateValidator
    */
   protected $clientUpdateValidator;
 
   /**
    * Create a new client repository instance.
    *
-   * @param \App\Validators\Pagination\PaginationValidator $paginationValidator
-   * @param \App\Validators\OAuth\Client\ClientCreateValidator $clientCreateValidator
-   * @param \App\Validators\OAuth\Client\ClientUpdateValidator $clientUpdateValidator
+   * @param \Infrastructure\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \Domain\OAuth\Validators\ClientCreateValidator $clientCreateValidator
+   * @param \Domain\OAuth\Validators\ClientUpdateValidator $clientUpdateValidator
    */
   public function __construct(
     PaginationValidator $paginationValidator,
@@ -58,7 +58,7 @@ class ClientRepository extends PassportClientRepository
    * @param int $id
    * @return \Laravel\Passport\Client
    *
-   * @throws \App\Exceptions\OAuth\ClientNotFoundException
+   * @throws \Domain\OAuth\Exceptions\ClientNotFoundException
    */
   public function find($id)
   {
@@ -77,7 +77,7 @@ class ClientRepository extends PassportClientRepository
    * @param int $id
    * @return \Laravel\Passport\Client
    *
-   * @throws \App\Exceptions\OAuth\ClientNotFoundException
+   * @throws \Domain\OAuth\Exceptions\ClientNotFoundException
    */
   public function findActive($id)
   {
@@ -97,7 +97,7 @@ class ClientRepository extends PassportClientRepository
    * @param mixed $userId
    * @return \Laravel\Passport\Client
    *
-   * @throws \App\Exceptions\OAuth\ClientNotFoundException
+   * @throws \Domain\OAuth\Exceptions\ClientNotFoundException
    */
   public function findForUser($clientId, $userId)
   {
@@ -129,7 +129,7 @@ class ClientRepository extends PassportClientRepository
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function forUserAsPaginated($userId, $limit = null, $offset = 1)
   {
@@ -170,7 +170,7 @@ class ClientRepository extends PassportClientRepository
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function activeForUserAsPaginated($userId, $limit = null, $offset = 1)
   {
@@ -199,7 +199,7 @@ class ClientRepository extends PassportClientRepository
    * @return \Laravel\Passport\Client
    *
    * @throws \RuntimeException
-   * @throws \App\Exceptions\OAuth\ClientNotFoundException
+   * @throws \Domain\OAuth\Exceptions\ClientNotFoundException
    */
   public function personalAccessClient()
   {
@@ -226,7 +226,7 @@ class ClientRepository extends PassportClientRepository
    * @param bool $password
    * @return \Laravel\Passport\Client
    *
-   * @throws \App\Exceptions\OAuth\CannotCreateClientException
+   * @throws \Domain\OAuth\Exceptions\CannotCreateClientException
    */
   public function create($userId, $name, $redirect, $personalAccess = false, $password = false)
   {
@@ -272,7 +272,7 @@ class ClientRepository extends PassportClientRepository
    * @param string $redirect
    * @return \Laravel\Passport\Client
    *
-   * @throws \App\Exceptions\OAuth\CannotUpdateClientException
+   * @throws \Domain\OAuth\Exceptions\CannotUpdateClientException
    */
   public function update(Client $client, $name, $redirect)
   {

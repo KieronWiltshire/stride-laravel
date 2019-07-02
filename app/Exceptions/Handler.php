@@ -2,23 +2,24 @@
 
 namespace App\Exceptions;
 
-use App\Exceptions\Http\TooManyRequestsError;
 use Exception;
-use App\Exceptions\Auth\AuthenticationFailedException;
-use App\Exceptions\OAuth\InvalidClientException;
-use App\Exceptions\OAuth\InvalidGrantException;
-use App\Exceptions\OAuth\InvalidRefreshTokenException;
-use App\Exceptions\OAuth\InvalidScopeException;
-use App\Exceptions\OAuth\UnsupportedGrantTypeException;
+use Infrastructure\Exceptions\AppError;
+use Infrastructure\Exceptions\Http\TooManyRequestsError;
+use Infrastructure\Exceptions\Auth\AuthenticationFailedException;
+use Domain\OAuth\Exceptions\InvalidClientException;
+use Domain\OAuth\Exceptions\InvalidGrantException;
+use Domain\OAuth\Exceptions\InvalidRefreshTokenException;
+use Domain\OAuth\Exceptions\InvalidScopeException;
+use Domain\OAuth\Exceptions\UnsupportedGrantTypeException;
 use App\Exceptions\Request\InvalidRequestException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Validation\ValidationException;
-use App\Exceptions\Http\BadRequestError;
-use App\Exceptions\Http\ForbiddenError;
-use App\Exceptions\Http\InternalServerError;
-use App\Exceptions\Http\NotFoundError;
-use App\Exceptions\Http\UnauthorizedError;
-use App\Exceptions\Http\ValidationError;
+use Infrastructure\Exceptions\Http\BadRequestError;
+use Infrastructure\Exceptions\Http\ForbiddenError;
+use Infrastructure\Exceptions\Http\InternalServerError;
+use Infrastructure\Exceptions\Http\NotFoundError;
+use Infrastructure\Exceptions\Http\UnauthorizedError;
+use Infrastructure\Exceptions\Http\ValidationError;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
@@ -81,7 +82,7 @@ class Handler extends ExceptionHandler
    * Conform the exception to an application standard.
    * 
    * @param \Exception $exception
-   * @return \App\Exceptions\AppError
+   * @return \Infrastructure\Exceptions\AppError
    */
   public function conform(Exception $exception)
   {
@@ -192,7 +193,7 @@ class Handler extends ExceptionHandler
    * Conform the http exception to an application standard error.
    *
    * @param \Symfony\Component\HttpKernel\Exception\HttpException $exception
-   * @return \App\Exceptions\AppError
+   * @return \Infrastructure\Exceptions\AppError
    */
   public function conformHttpExceptionToAppError(HttpException $exception)
   {
@@ -226,7 +227,7 @@ class Handler extends ExceptionHandler
    * Conform the authorization exception to an application standard error.
    *
    * @param \Illuminate\Auth\Access\AuthorizationException $exception
-   * @return \App\Exceptions\AppError
+   * @return \Infrastructure\Exceptions\AppError
    */
   public function conformAuthorizationExceptionToAppError(AuthorizationException $exception)
   {

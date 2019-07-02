@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Permission;
+namespace Domain\Permission;
 
 use Domain\Permission\Contracts\Repositories\PermissionRepository;
 use Domain\Permission\Permission;

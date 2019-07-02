@@ -2,45 +2,44 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Contracts\Repositories\User\UserRepository;
-use App\Exceptions\OAuth\ClientNotFoundException;
-use App\Exceptions\User\UserNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Repositories\Client\ClientRepository;
-use App\Transformers\Client\ClientTransformer;
-use Illuminate\Support\Facades\Gate;
+use Domain\OAuth\ClientRepository;
+use Domain\OAuth\Exceptions\ClientNotFoundException;
+use Domain\OAuth\Transformers\ClientTransformer;
+use Domain\User\Exceptions\UserNotFoundException;
+use Domain\User\UserService;
 
 class ClientController extends Controller
 {
   /**
-   * @var \App\Repositories\Client\ClientRepository
+   * @var \Domain\OAuth\ClientRepository
    */
   protected $clientRepository;
 
   /**
-   * @var \App\Contracts\Repositories\User\UserRepository
+   * @var \Domain\User\UserService
    */
-  protected $userRepository;
+  protected $userService;
 
   /**
-   * @var \App\Transformers\Client\ClientTransformer
+   * @var \Domain\OAuth\Transformers\ClientTransformer
    */
   protected $clientTransformer;
 
   /**
    * Create a client controller instance.
    *
-   * @param \App\Repositories\Client\ClientRepository $clientRepository
-   * @param \App\Contracts\Repositories\User\UserRepository $userRepository
-   * @param \App\Transformers\Client\ClientTransformer $clientTransformer
+   * @param \Domain\OAuth\ClientRepository $clientRepository
+   * @param \Domain\User\UserService $userService
+   * @param \Domain\OAuth\Transformers\ClientTransformer $clientTransformer
    */
   public function __construct(
     ClientRepository $clientRepository,
-    UserRepository $userRepository,
+    UserService $userService,
     ClientTransformer $clientTransformer
   ) {
     $this->clientRepository = $clientRepository;
-    $this->userRepository = $userRepository;
+    $this->userService = $userService;
     $this->clientTransformer = $clientTransformer;
   }
 
@@ -50,13 +49,13 @@ class ClientController extends Controller
    * @param integer $id
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function forUser($id)
   {
     try {
-      $user = $this->userRepository->findById($id);
+      $user = $this->userService->findById($id);
       $this->authorize('client.for', $user);
 
       $clients = $this->clientRepository->activeForUserAsPaginated($user->getKey(), request()->query('limit'), request()->query('offset'))
@@ -82,8 +81,8 @@ class ClientController extends Controller
    * @param integer $id
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function forAuthenticatedUser()
   {
@@ -131,7 +130,6 @@ class ClientController extends Controller
 
   /**
    * Delete the given client.
-   *
    *
    * @param string $id
    * @return \Illuminate\Http\Response

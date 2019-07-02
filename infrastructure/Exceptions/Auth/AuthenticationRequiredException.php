@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Exceptions\Auth;
+namespace Infrastructure\Exceptions\Auth;
 
-use App\Exceptions\Http\UnauthorizedError;
+use Infrastructure\Exceptions\Http\UnauthorizedError;
 
 class AuthenticationRequiredException extends UnauthorizedError
 {

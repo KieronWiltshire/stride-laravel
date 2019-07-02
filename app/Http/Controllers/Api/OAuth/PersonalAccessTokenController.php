@@ -2,52 +2,52 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Contracts\Repositories\User\UserRepository;
-use App\Exceptions\OAuth\TokenNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Transformers\Token\TokenTransformer;
-use App\Validators\OAuth\Token\TokenCreateValidator;
-use App\Repositories\Token\TokenRepository;
+use Domain\OAuth\Exceptions\TokenNotFoundException;
+use Domain\OAuth\TokenRepository;
+use Domain\OAuth\Transformers\TokenTransformer;
+use Domain\OAuth\Validators\TokenCreateValidator;
+use Domain\User\UserService;
 
 class PersonalAccessTokenController extends Controller
 {
   /**
-   * @var \App\Validators\OAuth\Token\TokenCreateValidator
+   * @var \Domain\OAuth\Validators\TokenCreateValidator
    */
   protected $tokenCreateValidator;
 
   /**
-   * @var \App\Repositories\Token\TokenRepository
+   * @var \Domain\OAuth\TokenRepository
    */
   protected $tokenRepository;
 
   /**
-   * @var \App\Contracts\Repositories\Token\UserRepository
+   * @var \Domain\User\UserService
    */
-  protected $userRepository;
+  protected $userService;
 
   /**
-   * @var \App\Transformers\Token\TokenTransformer
+   * @var \Domain\OAuth\Transformers\TokenTransformer
    */
   protected $tokenTransformer;
 
   /**
    * Create a controller instance.
    *
-   * @param \App\Validators\OAuth\Token\TokenCreateValidator $tokenCreateValidator
-   * @param \App\Repositories\Token\TokenRepository $tokenRepository
-   * @param \App\Contracts\Repositories\User\UserRepository $userRepository
-   * @param \App\Transformers\Token\TokenTransformer $tokenTransformer
+   * @param \Domain\OAuth\Validators\TokenCreateValidator $tokenCreateValidator
+   * @param \Domain\OAuth\TokenRepository $tokenRepository
+   * @param \Domain\User\UserService $userService
+   * @param \Domain\OAuth\Transformers\TokenTransformer $tokenTransformer
    */
   public function __construct(
     TokenCreateValidator $tokenCreateValidator,
     TokenRepository $tokenRepository,
-    UserRepository $userRepository,
+    UserService $userService,
     TokenTransformer $tokenTransformer
   ) {
     $this->tokenCreateValidator = $tokenCreateValidator;
     $this->tokenRepository = $tokenRepository;
-    $this->userRepository = $userRepository;
+    $this->userService = $userService;
     $this->tokenTransformer = $tokenTransformer;
   }
 
@@ -56,8 +56,8 @@ class PersonalAccessTokenController extends Controller
    *
    * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function forAuthenticatedUser()
   {
@@ -70,8 +70,8 @@ class PersonalAccessTokenController extends Controller
    * @param integer $id
    * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
-   * @throws \App\Exceptions\User\UserNotFoundException
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function forUser($id)
   {
@@ -93,7 +93,7 @@ class PersonalAccessTokenController extends Controller
    *
    * @return \Laravel\Passport\PersonalAccessTokenResult
    *
-   * @throws \App\Exceptions\OAuth\CannotCreateTokenException
+   * @throws \Domain\OAuth\Exceptions\CannotCreateTokenException
    */
   public function store()
   {
@@ -116,7 +116,7 @@ class PersonalAccessTokenController extends Controller
    * @param string $tokenId
    * @return \Illuminate\Http\Response
    *
-   * @throws \App\Exceptions\OAuth\TokenNotFoundException
+   * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
    */
   public function destroy($tokenId)
   {

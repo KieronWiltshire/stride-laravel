@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Policies\Token;
+namespace Domain\OAuth\Policies;
 
-use App\Entities\User;
+use Domain\User\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Laravel\Passport\Token;
 
@@ -23,8 +23,8 @@ class TokenPolicy
   /**
    * Determine if the given user can view a given user's personal access tokens.
    *
-   * @param \App\Entities\User $user
-   * @param \App\Entities\User $userToView
+   * @param \Domain\User\User $user
+   * @param \Domain\User\User $userToView
    * @return bool
    */
   public function for(User $user, User $userToView)
@@ -38,7 +38,7 @@ class TokenPolicy
   /**
    * Determine if the specified user can create a personal access token.
    *
-   * @param \App\Entities\User $user
+   * @param \Domain\User\User $user
    * @return bool
    */
   public function create(User $user)
@@ -51,7 +51,7 @@ class TokenPolicy
   /**
    * Determine if the given oauth client can be deleted by the specified user.
    *
-   * @param \App\Entities\User $user
+   * @param \Domain\User\User $user
    * @param \Laravel\Passport\Token $token
    * @return bool
    */

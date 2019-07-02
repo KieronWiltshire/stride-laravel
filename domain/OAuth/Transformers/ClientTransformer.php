@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Transformers\Client;
+namespace Domain\OAuth\Transformers;
 
 use Laravel\Passport\Client;
 use Illuminate\Support\Facades\Gate;

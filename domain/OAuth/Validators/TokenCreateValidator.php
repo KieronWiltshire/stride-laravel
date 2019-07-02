@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Validators\OAuth\Token;
+namespace Domain\OAuth\Validators;
 
-use App\Exceptions\OAuth\CannotCreateTokenException;
-use App\Validators\AppValidator;
+use Domain\OAuth\Exceptions\CannotCreateTokenException;
+use Infrastructure\Validators\AppValidator;
 use Laravel\Passport\Passport;
 
 class TokenCreateValidator extends AppValidator
 {
   /**
-   * @var \App\Exceptions\AppError
+   * @var \Infrastructure\Exceptions\AppError
    */
   protected $exception = CannotCreateTokenException::class;
 

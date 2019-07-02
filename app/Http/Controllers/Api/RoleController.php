@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Exceptions\Role\RoleNotFoundException;
 use App\Http\Controllers\Controller;
-use App\Services\Role\RoleService;
-use App\Exceptions\Http\BadRequestError;
-use App\Transformers\Role\RoleTransformer;
+use Domain\Role\Exceptions\RoleNotFoundException;
+use Domain\Role\RoleService;
+use Domain\Role\Transformers\RoleTransformer;
+use Infrastructure\Exceptions\Http\BadRequestError;
 
 class RoleController extends Controller
 {
   /**
-   * @var \App\Services\Role\RoleService
+   * @var \Domain\Role\RoleService
    */
   protected $roleService;
 
   /**
-   * @var \App\Transformers\Role\RoleTransformer
+   * @var \Domain\Role\Transformers\RoleTransformer
    */
   protected $roleTransformer;
 
   /**
    * Create a new role controller instance
    *
-   * @param \App\Services\Role\RoleService $roleService
-   * @param \App\Transformers\Role\RoleTransformer $roleTransformer
+   * @param \Domain\Role\RoleService $roleService
+   * @param \Domain\Role\Transformers\RoleTransformer $roleTransformer
    */
   public function __construct(
     RoleService $roleService,
@@ -37,9 +37,9 @@ class RoleController extends Controller
   /**
    * Retrieve an index of roles.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\Role>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
    *
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function index()
   {
@@ -52,9 +52,9 @@ class RoleController extends Controller
   /**
    * Create a new role.
    *
-   * @return \App\Entities\Role
+   * @return \Domain\Role\Role
    *
-   * @throws \App\Exceptions\Role\CannotCreateRoleException
+   * @throws \Domain\Role\Exceptions\CannotCreateRoleException
    */
   public function create()
   {
@@ -74,9 +74,9 @@ class RoleController extends Controller
    * Retrieve a role by id.
    *
    * @param integer $id
-   * @return \App\Entities\Role
+   * @return \Domain\Role\Role
    *
-   * @throws \App\Exceptions\Role\RoleNotFoundException
+   * @throws \Domain\Role\Exceptions\RoleNotFoundException
    */
   public function getById($id)
   {
@@ -95,9 +95,9 @@ class RoleController extends Controller
    * Retrieve a role by name.
    *
    * @param string $name
-   * @return \App\Entities\Role
+   * @return \Domain\Role\Role
    *
-   * @throws \App\Exceptions\Role\RoleNotFoundException
+   * @throws \Domain\Role\Exceptions\RoleNotFoundException
    */
   public function getByName($name)
   {
@@ -115,10 +115,10 @@ class RoleController extends Controller
   /**
    * Retrieve an index of roles matching a particular search phrase.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\App\Entities\Role>
+   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
    *
-   * @throws \App\Exceptions\Http\BadRequestError
-   * @throws \App\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Infrastructure\Exceptions\Http\BadRequestError
+   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
    */
   public function search()
   {
@@ -149,10 +149,10 @@ class RoleController extends Controller
    * Update a role.
    *
    * @param integer $id
-   * @return \App\Entities\Role
+   * @return \Domain\Role\Role
    *
-   * @throws \App\Exceptions\Role\RoleNotFoundException
-   * @throws \App\Exceptions\Role\CannotUpdateRoleException
+   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws \Domain\Role\Exceptions\CannotUpdateRoleException
    */
   public function update($id)
   {

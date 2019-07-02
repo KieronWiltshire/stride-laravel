@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Exceptions\OAuth;
+namespace Domain\OAuth\Exceptions;
 
-use App\Exceptions\Http\ValidationError;
+use Infrastructure\Exceptions\Http\ValidationError;
 
 class CannotCreateTokenException extends ValidationError
 {

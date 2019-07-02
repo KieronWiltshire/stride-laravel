@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Exceptions\OAuth\InvalidAuthorizationRequestException;
+use Domain\OAuth\Exceptions\InvalidAuthorizationRequestException;
 use Exception;
 use Illuminate\Http\Request;
 use Zend\Diactoros\Response as Psr7Response;
