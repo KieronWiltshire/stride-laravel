@@ -104,7 +104,7 @@ interface UserRepository extends AppRepository
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    */
   function removeRole(User $user, Role $role);
 

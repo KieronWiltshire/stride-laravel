@@ -211,7 +211,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    */
   public function removeRole(User $user, Role $role)
   {

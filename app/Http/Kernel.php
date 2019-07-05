@@ -44,6 +44,15 @@ class Kernel extends HttpKernel
       'bindings',
     ],
 
+    /**
+     * @notice
+     *
+     * The OAuth middleware group requires a session in order to store
+     * the authorization request, however these is no need to protect
+     * against CSRF attacks because the authentication process is handled
+     * in a stateless manner. If the authenticated user does not match the
+     * authorization request, then OAuth fails.
+     */
     'oauth' => [
       \App\Http\Middleware\EncryptCookies::class,
       \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,

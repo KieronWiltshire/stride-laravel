@@ -2,6 +2,8 @@
 
 namespace Domain\User;
 
+use Domain\Permission\Permission;
+use Domain\Role\Role;
 use Domain\User\Events\EmailVerificationTokenGeneratedEvent;
 use Domain\User\Contracts\Repositories\UserRepository;
 use Domain\User\Events\PasswordResetTokenGeneratedEvent;
@@ -390,5 +392,191 @@ class UserService
     if ($user->password_reset_token) {
       Mail::to($user->email)->send(new PasswordResetToken($user->password_reset_token));
     }
+  }
+
+  /**
+   * Add a role to the user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Role\Role $role
+   * @return \Domain\User\User
+   */
+  public function addRole(User $user, Role $role)
+  {
+    return $this->userRepository->addRole($user, $role);
+  }
+
+  /**
+   * Add roles to the user.
+   *
+   * @param \Domain\User\User $user
+   * @param array $roles
+   * @return \Domain\User\User
+   */
+  public function addRoles(User $user, array $roles = [])
+  {
+    return $this->userRepository->addRoles($user, $roles);
+  }
+
+  /**
+   * Remove a role from the user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Role\Role $role
+   * @return \Domain\User\User
+   */
+  public function removeRole(User $user, Role $role)
+  {
+    return $this->userRepository->removeRole($user, $role);
+  }
+
+  /**
+   * Remove roles from the user.
+   *
+   * @param \Domain\User\User $user
+   * @param array $roles
+   * @return \Domain\User\User
+   */
+  public function removeRoles(User $user, array $roles = [])
+  {
+    return $this->userRepository->removeRoles($user, $roles);
+  }
+
+  /**
+   * Set all of the roles of the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param array $roles
+   * @return \Domain\User\User
+   */
+  public function setRoles(User $user, array $roles = [])
+  {
+    return $this->userRepository->setRoles($user, $roles);
+  }
+
+  /**
+   * Retrieve all of the roles for the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+   */
+  function getRoles(User $user)
+  {
+    return $this->userRepository->getRoles($user);
+  }
+
+  /**
+   * Add a permission to the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Permission\Permission $permission
+   * @return \Domain\User\User
+   */
+  public function addPermission(User $user, Permission $permission)
+  {
+    return $this->userRepository->addPermission($user, $permission);
+  }
+
+  /**
+   * Add multiple permissions to the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param array $permissions
+   * @return \Domain\User\User
+   */
+  public function addPermissions(User $user, array $permissions = [])
+  {
+    return $this->userRepository->addPermissions($user, $permissions);
+  }
+
+  /**
+   * Remove a permission from the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Permission\Permission $permission
+   * @return \Domain\User\User
+   */
+  public function removePermission(User $user, Permission $permission)
+  {
+    return $this->userRepository->removePermission($user, $permission);
+  }
+
+  /**
+   * Remove multiple permissions from the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param array $permissions
+   * @return \Domain\User\User
+   */
+  public function removePermissions(User $user, array $permissions = [])
+  {
+    return $this->userRepository->removePermissions($user, $permissions);
+  }
+
+  /**
+   * Set all of the permissions of the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param array $permissions
+   * @return \Domain\User\User
+   */
+  public function setPermissions(User $user, array $permissions = [])
+  {
+    return $this->userRepository->setPermissions($user, $permissions);
+  }
+
+  /**
+   * Retrieve all of the permissions for the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+   */
+  function getPermissions(User $user)
+  {
+    return $this->userRepository->getPermissions($user);
+  }
+
+  /**
+   * Retrieve all of the users that are associated with the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+   */
+  public function getUsersWithRole(Role $role)
+  {
+    return $this->userRepository->getUsersWithRole($role);
+  }
+
+  /**
+   * Retrieve all of the users that are associated with any of the specified roles.
+   *
+   * @param array $roles
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+   */
+  public function getUsersWithRoles(array $roles = [])
+  {
+    return $this->userRepository->getUsersWithRoles($roles);
+  }
+
+  /**
+   * Retrieve all of the users that have access to the specified permission.
+   *
+   * @param \Domain\Permission\Permission $permission
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+   */
+  function getUsersWithPermission(Permission $permission)
+  {
+    return $this->userRepository->getUsersWithPermission($permission);
+  }
+
+  /**
+   * Retrieve all of the users that have access to any of the specified permissions.
+   *
+   * @param array $permissions
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+   */
+  function getUsersWithPermissions(array $permissions = [])
+  {
+    return $this->userRepository->getUsersWithPermissions($permissions);
   }
 }
