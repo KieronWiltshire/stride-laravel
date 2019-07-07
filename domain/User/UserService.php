@@ -466,6 +466,35 @@ class UserService
   }
 
   /**
+   * Determine if the given user has the specified role assigned.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Role\Role $role
+   * @return bool
+   */
+  function hasRole(User $user, Role $role)
+  {
+    return ($this->getRoles($user)->where('id', $role->id)->count() > 0);
+  }
+
+  /**
+   * Determine if the given user has the specified roles assigned.
+   *
+   * @param \Domain\User\User $user
+   * @param array $roles
+   * @return bool
+   */
+  function hasRoles(User $user, array $roles)
+  {
+    $roleIds = collect($roles)
+      ->map->only(['id'])
+      ->flatten()
+      ->all();
+
+    return ($this->getRoles($user)->whereIn('id', $roleIds)->count() > 0);
+  }
+
+  /**
    * Add a permission to the specified user.
    *
    * @param \Domain\User\User $user
