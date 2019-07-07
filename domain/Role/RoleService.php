@@ -2,6 +2,7 @@
 
 namespace Domain\Role;
 
+use Domain\Permission\Permission;
 use Domain\Role\Contracts\Repositories\RoleRepository;
 
 class RoleService
@@ -140,5 +141,98 @@ class RoleService
   function search($parameter, $search, $regex = true, $limit = null, $offset = 1)
   {
     return $this->roleRepository->paginate($limit, $offset)->find($parameter, $search, $regex);
+  }
+
+  /**
+   * Add a permission to the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param \Domain\Permission\Permission $permission
+   * @return \Domain\Role\Role
+   */
+  public function addPermission(Role $role, Permission $permission)
+  {
+    return $this->roleRepository->addPermission($role, $permission);
+  }
+
+  /**
+   * Add multiple permissions to the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param array $permissions
+   * @return \Domain\Role\Role
+   */
+  public function addPermissions(Role $role, array $permissions = [])
+  {
+    return $this->roleRepository->addPermissions($role, $permissions);
+  }
+
+  /**
+   * Remove a permission from the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param \Domain\Permission\Permission $permission
+   * @return \Domain\Role\Role
+   */
+  public function removePermission(Role $role, Permission $permission)
+  {
+    return $this->roleRepository->removePermission($role, $permission);
+  }
+
+  /**
+   * Remove multiple permissions from the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param array $permissions
+   * @return \Domain\Role\Role
+   */
+  public function removePermissions(Role $role, array $permissions = [])
+  {
+    return $this->roleRepository->removePermissions($role, $permissions);
+  }
+
+  /**
+   * Set all of the permissions of the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param array $permissions
+   * @return \Domain\Role\Role
+   */
+  public function setPermissions(Role $role, array $permissions = [])
+  {
+    return $this->roleRepository->setPermissions($role, $permissions);
+  }
+
+  /**
+   * Retrieve all of the permissions for the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+   */
+  function getPermissions(Role $role)
+  {
+    return $this->roleRepository->getPermissions($role);
+  }
+
+  /**
+   * Retrieve all of the roles that have access to the specified permission.
+   *
+   * @param \Domain\Permission\Permission $permission
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+   */
+  function getRolesWithPermission(Permission $permission)
+  {
+    return $this->roleRepository->getRolesWithPermission($permission);
+  }
+
+  /**
+   * Retrieve all of the roles that have access to any of the specified permissions.
+   *
+   * @param array $permissions
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+   */
+  function getRolesWithPermissions(array $permissions = [])
+  {
+    return $this->roleRepository->getRolesWithPermissions($permissions);
   }
 }

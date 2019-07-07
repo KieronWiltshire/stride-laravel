@@ -78,7 +78,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    * @param number|string $search
    * @param boolean $regex
    * @param array $attributes
-   * @return \App\Entities\User
+   * @return \Domain\User\User
    *
    * @throws \Domain\User\Exceptions\CannotCreateUserException
    */

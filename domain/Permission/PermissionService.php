@@ -60,7 +60,7 @@ class PermissionService
    */
   function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
-    return $this->permissionRepository->firstOrCreate($parameter, $search, $regex);
+    return $this->permissionRepository->firstOrCreate($parameter, $search, $regex, $attributes);
   }
 
   /**

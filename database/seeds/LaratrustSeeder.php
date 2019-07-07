@@ -1,8 +1,8 @@
 <?php
 
-use App\Contracts\Services\Permission\PermissionService;
-use App\Contracts\Services\Role\RoleService;
-use App\Contracts\Services\User\UserService;
+use Domain\Permission\PermissionService;
+use Domain\Role\RoleService;
+use Domain\User\UserService;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -10,26 +10,26 @@ use Illuminate\Support\Facades\DB;
 class LaratrustSeeder extends Seeder
 {
   /**
-   * @var \App\Contracts\Services\User\UserService
+   * @var \Domain\User\UserService
    */
   private $userService;
 
   /**
-   * @var \App\Contracts\Services\Role\RoleService
+   * @var \Domain\Role\RoleService
    */
   private $roleService;
 
   /**
-   * @var \App\Contracts\Services\Permission\PermissionService
+   * @var \Domain\Permission\PermissionService
    */
   private $permissionService;
 
   /**
    * Create a new laratrust seeder instance
    *
-   * @param \App\Contracts\Services\User\UserService $userService
-   * @param \App\Contracts\Services\Role\RoleService $roleService
-   * @param \App\Contracts\Services\Permission\PermissionService $permissionService
+   * @param \Domain\User\UserService $userService
+   * @param \Domain\Role\RoleService $roleService
+   * @param \Domain\Permission\PermissionService $permissionService
    */
   public function __construct(
     UserService $userService,
@@ -87,17 +87,19 @@ class LaratrustSeeder extends Seeder
       }
 
       // Attach all permissions to the role
-      $role->permissions()->sync($permissions);
+      $this->roleService->setPermissions($role, $permissions);
 
       $this->command->info("Creating '{$key}' user");
 
+      $userEmail = $key . '@' . strtolower(config('app.name', 'app')) . '.com';
+
       // Create default user for each role
-      $user = \App\Entities\User::create([
-        'email' => $key . '@' . strtolower(config('app.name', 'app')) . '.com',
+      $user = $this->userService->firstOrCreate('email', $userEmail, false, [
+        'email' => $userEmail,
         'password' => 'password'
       ]);
 
-      $user->attachRole($role);
+      $this->userService->addRole($user, $role);
     }
 
     // Creating user with permissions
@@ -133,7 +135,7 @@ class LaratrustSeeder extends Seeder
         }
 
         // Attach all permissions to the user
-        $user->permissions()->sync($permissions);
+        $this->userService->setPermissions($permissions);
       }
     }
   }
@@ -149,9 +151,9 @@ class LaratrustSeeder extends Seeder
     DB::table('permission_role')->truncate();
     DB::table('permission_user')->truncate();
     DB::table('role_user')->truncate();
-    \App\Entities\User::truncate();
-    \App\Entities\Role::truncate();
-    \App\Entities\Permission::truncate();
+    \Domain\User\User::truncate();
+    \Domain\Role\Role::truncate();
+    \Domain\Permission\Permission::truncate();
     Schema::enableForeignKeyConstraints();
   }
 }

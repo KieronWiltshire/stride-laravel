@@ -20,7 +20,7 @@ class PermissionCreateValidator extends AppValidator
   public function rules()
   {
     return [
-      'name' => 'required|unique:permissions|alpha_dash',
+      'name' => 'required|unique:permissions',
       'display_name' => '',
       'description' => '',
     ];

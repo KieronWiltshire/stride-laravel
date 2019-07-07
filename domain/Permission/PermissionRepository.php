@@ -2,8 +2,7 @@
 
 namespace Domain\Permission;
 
-use Domain\Permission\Contracts\Repositories\Permission\PermissionRepository as PermissionRepositoryInterface;
-use Domain\Permission\Permission;
+use Domain\Permission\Contracts\Repositories\PermissionRepository as PermissionRepositoryInterface;
 use Domain\Permission\Events\PermissionCreatedEvent;
 use Domain\Permission\Events\PermissionUpdatedEvent;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
