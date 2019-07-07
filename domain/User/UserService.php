@@ -566,6 +566,35 @@ class UserService
   }
 
   /**
+   * Determine if the given user has the specified permission assigned.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Permission\Permission $permission
+   * @return bool
+   */
+  function hasPermission(User $user, Permission $permission)
+  {
+    return ($this->getPermissions($user)->where('id', $permission->id)->count() > 0);
+  }
+
+  /**
+   * Determine if the given user has the specified permissions assigned.
+   *
+   * @param \Domain\User\User $user
+   * @param array $permissions
+   * @return bool
+   */
+  function hasPermissions(User $user, array $permissions)
+  {
+    $permissionIds = collect($permissions)
+      ->map->only(['id'])
+      ->flatten()
+      ->all();
+
+    return ($this->getPermissions($user)->whereIn('id', $permissionIds)->count() > 0);
+  }
+
+  /**
    * Retrieve all of the users that are associated with the specified role.
    *
    * @param \Domain\Role\Role $role

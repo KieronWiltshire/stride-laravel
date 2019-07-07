@@ -4,6 +4,7 @@ namespace Domain\Role;
 
 use Domain\Permission\Permission;
 use Domain\Role\Contracts\Repositories\RoleRepository;
+use Domain\User\User;
 
 class RoleService
 {
@@ -212,6 +213,35 @@ class RoleService
   function getPermissions(Role $role)
   {
     return $this->roleRepository->getPermissions($role);
+  }
+
+  /**
+   * Determine if the given role has the specified permission assigned.
+   *
+   * @param \Domain\Role\Role $role
+   * @param \Domain\Permission\Permission $permission
+   * @return bool
+   */
+  function hasPermission(Role $role, Permission $permission)
+  {
+    return ($this->getPermissions($role)->where('id', $permission->id)->count() > 0);
+  }
+
+  /**
+   * Determine if the given role has the specified permissions assigned.
+   *
+   * @param \Domain\Role\Role $role
+   * @param array $permissions
+   * @return bool
+   */
+  function hasPermissions(Role $role, array $permissions)
+  {
+    $permissionIds = collect($permissions)
+      ->map->only(['id'])
+      ->flatten()
+      ->all();
+
+    return ($this->getPermissions($role)->whereIn('id', $permissionIds)->count() > 0);
   }
 
   /**
