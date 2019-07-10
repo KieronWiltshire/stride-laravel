@@ -67,7 +67,7 @@ class RoleService
    * Find a role by an unknown parameter.
    *
    * @param number|string $parameter
-   * @param number|string $search
+   * @param number|string|array $search
    * @param boolean $regex
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */

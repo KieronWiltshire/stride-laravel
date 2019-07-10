@@ -99,7 +99,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
    * Find a permission by an unknown parameter.
    *
    * @param number|string $parameter
-   * @param number|string $search
+   * @param number|string|array $search
    * @param boolean $regex
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
    */
@@ -107,10 +107,14 @@ class PermissionRepository extends AppRepository implements PermissionRepository
   {
     $query = Permission::query();
 
-    if ($regex) {
-      $query->where($parameter, 'REGEXP', $search);
+    if (is_array($parameter)) {
+      $query->whereIn($parameter, $search);
     } else {
-      $query->where($parameter, $search);
+      if ($regex) {
+        $query->where($parameter, 'REGEXP', $search);
+      } else {
+        $query->where($parameter, $search);
+      }
     }
 
     return $this->execute($query);

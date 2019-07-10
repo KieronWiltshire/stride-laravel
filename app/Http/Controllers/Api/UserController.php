@@ -412,6 +412,56 @@ class UserController extends Controller
   }
 
   /**
+   * Add the specified roles to the specified user.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function assignRoles($id)
+  {
+    try {
+      $user = $this->userService->findById($id);
+      $roles = $this->roleService->find('id', request()->input('roleIds'));
+
+      if ($roles->count() != count(request()->input('roleIds'))) {
+        throw new RoleNotFoundException();
+      }
+
+      $this->authorize('user.assign-role', $user);
+
+      foreach ($roles as $role) {
+        $this->authorize('role.assign', $role);
+      }
+
+      if ($this->userService->hasRoles($user, $roles)) {
+        throw new RoleAssignedException();
+      }
+
+      $this->userService->addRoles($user, $roles);
+
+      return response([
+        'message' => __('user.role.assigned'),
+        'data' => [
+          'user' => fractal($user, $this->userTransformer),
+          'roles' => fractal($roles, $this->roleTransformer)
+        ]
+      ], 200);
+    } catch (RoleNotFoundException $e) {
+      throw $e->setContext([
+        'roleId' => [
+          __('role.id.not_found')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('user.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
    * Remove the specified role from the specified user.
    *
    * @param $id
@@ -437,6 +487,56 @@ class UserController extends Controller
         'data' => [
           'user' => fractal($user, $this->userTransformer),
           'role' => fractal($role, $this->roleTransformer)
+        ]
+      ], 200);
+    } catch (RoleNotFoundException $e) {
+      throw $e->setContext([
+        'roleId' => [
+          __('role.id.not_found')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('user.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Remove the specified roles from the specified user.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function denyRoles($id)
+  {
+    try {
+      $user = $this->userService->findById($id);
+      $roles = $this->roleService->find('id', request()->input('roleIds'));
+
+      if ($roles->count() != count(request()->input('roleIds'))) {
+        throw new RoleNotFoundException();
+      }
+
+      $this->authorize('user.deny-role', $user);
+
+      foreach ($roles as $role) {
+        $this->authorize('role.deny', $role);
+      }
+
+      if (!$this->userService->hasRoles($user, $roles)) {
+        throw new RoleNotAssignedException();
+      }
+
+      $this->userService->removeRoles($user, $roles);
+
+      return response([
+        'message' => __('user.role.assigned'),
+        'data' => [
+          'user' => fractal($user, $this->userTransformer),
+          'roles' => fractal($roles, $this->roleTransformer)
         ]
       ], 200);
     } catch (RoleNotFoundException $e) {
@@ -498,6 +598,56 @@ class UserController extends Controller
   }
 
   /**
+   * Add the specified permissions to the specified user.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function assignPermissions($id)
+  {
+    try {
+      $user = $this->userService->findById($id);
+      $permissions = $this->permissionService->find('id', request()->input('permissionIds'));
+
+      if ($permissions->count() != count(request()->input('permissionIds'))) {
+        throw new PermissionNotFoundException();
+      }
+
+      $this->authorize('user.assign-permission', $user);
+
+      foreach ($permissions as $permission) {
+        $this->authorize('permission.assign', $permissions);
+      }
+
+      if ($this->userService->hasPermissions($user, $permissions)) {
+        throw new PermissionAssignedException();
+      }
+
+      $this->userService->addPermission($user, $permissions);
+
+      return response([
+        'message' => __('user.permission.assigned'),
+        'data' => [
+          'user' => fractal($user, $this->userTransformer),
+          'permissions' => fractal($permissions, $this->permissionTransformer)
+        ]
+      ], 200);
+    } catch (PermissionNotFoundException $e) {
+      throw $e->setContext([
+        'permissionId' => [
+          __('permission.id.not_found')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('user.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
    * Remove the specified permission from the specified user.
    *
    * @param $id
@@ -523,6 +673,56 @@ class UserController extends Controller
         'data' => [
           'user' => fractal($user, $this->userTransformer),
           'permission' => fractal($permission, $this->permissionTransformer)
+        ]
+      ], 200);
+    } catch (PermissionNotFoundException $e) {
+      throw $e->setContext([
+        'permissionId' => [
+          __('permission.id.not_found')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('user.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Remove the specified permissions from the specified user.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function denyPermissions($id)
+  {
+    try {
+      $user = $this->userService->findById($id);
+      $permissions = $this->permissionService->find('id', request()->input('permissionIds'));
+
+      if ($permissions->count() != count(request()->input('permissionIds'))) {
+        throw new PermissionNotFoundException();
+      }
+
+      $this->authorize('user.deny-permission', $user);
+
+      foreach ($permissions as $permission) {
+        $this->authorize('permission.deny', $permission);
+      }
+
+      if (!$this->userService->hasPermission($user, $permissions)) {
+        throw new PermissionNotAssignedException();
+      }
+
+      $this->userService->removePermissions($user, $permissions);
+
+      return response([
+        'message' => __('user.permission.assigned'),
+        'data' => [
+          'user' => fractal($user, $this->userTransformer),
+          'permissions' => fractal($permissions, $this->permissionTransformer)
         ]
       ], 200);
     } catch (PermissionNotFoundException $e) {
