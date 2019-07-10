@@ -62,7 +62,7 @@ class UserService
    */
   public function all()
   {
-    return $this->userRepository->all();
+    return $this->userRepository->with(['roles', 'permissions'])->all();
   }
 
   /**
@@ -100,7 +100,7 @@ class UserService
       $attributes['email_verification_token'] = $this->generateEmailVerificationToken($attributes['email']);
     }
 
-    return $this->userRepository->firstOrCreate($parameter, $search, $regex, $attributes);
+    return $this->userRepository->with(['roles', 'permissions'])->firstOrCreate($parameter, $search, $regex, $attributes);
   }
 
   /**
@@ -113,7 +113,7 @@ class UserService
    */
   public function find($parameter, $search, $regex = true)
   {
-    return $this->userRepository->find($parameter, $search, $regex);
+    return $this->userRepository->with(['roles', 'permissions'])->find($parameter, $search, $regex);
   }
 
   /**
@@ -126,7 +126,7 @@ class UserService
    */
   public function findById($id)
   {
-    return $this->userRepository->findById($id);
+    return $this->userRepository->with(['roles', 'permissions'])->findById($id);
   }
 
   /**
@@ -139,7 +139,7 @@ class UserService
    */
   public function findByEmail($email)
   {
-    return $this->userRepository->findByEmail($email);
+    return $this->userRepository->with(['roles', 'permissions'])->findByEmail($email);
   }
 
   /**
@@ -167,7 +167,7 @@ class UserService
    */
   public function index($limit = null, $offset = 1)
   {
-    return $this->userRepository->paginate($limit, $offset)->all();
+    return $this->userRepository->with(['roles', 'permissions'])->paginate($limit, $offset)->all();
   }
 
   /**

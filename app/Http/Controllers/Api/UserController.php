@@ -90,7 +90,7 @@ class UserController extends Controller
   {
     $users = $this->userService->index(request()->query('limit'), request()->query('offset'))->setPath(route('api.user.index'));
 
-    return fractal($users, $this->userTransformer);
+    return fractal($users, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
   }
 
   /**

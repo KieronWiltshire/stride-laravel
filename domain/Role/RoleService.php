@@ -30,7 +30,7 @@ class RoleService
    */
   function all()
   {
-    return $this->roleRepository->all();
+    return $this->roleRepository->with(['permissions'])->all();
   }
 
   /**
@@ -60,7 +60,7 @@ class RoleService
    */
   function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
-    return $this->roleRepository->firstOrCreate($parameter, $search, $regex, $attributes);
+    return $this->roleRepository->with(['permissions'])->firstOrCreate($parameter, $search, $regex, $attributes);
   }
 
   /**
@@ -73,7 +73,7 @@ class RoleService
    */
   function find($parameter, $search, $regex = true)
   {
-    return $this->roleRepository->find($parameter, $search, $regex);
+    return $this->roleRepository->with(['permissions'])->find($parameter, $search, $regex);
   }
 
   /**
@@ -86,7 +86,7 @@ class RoleService
    */
   function findById($id)
   {
-    return $this->roleRepository->findById($id);
+    return $this->roleRepository->with(['permissions'])->findById($id);
   }
 
   /**
@@ -99,7 +99,7 @@ class RoleService
    */
   function findByName($name)
   {
-    return $this->roleRepository->findByName($name);
+    return $this->roleRepository->with(['permissions'])->findByName($name);
   }
 
   /**
@@ -125,7 +125,7 @@ class RoleService
    */
   function index($limit = null, $offset = 1)
   {
-    return $this->roleRepository->paginate($limit, $offset)->all();
+    return $this->roleRepository->with(['permissions'])->paginate($limit, $offset)->all();
   }
 
   /**
@@ -140,7 +140,7 @@ class RoleService
    */
   function search($parameter, $search, $regex = true, $limit = null, $offset = 1)
   {
-    return $this->roleRepository->paginate($limit, $offset)->find($parameter, $search, $regex);
+    return $this->roleRepository->with(['permissions'])->paginate($limit, $offset)->find($parameter, $search, $regex);
   }
 
   /**
