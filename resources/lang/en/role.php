@@ -27,4 +27,9 @@ return [
     'not_found' => 'We can\'t find a role with the specified name.',
   ],
 
+  'permission' => [
+    'assigned' => 'The specified permission has been assigned to the role.',
+    'denied' => 'The specified permission has been denied to the role.'
+  ]
+
 ];

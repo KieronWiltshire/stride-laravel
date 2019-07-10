@@ -374,7 +374,7 @@ class UserController extends Controller
    * @param $id
    * @return \Illuminate\Http\JsonResponse
    */
-  public function addRole($id)
+  public function assignRole($id)
   {
     try {
       $user = $this->userService->findById($id);
@@ -390,7 +390,7 @@ class UserController extends Controller
       $this->userService->addRole($user, $role);
 
       return response([
-        'message' => __('user.role.added'),
+        'message' => __('user.role.assigned'),
         'data' => [
           'user' => fractal($user, $this->userTransformer),
           'role' => fractal($role, $this->roleTransformer)
@@ -404,7 +404,7 @@ class UserController extends Controller
       ]);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
-        'email' => [
+        'id' => [
           __('user.id.not_found')
         ]
       ]);
@@ -417,7 +417,7 @@ class UserController extends Controller
    * @param $id
    * @return \Illuminate\Http\JsonResponse
    */
-  public function removeRole($id)
+  public function denyRole($id)
   {
     try {
       $user = $this->userService->findById($id);
@@ -433,7 +433,7 @@ class UserController extends Controller
       $this->userService->removeRole($user, $role);
 
       return response([
-        'message' => __('user.role.removed'),
+        'message' => __('user.role.denied'),
         'data' => [
           'user' => fractal($user, $this->userTransformer),
           'role' => fractal($role, $this->roleTransformer)
@@ -447,7 +447,7 @@ class UserController extends Controller
       ]);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
-        'email' => [
+        'id' => [
           __('user.id.not_found')
         ]
       ]);
@@ -460,7 +460,7 @@ class UserController extends Controller
    * @param $id
    * @return \Illuminate\Http\JsonResponse
    */
-  public function addPermission($id)
+  public function assignPermission($id)
   {
     try {
       $user = $this->userService->findById($id);
@@ -476,7 +476,7 @@ class UserController extends Controller
       $this->userService->addPermission($user, $permission);
 
       return response([
-        'message' => __('user.role.added'),
+        'message' => __('user.permission.assigned'),
         'data' => [
           'user' => fractal($user, $this->userTransformer),
           'permission' => fractal($permission, $this->permissionTransformer)
@@ -490,7 +490,7 @@ class UserController extends Controller
       ]);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
-        'email' => [
+        'id' => [
           __('user.id.not_found')
         ]
       ]);
@@ -503,7 +503,7 @@ class UserController extends Controller
    * @param $id
    * @return \Illuminate\Http\JsonResponse
    */
-  public function removePermission($id)
+  public function denyPermission($id)
   {
     try {
       $user = $this->userService->findById($id);
@@ -519,7 +519,7 @@ class UserController extends Controller
       $this->userService->removePermission($user, $permission);
 
       return response([
-        'message' => __('user.role.removed'),
+        'message' => __('user.permission.denied'),
         'data' => [
           'user' => fractal($user, $this->userTransformer),
           'permission' => fractal($permission, $this->permissionTransformer)
@@ -533,7 +533,7 @@ class UserController extends Controller
       ]);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
-        'email' => [
+        'id' => [
           __('user.id.not_found')
         ]
       ]);

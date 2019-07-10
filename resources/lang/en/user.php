@@ -31,8 +31,13 @@ return [
   ],
 
   'role' => [
-    'added' => 'The specified role has been assigned to the user.',
-    'removed' => 'The specified role has been removed from the user.'
+    'assigned' => 'The specified role has been assigned to the user.',
+    'denied' => 'The specified role has been denied to the user.'
+  ],
+
+  'permission' => [
+    'assigned' => 'The specified permission has been assigned to the user.',
+    'denied' => 'The specified permission has been denied to the user.'
   ]
 
 ];

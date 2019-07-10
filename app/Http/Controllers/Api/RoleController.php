@@ -3,9 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Domain\Permission\Exceptions\PermissionAssignedException;
+use Domain\Permission\Exceptions\PermissionNotAssignedException;
+use Domain\Permission\Exceptions\PermissionNotFoundException;
+use Domain\Permission\PermissionService;
+use Domain\Permission\Transformers\PermissionTransformer;
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\RoleService;
 use Domain\Role\Transformers\RoleTransformer;
+use Domain\User\Exceptions\UserNotFoundException;
 use Infrastructure\Exceptions\Http\BadRequestError;
 
 class RoleController extends Controller
@@ -21,17 +27,33 @@ class RoleController extends Controller
   protected $roleTransformer;
 
   /**
+   * @var \Domain\Permission\PermissionService
+   */
+  protected $permissionService;
+
+  /**
+   * @var \Domain\Permission\Transformers\PermissionTransformer
+   */
+  protected $permissionTransformer;
+
+  /**
    * Create a new role controller instance
    *
    * @param \Domain\Role\RoleService $roleService
    * @param \Domain\Role\Transformers\RoleTransformer $roleTransformer
+   * @param \Domain\Permission\PermissionService $permissionService
+   * @param \Domain\Permission\Transformers\PermissionTransformer %permissionTransformer
    */
   public function __construct(
     RoleService $roleService,
-    RoleTransformer $roleTransformer
+    RoleTransformer $roleTransformer,
+    PermissionService $permissionService,
+    PermissionTransformer $permissionTransformer
   ) {
     $this->roleService = $roleService;
     $this->roleTransformer = $roleTransformer;
+    $this->permissionService = $permissionService;
+    $this->permissionTransformer = $permissionTransformer;
   }
 
   /**
@@ -171,6 +193,92 @@ class RoleController extends Controller
       throw $e->setContext([
         'id' => [
           __('role.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Add the specified permission to the specified role.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function assignPermission($id)
+  {
+    try {
+      $role = $this->roleService->findById($id);
+      $permission = $this->permissionService->findById(request()->input('permissionId'));
+
+      $this->authorize('role.assign-permission', $role);
+      $this->authorize('permission.assign', $permission);
+
+      if ($this->roleService->hasPermission($role, $permission)) {
+        throw new PermissionAssignedException();
+      }
+
+      $this->roleService->addPermission($role, $permission);
+
+      return response([
+        'message' => __('role.permission.assigned'),
+        'data' => [
+          'role' => fractal($role, $this->roleTransformer),
+          'permission' => fractal($permission, $this->permissionTransformer)
+        ]
+      ], 200);
+    } catch (PermissionNotFoundException $e) {
+      throw $e->setContext([
+        'permissionId' => [
+          __('permission.id.not_found')
+        ]
+      ]);
+    } catch (RoleNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('role.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Remove the specified permission from the specified role.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function denyPermission($id)
+  {
+    try {
+      $role = $this->roleService->findById($id);
+      $permission = $this->permissionService->findById(request()->input('permissionId'));
+
+      $this->authorize('role.deny-permission', $role);
+      $this->authorize('permission.deny', $permission);
+
+      if (!$this->roleService->hasPermission($role, $permission)) {
+        throw new PermissionNotAssignedException();
+      }
+
+      $this->roleService->removePermission($role, $permission);
+
+      return response([
+        'message' => __('role.permission.denied'),
+        'data' => [
+          'role' => fractal($role, $this->roleTransformer),
+          'permission' => fractal($permission, $this->permissionTransformer)
+        ]
+      ], 200);
+    } catch (PermissionNotFoundException $e) {
+      throw $e->setContext([
+        'permissionId' => [
+          __('permission.id.not_found')
+        ]
+      ]);
+    } catch (RoleNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('user.id.not_found')
         ]
       ]);
     }

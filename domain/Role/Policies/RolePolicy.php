@@ -74,4 +74,32 @@ class RolePolicy
       $user->laratrustCan('role.deny.all') || $user->laratrustCan('role.deny.' . $role->getKeyName())
     );
   }
+
+  /**
+   * Determine if the specified user can assign permissions to the given role.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Role\Role $roleToAssign
+   * @return bool
+   */
+  public function assignPermission(User $user, Role $roleToAssign)
+  {
+    return (
+      $user->laratrustCan('role.assign-permission')
+    );
+  }
+
+  /**
+   * Determine if the specified user can deny permissions to the given role.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Role\Role $roleToDeny
+   * @return bool
+   */
+  public function denyPermission(User $user, Role $roleToDeny)
+  {
+    return (
+      $user->laratrustCan('role.deny-permission')
+    );
+  }
 }

@@ -14,7 +14,9 @@ return [
   'exceptions' => [
     'cannot_create_permission' => 'Unable to create the permission.',
     'cannot_update_permission' => 'Unable to update the permission.',
-    'not_found' => 'Unable to find the specified permission.'
+    'not_found' => 'Unable to find the specified permission.',
+    'permission_assigned' => 'The specified permission has already been assigned.',
+    'permission_not_assigned' => 'The specified permission has not been assigned.'
   ],
 
   'id' => [
