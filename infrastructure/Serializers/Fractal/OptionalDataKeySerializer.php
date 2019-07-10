@@ -7,6 +7,21 @@ use League\Fractal\Serializer\DataArraySerializer;
 class OptionalDataKeySerializer extends DataArraySerializer
 {
   /**
+   * @var bool
+   */
+  private $removeDataAttribute;
+
+  /**
+   * Create a new optional data key serializer.
+   *
+   * @param bool $removeDataAttribute
+   */
+  public function __construct(bool $removeDataAttribute)
+  {
+    $this->removeDataAttribute = $removeDataAttribute;
+  }
+
+  /**
    * Serialize a collection.
    *
    * @param string $resourceKey
@@ -16,6 +31,10 @@ class OptionalDataKeySerializer extends DataArraySerializer
    */
   public function collection($resourceKey, array $data)
   {
+    if ($this->removeDataAttribute) {
+      return $data;
+    }
+
     return ($resourceKey === false) ? $data : [$resourceKey ?: 'data' => $data];
   }
 
@@ -29,6 +48,10 @@ class OptionalDataKeySerializer extends DataArraySerializer
    */
   public function item($resourceKey, array $data)
   {
+    if ($this->removeDataAttribute) {
+      return $data;
+    }
+
     return ($resourceKey === false) ? $data : [$resourceKey ?: 'data' => $data];
   }
 }

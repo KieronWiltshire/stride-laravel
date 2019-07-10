@@ -20,6 +20,7 @@ use Domain\User\Exceptions\UserNotFoundException;
 use Domain\User\Transformers\UserTransformer;
 use Domain\User\UserService;
 use Infrastructure\Exceptions\Http\BadRequestError;
+use Infrastructure\Serializers\Fractal\OptionalDataKeySerializer;
 
 class UserController extends Controller
 {
@@ -122,7 +123,7 @@ class UserController extends Controller
   public function getById($id)
   {
     try {
-      return fractal($this->userService->findById($id), $this->userTransformer);
+      return fractal($this->userService->findById($id), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -143,7 +144,7 @@ class UserController extends Controller
   public function getByEmail($email)
   {
     try {
-      return fractal($this->userService->findByEmail($email), $this->userTransformer)->toArray();
+      return fractal($this->userService->findByEmail($email), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -183,7 +184,7 @@ class UserController extends Controller
       request()->query('offset')
     )->setPath(route('api.user.search'));
 
-    return fractal($users, $this->userTransformer);
+    return fractal($users, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
   }
 
   /**
@@ -205,7 +206,7 @@ class UserController extends Controller
         'password' => request()->input('password')
       ]);
 
-      return fractal($user, $this->userTransformer);
+      return fractal($user, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -260,7 +261,7 @@ class UserController extends Controller
       $user = $this->userService->findByEmail($email);
       $user = $this->userService->verifyEmail($user, request()->query('email_verification_token'));
 
-      return fractal($user, $this->userTransformer);
+      return fractal($user, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
@@ -346,7 +347,7 @@ class UserController extends Controller
       $user = $this->userService->findByEmail($email);
       $user = $this->userService->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
 
-      return fractal($user, $this->userTransformer);
+      return fractal($user, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (InvalidPasswordResetTokenException $e) {
       throw $e->setContext([
         'password_reset_token' => [
@@ -391,10 +392,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.role.assigned'),
-        'data' => [
-          'user' => fractal($user, $this->userTransformer),
-          'role' => fractal($role, $this->roleTransformer)
-        ]
+        'data' => fractal($user, $this->userTransformer)->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
@@ -441,10 +439,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.role.assigned'),
-        'data' => [
-          'user' => fractal($user, $this->userTransformer),
-          'roles' => fractal($roles, $this->roleTransformer)
-        ]
+        'data' => fractal($user, $this->userTransformer, new OptionalDataKeySerializer(false))->parseIncludes(['roles', 'permissions']),
       ], 200);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
@@ -484,10 +479,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.role.denied'),
-        'data' => [
-          'user' => fractal($user, $this->userTransformer),
-          'role' => fractal($role, $this->roleTransformer)
-        ]
+        'data' => fractal($user, $this->userTransformer, new OptionalDataKeySerializer(false))->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
@@ -534,10 +526,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.role.assigned'),
-        'data' => [
-          'user' => fractal($user, $this->userTransformer),
-          'roles' => fractal($roles, $this->roleTransformer)
-        ]
+        'data' => fractal($user, $this->userTransformer, new OptionalDataKeySerializer(false))->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
@@ -577,10 +566,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.permission.assigned'),
-        'data' => [
-          'user' => fractal($user, $this->userTransformer),
-          'permission' => fractal($permission, $this->permissionTransformer)
-        ]
+        'data' => fractal($user, $this->userTransformer, new OptionalDataKeySerializer(false))->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -627,10 +613,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.permission.assigned'),
-        'data' => [
-          'user' => fractal($user, $this->userTransformer),
-          'permissions' => fractal($permissions, $this->permissionTransformer)
-        ]
+        'data' => fractal($user, $this->userTransformer, new OptionalDataKeySerializer(false))->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -670,10 +653,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.permission.denied'),
-        'data' => [
-          'user' => fractal($user, $this->userTransformer),
-          'permission' => fractal($permission, $this->permissionTransformer)
-        ]
+        'data' => fractal($user, $this->userTransformer, new OptionalDataKeySerializer(false))->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -720,10 +700,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.permission.denied'),
-        'data' => [
-          'user' => fractal($user, $this->userTransformer),
-          'permissions' => fractal($permissions, $this->permissionTransformer)
-        ]
+        'data' => fractal($user, $this->userTransformer, new OptionalDataKeySerializer(false))->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([

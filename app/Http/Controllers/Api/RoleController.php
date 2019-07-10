@@ -68,7 +68,7 @@ class RoleController extends Controller
     $roles = $this->roleService->index(request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.role.index'));
 
-    return fractal($roles, $this->roleTransformer);
+    return fractal($roles, $this->roleTransformer)->parseIncludes(['permissions']);
   }
 
   /**
@@ -103,7 +103,7 @@ class RoleController extends Controller
   public function getById($id)
   {
     try {
-      return fractal($this->roleService->findById($id), $this->roleTransformer);
+      return fractal($this->roleService->findById($id), $this->roleTransformer)->parseIncludes(['permissions']);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -124,7 +124,7 @@ class RoleController extends Controller
   public function getByName($name)
   {
     try {
-      return fractal($this->roleService->findByName($name), $this->roleTransformer);
+      return fractal($this->roleService->findByName($name), $this->roleTransformer)->parseIncludes(['permissions']);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -164,7 +164,7 @@ class RoleController extends Controller
       request()->query('offset')
     )->setPath(route('api.role.search'));
 
-    return fractal($roles, $this->roleTransformer);
+    return fractal($roles, $this->roleTransformer)->parseIncludes(['permissions']);
   }
 
   /**
@@ -188,7 +188,7 @@ class RoleController extends Controller
         'description' => request()->input('description')
       ]);
 
-      return fractal($role, $this->roleTransformer);
+      return fractal($role, $this->roleTransformer)->parseIncludes(['permissions']);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -221,10 +221,7 @@ class RoleController extends Controller
 
       return response([
         'message' => __('role.permission.assigned'),
-        'data' => [
-          'role' => fractal($role, $this->roleTransformer),
-          'permission' => fractal($permission, $this->permissionTransformer)
-        ]
+        'data' => fractal($role, $this->roleTransformer)->parseIncludes(['permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -271,10 +268,7 @@ class RoleController extends Controller
 
       return response([
         'message' => __('role.permission.assigned'),
-        'data' => [
-          'role' => fractal($role, $this->roleTransformer),
-          'permissions' => fractal($permissions, $this->permissionTransformer)
-        ]
+        'data' => fractal($role, $this->roleTransformer)->parseIncludes(['permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -314,10 +308,7 @@ class RoleController extends Controller
 
       return response([
         'message' => __('role.permission.denied'),
-        'data' => [
-          'role' => fractal($role, $this->roleTransformer),
-          'permission' => fractal($permission, $this->permissionTransformer)
-        ]
+        'data' => fractal($role, $this->roleTransformer)->parseIncludes(['permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -364,10 +355,7 @@ class RoleController extends Controller
 
       return response([
         'message' => __('role.permission.denied'),
-        'data' => [
-          'role' => fractal($role, $this->roleTransformer),
-          'permissions' => fractal($permissions, $this->permissionTransformer)
-        ]
+        'data' => fractal($role, $this->roleTransformer)->parseIncludes(['permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
