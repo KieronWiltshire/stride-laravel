@@ -29,5 +29,7 @@ class PermissionServiceProvider extends ServiceProvider
   {
     Gate::define('permission.create', 'App\Policies\Permission\PermissionPolicy@create');
     Gate::define('permission.update', 'App\Policies\Permission\PermissionPolicy@update');
+    Gate::define('permission.assign', 'Domain\Permission\Policies\PermissionPolicy@assign');
+    Gate::define('permission.deny', 'Domain\Permission\Policies\PermissionPolicy@deny');
   }
 }

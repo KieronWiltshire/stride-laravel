@@ -3,6 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Domain\Permission\Exceptions\PermissionAssignedException;
+use Domain\Permission\Exceptions\PermissionNotAssignedException;
+use Domain\Permission\Exceptions\PermissionNotFoundException;
+use Domain\Permission\PermissionService;
+use Domain\Permission\Transformers\PermissionTransformer;
+use Domain\Role\Exceptions\RoleAssignedException;
+use Domain\Role\Exceptions\RoleNotAssignedException;
+use Domain\Role\Exceptions\RoleNotFoundException;
+use Domain\Role\RoleService;
+use Domain\Role\Transformers\RoleTransformer;
 use Domain\User\Exceptions\InvalidEmailVerificationTokenException;
 use Domain\User\Exceptions\InvalidPasswordResetTokenException;
 use Domain\User\Exceptions\PasswordResetTokenExpiredException;
@@ -24,17 +34,49 @@ class UserController extends Controller
   protected $userTransformer;
 
   /**
+   * @var \Domain\Role\RoleService
+   */
+  protected $roleService;
+
+  /**
+   * @var \Domain\Role\Transformers\RoleTransformer
+   */
+  protected $roleTransformer;
+
+  /**
+   * @var \Domain\Permission\PermissionService
+   */
+  protected $permissionService;
+
+  /**
+   * @var \Domain\Permission\Transformers\PermissionTransformer
+   */
+  protected $permissionTransformer;
+
+  /**
    * Create a new user controller instance
    *
    * @param \Domain\User\UserService $userService
    * @param \Domain\User\Transformers\UserTransformer $userTransformer
+   * @param \Domain\Role\RoleService $roleService
+   * @param \Domain\Role\Transformers\RoleTransformer $roleTransformer
+   * @param \Domain\Permission\PermissionService $permissionService
+   * @param \Domain\Permission\Transformers\PermissionTransformer $permissionTransformer
    */
   public function __construct(
     UserService $userService,
-    UserTransformer $userTransformer
+    UserTransformer $userTransformer,
+    RoleService $roleService,
+    RoleTransformer $roleTransformer,
+    PermissionService $permissionService,
+    PermissionTransformer $permissionTransformer
   ) {
     $this->userService = $userService;
     $this->userTransformer = $userTransformer;
+    $this->roleService = $roleService;
+    $this->roleTransformer = $roleTransformer;
+    $this->permissionService = $permissionService;
+    $this->permissionTransformer = $permissionTransformer;
   }
 
   /**
@@ -234,8 +276,8 @@ class UserController extends Controller
    * @param string $email
    * @return \Illuminate\Http\JsonResponse
    *
-   * @throws \Domain\Exceptions\InvalidEmailVerificationTokenException
-   * @throws \Domain\Exceptions\UserNotFoundException
+   * @throws \Domain\User\Exceptions\InvalidEmailVerificationTokenException
+   * @throws \Domain\User\Exceptions\UserNotFoundException
    */
   public function resendEmailVerificationToken($email)
   {
@@ -321,6 +363,178 @@ class UserController extends Controller
       throw $e->setContext([
         'email' => [
           __('user.email.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Add the specified role to the specified user.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function addRole($id)
+  {
+    try {
+      $user = $this->userService->findById($id);
+      $role = $this->roleService->findById(request()->input('roleId'));
+
+      $this->authorize('user.assign-role', $user);
+      $this->authorize('role.assign', $role);
+
+      if ($this->userService->hasRole($user, $role)) {
+        throw new RoleAssignedException();
+      }
+
+      $this->userService->addRole($user, $role);
+
+      return response([
+        'message' => __('user.role.added'),
+        'data' => [
+          'user' => fractal($user, $this->userTransformer),
+          'role' => fractal($role, $this->roleTransformer)
+        ]
+      ], 200);
+    } catch (RoleNotFoundException $e) {
+      throw $e->setContext([
+        'roleId' => [
+          __('role.id.not_found')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'email' => [
+          __('user.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Remove the specified role from the specified user.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function removeRole($id)
+  {
+    try {
+      $user = $this->userService->findById($id);
+      $role = $this->roleService->findById(request()->input('roleId'));
+
+      $this->authorize('user.deny-role', $user);
+      $this->authorize('role.deny', $role);
+
+      if (!$this->userService->hasRole($user, $role)) {
+        throw new RoleNotAssignedException();
+      }
+
+      $this->userService->removeRole($user, $role);
+
+      return response([
+        'message' => __('user.role.removed'),
+        'data' => [
+          'user' => fractal($user, $this->userTransformer),
+          'role' => fractal($role, $this->roleTransformer)
+        ]
+      ], 200);
+    } catch (RoleNotFoundException $e) {
+      throw $e->setContext([
+        'roleId' => [
+          __('role.id.not_found')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'email' => [
+          __('user.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Add the specified permission to the specified user.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function addPermission($id)
+  {
+    try {
+      $user = $this->userService->findById($id);
+      $permission = $this->permissionService->findById(request()->input('permissionId'));
+
+      $this->authorize('user.assign-permission', $user);
+      $this->authorize('permission.assign', $permission);
+
+      if ($this->userService->hasPermission($user, $permission)) {
+        throw new PermissionAssignedException();
+      }
+
+      $this->userService->addPermission($user, $permission);
+
+      return response([
+        'message' => __('user.role.added'),
+        'data' => [
+          'user' => fractal($user, $this->userTransformer),
+          'permission' => fractal($permission, $this->permissionTransformer)
+        ]
+      ], 200);
+    } catch (PermissionNotFoundException $e) {
+      throw $e->setContext([
+        'permissionId' => [
+          __('permission.id.not_found')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'email' => [
+          __('user.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Remove the specified permission from the specified user.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function removePermission($id)
+  {
+    try {
+      $user = $this->userService->findById($id);
+      $permission = $this->permissionService->findById(request()->input('permissionId'));
+
+      $this->authorize('user.deny-permission', $user);
+      $this->authorize('permission.deny', $permission);
+
+      if (!$this->userService->hasPermission($user, $permission)) {
+        throw new PermissionNotAssignedException();
+      }
+
+      $this->userService->removePermission($user, $permission);
+
+      return response([
+        'message' => __('user.role.removed'),
+        'data' => [
+          'user' => fractal($user, $this->userTransformer),
+          'permission' => fractal($permission, $this->permissionTransformer)
+        ]
+      ], 200);
+    } catch (PermissionNotFoundException $e) {
+      throw $e->setContext([
+        'permissionId' => [
+          __('permission.id.not_found')
+        ]
+      ]);
+    } catch (UserNotFoundException $e) {
+      throw $e->setContext([
+        'email' => [
+          __('user.id.not_found')
         ]
       ]);
     }

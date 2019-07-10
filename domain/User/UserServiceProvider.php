@@ -37,5 +37,9 @@ class UserServiceProvider extends ServiceProvider
   {
     Gate::define('user.view', 'Domain\User\Policies\UserPolicy@view');
     Gate::define('user.update', 'Domain\User\Policies\UserPolicy@update');
+    Gate::define('user.assign-role', 'Domain\User\Policies\UserPolicy@assignRole');
+    Gate::define('user.deny-role', 'Domain\User\Policies\UserPolicy@denyRole');
+    Gate::define('user.assign-permission', 'Domain\User\Policies\UserPolicy@assignPermission');
+    Gate::define('user.deny-permission', 'Domain\User\Policies\UserPolicy@denyPermission');
   }
 }

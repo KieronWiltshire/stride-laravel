@@ -49,4 +49,60 @@ class UserPolicy
       || ($user->laratrustCan('user.update.all'))
     );
   }
+
+  /**
+   * Determine if the specified user can assign roles to the given user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\User\User $userToAssign
+   * @return bool
+   */
+  public function assignRole(User $user, User $userToAssign)
+  {
+    return (
+      $user->laratrustCan('user.assign-role')
+    );
+  }
+
+  /**
+   * Determine if the specified user can deny roles to the given user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\User\User $userToDeny
+   * @return bool
+   */
+  public function denyRole(User $user, User $userToDeny)
+  {
+    return (
+      $user->laratrustCan('user.deny-role')
+    );
+  }
+
+  /**
+   * Determine if the specified user can assign permissions to the given user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\User\User $userToAssign
+   * @return bool
+   */
+  public function assignPermission(User $user, User $userToAssign)
+  {
+    return (
+      $user->laratrustCan('user.assign-permission')
+    );
+  }
+
+  /**
+   * Determine if the specified user can deny permissions to the given user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\User\User $userToDeny
+   * @return bool
+   */
+  public function denyPermission(User $user, User $userToDeny)
+  {
+    return (
+      $user->laratrustCan('user.deny-permission')
+    );
+  }
 }

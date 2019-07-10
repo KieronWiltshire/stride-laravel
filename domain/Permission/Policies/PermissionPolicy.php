@@ -46,4 +46,32 @@ class PermissionPolicy
       $user->laratrustCan('permission.update.all')
     );
   }
+
+  /**
+   * Determine if the specified user can assign the specified permission.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Permission\Permission $permission
+   * @return bool
+   */
+  public function assign(User $user, Permission $permission)
+  {
+    return (
+      $user->laratrustCan('permission.assign.all') || $user->laratrustCan('role.assign.' . $permission->getKeyName())
+    );
+  }
+
+  /**
+   * Determine if the specified user can deny the specified permission.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Permission\Permission $permission
+   * @return bool
+   */
+  public function deny(User $user, Permission $permission)
+  {
+    return (
+      $user->laratrustCan('permission.deny.all') || $user->laratrustCan('role.deny.' . $permission->getKeyName())
+    );
+  }
 }

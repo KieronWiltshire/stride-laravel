@@ -34,7 +34,7 @@ class RolePolicy
   }
 
   /**
-   * Determine if the given role can be updated by the specified user.
+   * Determine if the specified user can update the given role.
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
@@ -44,6 +44,34 @@ class RolePolicy
   {
     return (
       $user->laratrustCan('role.update.all')
+    );
+  }
+
+  /**
+   * Determine if the specified user can assign the specified role.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Role\Role $role
+   * @return bool
+   */
+  public function assign(User $user, Role $role)
+  {
+    return (
+      $user->laratrustCan('role.assign.all') || $user->laratrustCan('role.assign.' . $role->getKeyName())
+    );
+  }
+
+  /**
+   * Determine if the specified user can deny the specified role.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Role\Role $role
+   * @return bool
+   */
+  public function deny(User $user, Role $role)
+  {
+    return (
+      $user->laratrustCan('role.deny.all') || $user->laratrustCan('role.deny.' . $role->getKeyName())
     );
   }
 }

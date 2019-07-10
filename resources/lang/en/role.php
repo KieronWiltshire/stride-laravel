@@ -14,7 +14,9 @@ return [
   'exceptions' => [
     'cannot_create_role' => 'Unable to create the role.',
     'cannot_update_role' => 'Unable to update the role.',
-    'not_found' => 'Unable to find the specified role.'
+    'not_found' => 'Unable to find the specified role.',
+    'role_assigned' => 'The specified role has already been assigned.',
+    'role_not_assigned' => 'The specified role has not been assigned.'
   ],
 
   'id' => [

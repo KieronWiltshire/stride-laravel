@@ -4,7 +4,6 @@ namespace Domain\Role;
 
 use Domain\Permission\Permission;
 use Domain\Role\Contracts\Repositories\RoleRepository;
-use Domain\User\User;
 
 class RoleService
 {

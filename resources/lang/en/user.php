@@ -30,4 +30,9 @@ return [
     'not_found' => 'We can\'t find a user with the specified e-mail address.',
   ],
 
+  'role' => [
+    'added' => 'The specified role has been assigned to the user.',
+    'removed' => 'The specified role has been removed from the user.'
+  ]
+
 ];

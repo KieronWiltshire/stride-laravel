@@ -29,5 +29,7 @@ class RoleServiceProvider extends ServiceProvider
   {
     Gate::define('role.create', 'Domain\Role\Policies\RolePolicy@create');
     Gate::define('role.update', 'Domain\Role\Policies\RolePolicy@update');
+    Gate::define('role.assign', 'Domain\Role\Policies\RolePolicy@assign');
+    Gate::define('role.deny', 'Domain\Role\Policies\RolePolicy@deny');
   }
 }
