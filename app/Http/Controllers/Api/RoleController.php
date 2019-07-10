@@ -242,6 +242,56 @@ class RoleController extends Controller
   }
 
   /**
+   * Add the specified permissions to the specified role.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function assignPermissions($id)
+  {
+    try {
+      $role = $this->roleService->findById($id);
+      $permissions = $this->permissionService->find('id', request()->input('permissionIds'));
+
+      if ($permissions->count() != count(request()->input('permissionIds'))) {
+        throw new PermissionNotFoundException();
+      }
+
+      $this->authorize('role.assign-permission', $role);
+
+      foreach ($permissions as $permission) {
+        $this->authorize('permission.assign', $permission);
+      }
+
+      if ($this->roleService->hasPermissions($role, $permissions)) {
+        throw new PermissionAssignedException();
+      }
+
+      $this->roleService->addPermissions($role, $permissions);
+
+      return response([
+        'message' => __('role.permission.assigned'),
+        'data' => [
+          'role' => fractal($role, $this->roleTransformer),
+          'permissions' => fractal($permissions, $this->permissionTransformer)
+        ]
+      ], 200);
+    } catch (PermissionNotFoundException $e) {
+      throw $e->setContext([
+        'permissionId' => [
+          __('permission.id.not_found')
+        ]
+      ]);
+    } catch (RoleNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('role.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
    * Remove the specified permission from the specified role.
    *
    * @param $id
@@ -278,7 +328,57 @@ class RoleController extends Controller
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
         'id' => [
-          __('user.id.not_found')
+          __('role.id.not_found')
+        ]
+      ]);
+    }
+  }
+
+  /**
+   * Remove the specified permissions from the specified role.
+   *
+   * @param $id
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function denyPermissions($id)
+  {
+    try {
+      $role = $this->roleService->findById($id);
+      $permissions = $this->permissionService->find('id', request()->input('permissionIds'));
+
+      if ($permissions->count() != count(request()->input('permissionIds'))) {
+        throw new PermissionNotFoundException();
+      }
+
+      $this->authorize('role.deny-permission', $role);
+
+      foreach ($permissions as $permission) {
+        $this->authorize('permission.deny', $permission);
+      }
+
+      if (!$this->roleService->hasPermissions($role, $permissions)) {
+        throw new PermissionNotAssignedException();
+      }
+
+      $this->roleService->removePermissions($role, $permissions);
+
+      return response([
+        'message' => __('role.permission.denied'),
+        'data' => [
+          'role' => fractal($role, $this->roleTransformer),
+          'permissions' => fractal($permissions, $this->permissionTransformer)
+        ]
+      ], 200);
+    } catch (PermissionNotFoundException $e) {
+      throw $e->setContext([
+        'permissionId' => [
+          __('permission.id.not_found')
+        ]
+      ]);
+    } catch (RoleNotFoundException $e) {
+      throw $e->setContext([
+        'id' => [
+          __('role.id.not_found')
         ]
       ]);
     }

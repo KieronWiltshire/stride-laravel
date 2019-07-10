@@ -616,7 +616,7 @@ class UserController extends Controller
       $this->authorize('user.assign-permission', $user);
 
       foreach ($permissions as $permission) {
-        $this->authorize('permission.assign', $permissions);
+        $this->authorize('permission.assign', $permission);
       }
 
       if ($this->userService->hasPermissions($user, $permissions)) {
@@ -719,7 +719,7 @@ class UserController extends Controller
       $this->userService->removePermissions($user, $permissions);
 
       return response([
-        'message' => __('user.permission.assigned'),
+        'message' => __('user.permission.denied'),
         'data' => [
           'user' => fractal($user, $this->userTransformer),
           'permissions' => fractal($permissions, $this->permissionTransformer)
