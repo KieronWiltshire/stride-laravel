@@ -25,11 +25,11 @@ class AppRepository implements AppRepositoryInterface
     $result = null;
 
     if (!$first && isset($this->paginate)) {
-      if (isset($limit) && !is_null($limit)) {
+      if (isset($this->limit) && !is_null($this->limit)) {
         $result = $query->paginate($this->limit, ['*'], 'page', $this->offset);
       } else {
         $result = $query->get();
-        $result = new LengthAwarePaginator($result->all(), $result->count(), max($result->count(), 1), 1);
+        $result = new LengthAwarePaginator($result->all(), $result->count(), max($result->count(), 1), $this->offset);
       }
 
       $result

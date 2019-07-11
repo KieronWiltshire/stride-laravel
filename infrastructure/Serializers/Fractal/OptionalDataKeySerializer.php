@@ -16,7 +16,7 @@ class OptionalDataKeySerializer extends DataArraySerializer
    *
    * @param bool $removeDataAttribute
    */
-  public function __construct(bool $removeDataAttribute)
+  public function __construct(bool $removeDataAttribute = false)
   {
     $this->removeDataAttribute = $removeDataAttribute;
   }
