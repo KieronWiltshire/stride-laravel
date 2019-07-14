@@ -21,6 +21,19 @@ class ClientPolicy
   }
 
   /**
+   * Determine if the specified user can create an oauth client.
+   *
+   * @param \Domain\User\User $user
+   * @return bool
+   */
+  public function create(User $user)
+  {
+    return (
+    $user->laratrustCan('client.create')
+    );
+  }
+
+  /**
    * Determine if the given user can view a given user's oauth clients.
    *
    * @param \Domain\User\User $user
@@ -47,19 +60,6 @@ class ClientPolicy
     return (
       ($user->laratrustCan('client.view.me') && $user->id === $client->user_id)
       || ($user->laratrustCan('client.view.all'))
-    );
-  }
-
-  /**
-   * Determine if the specified user can create an oauth client.
-   *
-   * @param \Domain\User\User $user
-   * @return bool
-   */
-  public function create(User $user)
-  {
-    return (
-      $user->laratrustCan('client.create')
     );
   }
 

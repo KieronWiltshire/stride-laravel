@@ -24,7 +24,7 @@ class AppRepository implements AppRepositoryInterface
 
     $result = null;
 
-    if (!$first && isset($this->paginate)) {
+    if (!$first && $this->paginate) {
       if (isset($this->limit) && !is_null($this->limit)) {
         $result = $query->paginate($this->limit, ['*'], 'page', $this->offset);
       } else {

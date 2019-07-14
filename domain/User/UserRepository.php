@@ -151,7 +151,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    */
   public function findByEmail($email)
   {
-    $user = $this->execute(User::where('email', $email));
+    $user = $this->execute(User::where('email', $email), true);
 
     if (!$user) {
       throw new UserNotFoundException();

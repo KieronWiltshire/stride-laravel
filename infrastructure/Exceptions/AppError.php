@@ -133,7 +133,7 @@ abstract class AppError extends Exception
    */
   public function getVersion()
   {
-    return Version::compact();
+    return Version::public();
   }
 
   /**

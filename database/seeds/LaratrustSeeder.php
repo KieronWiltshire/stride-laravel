@@ -52,7 +52,7 @@ class LaratrustSeeder extends Seeder
 //    $this->truncateLaratrustTables(); // Disabled this as when new permissions are added, the seeder would truncate the users table
 
     $config = config('laratrust_seeder.role_structure');
-    $userPermission = config('laratrust_seeder.permission_structure');
+    $userPermission = config('laratrust_seeder.user_structure');
     $mapPermission = collect(config('laratrust_seeder.permissions_map'));
 
     foreach ($config as $key => $modules) {

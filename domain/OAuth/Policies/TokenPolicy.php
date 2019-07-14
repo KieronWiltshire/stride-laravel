@@ -21,6 +21,20 @@ class TokenPolicy
   }
 
   /**
+   * Determine if the specified user can create a personal access token.
+   *
+   * @param \Domain\User\User $user
+   * @return bool
+   */
+  public function create(User $user)
+  {
+    return (
+    $user->laratrustCan('personal-access-token.create')
+    );
+  }
+
+
+  /**
    * Determine if the given user can view a given user's personal access tokens.
    *
    * @param \Domain\User\User $user
@@ -32,19 +46,6 @@ class TokenPolicy
     return (
       ($user->laratrustCan('personal-access-token.view.me') && $user->id === $userToView->id)
       || ($user->laratrustCan('personal-access-token.view.all'))
-    );
-  }
-
-  /**
-   * Determine if the specified user can create a personal access token.
-   *
-   * @param \Domain\User\User $user
-   * @return bool
-   */
-  public function create(User $user)
-  {
-    return (
-      $user->laratrustCan('personal-access-token.create')
     );
   }
 
