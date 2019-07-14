@@ -94,10 +94,10 @@ interface UserRepository extends AppRepository
    * Add roles to the user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  function addRoles(User $user, array $roles = []);
+  function addRoles(User $user, $roles = []);
 
   /**
    * Remove a role from the user.
@@ -112,19 +112,19 @@ interface UserRepository extends AppRepository
    * Remove roles from the user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  function removeRoles(User $user, array $roles = []);
+  function removeRoles(User $user, $roles = []);
 
   /**
    * Set all of the roles of the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  function setRoles(User $user, array $roles = []);
+  function setRoles(User $user, $roles = []);
 
   /**
    * Retrieve all of the roles for the specified user.
@@ -147,10 +147,10 @@ interface UserRepository extends AppRepository
    * Add multiple permissions to the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  function addPermissions(User $user, array $permissions = []);
+  function addPermissions(User $user, $permissions = []);
 
   /**
    * Remove a permission from the specified user.
@@ -165,19 +165,19 @@ interface UserRepository extends AppRepository
    * Remove multiple permissions from the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  function removePermissions(User $user, array $permissions = []);
+  function removePermissions(User $user, $permissions = []);
 
   /**
    * Set all of the permissions of the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  function setPermissions(User $user, array $permissions = []);
+  function setPermissions(User $user, $permissions = []);
 
   /**
    * Retrieve all of the permissions for the specified user.
@@ -198,10 +198,10 @@ interface UserRepository extends AppRepository
   /**
    * Retrieve all of the users that are associated with any of the specified roles.
    *
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  function getUsersWithRoles(array $roles = []);
+  function getUsersWithRoles($roles = []);
 
   /**
    * Retrieve all of the users that have access to the specified permission.
@@ -217,5 +217,5 @@ interface UserRepository extends AppRepository
    * @param array $permissions
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  function getUsersWithPermissions(array $permissions = []);
+  function getUsersWithPermissions($permissions = []);
 }

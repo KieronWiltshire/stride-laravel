@@ -16,7 +16,6 @@ class UserPolicy
    */
   public function __construct()
   {
-    //
   }
 
   /**

@@ -2,6 +2,7 @@
 
 namespace Domain\Role;
 
+use Domain\User\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +28,12 @@ class RoleServiceProvider extends ServiceProvider
    */
   public function boot()
   {
+    Gate::before(function (User $user) {
+      if ($user->laratrustCan('role.*')) {
+        return true;
+      }
+    });
+
     Gate::define('role.create', 'Domain\Role\Policies\RolePolicy@create');
     Gate::define('role.update', 'Domain\Role\Policies\RolePolicy@update');
     Gate::define('role.assign', 'Domain\Role\Policies\RolePolicy@assign');

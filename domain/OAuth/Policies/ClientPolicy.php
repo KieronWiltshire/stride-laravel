@@ -17,7 +17,6 @@ class ClientPolicy
    */
   public function __construct()
   {
-    //
   }
 
   /**
@@ -29,7 +28,7 @@ class ClientPolicy
   public function create(User $user)
   {
     return (
-    $user->laratrustCan('client.create')
+      $user->laratrustCan('client.create')
     );
   }
 

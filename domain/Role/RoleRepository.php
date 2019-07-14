@@ -199,10 +199,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    * Add multiple permissions to the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  public function addPermissions(Role $role, array $permissions = [])
+  public function addPermissions(Role $role, $permissions = [])
   {
     return $role->attachPermissions($permissions);
   }
@@ -225,10 +225,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    * Remove multiple permissions from the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  public function removePermissions(Role $role, array $permissions = [])
+  public function removePermissions(Role $role, $permissions = [])
   {
     return $role->detachPermissions($permissions);
   }
@@ -237,10 +237,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    * Set all of the permissions of the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  public function setPermissions(Role $role, array $permissions = [])
+  public function setPermissions(Role $role, $permissions = [])
   {
     return $role->syncPermissions($permissions);
   }
@@ -270,10 +270,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Retrieve all of the roles that have access to any of the specified permissions.
    *
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  function getRolesWithPermissions(array $permissions = [])
+  function getRolesWithPermissions($permissions = [])
   {
     $query = Role::query();
 

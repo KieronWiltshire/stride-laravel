@@ -17,7 +17,6 @@ class TokenPolicy
    */
   public function __construct()
   {
-    //
   }
 
   /**
@@ -29,7 +28,7 @@ class TokenPolicy
   public function create(User $user)
   {
     return (
-    $user->laratrustCan('personal-access-token.create')
+      $user->laratrustCan('personal-access-token.create')
     );
   }
 

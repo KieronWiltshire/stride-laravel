@@ -4,6 +4,7 @@ namespace Domain\Role;
 
 use Domain\Permission\Permission;
 use Domain\Role\Contracts\Repositories\RoleRepository;
+use Illuminate\Support\Collection;
 
 class RoleService
 {
@@ -159,10 +160,10 @@ class RoleService
    * Add multiple permissions to the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  public function addPermissions(Role $role, array $permissions = [])
+  public function addPermissions(Role $role, $permissions = [])
   {
     return $this->roleRepository->addPermissions($role, $permissions);
   }
@@ -183,10 +184,10 @@ class RoleService
    * Remove multiple permissions from the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  public function removePermissions(Role $role, array $permissions = [])
+  public function removePermissions(Role $role, $permissions = [])
   {
     return $this->roleRepository->removePermissions($role, $permissions);
   }
@@ -195,10 +196,10 @@ class RoleService
    * Set all of the permissions of the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  public function setPermissions(Role $role, array $permissions = [])
+  public function setPermissions(Role $role, $permissions = [])
   {
     return $this->roleRepository->setPermissions($role, $permissions);
   }
@@ -230,12 +231,12 @@ class RoleService
    * Determine if the given role has the specified permissions assigned.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return bool
    */
-  function hasPermissions(Role $role, array $permissions)
+  function hasPermissions(Role $role, $permissions)
   {
-    $permissionIds = collect($permissions)
+    $permissionIds = ($permissions instanceof Collection ? $permissions : collect($permissions))
       ->map->only(['id'])
       ->flatten()
       ->all();
@@ -257,10 +258,10 @@ class RoleService
   /**
    * Retrieve all of the roles that have access to any of the specified permissions.
    *
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  function getRolesWithPermissions(array $permissions = [])
+  function getRolesWithPermissions($permissions = [])
   {
     return $this->roleRepository->getRolesWithPermissions($permissions);
   }

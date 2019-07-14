@@ -202,10 +202,10 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    * Add roles to the user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  public function addRoles(User $user, array $roles = [])
+  public function addRoles(User $user, $roles = [])
   {
     return $user->attachRoles($roles);
   }
@@ -228,10 +228,10 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    * Remove roles from the user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  public function removeRoles(User $user, array $roles = [])
+  public function removeRoles(User $user, $roles = [])
   {
     return $user->detachRoles($roles);
   }
@@ -240,10 +240,10 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    * Set all of the roles of the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  public function setRoles(User $user, array $roles = [])
+  public function setRoles(User $user, $roles = [])
   {
     return $user->syncRoles($roles);
   }
@@ -277,10 +277,10 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    * Add multiple permissions to the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  public function addPermissions(User $user, array $permissions = [])
+  public function addPermissions(User $user, $permissions = [])
   {
     return $user->attachPermissions($permissions);
   }
@@ -303,10 +303,10 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    * Remove multiple permissions from the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  public function removePermissions(User $user, array $permissions = [])
+  public function removePermissions(User $user, $permissions = [])
   {
     return $user->detachPermissions($permissions);
   }
@@ -315,10 +315,10 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
    * Set all of the permissions of the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  public function setPermissions(User $user, array $permissions = [])
+  public function setPermissions(User $user, $permissions = [])
   {
     return $user->syncPermissions($permissions);
   }
@@ -348,10 +348,10 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
   /**
    * Retrieve all of the users that are associated with any of the specified roles.
    *
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  public function getUsersWithRoles(array $roles = [])
+  public function getUsersWithRoles($roles = [])
   {
     $query = User::query();
 
@@ -380,10 +380,10 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
   /**
    * Retrieve all of the users that have access to any of the specified permissions.
    *
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  function getUsersWithPermissions(array $permissions = [])
+  function getUsersWithPermissions($permissions = [])
   {
     $query = User::query();
 

@@ -35,6 +35,12 @@ class UserServiceProvider extends ServiceProvider
    */
   public function boot()
   {
+    Gate::before(function (User $user) {
+      if ($user->laratrustCan('user.*')) {
+        return true;
+      }
+    });
+
     Gate::define('user.view', 'Domain\User\Policies\UserPolicy@view');
     Gate::define('user.update', 'Domain\User\Policies\UserPolicy@update');
     Gate::define('user.assign-role', 'Domain\User\Policies\UserPolicy@assignRole');

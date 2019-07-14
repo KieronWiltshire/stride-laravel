@@ -18,6 +18,7 @@ use Domain\User\Validators\UserEmailValidator;
 use Domain\User\Validators\UserPasswordValidator;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -410,10 +411,10 @@ class UserService
    * Add roles to the user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  public function addRoles(User $user, array $roles = [])
+  public function addRoles(User $user, $roles = [])
   {
     return $this->userRepository->addRoles($user, $roles);
   }
@@ -434,10 +435,10 @@ class UserService
    * Remove roles from the user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  public function removeRoles(User $user, array $roles = [])
+  public function removeRoles(User $user, $roles = [])
   {
     return $this->userRepository->removeRoles($user, $roles);
   }
@@ -446,10 +447,10 @@ class UserService
    * Set all of the roles of the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Domain\User\User
    */
-  public function setRoles(User $user, array $roles = [])
+  public function setRoles(User $user, $roles = [])
   {
     return $this->userRepository->setRoles($user, $roles);
   }
@@ -481,12 +482,12 @@ class UserService
    * Determine if the given user has the specified roles assigned.
    *
    * @param \Domain\User\User $user
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return bool
    */
-  function hasRoles(User $user, array $roles)
+  function hasRoles(User $user, $roles)
   {
-    $roleIds = collect($roles)
+    $roleIds = ($roles instanceof Collection ? $roles : collect($roles))
       ->map->only(['id'])
       ->flatten()
       ->all();
@@ -510,10 +511,10 @@ class UserService
    * Add multiple permissions to the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  public function addPermissions(User $user, array $permissions = [])
+  public function addPermissions(User $user, $permissions = [])
   {
     return $this->userRepository->addPermissions($user, $permissions);
   }
@@ -534,10 +535,10 @@ class UserService
    * Remove multiple permissions from the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  public function removePermissions(User $user, array $permissions = [])
+  public function removePermissions(User $user, $permissions = [])
   {
     return $this->userRepository->removePermissions($user, $permissions);
   }
@@ -546,10 +547,10 @@ class UserService
    * Set all of the permissions of the specified user.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\User\User
    */
-  public function setPermissions(User $user, array $permissions = [])
+  public function setPermissions(User $user, $permissions = [])
   {
     return $this->userRepository->setPermissions($user, $permissions);
   }
@@ -581,12 +582,12 @@ class UserService
    * Determine if the given user has the specified permissions assigned.
    *
    * @param \Domain\User\User $user
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return bool
    */
-  function hasPermissions(User $user, array $permissions)
+  function hasPermissions(User $user, $permissions)
   {
-    $permissionIds = collect($permissions)
+    $permissionIds = ($permissions instanceof Collection ? $permissions : collect($permissions))
       ->map->only(['id'])
       ->flatten()
       ->all();
@@ -608,10 +609,10 @@ class UserService
   /**
    * Retrieve all of the users that are associated with any of the specified roles.
    *
-   * @param array $roles
+   * @param \Illuminate\Support\Collection|array $roles
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  public function getUsersWithRoles(array $roles = [])
+  public function getUsersWithRoles($roles = [])
   {
     return $this->userRepository->getUsersWithRoles($roles);
   }
@@ -630,10 +631,10 @@ class UserService
   /**
    * Retrieve all of the users that have access to any of the specified permissions.
    *
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  function getUsersWithPermissions(array $permissions = [])
+  function getUsersWithPermissions($permissions = [])
   {
     return $this->userRepository->getUsersWithPermissions($permissions);
   }

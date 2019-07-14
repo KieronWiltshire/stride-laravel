@@ -258,7 +258,7 @@ class RoleController extends Controller
       $role = $this->roleService->findById($id);
       $permissions = $this->permissionService->find('id', request()->input('permissionIds'));
 
-      if ($permissions->count() != count(request()->input('permissionIds'))) {
+      if ($permissions->count() != (is_array($permissions) ? count(request()->input('permissionIds')) : 1)) {
         throw new PermissionNotFoundException();
       }
 
@@ -346,7 +346,7 @@ class RoleController extends Controller
       $role = $this->roleService->findById($id);
       $permissions = $this->permissionService->find('id', request()->input('permissionIds'));
 
-      if ($permissions->count() != count(request()->input('permissionIds'))) {
+      if ($permissions->count() != (is_array($permissions) ? count(request()->input('permissionIds')) : 1)) {
         throw new PermissionNotFoundException();
       }
 

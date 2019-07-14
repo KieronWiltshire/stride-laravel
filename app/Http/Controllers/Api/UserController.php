@@ -428,7 +428,7 @@ class UserController extends Controller
       $user = $this->userService->findById($id);
       $roles = $this->roleService->find('id', request()->input('roleIds'));
 
-      if ($roles->count() != count(request()->input('roleIds'))) {
+      if ($roles->count() != (is_array($roles) ? count(request()->input('roleIds')) : 1)) {
         throw new RoleNotFoundException();
       }
 
@@ -516,7 +516,7 @@ class UserController extends Controller
       $user = $this->userService->findById($id);
       $roles = $this->roleService->find('id', request()->input('roleIds'));
 
-      if ($roles->count() != count(request()->input('roleIds'))) {
+      if ($roles->count() != (is_array($roles) ? count(request()->input('roleIds')) : 1)) {
         throw new RoleNotFoundException();
       }
 
@@ -604,7 +604,7 @@ class UserController extends Controller
       $user = $this->userService->findById($id);
       $permissions = $this->permissionService->find('id', request()->input('permissionIds'));
 
-      if ($permissions->count() != count(request()->input('permissionIds'))) {
+      if ($permissions->count() != (is_array($permissions) ? count(request()->input('permissionIds')) : 1)) {
         throw new PermissionNotFoundException();
       }
 
@@ -692,7 +692,7 @@ class UserController extends Controller
       $user = $this->userService->findById($id);
       $permissions = $this->permissionService->find('id', request()->input('permissionIds'));
 
-      if ($permissions->count() != count(request()->input('permissionIds'))) {
+      if ($permissions->count() != (is_array($permissions) ? count(request()->input('permissionIds')) : 1)) {
         throw new PermissionNotFoundException();
       }
 

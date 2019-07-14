@@ -2,6 +2,7 @@
 
 namespace Domain\OAuth;
 
+use Domain\User\User;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
@@ -24,6 +25,17 @@ class OAuthServiceProvider extends ServiceProvider
    */
   public function boot()
   {
+    Gate::before(function (User $user, $ability) {
+      $module = explode('.', $ability)[0];
+
+      if (
+        ($module === 'client' && $user->laratrustCan('client.*'))
+        || ($module === 'personal-access-token' && $user->laratrustCan())
+      ) {
+        return true;
+      }
+    });
+
     Gate::define('personal-access-token.for', 'Domain\OAuth\Policies\TokenPolicy@for');
     Gate::define('personal-access-token.create', 'Domain\OAuth\Policies\TokenPolicy@create');
     Gate::define('personal-access-token.delete', 'Domain\OAuth\Policies\TokenPolicy@delete');

@@ -93,10 +93,10 @@ interface RoleRepository extends AppRepository
    * Add multiple permissions to the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  function addPermissions(Role $role, array $permissions = []);
+  function addPermissions(Role $role, $permissions = []);
 
   /**
    * Remove a permission from the specified role.
@@ -111,19 +111,19 @@ interface RoleRepository extends AppRepository
    * Remove multiple permissions from the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  function removePermissions(Role $role, array $permissions = []);
+  function removePermissions(Role $role, $permissions = []);
 
   /**
    * Set all of the permissions of the specified role.
    *
    * @param \Domain\Role\Role $role
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Domain\Role\Role
    */
-  function setPermissions(Role $role, array $permissions = []);
+  function setPermissions(Role $role, $permissions = []);
 
   /**
    * Retrieve all of the permissions for the specified role.
@@ -144,8 +144,8 @@ interface RoleRepository extends AppRepository
   /**
    * Retrieve all of the roles that have access to any of the specified permissions.
    *
-   * @param array $permissions
+   * @param \Illuminate\Support\Collection|array $permissions
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  function getRolesWithPermissions(array $permissions = []);
+  function getRolesWithPermissions($permissions = []);
 }
