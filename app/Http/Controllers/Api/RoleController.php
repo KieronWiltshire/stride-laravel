@@ -13,6 +13,7 @@ use Domain\Role\RoleService;
 use Domain\Role\Transformers\RoleTransformer;
 use Domain\User\Exceptions\UserNotFoundException;
 use Infrastructure\Exceptions\Http\BadRequestError;
+use Infrastructure\Serializers\Fractal\OptionalDataKeySerializer;
 
 class RoleController extends Controller
 {
@@ -37,6 +38,11 @@ class RoleController extends Controller
   protected $permissionTransformer;
 
   /**
+   * @var \Infrastructure\Serializers\Fractal\OptionalDataKeySerializer
+   */
+  protected $noDataKeySerializer;
+
+  /**
    * Create a new role controller instance
    *
    * @param \Domain\Role\RoleService $roleService
@@ -54,6 +60,7 @@ class RoleController extends Controller
     $this->roleTransformer = $roleTransformer;
     $this->permissionService = $permissionService;
     $this->permissionTransformer = $permissionTransformer;
+    $this->noDataKeySerializer = new OptionalDataKeySerializer(false);
   }
 
   /**
@@ -221,7 +228,7 @@ class RoleController extends Controller
 
       return response([
         'message' => __('role.permission.assigned'),
-        'data' => fractal($role, $this->roleTransformer)->parseIncludes(['permissions'])
+        'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -268,7 +275,7 @@ class RoleController extends Controller
 
       return response([
         'message' => __('role.permission.assigned'),
-        'data' => fractal($role, $this->roleTransformer)->parseIncludes(['permissions'])
+        'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -308,7 +315,7 @@ class RoleController extends Controller
 
       return response([
         'message' => __('role.permission.denied'),
-        'data' => fractal($role, $this->roleTransformer)->parseIncludes(['permissions'])
+        'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -355,7 +362,7 @@ class RoleController extends Controller
 
       return response([
         'message' => __('role.permission.denied'),
-        'data' => fractal($role, $this->roleTransformer)->parseIncludes(['permissions'])
+        'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([

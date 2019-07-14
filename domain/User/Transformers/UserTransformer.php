@@ -11,6 +11,16 @@ use League\Fractal\TransformerAbstract;
 class UserTransformer extends TransformerAbstract
 {
   /**
+   * List of resources possible to include
+   *
+   * @var array
+   */
+  protected $availableIncludes = [
+    'roles',
+    'permissions'
+  ];
+
+  /**
    * @var \Domain\Role\Transformers\RoleTransformer
    */
   protected $roleTransformer;
@@ -35,16 +45,6 @@ class UserTransformer extends TransformerAbstract
   }
 
   /**
-   * List of resources possible to include
-   *
-   * @var array
-   */
-  protected $availableIncludes = [
-    'roles',
-    'permissions'
-  ];
-
-  /**
    * A Fractal transformer.
    *
    * @return array
@@ -65,7 +65,7 @@ class UserTransformer extends TransformerAbstract
   /**
    * Include Roles.
    *
-   * @return \League\Fractal\Resource\Item
+   * @return \League\Fractal\Resource\Collection
    */
   public function includeRoles(User $user)
   {
@@ -75,7 +75,7 @@ class UserTransformer extends TransformerAbstract
   /**
    * Include Permissions.
    *
-   * @return \League\Fractal\Resource\Item
+   * @return \League\Fractal\Resource\Collection
    */
   public function includePermissions(User $user)
   {
