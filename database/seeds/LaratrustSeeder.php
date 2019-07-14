@@ -55,7 +55,12 @@ class LaratrustSeeder extends Seeder
     $userPermission = config('laratrust_seeder.user_structure');
     $mapPermission = collect(config('laratrust_seeder.permissions_map'));
 
+    $appName = explode('.', strtolower(config('app.name', 'app')));
+    $appAddress = $appName[0] . '.' . (isset($appName[1]) ? $appName[1] : 'com');
+
     foreach ($config as $key => $modules) {
+
+      $permissions = [];
 
       // Create a new role
       $role = $this->roleService->firstOrCreate('name', $key, false, [
@@ -63,7 +68,6 @@ class LaratrustSeeder extends Seeder
         'display_name' => ucwords(str_replace('_', ' ', $key)),
         'description' => ucwords(str_replace('_', ' ', $key))
       ]);
-      $permissions = [];
 
       $this->command->info('Creating Role ' . strtoupper($key));
 
@@ -78,8 +82,8 @@ class LaratrustSeeder extends Seeder
 
           $permissions[] = $this->permissionService->firstOrCreate('name', $permissionName, false, [
             'name' => $permissionName,
-            'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-            'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+            'display_name' => ($permissionValue === '*') ? ('All ' . $module) : strtolower($permissionName),
+            'description' => strtolower($permissionName),
           ])->id;
 
           $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
@@ -91,7 +95,7 @@ class LaratrustSeeder extends Seeder
 
       $this->command->info("Creating '{$key}' user");
 
-      $userEmail = $key . '@' . strtolower(config('app.name', 'app')) . '.com';
+      $userEmail = $key . '@' . $appAddress;
 
       // Create default user for each role
       $user = $this->userService->firstOrCreate('email', $userEmail, false, [
@@ -99,7 +103,7 @@ class LaratrustSeeder extends Seeder
         'password' => 'password'
       ]);
 
-      $this->userService->addRole($user, $role);
+      $this->userService->setRoles($user, [$role]);
     }
 
     // Creating user with permissions
@@ -107,16 +111,17 @@ class LaratrustSeeder extends Seeder
 
       foreach ($userPermission as $key => $modules) {
 
+        $permissions = [];
+
+        $userEmail = $key . '@' . $appAddress;
+
+        // Create default user for each permission set
+        $user = $this->userService->firstOrCreate('email', $userEmail, false, [
+          'email' => $userEmail,
+          'password' => 'password',
+        ]);
+
         foreach ($modules as $module => $value) {
-
-          $userEmail = $key . '@' . strtolower(config('app.name', 'app')) . '.com';
-
-          // Create default user for each permission set
-          $user = $this->userService->firstOrCreate('email', $userEmail, false, [
-            'email' => $userEmail,
-            'password' => 'password',
-          ]);
-          $permissions = [];
 
           foreach (explode(',', $value) as $p => $perm) {
 
@@ -126,8 +131,8 @@ class LaratrustSeeder extends Seeder
 
             $permissions[] = $this->permissionService->firstOrCreate('name', $permissionName, false, [
               'name' => $permissionName,
-              'display_name' => ucfirst($permissionValue) . ' ' . ucfirst($module),
-              'description' => ucfirst($permissionValue) . ' ' . ucfirst($module),
+              'display_name' => ($permissionValue === '*') ? ('All ' . $module . ' permissions') : strtolower($permissionName),
+              'description' => strtolower($permissionName),
             ])->id;
 
             $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
@@ -135,7 +140,7 @@ class LaratrustSeeder extends Seeder
         }
 
         // Attach all permissions to the user
-        $this->userService->setPermissions($permissions);
+        $this->userService->setPermissions($user, $permissions);
       }
     }
   }
