@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
-use App\Repositories\Token\TokenRepository;
+use Domain\OAuth\TokenRepository;
 
 class AuthorizedAccessTokenController
 {
   /**
    * The token repository implementation.
    *
-   * @var \App\Repositories\Token\TokenRepository
+   * @var \Domain\OAuth\TokenRepository
    */
   protected $tokenRepository;
 
   /**
    * Create a new controller instance.
    *
-   * @param  \App\Repositories\Token\TokenRepository  $tokenRepository
+   * @param \Domain\OAuth\TokenRepository $tokenRepository
    */
-  public function __construct(TokenRepository $tokenRepository)
-  {
+  public function __construct(
+    TokenRepository $tokenRepository
+  ) {
     $this->tokenRepository = $tokenRepository;
   }
 
@@ -46,7 +47,7 @@ class AuthorizedAccessTokenController
    * @param  string  $tokenId
    * @return \Illuminate\Http\Response
    *
-   * @throws \App\Exceptions\OAuth\TokenNotFoundException
+   * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
    */
   public function destroy($tokenId)
   {

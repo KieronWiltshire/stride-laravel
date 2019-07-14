@@ -209,13 +209,14 @@ class RoleController extends Controller
    * Add the specified permission to the specified role.
    *
    * @param $id
+   * @param $permissionId
    * @return \Illuminate\Http\JsonResponse
    */
-  public function assignPermission($id)
+  public function assignPermission($id, $permissionId)
   {
     try {
       $role = $this->roleService->findById($id);
-      $permission = $this->permissionService->findById(request()->input('permissionId'));
+      $permission = $this->permissionService->findById($permissionId);
 
       $this->authorize('role.assign-permission', $role);
       $this->authorize('permission.assign', $permission);
@@ -296,13 +297,14 @@ class RoleController extends Controller
    * Remove the specified permission from the specified role.
    *
    * @param $id
+   * @param $permissionId
    * @return \Illuminate\Http\JsonResponse
    */
-  public function denyPermission($id)
+  public function denyPermission($id, $permissionId)
   {
     try {
       $role = $this->roleService->findById($id);
-      $permission = $this->permissionService->findById(request()->input('permissionId'));
+      $permission = $this->permissionService->findById($permissionId);
 
       $this->authorize('role.deny-permission', $role);
       $this->authorize('permission.deny', $permission);

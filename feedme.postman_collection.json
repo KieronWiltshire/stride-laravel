@@ -307,6 +307,258 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Assign role",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/user/1/assign-role/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"assign-role",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deny role",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/user/1/deny-role/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"deny-role",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign roles",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "roleIds",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "roleIds",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/user/1/assign-roles",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"assign-roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deny roles",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "roleIds",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "roleIds",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/user/1/deny-roles",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"deny-roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign permission",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/user/1/assign-permission/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"assign-permission",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deny permission",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/user/1/deny-permission/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"deny-permission",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign permissions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "permissionIds",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "permissionIds",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/user/1/assign-permissions",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"assign-permissions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deny permissions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "permissionIds",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "permissionIds",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/user/1/deny-permissions",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"user",
+										"1",
+										"deny-permissions"
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"_postman_isSubFolder": true
@@ -508,6 +760,132 @@
 										"api",
 										"role",
 										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign permission",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/role/1/assign-permission/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"1",
+										"assign-permission",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deny permission",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/api/role/1/deny-permission/1",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"1",
+										"deny-permission",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Assign permissions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "permissionIds",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "permissionIds",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/role/1/assign-permissions",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"1",
+										"assign-permissions"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Deny permissions",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "permissionIds",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "permissionIds",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{url}}/api/role/1/deny-permissions",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"api",
+										"role",
+										"1",
+										"deny-permissions"
 									]
 								}
 							},

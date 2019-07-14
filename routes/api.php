@@ -48,6 +48,7 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::name('personal-access-tokens.')->middleware('auth')->group(function() {
       Route::get('/user/me/personal-access-tokens', 'PersonalAccessTokenController@forAuthenticatedUser')->name('get');
       Route::get('/user/{id}/personal-access-tokens', 'PersonalAccessTokenController@forUser')->where('id', '[0-9]+')->name('get');
+
       Route::post('/personal-access-tokens', 'PersonalAccessTokenController@store')->name('store');
       Route::delete('/personal-access-tokens/{token_id}', 'PersonalAccessTokenController@destroy')->name('destroy');
     });
@@ -58,6 +59,7 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::name('clients.')->middleware('auth')->group(function() {
       Route::get('/user/me/clients', 'ClientController@forAuthenticatedUser')->name('get');
       Route::get('/user/{id}/clients', 'ClientController@forUser')->where('id', '[0-9]+')->name('get');
+
       Route::post('/clients', 'ClientController@store')->name('store');
       Route::put('/clients/{id}', 'ClientController@update')->name('update');
       Route::delete('/clients/{id}', 'ClientController@destroy')->name('destroy');
@@ -93,6 +95,16 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::post('/{email}/resend', 'UserController@resendEmailVerificationToken')->name('resend_email_verification_token');
     Route::post('/{email}/forgot', 'UserController@forgotPassword')->name('forgot_password');
     Route::post('/{email}/reset', 'UserController@resetPassword')->name('reset_password');
+
+    Route::post('/{id}/assign-role/{roleId}', 'UserController@assignRole')->name('assign-role')->where('id', '[0-9]+')->where('roleId', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/assign-roles', 'UserController@assignRoles')->name('assign-roles')->where('id', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/deny-role/{roleId}', 'UserController@denyRole')->name('deny-role')->where('id', '[0-9]+')->where('roleId', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/deny-roles', 'UserController@denyRoles')->name('deny-roles')->where('id', '[0-9]+')->middleware('auth');
+
+    Route::post('/{id}/assign-permission/{permissionId}', 'UserController@assignPermission')->name('assign-permission')->where('id', '[0-9]+')->where('permissionId', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/assign-permissions', 'UserController@assignPermissions')->name('assign-permissions')->where('id', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/deny-permission/{permissionId}', 'UserController@denyPermission')->name('deny-permission')->where('id', '[0-9]+')->where('permissionId', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/deny-permissions', 'UserController@denyPermissions')->name('deny-permissions')->where('id', '[0-9]+')->middleware('auth');
   });
 
   /**
@@ -105,6 +117,11 @@ Route::namespace('Api')->name('api.')->group(function () {
     Route::get('/{id}', 'RoleController@getById')->name('get')->where('id', '[0-9]+');
     Route::put('/{id}', 'RoleController@update')->name('update')->where('id', '[0-9]+')->middleware('auth');
     Route::get('/{name}', 'RoleController@getByName')->name('get');
+
+    Route::post('/{id}/assign-permission/{permissionId}', 'RoleController@assignPermission')->name('assign-permission')->where('id', '[0-9]+')->where('permissionId', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/assign-permissions', 'RoleController@assignPermissions')->name('assign-permissions')->where('id', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/deny-permission/{permissionId}', 'RoleController@denyPermission')->name('deny-permission')->where('id', '[0-9]+')->where('permissionId', '[0-9]+')->middleware('auth');
+    Route::post('/{id}/deny-permissions', 'RoleController@denyPermissions')->name('deny-permissions')->where('id', '[0-9]+')->middleware('auth');
   });
 
   /**

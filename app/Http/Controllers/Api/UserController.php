@@ -379,13 +379,14 @@ class UserController extends Controller
    * Add the specified role to the specified user.
    *
    * @param $id
+   * @param $roleId
    * @return \Illuminate\Http\JsonResponse
    */
-  public function assignRole($id)
+  public function assignRole($id, $roleId)
   {
     try {
       $user = $this->userService->findById($id);
-      $role = $this->roleService->findById(request()->input('roleId'));
+      $role = $this->roleService->findById($roleId);
 
       $this->authorize('user.assign-role', $user);
       $this->authorize('role.assign', $role);
@@ -466,13 +467,14 @@ class UserController extends Controller
    * Remove the specified role from the specified user.
    *
    * @param $id
+   * @param $roleId
    * @return \Illuminate\Http\JsonResponse
    */
-  public function denyRole($id)
+  public function denyRole($id, $roleId)
   {
     try {
       $user = $this->userService->findById($id);
-      $role = $this->roleService->findById(request()->input('roleId'));
+      $role = $this->roleService->findById($roleId);
 
       $this->authorize('user.deny-role', $user);
       $this->authorize('role.deny', $role);
@@ -553,13 +555,14 @@ class UserController extends Controller
    * Add the specified permission to the specified user.
    *
    * @param $id
+   * @param $permissionId
    * @return \Illuminate\Http\JsonResponse
    */
-  public function assignPermission($id)
+  public function assignPermission($id, $permissionId)
   {
     try {
       $user = $this->userService->findById($id);
-      $permission = $this->permissionService->findById(request()->input('permissionId'));
+      $permission = $this->permissionService->findById($permissionId);
 
       $this->authorize('user.assign-permission', $user);
       $this->authorize('permission.assign', $permission);
@@ -640,13 +643,14 @@ class UserController extends Controller
    * Remove the specified permission from the specified user.
    *
    * @param $id
+   * @param $permissionId
    * @return \Illuminate\Http\JsonResponse
    */
-  public function denyPermission($id)
+  public function denyPermission($id, $permissionId)
   {
     try {
       $user = $this->userService->findById($id);
-      $permission = $this->permissionService->findById(request()->input('permissionId'));
+      $permission = $this->permissionService->findById($permissionId);
 
       $this->authorize('user.deny-permission', $user);
       $this->authorize('permission.deny', $permission);
