@@ -18,6 +18,7 @@ use Domain\User\Exceptions\InvalidPasswordResetTokenException;
 use Domain\User\Exceptions\PasswordResetTokenExpiredException;
 use Domain\User\Exceptions\UserNotFoundException;
 use Domain\User\Transformers\UserTransformer;
+use Domain\User\User;
 use Domain\User\UserService;
 use Infrastructure\Exceptions\Http\BadRequestError;
 use Infrastructure\Serializers\Fractal\OptionalDataKeySerializer;
@@ -97,7 +98,7 @@ class UserController extends Controller
   {
     $users = $this->userService->index(request()->query('limit'), request()->query('offset'))->setPath(route('api.user.index'));
 
-    return fractal($users, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
+    return fractal($this->includeDefaultRole($users), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
   }
 
   /**
@@ -129,7 +130,9 @@ class UserController extends Controller
   public function getById($id)
   {
     try {
-      return fractal($this->userService->findById($id), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
+      $user = $this->userService->findById($id);
+
+      return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -150,7 +153,9 @@ class UserController extends Controller
   public function getByEmail($email)
   {
     try {
-      return fractal($this->userService->findByEmail($email), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
+      $user = $this->userService->findByEmail($email);
+
+      return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -190,7 +195,7 @@ class UserController extends Controller
       request()->query('offset')
     )->setPath(route('api.user.search'));
 
-    return fractal($users, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
+    return fractal($this->includeDefaultRole($users), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
   }
 
   /**
@@ -212,7 +217,7 @@ class UserController extends Controller
         'password' => request()->input('password')
       ]);
 
-      return fractal($user, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
+      return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'id' => [
@@ -240,7 +245,8 @@ class UserController extends Controller
       $this->userService->requestEmailChange($user, request()->input('email'));
 
       return response()->json([
-        'message' => __('email.email_verification_sent')
+        'message' => __('email.email_verification_sent'),
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
       ], 202);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
@@ -267,7 +273,7 @@ class UserController extends Controller
       $user = $this->userService->findByEmail($email);
       $user = $this->userService->verifyEmail($user, request()->query('email_verification_token'));
 
-      return fractal($user, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
+      return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
         'email' => [
@@ -293,7 +299,8 @@ class UserController extends Controller
       $this->userService->sendEmailVerificationToken($user);
 
       return response()->json([
-        'message' => __('email.email_verification_resent')
+        'message' => __('email.email_verification_resent'),
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
       ], 202);
     } catch (InvalidEmailVerificationTokenException $e) {
       throw $e->setContext([
@@ -325,7 +332,8 @@ class UserController extends Controller
       $this->userService->forgotPassword($user);
 
       return response([
-        'message' => __('passwords.sent')
+        'message' => __('passwords.sent'),
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
       ], 202);
     } catch (UserNotFoundException $e) {
       throw $e->setContext([
@@ -353,7 +361,7 @@ class UserController extends Controller
       $user = $this->userService->findByEmail($email);
       $user = $this->userService->resetPassword($user, request()->input('password'), request()->query('password_reset_token'));
 
-      return fractal($user, $this->userTransformer)->parseIncludes(['roles', 'permissions']);
+      return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     } catch (InvalidPasswordResetTokenException $e) {
       throw $e->setContext([
         'password_reset_token' => [
@@ -399,7 +407,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.role.assigned'),
-        'data' => fractal($user, $this->userTransformer)->parseIncludes(['roles', 'permissions'])
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
@@ -446,7 +454,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.role.assigned'),
-        'data' => fractal($user, $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions']),
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions']),
       ], 200);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
@@ -487,7 +495,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.role.denied'),
-        'data' => fractal($user, $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
@@ -534,7 +542,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.role.assigned'),
-        'data' => fractal($user, $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (RoleNotFoundException $e) {
       throw $e->setContext([
@@ -575,7 +583,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.permission.assigned'),
-        'data' => fractal($user, $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -622,7 +630,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.permission.assigned'),
-        'data' => fractal($user, $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -663,7 +671,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.permission.denied'),
-        'data' => fractal($user, $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -710,7 +718,7 @@ class UserController extends Controller
 
       return response([
         'message' => __('user.permission.denied'),
-        'data' => fractal($user, $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
       ], 200);
     } catch (PermissionNotFoundException $e) {
       throw $e->setContext([
@@ -724,6 +732,31 @@ class UserController extends Controller
           __('user.id.not_found')
         ]
       ]);
+    }
+  }
+
+  /**
+   * Include the default role with the user response
+   * if the specified user has no roles.
+   *
+   * @param \Domain\User\User $user
+   * @return \Domain\User\User
+   */
+  protected function includeDefaultRole(&$user) {
+    $defaultRole = $this->roleService->getDefaultRole();
+
+    if (is_iterable($user)) {
+      foreach ($user as $u) {
+        $this->includeDefaultRole($u);
+      }
+
+      return $user;
+    } else {
+      if ($defaultRole) {
+        if ($this->roleService->getRolesFromUser($user)->count() <= 0) {
+          $user->roles->add($this->roleService->getDefaultRole()); // TODO: outsource to service
+        }
+      }
     }
   }
 }

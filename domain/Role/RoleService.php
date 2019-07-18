@@ -104,6 +104,17 @@ class RoleService
   }
 
   /**
+   * Retrieve the default user role.
+   *
+   * @return \Domain\Role\Role
+   */
+  public function getDefaultRole()
+  {
+    // TODO:
+    return $this->findById(2);
+  }
+
+  /**
    * Update a role.
    *
    * @param \Domain\Role\Role $role

@@ -4,6 +4,7 @@ namespace Domain\User;
 
 use Domain\Permission\Permission;
 use Domain\Role\Role;
+use Domain\Role\RoleService;
 use Domain\User\Events\EmailVerificationTokenGeneratedEvent;
 use Domain\User\Contracts\Repositories\UserRepository;
 use Domain\User\Events\PasswordResetTokenGeneratedEvent;
