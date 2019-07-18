@@ -151,7 +151,7 @@ abstract class AppError extends Exception
       'meta' => [
         'request' => [
           'id' => $this->getId(),
-          'status' => $this->getHttpStatus(),
+          'status' => $this->getHttpStatus()
         ],
         'version' => $this->getVersion()
       ],
