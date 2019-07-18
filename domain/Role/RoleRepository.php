@@ -8,6 +8,7 @@ use Domain\Role\Events\RoleCreatedEvent;
 use Domain\Role\Events\RoleUpdatedEvent;
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\User\User;
+use Illuminate\Support\Collection;
 use Infrastructure\Repositories\AppRepository;
 use Domain\Role\Validators\RoleCreateValidator;
 use Domain\Role\Validators\RoleUpdateValidator;
@@ -188,13 +189,14 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function addRoleToUser(User $user, Role $role)
+  public function addRoleToUser(User $user, Role $role, $persist = true)
   {
     return $this->addRolesToUser($user, [
       $role
-    ]);
+    ], $persist);
   }
 
   /**
@@ -202,11 +204,21 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function addRolesToUser(User $user, $roles = [])
+  public function addRolesToUser(User $user, $roles = [], $persist = true)
   {
-    return $user->attachRoles($roles);
+    if ($persist) {
+      return $user->attachRoles($roles);
+    } else {
+      foreach ($roles as $role) {
+        if (!$user->hasRole($role)) {
+          $user->roles->push($role);
+        }
+      }
+      return $user;
+    }
   }
 
   /**
@@ -214,13 +226,14 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function removeRoleFromUser(User $user, Role $role)
+  public function removeRoleFromUser(User $user, Role $role, $persist = true)
   {
     return $this->removeRolesFromUser($user, [
       $role
-    ]);
+    ], $persist);
   }
 
   /**
@@ -228,11 +241,16 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function removeRolesFromUser(User $user, $roles = [])
+  public function removeRolesFromUser(User $user, $roles = [], $persist = true)
   {
-    return $user->detachRoles($roles);
+    if ($persist) {
+      return $user->detachRoles($roles);
+    } else {
+      return $user->setRelation('roles', $user->roles->whereNotIn('id', (($roles instanceof Collection) ? $roles : collect($roles))->only('id')));
+    }
   }
 
   /**
@@ -240,11 +258,16 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function setUserRoles(User $user, $roles = [])
+  public function setUserRoles(User $user, $roles = [], $persist = true)
   {
-    return $user->syncRoles($roles);
+    if ($persist) {
+      return $user->syncRoles($roles);
+    } else {
+      return $user->setRelation('roles', ($roles instanceof Collection) ? $roles : collect($roles));
+    }
   }
 
   /**

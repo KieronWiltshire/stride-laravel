@@ -87,45 +87,50 @@ interface RoleRepository extends AppRepository
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  function addRoleToUser(User $user, Role $role);
+  function addRoleToUser(User $user, Role $role, $persist = true);
 
   /**
    * Add roles to the user.
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  function addRolesToUser(User $user, $roles = []);
+  function addRolesToUser(User $user, $roles = [], $persist = true);
 
   /**
    * Remove a role from the user.
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  function removeRoleFromUser(User $user, Role $role);
+  function removeRoleFromUser(User $user, Role $role, $persist = true);
 
   /**
    * Remove roles from the user.
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  function removeRolesFromUser(User $user, $roles = []);
+  function removeRolesFromUser(User $user, $roles = [], $persist = true);
 
   /**
    * Set all of the roles of the specified user.
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  function setUserRoles(User $user, $roles = []);
+  function setUserRoles(User $user, $roles = [], $persist = true);
 
   /**
    * Retrieve all of the roles for the specified user.

@@ -754,7 +754,7 @@ class UserController extends Controller
     } else {
       if ($defaultRole) {
         if ($this->roleService->getRolesFromUser($user)->count() <= 0) {
-          $user->roles->add($this->roleService->getDefaultRole()); // TODO: outsource to service
+          $this->roleService->addRoleToUser($user, $this->roleService->getDefaultRole(), false);
         }
       }
     }

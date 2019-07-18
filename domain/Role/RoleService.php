@@ -110,8 +110,7 @@ class RoleService
    */
   public function getDefaultRole()
   {
-    // TODO:
-    return $this->findById(2);
+    // TODO: need to implement default roles
   }
 
   /**
@@ -160,11 +159,12 @@ class RoleService
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function addRoleToUser(User $user, Role $role)
+  public function addRoleToUser(User $user, Role $role, $persist = true)
   {
-    return $this->roleRepository->addRoleToUser($user, $role);
+    return $this->roleRepository->addRoleToUser($user, $role, $persist);
   }
 
   /**
@@ -172,11 +172,12 @@ class RoleService
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function addRolesToUser(User $user, $roles = [])
+  public function addRolesToUser(User $user, $roles = [], $persist = true)
   {
-    return $this->roleRepository->addRolesToUser($user, $roles);
+    return $this->roleRepository->addRolesToUser($user, $roles, $persist);
   }
 
   /**
@@ -184,11 +185,12 @@ class RoleService
    *
    * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function removeRoleFromUser(User $user, Role $role)
+  public function removeRoleFromUser(User $user, Role $role, $persist = true)
   {
-    return $this->roleRepository->removeRolesFromUser($user, $role);
+    return $this->roleRepository->removeRolesFromUser($user, $role, $persist);
   }
 
   /**
@@ -196,11 +198,12 @@ class RoleService
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function removeRolesFromUser(User $user, $roles = [])
+  public function removeRolesFromUser(User $user, $roles = [], $persist = true)
   {
-    return $this->roleRepository->removeRolesFromUser($user, $roles);
+    return $this->roleRepository->removeRolesFromUser($user, $roles, $persist);
   }
 
   /**
@@ -208,11 +211,12 @@ class RoleService
    *
    * @param \Domain\User\User $user
    * @param \Illuminate\Support\Collection|array $roles
+   * @param boolean $persist
    * @return \Domain\User\User
    */
-  public function setUserRoles(User $user, $roles = [])
+  public function setUserRoles(User $user, $roles = [], $persist = true)
   {
-    return $this->roleRepository->setUserRoles($user, $roles);
+    return $this->roleRepository->setUserRoles($user, $roles, $persist);
   }
 
   /**
