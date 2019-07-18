@@ -2,8 +2,8 @@
 
 namespace Domain\Role;
 
-use Domain\Permission\Permission;
 use Domain\Role\Contracts\Repositories\RoleRepository;
+use Domain\User\User;
 use Illuminate\Support\Collection;
 
 class RoleService
@@ -29,7 +29,7 @@ class RoleService
    *
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  function all()
+  public function all()
   {
     return $this->roleRepository->with(['permissions'])->all();
   }
@@ -42,7 +42,7 @@ class RoleService
    *
    * @throws \Domain\Role\Exceptions\CannotCreateRoleException
    */
-  function create($attributes)
+  public function create($attributes)
   {
     return $this->roleRepository->create($attributes);
   }
@@ -59,7 +59,7 @@ class RoleService
    *
    * @throws \Domain\Role\Exceptions\CannotCreateRoleException
    */
-  function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
+  public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
     return $this->roleRepository->with(['permissions'])->firstOrCreate($parameter, $search, $regex, $attributes);
   }
@@ -72,7 +72,7 @@ class RoleService
    * @param boolean $regex
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  function find($parameter, $search, $regex = true)
+  public function find($parameter, $search, $regex = true)
   {
     return $this->roleRepository->with(['permissions'])->find($parameter, $search, $regex);
   }
@@ -85,7 +85,7 @@ class RoleService
    *
    * @throws \Domain\Role\Exceptions\RoleNotFoundException
    */
-  function findById($id)
+  public function findById($id)
   {
     return $this->roleRepository->with(['permissions'])->findById($id);
   }
@@ -98,7 +98,7 @@ class RoleService
    *
    * @throws \Domain\Role\Exceptions\RoleNotFoundException
    */
-  function findByName($name)
+  public function findByName($name)
   {
     return $this->roleRepository->with(['permissions'])->findByName($name);
   }
@@ -112,7 +112,7 @@ class RoleService
    *
    * @throws \Domain\Role\Exceptions\CannotUpdateRoleException
    */
-  function update(Role $role, $attributes)
+  public function update(Role $role, $attributes)
   {
     return $this->update($role, $attributes);
   }
@@ -124,7 +124,7 @@ class RoleService
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
    */
-  function index($limit = null, $offset = 1)
+  public function index($limit = null, $offset = 1)
   {
     return $this->roleRepository->with(['permissions'])->paginate($limit, $offset)->all();
   }
@@ -139,130 +139,130 @@ class RoleService
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
    */
-  function search($parameter, $search, $regex = true, $limit = null, $offset = 1)
+  public function search($parameter, $search, $regex = true, $limit = null, $offset = 1)
   {
     return $this->roleRepository->with(['permissions'])->paginate($limit, $offset)->find($parameter, $search, $regex);
   }
 
   /**
-   * Add a permission to the specified role.
+   * Add a role to the user.
    *
+   * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
-   * @param \Domain\Permission\Permission $permission
-   * @return \Domain\Role\Role
+   * @return \Domain\User\User
    */
-  public function addPermission(Role $role, Permission $permission)
+  public function addRoleToUser(User $user, Role $role)
   {
-    return $this->roleRepository->addPermission($role, $permission);
+    return $this->roleRepository->addRoleToUser($user, $role);
   }
 
   /**
-   * Add multiple permissions to the specified role.
+   * Add roles to the user.
    *
-   * @param \Domain\Role\Role $role
-   * @param \Illuminate\Support\Collection|array $permissions
-   * @return \Domain\Role\Role
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $roles
+   * @return \Domain\User\User
    */
-  public function addPermissions(Role $role, $permissions = [])
+  public function addRolesToUser(User $user, $roles = [])
   {
-    return $this->roleRepository->addPermissions($role, $permissions);
+    return $this->roleRepository->addRolesToUser($user, $roles);
   }
 
   /**
-   * Remove a permission from the specified role.
+   * Remove a role from the user.
    *
+   * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
-   * @param \Domain\Permission\Permission $permission
-   * @return \Domain\Role\Role
+   * @return \Domain\User\User
    */
-  public function removePermission(Role $role, Permission $permission)
+  public function removeRoleFromUser(User $user, Role $role)
   {
-    return $this->roleRepository->removePermission($role, $permission);
+    return $this->roleRepository->removeRolesFromUser($user, $role);
   }
 
   /**
-   * Remove multiple permissions from the specified role.
+   * Remove roles from the user.
    *
-   * @param \Domain\Role\Role $role
-   * @param \Illuminate\Support\Collection|array $permissions
-   * @return \Domain\Role\Role
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $roles
+   * @return \Domain\User\User
    */
-  public function removePermissions(Role $role, $permissions = [])
+  public function removeRolesFromUser(User $user, $roles = [])
   {
-    return $this->roleRepository->removePermissions($role, $permissions);
+    return $this->roleRepository->removeRolesFromUser($user, $roles);
   }
 
   /**
-   * Set all of the permissions of the specified role.
+   * Set all of the roles of the specified user.
    *
-   * @param \Domain\Role\Role $role
-   * @param \Illuminate\Support\Collection|array $permissions
-   * @return \Domain\Role\Role
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $roles
+   * @return \Domain\User\User
    */
-  public function setPermissions(Role $role, $permissions = [])
+  public function setUserRoles(User $user, $roles = [])
   {
-    return $this->roleRepository->setPermissions($role, $permissions);
+    return $this->roleRepository->setUserRoles($user, $roles);
   }
 
   /**
-   * Retrieve all of the permissions for the specified role.
+   * Retrieve all of the roles for the specified user.
    *
-   * @param \Domain\Role\Role $role
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+   * @param \Domain\User\User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  function getPermissions(Role $role)
+  public function getRolesFromUser(User $user)
   {
-    return $this->roleRepository->getPermissions($role);
+    return $this->roleRepository->getRolesFromUser($user);
   }
 
   /**
-   * Determine if the given role has the specified permission assigned.
+   * Determine if the given user has the specified role assigned.
    *
+   * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
-   * @param \Domain\Permission\Permission $permission
    * @return bool
    */
-  function hasPermission(Role $role, Permission $permission)
+  public function userHasRole(User $user, Role $role)
   {
-    return ($this->getPermissions($role)->where('id', $permission->id)->count() > 0);
+    return ($this->getRoles($user)->where('id', $role->id)->count() > 0);
   }
 
   /**
-   * Determine if the given role has the specified permissions assigned.
+   * Determine if the given user has the specified roles assigned.
    *
-   * @param \Domain\Role\Role $role
-   * @param \Illuminate\Support\Collection|array $permissions
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $roles
    * @return bool
    */
-  function hasPermissions(Role $role, $permissions)
+  public function userHasRoles(User $user, $roles)
   {
-    $permissionIds = ($permissions instanceof Collection ? $permissions : collect($permissions))
+    $roleIds = ($roles instanceof Collection ? $roles : collect($roles))
       ->map->only(['id'])
       ->flatten()
       ->all();
 
-    return ($this->getPermissions($role)->whereIn('id', $permissionIds)->count() > 0);
+    return ($this->getRoles($user)->whereIn('id', $roleIds)->count() > 0);
   }
 
   /**
-   * Retrieve all of the roles that have access to the specified permission.
+   * Retrieve all of the users that are associated with the specified role.
    *
-   * @param \Domain\Permission\Permission $permission
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+   * @param \Domain\Role\Role $role
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  function getRolesWithPermission(Permission $permission)
+  public function getUsersWithRole(Role $role)
   {
-    return $this->roleRepository->getRolesWithPermission($permission);
+    return $this->roleRepository->getUsersWithRole($role);
   }
 
   /**
-   * Retrieve all of the roles that have access to any of the specified permissions.
+   * Retrieve all of the users that are associated with any of the specified roles.
    *
-   * @param \Illuminate\Support\Collection|array $permissions
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+   * @param \Illuminate\Support\Collection|array $roles
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  function getRolesWithPermissions($permissions = [])
+  public function getUsersWithRoles($roles = [])
   {
-    return $this->roleRepository->getRolesWithPermissions($permissions);
+    return $this->roleRepository->getUsersWithRoles($roles);
   }
 }

@@ -6,6 +6,8 @@ use Domain\Permission\Contracts\Repositories\PermissionRepository as PermissionR
 use Domain\Permission\Events\PermissionCreatedEvent;
 use Domain\Permission\Events\PermissionUpdatedEvent;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
+use Domain\Role\Role;
+use Domain\User\User;
 use Infrastructure\Repositories\AppRepository;
 use Domain\Permission\Validators\PermissionCreateValidator;
 use Domain\Permission\Validators\PermissionUpdateValidator;
@@ -147,7 +149,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
    *
    * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
    */
-  function findByName($name)
+  public function findByName($name)
   {
     $role = $this->execute(Permission::where('name', $name), true);
 
@@ -178,5 +180,219 @@ class PermissionRepository extends AppRepository implements PermissionRepository
 
       return $permission;
     }
+  }
+
+  /**
+   * Add a permission to the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param \Domain\Permission\Permission $permission
+   * @return \Domain\Role\Role
+   */
+  public function addPermissionToRole(Role $role, Permission $permission)
+  {
+    return $this->addPermissionsToRole($role, [
+      $permission
+    ]);
+  }
+
+  /**
+   * Add a permission to the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Permission\Permission $permission
+   * @return \Domain\User\User
+   */
+  public function addPermissionToUser(User $user, Permission $permission)
+  {
+    return $this->addPermissionsToUser($user, [
+      $permission
+    ]);
+  }
+
+  /**
+   * Add multiple permissions to the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param \Illuminate\Support\Collection|array $permissions
+   * @return \Domain\Role\Role
+   */
+  public function addPermissionsToRole(Role $role, $permissions = [])
+  {
+    return $role->attachPermissions($permissions);
+  }
+
+  /**
+   * Add multiple permissions to the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $permissions
+   * @return \Domain\User\User
+   */
+  public function addPermissionsToUser(User $user, $permissions = [])
+  {
+    return $user->attachPermissions($permissions);
+  }
+
+  /**
+   * Remove a permission from the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param \Domain\Permission\Permission $permission
+   * @return \Domain\Role\Role
+   */
+  public function removePermissionFromRole(Role $role, Permission $permission)
+  {
+    return $this->removePermissionsFromRole($role, [
+      $permission
+    ]);
+  }
+
+  /**
+   * Remove a permission from the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Domain\Permission\Permission $permission
+   * @return \Domain\User\User
+   */
+  public function removePermissionFromUser(User $user, Permission $permission)
+  {
+    return $this->removePermissionsFromUser($user, [
+      $permission
+    ]);
+  }
+
+  /**
+   * Remove multiple permissions from the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param \Illuminate\Support\Collection|array $permissions
+   * @return \Domain\Role\Role
+   */
+  public function removePermissionsFromRole(Role $role, $permissions = [])
+  {
+    return $role->detachPermissions($permissions);
+  }
+
+  /**
+   * Remove multiple permissions from the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $permissions
+   * @return \Domain\User\User
+   */
+  public function removePermissionsFromUser(User $user, $permissions = [])
+  {
+    return $user->detachPermissions($permissions);
+  }
+
+  /**
+   * Set all of the permissions of the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @param \Illuminate\Support\Collection|array $permissions
+   * @return \Domain\Role\Role
+   */
+  public function setRolePermissions(Role $role, $permissions = [])
+  {
+    return $role->syncPermissions($permissions);
+  }
+
+  /**
+   * Set all of the permissions of the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $permissions
+   * @return \Domain\User\User
+   */
+  public function setUserPermissions(User $user, $permissions = [])
+  {
+    return $user->syncPermissions($permissions);
+  }
+
+  /**
+   * Retrieve all of the permissions for the specified role.
+   *
+   * @param \Domain\Role\Role $role
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+   */
+  public function getPermissionsFromRole(Role $role)
+  {
+    return $role->permissions;
+  }
+
+  /**
+   * Retrieve all of the permissions for the specified user.
+   *
+   * @param \Domain\User\User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+   */
+  public function getPermissionsFromUser(User $user)
+  {
+    return $user->permissions;
+  }
+
+  /**
+   * Retrieve all of the roles that have access to the specified permission.
+   *
+   * @param \Domain\Permission\Permission $permission
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+   */
+  public function getRolesWithPermission(Permission $permission)
+  {
+    return $this->getRolesWithPermissions([$permission]);
+  }
+
+  /**
+   * Retrieve all of the users that have access to the specified permission.
+   *
+   * @param \Domain\Permission\Permission $permission
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+   */
+  public function getUsersWithPermission(Permission $permission)
+  {
+    return $this->getUsersWithPermissions([$permission]);
+  }
+
+  /**
+   * Retrieve all of the roles that have access to any of the specified permissions.
+   *
+   * @param \Illuminate\Support\Collection|array $permissions
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+   */
+  public function getRolesWithPermissions($permissions = [])
+  {
+    $query = Role::query();
+
+    foreach ($permissions as $index => $permission) {
+      if ($index <= 0) {
+        $query->wherePermissionIs($permission->name);
+      } else {
+        $query->orWherePermissionIs($permission->name);
+      }
+    }
+
+    return $this->execute($query);
+  }
+
+  /**
+   * Retrieve all of the users that have access to any of the specified permissions.
+   *
+   * @param \Illuminate\Support\Collection|array $permissions
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+   */
+  public function getUsersWithPermissions($permissions = [])
+  {
+    $query = User::query();
+
+    foreach ($permissions as $index => $permission) {
+      if ($index <= 0) {
+        $query->wherePermissionIs($permission->name);
+      } else {
+        $query->orWherePermissionIs($permission->name);
+      }
+    }
+
+    return $this->execute($query);
   }
 }

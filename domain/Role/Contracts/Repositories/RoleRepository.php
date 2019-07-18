@@ -3,8 +3,10 @@
 namespace Domain\Role\Contracts\Repositories;
 
 use Domain\Permission\Permission;
+use Domain\User\User;
 use Infrastructure\Contracts\Repositories\AppRepository;
 use Domain\Role\Role;
+use Laratrust\Traits\LaratrustUserTrait;
 
 interface RoleRepository extends AppRepository
 {
@@ -43,7 +45,7 @@ interface RoleRepository extends AppRepository
    * Find a role by an unknown parameter.
    *
    * @param number|string $parameter
-   * @param number|string|array  $search
+   * @param number|string|array $search
    * @param boolean $regex
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
@@ -81,71 +83,71 @@ interface RoleRepository extends AppRepository
   function update(Role $role, $attributes);
 
   /**
-   * Add a permission to the specified role.
+   * Add a role to the user.
    *
+   * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
-   * @param \Domain\Permission\Permission $permission
-   * @return \Domain\Role\Role
+   * @return \Domain\User\User
    */
-  function addPermission(Role $role, Permission $permission);
+  function addRoleToUser(User $user, Role $role);
 
   /**
-   * Add multiple permissions to the specified role.
+   * Add roles to the user.
    *
-   * @param \Domain\Role\Role $role
-   * @param \Illuminate\Support\Collection|array $permissions
-   * @return \Domain\Role\Role
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $roles
+   * @return \Domain\User\User
    */
-  function addPermissions(Role $role, $permissions = []);
+  function addRolesToUser(User $user, $roles = []);
 
   /**
-   * Remove a permission from the specified role.
+   * Remove a role from the user.
    *
+   * @param \Domain\User\User $user
    * @param \Domain\Role\Role $role
-   * @param \Domain\Permission\Permission $permission
-   * @return \Domain\Role\Role
+   * @return \Domain\User\User
    */
-  function removePermission(Role $role, Permission $permission);
+  function removeRoleFromUser(User $user, Role $role);
 
   /**
-   * Remove multiple permissions from the specified role.
+   * Remove roles from the user.
    *
-   * @param \Domain\Role\Role $role
-   * @param \Illuminate\Support\Collection|array $permissions
-   * @return \Domain\Role\Role
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $roles
+   * @return \Domain\User\User
    */
-  function removePermissions(Role $role, $permissions = []);
+  function removeRolesFromUser(User $user, $roles = []);
 
   /**
-   * Set all of the permissions of the specified role.
+   * Set all of the roles of the specified user.
    *
-   * @param \Domain\Role\Role $role
-   * @param \Illuminate\Support\Collection|array $permissions
-   * @return \Domain\Role\Role
+   * @param \Domain\User\User $user
+   * @param \Illuminate\Support\Collection|array $roles
+   * @return \Domain\User\User
    */
-  function setPermissions(Role $role, $permissions = []);
+  function setUserRoles(User $user, $roles = []);
 
   /**
-   * Retrieve all of the permissions for the specified role.
+   * Retrieve all of the roles for the specified user.
    *
-   * @param \Domain\Role\Role $role
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
-   */
-  function getPermissions(Role $role);
-
-  /**
-   * Retrieve all of the roles that have access to the specified permission.
-   *
-   * @param \Domain\Permission\Permission $permission
+   * @param \Domain\User\User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  function getRolesWithPermission(Permission $permission);
+  function getRolesFromUser(User $user);
 
   /**
-   * Retrieve all of the roles that have access to any of the specified permissions.
+   * Retrieve all of the users that are associated with the specified role.
    *
-   * @param \Illuminate\Support\Collection|array $permissions
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+   * @param \Domain\Role\Role $role
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
-  function getRolesWithPermissions($permissions = []);
+  function getUsersWithRole(Role $role);
+
+  /**
+   * Retrieve all of the users that are associated with any of the specified roles.
+   *
+   * @param \Illuminate\Support\Collection|array $roles
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+   */
+  function getUsersWithRoles($roles = []);
 }

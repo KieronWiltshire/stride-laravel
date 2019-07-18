@@ -391,11 +391,11 @@ class UserController extends Controller
       $this->authorize('user.assign-role', $user);
       $this->authorize('role.assign', $role);
 
-      if ($this->userService->hasRole($user, $role)) {
+      if ($this->roleService->userHasRole($user, $role)) {
         throw new RoleAssignedException();
       }
 
-      $this->userService->addRole($user, $role);
+      $this->roleService->addRoleToUser($user, $role);
 
       return response([
         'message' => __('user.role.assigned'),
@@ -438,11 +438,11 @@ class UserController extends Controller
         $this->authorize('role.assign', $role);
       }
 
-      if ($this->userService->hasRoles($user, $roles)) {
+      if ($this->roleService->userHasRoles($user, $roles)) {
         throw new RoleAssignedException();
       }
 
-      $this->userService->addRoles($user, $roles);
+      $this->roleService->addRolesToUser($user, $roles);
 
       return response([
         'message' => __('user.role.assigned'),
@@ -479,11 +479,11 @@ class UserController extends Controller
       $this->authorize('user.deny-role', $user);
       $this->authorize('role.deny', $role);
 
-      if (!$this->userService->hasRole($user, $role)) {
+      if (!$this->roleService->userHasRole($user, $role)) {
         throw new RoleNotAssignedException();
       }
 
-      $this->userService->removeRole($user, $role);
+      $this->roleService->removeRoleFromUser($user, $role);
 
       return response([
         'message' => __('user.role.denied'),
@@ -526,11 +526,11 @@ class UserController extends Controller
         $this->authorize('role.deny', $role);
       }
 
-      if (!$this->userService->hasRoles($user, $roles)) {
+      if (!$this->roleService->userHasRoles($user, $roles)) {
         throw new RoleNotAssignedException();
       }
 
-      $this->userService->removeRoles($user, $roles);
+      $this->roleService->removeRolesFromUser($user, $roles);
 
       return response([
         'message' => __('user.role.assigned'),
@@ -567,11 +567,11 @@ class UserController extends Controller
       $this->authorize('user.assign-permission', $user);
       $this->authorize('permission.assign', $permission);
 
-      if ($this->userService->hasPermission($user, $permission)) {
+      if ($this->permissionService->userHasPermission($user, $permission)) {
         throw new PermissionAssignedException();
       }
 
-      $this->userService->addPermission($user, $permission);
+      $this->permissionService->addPermissionToUser($user, $permission);
 
       return response([
         'message' => __('user.permission.assigned'),
@@ -614,11 +614,11 @@ class UserController extends Controller
         $this->authorize('permission.assign', $permission);
       }
 
-      if ($this->userService->hasPermissions($user, $permissions)) {
+      if ($this->permissionService->userHasPermissions($user, $permissions)) {
         throw new PermissionAssignedException();
       }
 
-      $this->userService->addPermission($user, $permissions);
+      $this->permissionService->addPermissionToUser($user, $permissions);
 
       return response([
         'message' => __('user.permission.assigned'),
@@ -655,11 +655,11 @@ class UserController extends Controller
       $this->authorize('user.deny-permission', $user);
       $this->authorize('permission.deny', $permission);
 
-      if (!$this->userService->hasPermission($user, $permission)) {
+      if (!$this->permissionService->userHasPermission($user, $permission)) {
         throw new PermissionNotAssignedException();
       }
 
-      $this->userService->removePermission($user, $permission);
+      $this->permissionService->removePermissionFromUser($user, $permission);
 
       return response([
         'message' => __('user.permission.denied'),
@@ -702,11 +702,11 @@ class UserController extends Controller
         $this->authorize('permission.deny', $permission);
       }
 
-      if (!$this->userService->hasPermission($user, $permissions)) {
+      if (!$this->permissionService->userHasPermissions($user, $permissions)) {
         throw new PermissionNotAssignedException();
       }
 
-      $this->userService->removePermissions($user, $permissions);
+      $this->permissionService->removePermissionsFromUser($user, $permissions);
 
       return response([
         'message' => __('user.permission.denied'),
