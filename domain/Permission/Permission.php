@@ -14,13 +14,4 @@ class Permission extends LaratrustPermission
   protected $hidden = [
     'pivot'
   ];
-
-  /**
-   * The attributes that should be cast to native types.
-   *
-   * @var array
-   */
-  protected $casts = [
-    'is_default' => 'boolean',
-  ];
 }
