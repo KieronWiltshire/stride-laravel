@@ -31,14 +31,14 @@ class RoleTransformer extends TransformerAbstract
   /**
    * Create a new role transformer instance
    *
-   * @param \Domain\Permission\PermissionService $permission
+   * @param \Domain\Permission\PermissionService $permissionService
    * @param \App\Transformers\PermissionTransformer $permissionTransformer
    */
   public function __construct(
     PermissionService $permissionService,
     PermissionTransformer $permissionTransformer
   ) {
-    $this->roleService = $permissionService;
+    $this->permissionService = $permissionService;
     $this->permissionTransformer = $permissionTransformer;
   }
 

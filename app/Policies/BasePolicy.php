@@ -30,6 +30,27 @@ class BasePolicy
   }
 
   /**
+   * The before method is called by the Gate and acts as a
+   * policy filter. It will be called before each policy method.
+   *
+   * @param $user
+   * @param $ability
+   * @return bool|null
+   */
+  public function before($user, $ability)
+  {
+    $result = $this->fallbackToDefault($user, function($subject) use ($ability) {
+      $module = explode('.', $ability)[0];
+
+      if ($subject->hasPermission($module . '.*')) {
+        return true;
+      }
+    });
+
+    return ($result) ? $result : null;
+  }
+
+  /**
    * Retrieve the default role as the subject if the user is null.
    *
    * @param \Domain\User\User|null $user

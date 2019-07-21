@@ -42,18 +42,6 @@ class AuthServiceProvider extends ServiceProvider
    */
   private function registerGates()
   {
-    Gate::before(function (\Domain\User\User $user, $ability) {
-      if ($user->laratrustCan('user.*')) {
-        return true;
-      }
-
-      $module = explode('.', $ability)[0];
-
-      if ($user->laratrustCan($module . '.*')) {
-        return true;
-      }
-    });
-
     Gate::define('user.view', 'App\Policies\UserPolicy@view');
     Gate::define('user.update', 'App\Policies\UserPolicy@update');
     Gate::define('user.assign-role', 'App\Policies\UserPolicy@assignRole');
@@ -84,7 +72,7 @@ class AuthServiceProvider extends ServiceProvider
     Gate::define('client.delete', 'App\Policies\ClientPolicy@delete');
 
     Gate::after(function ($user, $ability, $result) {
-      return ($result && $user->tokenCan($ability));
+      return ($user) ? ($result && $user->tokenCan($ability)) : true;
     });
   }
 }
