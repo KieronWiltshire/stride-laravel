@@ -16,7 +16,8 @@ return [
     'cannot_update_role' => 'Unable to update the role.',
     'not_found' => 'Unable to find the specified role.',
     'role_assigned' => 'The specified role has already been assigned.',
-    'role_not_assigned' => 'The specified role has not been assigned.'
+    'role_not_assigned' => 'The specified role has not been assigned.',
+    'unable_to_set_default_role' => 'Unable to set the specified role as the default role'
   ],
 
   'id' => [

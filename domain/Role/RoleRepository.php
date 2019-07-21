@@ -7,8 +7,10 @@ use Domain\Permission\Permission;
 use Domain\Role\Events\RoleCreatedEvent;
 use Domain\Role\Events\RoleUpdatedEvent;
 use Domain\Role\Exceptions\RoleNotFoundException;
+use Domain\Role\Exceptions\UnableToSetDefaultRoleException;
 use Domain\User\User;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Infrastructure\Repositories\AppRepository;
 use Domain\Role\Validators\RoleCreateValidator;
 use Domain\Role\Validators\RoleUpdateValidator;
@@ -154,6 +156,44 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   public function findByName($name)
   {
     $role = $this->execute(Role::where('name', $name), true);
+
+    if (!$role) {
+      throw new RoleNotFoundException();
+    }
+
+    return $role;
+  }
+
+  /**
+   * Set the specified role as the default role.
+   *
+   * @param \Domain\Role\Role $role
+   * @return void
+   *
+   * @throws \Domain\Role\Exceptions\UnableToSetDefaultRoleException
+   */
+  public function setDefaultRole(Role $role)
+  {
+    try {
+      DB::transaction(function () use ($role) {
+        DB::table('roles')->update(['is_default' => false]);
+        DB::table('roles')->where('id', $role->id)->update(['is_default' => true]);
+      });
+    } catch (Exception $e) {
+      throw new UnableToSetDefaultRoleException();
+    }
+  }
+
+  /**
+   * Retrieve the default role.
+   *
+   * @return \Domain\Role\Role
+   *
+   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   */
+  public function getDefaultRole()
+  {
+    $role = $this->execute(Role::where('is_default', true), true);
 
     if (!$role) {
       throw new RoleNotFoundException();

@@ -104,13 +104,28 @@ class RoleService
   }
 
   /**
+   * Set the specified role as the default role.
+   *
+   * @param \Domain\Role\Role $role
+   * @return void
+   *
+   * @throws \Domain\Role\Exceptions\UnableToSetDefaultRoleException
+   */
+  public function setDefaultRole(Role $role)
+  {
+    $this->roleRepository->setDefaultRole($role);
+  }
+
+  /**
    * Retrieve the default user role.
    *
    * @return \Domain\Role\Role
+   *
+   * @throws \Domain\Role\Exceptions\RoleNotFoundException
    */
   public function getDefaultRole()
   {
-    // TODO: need to implement default roles
+    return $this->roleRepository->with(['permissions'])->getDefaultRole();
   }
 
   /**

@@ -5,72 +5,72 @@ namespace Domain\Permission\Policies;
 use Domain\User\User;
 use Domain\Permission\Permission;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Infrastructure\Policies\AppPolicy;
 
-class PermissionPolicy
+class PermissionPolicy extends AppPolicy
 {
   use HandlesAuthorization;
 
   /**
-   * Create a new policy instance.
-   *
-   * @return void
-   */
-  public function __construct()
-  {
-  }
-
-  /**
    * Determine if the specified user can create a permission.
    *
-   * @param \Domain\User\User $user
+   * @param \Domain\User\User|null $user
    * @return bool
    */
-  public function create(User $user)
+  public function create(?User $user)
   {
-    return (
-      $user->laratrustCan('permission.create')
-    );
+    return $this->fallbackToDefault($user, function($subject) use ($user) {
+      return (
+        $subject->hasPermission('permission.create')
+      );
+    });
   }
 
   /**
    * Determine if the given permission can be updated by the specified user.
    *
-   * @param \Domain\User\User $user
+   * @param \Domain\User\User|null $user
    * @param \Domain\Permission\Permission $permission
    * @return bool
    */
-  public function update(User $user, Permission $permission)
+  public function update(?User $user, Permission $permission)
   {
-    return (
-      $user->laratrustCan('permission.update.all')
-    );
+    return $this->fallbackToDefault($user, function($subject) use ($user, $permission) {
+      return (
+        $subject->hasPermission('permission.update.all')
+      );
+    });
   }
 
   /**
    * Determine if the specified user can assign the specified permission.
    *
-   * @param \Domain\User\User $user
+   * @param \Domain\User\User|null $user
    * @param \Domain\Permission\Permission $permission
    * @return bool
    */
-  public function assign(User $user, Permission $permission)
+  public function assign(?User $user, Permission $permission)
   {
-    return (
-      $user->laratrustCan('permission.assign.all') || $user->laratrustCan('role.assign.' . $permission->getKeyName())
-    );
+    return $this->fallbackToDefault($user, function($subject) use ($user, $permission) {
+      return (
+        $subject->hasPermission('permission.assign.all') || $subject->hasPermission('role.assign.' . $permission->getKeyName())
+      );
+    });
   }
 
   /**
    * Determine if the specified user can deny the specified permission.
    *
-   * @param \Domain\User\User $user
+   * @param \Domain\User\User|null $user
    * @param \Domain\Permission\Permission $permission
    * @return bool
    */
-  public function deny(User $user, Permission $permission)
+  public function deny(?User $user, Permission $permission)
   {
-    return (
-      $user->laratrustCan('permission.deny.all') || $user->laratrustCan('role.deny.' . $permission->getKeyName())
-    );
+    return $this->fallbackToDefault($user, function($subject) use ($user, $permission) {
+      return (
+        $subject->hasPermission('permission.deny.all') || $subject->hasPermission('role.deny.' . $permission->getKeyName())
+      );
+    });
   }
 }

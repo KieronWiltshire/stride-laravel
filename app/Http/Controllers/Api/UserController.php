@@ -742,20 +742,24 @@ class UserController extends Controller
    * @return \Domain\User\User
    */
   protected function includeDefaultRole(&$user) {
-    $defaultRole = $this->roleService->getDefaultRole();
+    try {
+      $defaultRole = $this->roleService->getDefaultRole();
 
-    if (is_iterable($user)) {
-      foreach ($user as $u) {
-        $this->includeDefaultRole($u);
-      }
-
-      return $user;
-    } else {
-      if ($defaultRole) {
-        if ($this->roleService->getRolesFromUser($user)->count() <= 0) {
-          $this->roleService->addRoleToUser($user, $this->roleService->getDefaultRole(), false);
+      if (is_iterable($user)) {
+        foreach ($user as $u) {
+          $this->includeDefaultRole($u);
+        }
+      } else {
+        if ($defaultRole) {
+          if ($this->roleService->getRolesFromUser($user)->count() <= 0) {
+            $this->roleService->addRoleToUser($user, $this->roleService->getDefaultRole(), false);
+          }
         }
       }
+    } catch (RoleNotFoundException $e) {
+      // Do nothing if there is no default role is configured
     }
+
+    return $user;
   }
 }

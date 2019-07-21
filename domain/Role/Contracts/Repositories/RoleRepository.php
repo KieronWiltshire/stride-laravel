@@ -72,6 +72,23 @@ interface RoleRepository extends AppRepository
   function findByName($name);
 
   /**
+   * Retrieve the default role.
+   *
+   * @return \Domain\Role\Role
+   *
+   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   */
+  function getDefaultRole();
+
+  /**
+   * Set the specified role as the default role.
+   *
+   * @param \Domain\Role\Role $role
+   * @return void
+   */
+  function setDefaultRole(Role $role);
+
+  /**
    * Update a role.
    *
    * @param \Domain\Role\Role $role

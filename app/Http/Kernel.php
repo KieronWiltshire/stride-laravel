@@ -20,7 +20,8 @@ class Kernel extends HttpKernel
     \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     \App\Http\Middleware\TrustProxies::class,
     \App\Http\Middleware\PrettyPrint::class,
-    \App\Http\Middleware\VersionHeader::class
+    \App\Http\Middleware\VersionHeader::class,
+    \App\Http\Middleware\AssignDefaultRole::class,
   ];
 
   /**
