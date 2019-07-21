@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "64267194-0d63-4a27-8c64-6714102986a6",
-		"name": "feedme",
+		"name": "stride-laravel",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -772,13 +772,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/api/user/1?",
+									"raw": "{{url}}/api/role/1?",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"api",
-										"user",
+										"role",
 										"1"
 									],
 									"query": [
