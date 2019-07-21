@@ -1,13 +1,13 @@
 <?php
 
-namespace Domain\Permission\Policies;
+namespace App\Policies;
 
 use Domain\User\User;
 use Domain\Permission\Permission;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Infrastructure\Policies\AppPolicy;
+use App\Policies\BasePolicy;
 
-class PermissionPolicy extends AppPolicy
+class PermissionPolicy extends BasePolicy
 {
   use HandlesAuthorization;
 

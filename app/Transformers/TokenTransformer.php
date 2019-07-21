@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\OAuth\Transformers;
+namespace App\Transformers;
 
 use Laravel\Passport\Token;
 use League\Fractal\TransformerAbstract;
@@ -8,14 +8,14 @@ use League\Fractal\TransformerAbstract;
 class TokenTransformer extends TransformerAbstract
 {
   /**
-   * @var \Domain\OAuth\Transformers\ClientTransformer
+   * @var \App\Transformers\ClientTransformer
    */
   protected $clientTransformer;
 
   /**
    * Create a new token transformer instance
    *
-   * @param \Domain\OAuth\Transformers\ClientTransformer $clientTransformer
+   * @param \App\Transformers\ClientTransformer $clientTransformer
    */
   public function __construct(
     ClientTransformer $clientTransformer
@@ -37,7 +37,7 @@ class TokenTransformer extends TransformerAbstract
    *
    * @return array
    */
-  public function transform(Token $token)
+  public function transform($token)
   {
     $visible = [];
 
@@ -49,7 +49,7 @@ class TokenTransformer extends TransformerAbstract
    *
    * @return \League\Fractal\Resource\Item
    */
-  public function includeClient(Token $token)
+  public function includeClient($token)
   {
     return $this->item($token->client, $this->clientTransformer);
   }

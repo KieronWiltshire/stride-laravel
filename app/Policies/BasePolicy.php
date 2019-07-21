@@ -1,12 +1,12 @@
 <?php
 
-namespace Infrastructure\Policies;
+namespace App\Policies;
 
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\RoleService;
 use Domain\User\User;
 
-class AppPolicy
+class BasePolicy
 {
   /**
    * @var \Domain\Role\RoleService

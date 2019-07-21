@@ -1,9 +1,10 @@
 <?php
 
-namespace Domain\Role\Transformers;
+namespace App\Transformers;
 
-use Domain\Permission\Transformers\PermissionTransformer;
+use App\Transformers\PermissionTransformer;
 use Domain\Role\Role;
+use Domain\Permission\PermissionService;
 use League\Fractal\TransformerAbstract;
 
 class RoleTransformer extends TransformerAbstract
@@ -18,18 +19,26 @@ class RoleTransformer extends TransformerAbstract
   ];
 
   /**
-   * @var \Domain\Permission\Transformers\PermissionTransformer
+   * @var \Domain\Permission\PermissionService
+   */
+  protected $permissionService;
+
+  /**
+   * @var \App\Transformers\PermissionTransformer
    */
   protected $permissionTransformer;
 
   /**
    * Create a new role transformer instance
    *
-   * @param \Domain\Permission\Transformers\PermissionTransformer $permissionTransformer
+   * @param \Domain\Permission\PermissionService $permission
+   * @param \App\Transformers\PermissionTransformer $permissionTransformer
    */
   public function __construct(
+    PermissionService $permissionService,
     PermissionTransformer $permissionTransformer
   ) {
+    $this->roleService = $permissionService;
     $this->permissionTransformer = $permissionTransformer;
   }
 
@@ -38,7 +47,7 @@ class RoleTransformer extends TransformerAbstract
    *
    * @return array
    */
-  public function transform(Role $role)
+  public function transform($role)
   {
     $visible = [];
 
@@ -50,8 +59,8 @@ class RoleTransformer extends TransformerAbstract
    *
    * @return \League\Fractal\Resource\Collection
    */
-  public function includePermissions(Role $role)
+  public function includePermissions($role)
   {
-    return $this->collection($role->permissions, $this->permissionTransformer, false);
+    return $this->collection($this->permissionService->getPermissionsFromRole($role), $this->permissionTransformer, false);
   }
 }

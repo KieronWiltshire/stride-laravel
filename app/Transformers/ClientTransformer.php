@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\OAuth\Transformers;
+namespace App\Transformers;
 
 use Laravel\Passport\Client;
 use Illuminate\Support\Facades\Gate;
@@ -13,7 +13,7 @@ class ClientTransformer extends TransformerAbstract
    *
    * @return array
    */
-  public function transform(Client $client)
+  public function transform($client)
   {
     $visible = [];
 

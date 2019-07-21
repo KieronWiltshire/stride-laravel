@@ -28,17 +28,5 @@ class RoleServiceProvider extends ServiceProvider
    */
   public function boot()
   {
-    Gate::before(function (User $user) {
-      if ($user->laratrustCan('role.*')) {
-        return true;
-      }
-    });
-
-    Gate::define('role.create', 'Domain\Role\Policies\RolePolicy@create');
-    Gate::define('role.update', 'Domain\Role\Policies\RolePolicy@update');
-    Gate::define('role.assign', 'Domain\Role\Policies\RolePolicy@assign');
-    Gate::define('role.deny', 'Domain\Role\Policies\RolePolicy@deny');
-    Gate::define('role.assign-permission', 'Domain\Role\Policies\RolePolicy@assignPermission');
-    Gate::define('role.deny-permission', 'Domain\Role\Policies\RolePolicy@denyPermission');
   }
 }

@@ -7,10 +7,10 @@ use Domain\Permission\Exceptions\PermissionAssignedException;
 use Domain\Permission\Exceptions\PermissionNotAssignedException;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
 use Domain\Permission\PermissionService;
-use Domain\Permission\Transformers\PermissionTransformer;
+use App\Transformers\PermissionTransformer;
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\RoleService;
-use Domain\Role\Transformers\RoleTransformer;
+use App\Transformers\RoleTransformer;
 use Domain\User\Exceptions\UserNotFoundException;
 use Infrastructure\Exceptions\Http\BadRequestError;
 use Infrastructure\Serializers\Fractal\OptionalDataKeySerializer;
@@ -23,7 +23,7 @@ class RoleController extends Controller
   protected $roleService;
 
   /**
-   * @var \Domain\Role\Transformers\RoleTransformer
+   * @var \App\Transformers\RoleTransformer
    */
   protected $roleTransformer;
 
@@ -33,7 +33,7 @@ class RoleController extends Controller
   protected $permissionService;
 
   /**
-   * @var \Domain\Permission\Transformers\PermissionTransformer
+   * @var \App\Transformers\PermissionTransformer
    */
   protected $permissionTransformer;
 
@@ -46,9 +46,9 @@ class RoleController extends Controller
    * Create a new role controller instance
    *
    * @param \Domain\Role\RoleService $roleService
-   * @param \Domain\Role\Transformers\RoleTransformer $roleTransformer
+   * @param \App\Transformers\RoleTransformer $roleTransformer
    * @param \Domain\Permission\PermissionService $permissionService
-   * @param \Domain\Permission\Transformers\PermissionTransformer %permissionTransformer
+   * @param \App\Transformers\PermissionTransformer %permissionTransformer
    */
   public function __construct(
     RoleService $roleService,

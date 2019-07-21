@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\OAuth;
 use App\Http\Controllers\Controller;
 use Domain\OAuth\ClientRepository;
 use Domain\OAuth\Exceptions\ClientNotFoundException;
-use Domain\OAuth\Transformers\ClientTransformer;
+use App\Transformers\ClientTransformer;
 use Domain\User\Exceptions\UserNotFoundException;
 use Domain\User\UserService;
 
@@ -22,7 +22,7 @@ class ClientController extends Controller
   protected $userService;
 
   /**
-   * @var \Domain\OAuth\Transformers\ClientTransformer
+   * @var \App\Transformers\ClientTransformer
    */
   protected $clientTransformer;
 
@@ -31,7 +31,7 @@ class ClientController extends Controller
    *
    * @param \Domain\OAuth\ClientRepository $clientRepository
    * @param \Domain\User\UserService $userService
-   * @param \Domain\OAuth\Transformers\ClientTransformer $clientTransformer
+   * @param \App\Transformers\ClientTransformer $clientTransformer
    */
   public function __construct(
     ClientRepository $clientRepository,

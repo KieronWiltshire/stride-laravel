@@ -7,17 +7,17 @@ use Domain\Permission\Exceptions\PermissionAssignedException;
 use Domain\Permission\Exceptions\PermissionNotAssignedException;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
 use Domain\Permission\PermissionService;
-use Domain\Permission\Transformers\PermissionTransformer;
+use App\Transformers\PermissionTransformer;
 use Domain\Role\Exceptions\RoleAssignedException;
 use Domain\Role\Exceptions\RoleNotAssignedException;
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\RoleService;
-use Domain\Role\Transformers\RoleTransformer;
+use App\Transformers\RoleTransformer;
 use Domain\User\Exceptions\InvalidEmailVerificationTokenException;
 use Domain\User\Exceptions\InvalidPasswordResetTokenException;
 use Domain\User\Exceptions\PasswordResetTokenExpiredException;
 use Domain\User\Exceptions\UserNotFoundException;
-use Domain\User\Transformers\UserTransformer;
+use App\Transformers\UserTransformer;
 use Domain\User\UserService;
 use Infrastructure\Exceptions\Http\BadRequestError;
 use Infrastructure\Serializers\Fractal\OptionalDataKeySerializer;
@@ -30,7 +30,7 @@ class UserController extends Controller
   protected $userService;
 
   /**
-   * @var \Domain\User\Transformers\UserTransformer
+   * @var \App\Transformers\UserTransformer
    */
   protected $userTransformer;
 
@@ -40,7 +40,7 @@ class UserController extends Controller
   protected $roleService;
 
   /**
-   * @var \Domain\Role\Transformers\RoleTransformer
+   * @var \App\Transformers\RoleTransformer
    */
   protected $roleTransformer;
 
@@ -50,7 +50,7 @@ class UserController extends Controller
   protected $permissionService;
 
   /**
-   * @var \Domain\Permission\Transformers\PermissionTransformer
+   * @var \App\Transformers\PermissionTransformer
    */
   protected $permissionTransformer;
 
@@ -63,11 +63,11 @@ class UserController extends Controller
    * Create a new user controller instance
    *
    * @param \Domain\User\UserService $userService
-   * @param \Domain\User\Transformers\UserTransformer $userTransformer
+   * @param \App\Transformers\UserTransformer $userTransformer
    * @param \Domain\Role\RoleService $roleService
-   * @param \Domain\Role\Transformers\RoleTransformer $roleTransformer
+   * @param \App\Transformers\RoleTransformer $roleTransformer
    * @param \Domain\Permission\PermissionService $permissionService
-   * @param \Domain\Permission\Transformers\PermissionTransformer $permissionTransformer
+   * @param \App\Transformers\PermissionTransformer $permissionTransformer
    */
   public function __construct(
     UserService $userService,

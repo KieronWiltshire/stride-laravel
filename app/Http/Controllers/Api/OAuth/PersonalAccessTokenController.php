@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\OAuth;
 use App\Http\Controllers\Controller;
 use Domain\OAuth\Exceptions\TokenNotFoundException;
 use Domain\OAuth\TokenRepository;
-use Domain\OAuth\Transformers\TokenTransformer;
+use App\Transformers\TokenTransformer;
 use Domain\OAuth\Validators\TokenCreateValidator;
 use Domain\User\UserService;
 
@@ -27,7 +27,7 @@ class PersonalAccessTokenController extends Controller
   protected $userService;
 
   /**
-   * @var \Domain\OAuth\Transformers\TokenTransformer
+   * @var \App\Transformers\TokenTransformer
    */
   protected $tokenTransformer;
 
@@ -37,7 +37,7 @@ class PersonalAccessTokenController extends Controller
    * @param \Domain\OAuth\Validators\TokenCreateValidator $tokenCreateValidator
    * @param \Domain\OAuth\TokenRepository $tokenRepository
    * @param \Domain\User\UserService $userService
-   * @param \Domain\OAuth\Transformers\TokenTransformer $tokenTransformer
+   * @param \App\Transformers\TokenTransformer $tokenTransformer
    */
   public function __construct(
     TokenCreateValidator $tokenCreateValidator,

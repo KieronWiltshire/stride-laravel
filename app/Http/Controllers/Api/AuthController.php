@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Infrastructure\Exceptions\Auth\AuthenticationFailedException;
 use App\Http\Controllers\Controller;
 use Domain\User\Exceptions\UserNotFoundException;
-use Domain\User\Transformers\UserTransformer;
+use App\Transformers\UserTransformer;
 use Domain\User\UserService;
 use Illuminate\Support\Facades\Hash;
 use Lcobucci\JWT\Parser;
@@ -18,7 +18,7 @@ class AuthController extends Controller
   protected $userService;
 
   /**
-   * @var \Domain\User\Transformers\UserTransformer
+   * @var \App\Transformers\UserTransformer
    */
   protected $userTransformer;
 
@@ -26,7 +26,7 @@ class AuthController extends Controller
    * Create a new auth controller instance
    *
    * @param \Domain\User\UserService $userService
-   * @param \Domain\User\Transformers\UserTransformer $userTransformer
+   * @param \App\Transformers\UserTransformer $userTransformer
    */
   public function __construct(
     UserService $userService,
