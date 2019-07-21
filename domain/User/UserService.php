@@ -2,9 +2,6 @@
 
 namespace Domain\User;
 
-use Domain\Permission\Permission;
-use Domain\Role\Role;
-use Domain\Role\RoleService;
 use Domain\User\Events\EmailVerificationTokenGeneratedEvent;
 use Domain\User\Contracts\Repositories\UserRepository;
 use Domain\User\Events\PasswordResetTokenGeneratedEvent;
@@ -19,7 +16,6 @@ use Domain\User\Validators\UserEmailValidator;
 use Domain\User\Validators\UserPasswordValidator;
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 

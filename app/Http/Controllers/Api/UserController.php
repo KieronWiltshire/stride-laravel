@@ -18,7 +18,6 @@ use Domain\User\Exceptions\InvalidPasswordResetTokenException;
 use Domain\User\Exceptions\PasswordResetTokenExpiredException;
 use Domain\User\Exceptions\UserNotFoundException;
 use Domain\User\Transformers\UserTransformer;
-use Domain\User\User;
 use Domain\User\UserService;
 use Infrastructure\Exceptions\Http\BadRequestError;
 use Infrastructure\Serializers\Fractal\OptionalDataKeySerializer;
@@ -335,7 +334,7 @@ class UserController extends Controller
         'message' => __('passwords.sent'),
         'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
       ], 202);
-    } catch (UserNotFoundException $e) {
+    } catch (MenuNotFoundException $e) {
       throw $e->setContext([
         'email' => [
           __('user.email.not_found')

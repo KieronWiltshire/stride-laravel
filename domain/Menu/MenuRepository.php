@@ -1,19 +1,23 @@
 <?php
 
-namespace Domain\Menu\Contracts\Repositories;
+namespace Domain\Menu;
 
-use Domain\Menu\Menu;
+use Domain\Menu\Contracts\Repositories\Menu;
 use Domain\User\User;
-use Infrastructure\Contracts\Repositories\AppRepository;
+use Infrastructure\Repositories\AppRepository;
+use Domain\Menu\Contracts\Repositories\MenuRepository as MenuRepositoryInterface;
 
-interface MenuRepository extends AppRepository
+class UserRepository extends AppRepository implements MenuRepositoryInterface
 {
   /**
    * Retrieve all of the menus.
    *
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
    */
-  function all();
+  function all()
+  {
+    // TODO: Implement all() method.
+  }
 
   /**
    * Create a new menu.
@@ -23,7 +27,10 @@ interface MenuRepository extends AppRepository
    *
    * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
    */
-  function create($attributes);
+  function create($attributes)
+  {
+    // TODO: Implement create() method.
+  }
 
   /**
    * Create a menu if the specified search parameters could not find one
@@ -37,7 +44,10 @@ interface MenuRepository extends AppRepository
    *
    * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
    */
-  function firstOrCreate($parameter, $search, $regex = true, $attributes = []);
+  function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
+  {
+    // TODO: Implement firstOrCreate() method.
+  }
 
   /**
    * Find a menu by an unknown parameter.
@@ -47,7 +57,10 @@ interface MenuRepository extends AppRepository
    * @param boolean $regex
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
    */
-  function find($parameter, $search, $regex = true);
+  function find($parameter, $search, $regex = true)
+  {
+    // TODO: Implement find() method.
+  }
 
   /**
    * Find a user by identifier.
@@ -57,7 +70,10 @@ interface MenuRepository extends AppRepository
    *
    * @throws \Domain\Menu\Exceptions\MenuNotFoundException
    */
-  function findById($id);
+  function findById($id)
+  {
+    // TODO: Implement findById() method.
+  }
 
   /**
    * Update a menu.
@@ -68,7 +84,10 @@ interface MenuRepository extends AppRepository
    *
    * @throws \Domain\Menu\Exceptions\CannotUpdateMenuException
    */
-  function update(Menu $menu, $attributes);
+  function update(Menu $menu, $attributes)
+  {
+    // TODO: Implement update() method.
+  }
 
   /**
    * Retrieve all of the menus for the specified user.
@@ -76,5 +95,8 @@ interface MenuRepository extends AppRepository
    * @param \Domain\User\User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
    */
-  function getMenusForUser(User $user);
+  function getMenusForUser(User $user)
+  {
+    // TODO: Implement getMenusForUser() method.
+  }
 }
