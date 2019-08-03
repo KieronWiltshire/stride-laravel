@@ -3,7 +3,6 @@
 namespace Domain\Role;
 
 use Domain\Role\Contracts\Repositories\RoleRepository as RoleRepositoryInterface;
-use Domain\Permission\Permission;
 use Domain\Role\Events\RoleCreatedEvent;
 use Domain\Role\Events\RoleUpdatedEvent;
 use Domain\Role\Exceptions\RoleNotFoundException;
@@ -11,11 +10,10 @@ use Domain\Role\Exceptions\UnableToSetDefaultRoleException;
 use Domain\User\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Infrastructure\Repositories\AppRepository;
+use Support\Repositories\AppRepository;
 use Domain\Role\Validators\RoleCreateValidator;
 use Domain\Role\Validators\RoleUpdateValidator;
 use Exception;
-use Laratrust\Traits\LaratrustUserTrait;
 
 class RoleRepository extends AppRepository implements RoleRepositoryInterface
 {

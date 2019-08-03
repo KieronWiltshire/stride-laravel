@@ -2,7 +2,7 @@
 
 namespace Domain\Menu\Exceptions;
 
-use Infrastructure\Exceptions\Http\NotFoundError;
+use Support\Exceptions\Http\NotFoundError;
 
 class MenuNotFoundException extends NotFoundError
 {

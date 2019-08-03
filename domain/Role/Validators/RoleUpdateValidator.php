@@ -2,13 +2,13 @@
 
 namespace Domain\Role\Validators;
 
-use \Domain\Role\Exceptions\CannotUpdateRoleException;
-use Infrastructure\Validators\AppValidator;
+use Domain\Role\Exceptions\CannotUpdateRoleException;
+use Support\Validators\AppValidator;
 
 class RoleUpdateValidator extends AppValidator
 {
   /**
-   * @var \Infrastructure\Exceptions\AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotUpdateRoleException::class;
 

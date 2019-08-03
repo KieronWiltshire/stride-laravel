@@ -2,13 +2,9 @@
 
 namespace Domain\Permission\Contracts\Repositories;
 
-use Domain\Permission\Events\PermissionCreatedEvent;
-use Domain\Permission\Events\PermissionUpdatedEvent;
-use Domain\Permission\Exceptions\PermissionNotFoundException;
 use Domain\Role\Role;
 use Domain\User\User;
-use Exception;
-use Infrastructure\Contracts\Repositories\AppRepository;
+use Support\Contracts\Repositories\AppRepository;
 use Domain\Permission\Permission;
 
 interface PermissionRepository extends AppRepository

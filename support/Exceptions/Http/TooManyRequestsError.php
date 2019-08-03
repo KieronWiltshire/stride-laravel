@@ -1,8 +1,8 @@
 <?php
 
-namespace Infrastructure\Exceptions\Http;
+namespace Support\Exceptions\Http;
 
-use Infrastructure\Exceptions\AppError;
+use Support\Exceptions\AppError;
 
 class TooManyRequestsError extends AppError
 {

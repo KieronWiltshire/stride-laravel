@@ -4,7 +4,8 @@ namespace Domain\OAuth;
 
 use Domain\OAuth\Validators\ClientCreateValidator;
 use Domain\OAuth\Validators\ClientUpdateValidator;
-use Infrastructure\Validators\Pagination\PaginationValidator;
+use RuntimeException;
+use Support\Validators\Pagination\PaginationValidator;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\ClientRepository as PassportClientRepository;
 use Domain\OAuth\Exceptions\ClientNotFoundException;
@@ -21,7 +22,7 @@ use Laravel\Passport\Passport;
 class ClientRepository extends PassportClientRepository
 {
   /**
-   * @var \Infrastructure\Validators\Pagination\PaginationValidator
+   * @var \Support\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
@@ -38,7 +39,7 @@ class ClientRepository extends PassportClientRepository
   /**
    * Create a new client repository instance.
    *
-   * @param \Infrastructure\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \Support\Validators\Pagination\PaginationValidator $paginationValidator
    * @param \Domain\OAuth\Validators\ClientCreateValidator $clientCreateValidator
    * @param \Domain\OAuth\Validators\ClientUpdateValidator $clientUpdateValidator
    */
@@ -129,7 +130,7 @@ class ClientRepository extends PassportClientRepository
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function forUserAsPaginated($userId, $limit = null, $offset = 1)
   {
@@ -170,7 +171,7 @@ class ClientRepository extends PassportClientRepository
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function activeForUserAsPaginated($userId, $limit = null, $offset = 1)
   {

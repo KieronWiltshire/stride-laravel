@@ -2,7 +2,7 @@
 
 namespace Domain\User;
 
-use Infrastructure\Repositories\AppRepository;
+use Support\Repositories\AppRepository;
 use Domain\User\Contracts\Repositories\UserRepository as UserRepositoryInterface;
 use Domain\User\Events\UserCreatedEvent;
 use Domain\User\Events\UserUpdatedEvent;

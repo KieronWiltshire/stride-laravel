@@ -2,7 +2,7 @@
 
 namespace Domain\User\Exceptions;
 
-use Infrastructure\Exceptions\Http\ValidationError;
+use Support\Exceptions\Http\ValidationError;
 
 class InvalidPasswordResetTokenException extends ValidationError
 {

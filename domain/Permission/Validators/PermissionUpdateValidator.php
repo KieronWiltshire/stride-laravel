@@ -3,12 +3,12 @@
 namespace Domain\Permission\Validators;
 
 use Domain\Permission\Exceptions\CannotUpdatePermissionException;
-use Infrastructure\Validators\AppValidator;
+use Support\Validators\AppValidator;
 
 class PermissionUpdateValidator extends AppValidator
 {
   /**
-   * @var \Infrastructure\Exceptions\AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotUpdatePermissionException::class;
 

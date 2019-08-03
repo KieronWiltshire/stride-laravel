@@ -2,11 +2,9 @@
 
 namespace Domain\Role\Contracts\Repositories;
 
-use Domain\Permission\Permission;
 use Domain\User\User;
-use Infrastructure\Contracts\Repositories\AppRepository;
+use Support\Contracts\Repositories\AppRepository;
 use Domain\Role\Role;
-use Laratrust\Traits\LaratrustUserTrait;
 
 interface RoleRepository extends AppRepository
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Exceptions;
+namespace Support\Exceptions;
 
 use Exception;
 use Webpatser\Uuid\Uuid;
@@ -77,7 +77,7 @@ abstract class AppError extends Exception
    * Set the cause of the error.
    *
    * @param string $cause
-   * @return \Infrastructure\Exceptions\AppError
+   * @return \Support\Exceptions\AppError
    */
   public function setCause($cause) {
     $this->cause = $cause;
@@ -108,7 +108,7 @@ abstract class AppError extends Exception
    * Set the context of the error.
    *
    * @param array $context
-   * @return \Infrastructure\Exceptions\AppError
+   * @return \Support\Exceptions\AppError
    */
   public function setContext($context)
   {

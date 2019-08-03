@@ -2,9 +2,8 @@
 
 namespace Domain\Menu;
 
-use Domain\Menu\Contracts\Repositories\Menu;
 use Domain\User\User;
-use Infrastructure\Repositories\AppRepository;
+use Support\Repositories\AppRepository;
 use Domain\Menu\Contracts\Repositories\MenuRepository as MenuRepositoryInterface;
 
 class UserRepository extends AppRepository implements MenuRepositoryInterface

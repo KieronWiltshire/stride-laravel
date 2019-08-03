@@ -2,8 +2,6 @@
 
 namespace Domain\Permission;
 
-use Domain\User\User;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class PermissionServiceProvider extends ServiceProvider

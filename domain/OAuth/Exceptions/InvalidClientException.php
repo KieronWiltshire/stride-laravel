@@ -2,7 +2,7 @@
 
 namespace Domain\OAuth\Exceptions;
 
-use Infrastructure\Exceptions\Http\UnauthorizedError;
+use Support\Exceptions\Http\UnauthorizedError;
 
 class InvalidClientException extends UnauthorizedError
 {

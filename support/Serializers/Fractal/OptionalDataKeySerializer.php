@@ -1,6 +1,6 @@
 <?php
 
-namespace Infrastructure\Serializers\Fractal;
+namespace Support\Serializers\Fractal;
 
 use League\Fractal\Serializer\DataArraySerializer;
 

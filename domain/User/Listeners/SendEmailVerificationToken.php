@@ -10,7 +10,7 @@ class SendEmailVerificationToken
   /**
    * @var \Domain\User\Contracts\Repositories\UserRepository
    */
-  private $userRepository;
+  private $userService;
 
   /**
    * Create the event listener.

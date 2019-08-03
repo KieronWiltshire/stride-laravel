@@ -2,8 +2,6 @@
 
 namespace Domain\Role;
 
-use Domain\User\User;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class RoleServiceProvider extends ServiceProvider

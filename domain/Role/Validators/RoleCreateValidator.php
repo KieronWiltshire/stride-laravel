@@ -3,12 +3,12 @@
 namespace Domain\Role\Validators;
 
 use Domain\Role\Exceptions\CannotCreateRoleException;
-use Infrastructure\Validators\AppValidator;
+use Support\Validators\AppValidator;
 
 class RoleCreateValidator extends AppValidator
 {
   /**
-   * @var \Infrastructure\Exceptions\AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotCreateRoleException::class;
 

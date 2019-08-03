@@ -4,7 +4,7 @@ namespace Domain\Menu\Contracts\Repositories;
 
 use Domain\Menu\Menu;
 use Domain\User\User;
-use Infrastructure\Contracts\Repositories\AppRepository;
+use Support\Contracts\Repositories\AppRepository;
 
 interface MenuRepository extends AppRepository
 {

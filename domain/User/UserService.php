@@ -161,7 +161,7 @@ class UserService
    * @param integer $offset
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
    *
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function index($limit = null, $offset = 1)
   {

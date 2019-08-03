@@ -2,7 +2,7 @@
 
 namespace Domain\OAuth\Exceptions;
 
-use Infrastructure\Exceptions\Http\NotFoundError;
+use Support\Exceptions\Http\NotFoundError;
 
 class ClientNotFoundException extends NotFoundError
 {

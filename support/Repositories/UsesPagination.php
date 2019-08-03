@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Infrastructure\Repositories;
+namespace Support\Repositories;
 
 
 trait UsesPagination
@@ -28,7 +28,7 @@ trait UsesPagination
    * @param integer $offset
    * @return self
    *
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   function paginate($limit = null, $offset = 1)
   {

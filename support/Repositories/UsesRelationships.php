@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Infrastructure\Repositories;
+namespace Support\Repositories;
 
 
 trait UsesRelationships

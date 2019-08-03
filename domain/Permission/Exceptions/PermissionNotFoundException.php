@@ -2,7 +2,7 @@
 
 namespace Domain\Permission\Exceptions;
 
-use Infrastructure\Exceptions\Http\NotFoundError;
+use Support\Exceptions\Http\NotFoundError;
 
 class PermissionNotFoundException extends NotFoundError
 {

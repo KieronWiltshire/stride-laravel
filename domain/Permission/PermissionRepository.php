@@ -8,7 +8,7 @@ use Domain\Permission\Events\PermissionUpdatedEvent;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
 use Domain\Role\Role;
 use Domain\User\User;
-use Infrastructure\Repositories\AppRepository;
+use Support\Repositories\AppRepository;
 use Domain\Permission\Validators\PermissionCreateValidator;
 use Domain\Permission\Validators\PermissionUpdateValidator;
 use Exception;

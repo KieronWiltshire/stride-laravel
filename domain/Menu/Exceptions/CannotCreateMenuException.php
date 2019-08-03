@@ -2,7 +2,7 @@
 
 namespace Domain\Menu\Exceptions;
 
-use Infrastructure\Exceptions\Http\ValidationError;
+use Support\Exceptions\Http\ValidationError;
 
 class CannotCreateMenuException extends ValidationError
 {
