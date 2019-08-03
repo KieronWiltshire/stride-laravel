@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
 use Domain\Permission\PermissionService;
 use App\Transformers\PermissionTransformer;
-use Infrastructure\Exceptions\Http\BadRequestError;
+use Support\Exceptions\Http\BadRequestError;
 
 class PermissionController extends Controller
 {
@@ -39,7 +39,7 @@ class PermissionController extends Controller
    *
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Permission\Permission>
    *
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function index()
   {
@@ -117,8 +117,8 @@ class PermissionController extends Controller
    *
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Permission\Permission>
    *
-   * @throws \Infrastructure\Exceptions\Http\BadRequestError
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Http\BadRequestError
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function search()
   {

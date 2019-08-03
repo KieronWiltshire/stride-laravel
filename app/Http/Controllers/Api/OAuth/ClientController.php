@@ -50,7 +50,7 @@ class ClientController extends Controller
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
    * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function forUser($id)
   {
@@ -82,7 +82,7 @@ class ClientController extends Controller
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
    *
    * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function forAuthenticatedUser()
   {

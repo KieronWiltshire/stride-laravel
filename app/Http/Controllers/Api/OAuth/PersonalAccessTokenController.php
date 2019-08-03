@@ -57,7 +57,7 @@ class PersonalAccessTokenController extends Controller
    * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
    * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function forAuthenticatedUser()
   {
@@ -71,7 +71,7 @@ class PersonalAccessTokenController extends Controller
    * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
    *
    * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function forUser($id)
   {

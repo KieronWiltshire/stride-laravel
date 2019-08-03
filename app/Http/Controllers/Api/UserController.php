@@ -19,8 +19,8 @@ use Domain\User\Exceptions\PasswordResetTokenExpiredException;
 use Domain\User\Exceptions\UserNotFoundException;
 use App\Transformers\UserTransformer;
 use Domain\User\UserService;
-use Infrastructure\Exceptions\Http\BadRequestError;
-use Infrastructure\Serializers\Fractal\OptionalDataKeySerializer;
+use Support\Exceptions\Http\BadRequestError;
+use Support\Serializers\Fractal\OptionalDataKeySerializer;
 
 class UserController extends Controller
 {
@@ -55,7 +55,7 @@ class UserController extends Controller
   protected $permissionTransformer;
 
   /**
-   * @var \Infrastructure\Serializers\Fractal\OptionalDataKeySerializer
+   * @var \Support\Serializers\Fractal\OptionalDataKeySerializer
    */
   protected $noDataKeySerializer;
 
@@ -91,7 +91,7 @@ class UserController extends Controller
    *
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
    *
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function index()
   {
@@ -169,8 +169,8 @@ class UserController extends Controller
    *
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
    *
-   * @throws \Infrastructure\Exceptions\Http\BadRequestError
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Http\BadRequestError
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function search()
   {

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use Infrastructure\Exceptions\Auth\AuthenticationFailedException;
+use Support\Exceptions\Auth\AuthenticationFailedException;
 use App\Http\Controllers\Controller;
 use Domain\User\Exceptions\UserNotFoundException;
 use App\Transformers\UserTransformer;
