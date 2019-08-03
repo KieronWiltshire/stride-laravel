@@ -3,12 +3,12 @@
 namespace Domain\Permission\Validators;
 
 use Domain\Permission\Exceptions\CannotCreatePermissionException;
-use Infrastructure\Validators\AppValidator;
+use Support\Validators\AppValidator;
 
 class PermissionCreateValidator extends AppValidator
 {
   /**
-   * @var \Infrastructure\Exceptions\AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotCreatePermissionException::class;
 

@@ -3,7 +3,6 @@
 namespace Domain\Permission;
 
 use Domain\Permission\Contracts\Repositories\PermissionRepository;
-use Domain\Permission\Permission;
 use Domain\Role\Role;
 use Domain\User\User;
 use Illuminate\Support\Collection;

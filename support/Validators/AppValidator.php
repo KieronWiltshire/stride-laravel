@@ -1,8 +1,8 @@
 <?php
 
-namespace Infrastructure\Validators;
+namespace Support\Validators;
 
-use Infrastructure\Exceptions\Http\ValidationError;
+use Support\Exceptions\Http\ValidationError;
 use Illuminate\Contracts\Validation\Factory as ValidationFactory;
 use ReflectionClass;
 
@@ -18,7 +18,7 @@ abstract class AppValidator {
   protected $validationFactory;
 
   /**
-   * @var \Infrastructure\Exceptions\AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = ValidationError::class;
 
@@ -47,7 +47,7 @@ abstract class AppValidator {
    * @return \Illuminate\Contracts\Validation\Validator
    *
    * @throws \ReflectionException
-   * @throws \Infrastructure\Exceptions\AppError
+   * @throws \Support\Exceptions\AppError
    */
   public function validate(array $data, array $rules = [], array $customErrors = []) {
     if (empty($rules)) {

@@ -4,7 +4,7 @@ namespace Domain\OAuth;
 
 use Domain\OAuth\Exceptions\TokenNotFoundException;
 use Domain\OAuth\Validators\TokenCreateValidator;
-use Infrastructure\Validators\Pagination\PaginationValidator;
+use Support\Validators\Pagination\PaginationValidator;
 use Laravel\Passport\Token;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\TokenRepository as PassportTokenRepository;
@@ -24,7 +24,7 @@ use Laravel\Passport\Passport;
 class TokenRepository extends PassportTokenRepository
 {
   /**
-   * @var \Infrastructure\Validators\Pagination\PaginationValidator
+   * @var \Support\Validators\Pagination\PaginationValidator
    */
   protected $paginationValidator;
 
@@ -36,7 +36,7 @@ class TokenRepository extends PassportTokenRepository
   /**
    * Create a new token repository instance.
    *
-   * @param \Infrastructure\Validators\Pagination\PaginationValidator $paginationValidator
+   * @param \Support\Validators\Pagination\PaginationValidator $paginationValidator
    * @param \Domain\OAuth\Validators\TokenCreateValidator $tokenCreateValidator
    */
   public function __construct(

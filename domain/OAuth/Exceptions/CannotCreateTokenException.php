@@ -2,7 +2,7 @@
 
 namespace Domain\OAuth\Exceptions;
 
-use Infrastructure\Exceptions\Http\ValidationError;
+use Support\Exceptions\Http\ValidationError;
 
 class CannotCreateTokenException extends ValidationError
 {

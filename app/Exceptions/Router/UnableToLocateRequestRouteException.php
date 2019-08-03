@@ -2,7 +2,7 @@
 
 namespace App\Exceptions\Router;
 
-use Infrastructure\Exceptions\Http\NotFoundError;
+use Support\Exceptions\Http\NotFoundError;
 
 class UnableToLocateRequestRouteException extends NotFoundError
 {

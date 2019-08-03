@@ -2,8 +2,6 @@
 
 namespace Domain\OAuth;
 
-use Domain\User\User;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class OAuthServiceProvider extends ServiceProvider

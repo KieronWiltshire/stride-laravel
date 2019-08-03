@@ -2,7 +2,7 @@
 
 namespace Domain\Role\Exceptions;
 
-use Infrastructure\Exceptions\Http\NotFoundError;
+use Support\Exceptions\Http\NotFoundError;
 
 class UnableToSetDefaultRoleException extends NotFoundError
 {

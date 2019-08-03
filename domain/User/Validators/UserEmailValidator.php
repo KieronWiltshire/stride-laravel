@@ -3,12 +3,12 @@
 namespace Domain\User\Validators;
 
 use Domain\User\Exceptions\InvalidEmailException;
-use Infrastructure\Validators\AppValidator;
+use Support\Validators\AppValidator;
 
 class UserEmailValidator extends AppValidator
 {
   /**
-   * @var \Infrastructure\Exceptions\AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = InvalidEmailException::class;
 

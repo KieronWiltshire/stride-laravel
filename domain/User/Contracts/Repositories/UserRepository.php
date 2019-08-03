@@ -3,7 +3,7 @@
 namespace Domain\User\Contracts\Repositories;
 
 use Domain\User\User;
-use Infrastructure\Contracts\Repositories\AppRepository;
+use Support\Contracts\Repositories\AppRepository;
 
 interface UserRepository extends AppRepository
 {

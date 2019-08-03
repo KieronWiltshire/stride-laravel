@@ -1,8 +1,8 @@
 <?php
 
-namespace Infrastructure\Repositories;
+namespace Support\Repositories;
 
-use Infrastructure\Contracts\Repositories\AppRepository as AppRepositoryInterface;
+use Support\Contracts\Repositories\AppRepository as AppRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class AppRepository implements AppRepositoryInterface

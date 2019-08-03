@@ -2,7 +2,7 @@
 
 namespace Domain\User\Exceptions;
 
-use Infrastructure\Exceptions\Http\NotFoundError;
+use Support\Exceptions\Http\NotFoundError;
 
 class UserNotFoundException extends NotFoundError
 {

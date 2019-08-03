@@ -1,14 +1,14 @@
 <?php
 
-namespace Infrastructure\Validators\Pagination;
+namespace Support\Validators\Pagination;
 
-use Infrastructure\Exceptions\Pagination\InvalidPaginationException;
-use Infrastructure\Validators\AppValidator;
+use Support\Exceptions\Pagination\InvalidPaginationException;
+use Support\Validators\AppValidator;
 
 class PaginationValidator extends AppValidator
 {
   /**
-   * @var \Infrastructure\Exceptions\AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = InvalidPaginationException::class;
 

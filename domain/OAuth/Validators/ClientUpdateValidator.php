@@ -3,12 +3,12 @@
 namespace Domain\OAuth\Validators;
 
 use Domain\OAuth\Exceptions\CannotUpdateClientException;
-use Infrastructure\Validators\AppValidator;
+use Support\Validators\AppValidator;
 
 class ClientUpdateValidator extends AppValidator
 {
   /**
-   * @var \Infrastructure\Exceptions\AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotUpdateClientException::class;
 

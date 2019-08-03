@@ -2,7 +2,7 @@
 
 namespace Domain\OAuth\Exceptions;
 
-use Infrastructure\Exceptions\Http\BadRequestError;
+use Support\Exceptions\Http\BadRequestError;
 
 class InvalidGrantException extends BadRequestError
 {

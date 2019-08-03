@@ -2,7 +2,7 @@
 
 namespace App\Exceptions\Request;
 
-use Infrastructure\Exceptions\Http\BadRequestError;
+use Support\Exceptions\Http\BadRequestError;
 
 class InvalidRequestException extends BadRequestError
 {

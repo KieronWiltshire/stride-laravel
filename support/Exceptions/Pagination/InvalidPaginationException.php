@@ -1,8 +1,8 @@
 <?php
 
-namespace Infrastructure\Exceptions\Pagination;
+namespace Support\Exceptions\Pagination;
 
-use Infrastructure\Exceptions\Http\BadRequestError;
+use Support\Exceptions\Http\BadRequestError;
 
 class InvalidPaginationException extends BadRequestError
 {

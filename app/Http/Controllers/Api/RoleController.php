@@ -11,9 +11,8 @@ use App\Transformers\PermissionTransformer;
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\RoleService;
 use App\Transformers\RoleTransformer;
-use Domain\User\Exceptions\UserNotFoundException;
-use Infrastructure\Exceptions\Http\BadRequestError;
-use Infrastructure\Serializers\Fractal\OptionalDataKeySerializer;
+use Support\Exceptions\Http\BadRequestError;
+use Support\Serializers\Fractal\OptionalDataKeySerializer;
 
 class RoleController extends Controller
 {
@@ -38,7 +37,7 @@ class RoleController extends Controller
   protected $permissionTransformer;
 
   /**
-   * @var \Infrastructure\Serializers\Fractal\OptionalDataKeySerializer
+   * @var \Support\Serializers\Fractal\OptionalDataKeySerializer
    */
   protected $noDataKeySerializer;
 
@@ -68,7 +67,7 @@ class RoleController extends Controller
    *
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
    *
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function index()
   {
@@ -146,8 +145,8 @@ class RoleController extends Controller
    *
    * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
    *
-   * @throws \Infrastructure\Exceptions\Http\BadRequestError
-   * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+   * @throws \Support\Exceptions\Http\BadRequestError
+   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
    */
   public function search()
   {

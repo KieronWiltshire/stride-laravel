@@ -2,7 +2,7 @@
 
 namespace Domain\Permission\Exceptions;
 
-use Infrastructure\Exceptions\Http\ValidationError;
+use Support\Exceptions\Http\ValidationError;
 
 class CannotCreatePermissionException extends ValidationError
 {
