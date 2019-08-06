@@ -3,9 +3,8 @@
 namespace Domain\OAuth\Validators;
 
 use Domain\OAuth\Exceptions\CannotUpdateClientException;
-use Support\Validators\AppValidator;
 
-class ClientUpdateValidator extends AppValidator
+class ClientUpdateValidator extends ClientValidator
 {
   /**
    * @var \Support\Exceptions\AppError
@@ -20,11 +19,8 @@ class ClientUpdateValidator extends AppValidator
   public function rules()
   {
     return [
-      'name' => 'required|max:255',
-      'redirect' => [
-        'required',
-        app()->make('\Laravel\Passport\Http\Rules\RedirectRule')
-      ],
+      'name' => $this->nameRules,
+      'redirect' => $this->redirectRules(),
     ];
   }
 }

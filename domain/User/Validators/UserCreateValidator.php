@@ -20,8 +20,12 @@ class UserCreateValidator extends AppValidator
   public function rules()
   {
     return [
-      'email' => 'required|unique:users|email',
-      'password' => 'required|min:6',
+      'email' => array_merge($this->emailRules, [
+        'required'
+      ]),
+      'password' => array_merge($this->passwordRules, [
+        'required'
+      ]),
     ];
   }
 }

@@ -3,10 +3,8 @@
 namespace Domain\OAuth\Validators;
 
 use Domain\OAuth\Exceptions\CannotCreateTokenException;
-use Support\Validators\AppValidator;
-use Laravel\Passport\Passport;
 
-class TokenCreateValidator extends AppValidator
+class TokenCreateValidator extends TokenValidator
 {
   /**
    * @var \Support\Exceptions\AppError
@@ -21,8 +19,8 @@ class TokenCreateValidator extends AppValidator
   public function rules()
   {
     return [
-      'name' => 'max:255',
-      'scope' => 'array|in:' . implode(',', Passport::scopeIds())
+      'name' => $this->nameRules,
+      'scope' => $this->scopeRules(),
     ];
   }
 }

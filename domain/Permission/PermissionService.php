@@ -271,9 +271,9 @@ class PermissionService
    * @param \Domain\Role\Role $role
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
    */
-  public function getPermissionsFromRole(Role $role)
+  public function getPermissionsForRole(Role $role)
   {
-    return $this->permissionRepository->getPermissionsFromRole($role);
+    return $this->permissionRepository->getPermissionsForRole($role);
   }
 
   /**
@@ -282,9 +282,9 @@ class PermissionService
    * @param \Domain\User\User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
    */
-  public function getPermissionsFromUser(User $user)
+  public function getPermissionsForUser(User $user)
   {
-    return $this->permissionRepository->getPermissionsFromUser($user);
+    return $this->permissionRepository->getPermissionsForUser($user);
   }
 
   /**
@@ -296,7 +296,7 @@ class PermissionService
    */
   public function roleHasPermission(Role $role, Permission $permission)
   {
-    return ($this->getPermissionsFromRole($role)->where('id', $permission->id)->count() > 0);
+    return ($this->getPermissionsForRole($role)->where('id', $permission->id)->count() > 0);
   }
 
   /**
@@ -308,7 +308,7 @@ class PermissionService
    */
   public function userHasPermission(User $user, Permission $permission)
   {
-    return ($this->getPermissionsFromUser($user)->where('id', $permission->id)->count() > 0);
+    return ($this->getPermissionsForUser($user)->where('id', $permission->id)->count() > 0);
   }
 
   /**
@@ -325,7 +325,7 @@ class PermissionService
       ->flatten()
       ->all();
 
-    return ($this->getPermissionsFromRole($role)->whereIn('id', $permissionIds)->count() > 0);
+    return ($this->getPermissionsForRole($role)->whereIn('id', $permissionIds)->count() > 0);
   }
 
   /**
@@ -342,7 +342,7 @@ class PermissionService
       ->flatten()
       ->all();
 
-    return ($this->getPermissionsFromUser($user)->whereIn('id', $permissionIds)->count() > 0);
+    return ($this->getPermissionsForUser($user)->whereIn('id', $permissionIds)->count() > 0);
   }
 
   /**

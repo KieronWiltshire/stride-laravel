@@ -314,7 +314,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    * @param \Domain\User\User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  public function getRolesFromUser(User $user)
+  public function getRolesForUser(User $user)
   {
     return $user->roles;
   }

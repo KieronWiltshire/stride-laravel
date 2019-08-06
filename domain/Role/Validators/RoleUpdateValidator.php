@@ -3,9 +3,8 @@
 namespace Domain\Role\Validators;
 
 use Domain\Role\Exceptions\CannotUpdateRoleException;
-use Support\Validators\AppValidator;
 
-class RoleUpdateValidator extends AppValidator
+class RoleUpdateValidator extends RoleValidator
 {
   /**
    * @var \Support\Exceptions\AppError
@@ -20,9 +19,9 @@ class RoleUpdateValidator extends AppValidator
   public function rules()
   {
     return [
-      'name' => 'unique:roles|alpha_dash',
-      'display_name' => '',
-      'description' => '',
+      'name' => $this->nameRules,
+      'display_name' => $this->displayNameRules,
+      'description' => $this->descriptionRules,
     ];
   }
 }

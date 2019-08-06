@@ -5,7 +5,7 @@ namespace Domain\User\Validators;
 use Domain\User\Exceptions\InvalidEmailException;
 use Support\Validators\AppValidator;
 
-class UserEmailValidator extends AppValidator
+class UserEmailValidator extends UserValidator
 {
   /**
    * @var \Support\Exceptions\AppError
@@ -20,7 +20,9 @@ class UserEmailValidator extends AppValidator
   public function rules()
   {
     return [
-      'email' => 'required|unique:users|email',
+      'email' => array_merge($this->emailRules, [
+        'required'
+      ]),
     ];
   }
 }

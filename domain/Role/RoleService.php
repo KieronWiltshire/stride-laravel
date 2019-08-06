@@ -240,9 +240,9 @@ class RoleService
    * @param \Domain\User\User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  public function getRolesFromUser(User $user)
+  public function getRolesForUser(User $user)
   {
-    return $this->roleRepository->getRolesFromUser($user);
+    return $this->roleRepository->getRolesForUser($user);
   }
 
   /**

@@ -3,9 +3,8 @@
 namespace Domain\User\Validators;
 
 use Domain\User\Exceptions\CannotUpdateUserException;
-use Support\Validators\AppValidator;
 
-class UserUpdateValidator extends AppValidator
+class UserUpdateValidator extends UserValidator
 {
   /**
    * @var \Support\Exceptions\AppError
@@ -20,8 +19,8 @@ class UserUpdateValidator extends AppValidator
   public function rules()
   {
     return [
-      'email' => 'unique:users|email',
-      'password' => 'min:6',
+      'email' => $this->emailRules,
+      'password' => $this->passwordRules,
     ];
   }
 }
