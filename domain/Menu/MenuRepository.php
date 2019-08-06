@@ -2,12 +2,43 @@
 
 namespace Domain\Menu;
 
+use Domain\Menu\Events\MenuCreatedEvent;
+use Domain\Menu\Events\MenuUpdatedEvent;
+use Domain\Menu\Exceptions\MenuNotFoundException;
+use Domain\Menu\Menu;
+use Domain\Menu\Validators\MenuCreateValidator;
+use Domain\Menu\Validators\MenuUpdateValidator;
 use Domain\User\User;
+use Exception;
 use Support\Repositories\AppRepository;
 use Domain\Menu\Contracts\Repositories\MenuRepository as MenuRepositoryInterface;
 
 class UserRepository extends AppRepository implements MenuRepositoryInterface
 {
+  /**
+   * @var \Domain\Menu\Validators\MenuCreateValidator
+   */
+  protected $menuCreateValidator;
+
+  /**
+   * @var \Domain\Menu\Validators\MenuUpdateValidator
+   */
+  protected $menuUpdateValidator;
+
+  /**
+   * Create a new user repository instance.
+   *
+   * @param \Domain\Menu\Validators\MenuCreateValidator $menuCreateValidator
+   * @param \Domain\Menu\Validators\MenuUpdateValidator $menuUpdateValidator
+   */
+  public function __construct(
+    MenuCreateValidator $menuCreateValidator,
+    MenuUpdateValidator $menuUpdateValidator
+  ) {
+    $this->menuCreateValidator = $menuCreateValidator;
+    $this->menuUpdateValidator = $menuUpdateValidator;
+  }
+
   /**
    * Retrieve all of the menus.
    *
@@ -15,7 +46,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    */
   function all()
   {
-    // TODO: Implement all() method.
+    return $this->execute(Menu::query());
   }
 
   /**
@@ -28,7 +59,15 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    */
   function create($attributes)
   {
-    // TODO: Implement create() method.
+    $this->menuCreateValidator->validate($attributes);
+
+    if ($user = Menu::create($attributes)) {
+      event(new MenuCreatedEvent($user));
+
+      return $user;
+    }
+
+    throw new Exception();
   }
 
   /**
@@ -45,7 +84,17 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    */
   function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
-    // TODO: Implement firstOrCreate() method.
+    $query = Menu::query();
+
+    if ($regex) {
+      $query->where($parameter, 'REGEXP', $search);
+    } else {
+      $query->where($parameter, $search);
+    }
+
+    $menu = $this->execute($query, true);
+
+    return ($menu) ? $menu : $this->create($attributes);
   }
 
   /**
@@ -58,7 +107,19 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    */
   function find($parameter, $search, $regex = true)
   {
-    // TODO: Implement find() method.
+    $query = Menu::query();
+
+    if (is_array($parameter)) {
+      $query->whereIn($parameter, $search);
+    } else {
+      if ($regex) {
+        $query->where($parameter, 'REGEXP', $search);
+      } else {
+        $query->where($parameter, $search);
+      }
+    }
+
+    return $this->execute($query);
   }
 
   /**
@@ -71,7 +132,13 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    */
   function findById($id)
   {
-    // TODO: Implement findById() method.
+    $menu = $this->execute(Menu::where('id', $id), true);
+
+    if (!$menu) {
+      throw new MenuNotFoundException();
+    }
+
+    return $menu;
   }
 
   /**
@@ -85,7 +152,17 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    */
   function update(Menu $menu, $attributes)
   {
-    // TODO: Implement update() method.
+    $this->menuUpdateValidator->validate($attributes);
+
+    foreach ($attributes as $attr => $value) {
+      $menu->$attr = $value;
+    }
+
+    if ($menu->save()) {
+      event(new MenuUpdatedEvent($menu, $attributes));
+
+      return $menu;
+    }
   }
 
   /**
@@ -97,5 +174,6 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
   function getMenusForUser(User $user)
   {
     // TODO: Implement getMenusForUser() method.
+    return $this->execute(Menu::where('user_id', $user->id), true);
   }
 }

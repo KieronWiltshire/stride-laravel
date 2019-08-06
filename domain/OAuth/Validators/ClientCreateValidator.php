@@ -3,9 +3,8 @@
 namespace Domain\OAuth\Validators;
 
 use Domain\OAuth\Exceptions\CannotCreateClientException;
-use Support\Validators\AppValidator;
 
-class ClientCreateValidator extends AppValidator
+class ClientCreateValidator extends ClientValidator
 {
   /**
    * @var \Support\Exceptions\AppError
@@ -20,11 +19,10 @@ class ClientCreateValidator extends AppValidator
   public function rules()
   {
     return [
-      'name' => 'required|max:255',
-      'redirect' => [
+      'name' => array_merge($this->nameRules, [
         'required',
-        app()->make('\Laravel\Passport\Http\Rules\RedirectRule')
-      ],
+      ]),
+      'redirect' => $this->redirectRules(),
     ];
   }
 }

@@ -178,7 +178,7 @@ interface PermissionRepository extends AppRepository
    * @param \Domain\Role\Role $role
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
    */
-  function getPermissionsFromRole(Role $role);
+  function getPermissionsForRole(Role $role);
 
   /**
    * Retrieve all of the permissions for the specified user.
@@ -186,7 +186,7 @@ interface PermissionRepository extends AppRepository
    * @param \Domain\User\User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
    */
-  function getPermissionsFromUser(User $user);
+  function getPermissionsForUser(User $user);
 
   /**
    * Retrieve all of the roles that have access to the specified permission.

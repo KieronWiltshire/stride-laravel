@@ -3,9 +3,8 @@
 namespace Domain\Permission\Validators;
 
 use Domain\Permission\Exceptions\CannotUpdatePermissionException;
-use Support\Validators\AppValidator;
 
-class PermissionUpdateValidator extends AppValidator
+class PermissionUpdateValidator extends PermissionValidator
 {
   /**
    * @var \Support\Exceptions\AppError
@@ -20,9 +19,9 @@ class PermissionUpdateValidator extends AppValidator
   public function rules()
   {
     return [
-      'name' => 'unique:permissions|alpha_dash',
-      'display_name' => '',
-      'description' => '',
+      'name' => $this->nameRules,
+      'display_name' => $this->displayNameRules,
+      'description' => $this->descriptionRules,
     ];
   }
 }

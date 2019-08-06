@@ -153,7 +153,7 @@ interface RoleRepository extends AppRepository
    * @param \Domain\User\User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
-  function getRolesFromUser(User $user);
+  function getRolesForUser(User $user);
 
   /**
    * Retrieve all of the users that are associated with the specified role.

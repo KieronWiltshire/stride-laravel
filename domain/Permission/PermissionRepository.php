@@ -316,7 +316,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
    * @param \Domain\Role\Role $role
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
    */
-  public function getPermissionsFromRole(Role $role)
+  public function getPermissionsForRole(Role $role)
   {
     return $role->permissions;
   }
@@ -327,7 +327,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
    * @param \Domain\User\User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
    */
-  public function getPermissionsFromUser(User $user)
+  public function getPermissionsForUser(User $user)
   {
     return $user->permissions;
   }

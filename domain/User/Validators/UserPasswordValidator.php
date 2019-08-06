@@ -3,9 +3,8 @@
 namespace Domain\User\Validators;
 
 use Domain\User\Exceptions\InvalidPasswordException;
-use Support\Validators\AppValidator;
 
-class UserPasswordValidator extends AppValidator
+class UserPasswordValidator extends UserValidator
 {
   /**
    * @var \Support\Exceptions\AppError
@@ -20,7 +19,9 @@ class UserPasswordValidator extends AppValidator
   public function rules()
   {
     return [
-      'password' => 'required|min:6',
+      'password' => array_merge($this->passwordRules, [
+        'required'
+      ]),
     ];
   }
 }
