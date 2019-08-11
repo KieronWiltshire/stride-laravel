@@ -8,7 +8,7 @@ use Support\Exceptions\AppError;
 class MenuUpdateValidator extends MenuValidator
 {
   /**
-   * @var AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotUpdateMenuException::class;
 

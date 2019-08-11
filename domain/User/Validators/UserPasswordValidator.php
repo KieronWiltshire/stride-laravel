@@ -8,7 +8,7 @@ use Support\Exceptions\AppError;
 class UserPasswordValidator extends UserValidator
 {
   /**
-   * @var AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = InvalidPasswordException::class;
 

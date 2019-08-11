@@ -8,7 +8,7 @@ use Support\Exceptions\AppError;
 class RoleCreateValidator extends RoleValidator
 {
   /**
-   * @var AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotCreateRoleException::class;
 

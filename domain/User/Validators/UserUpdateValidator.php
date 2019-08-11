@@ -8,7 +8,7 @@ use Support\Exceptions\AppError;
 class UserUpdateValidator extends UserValidator
 {
   /**
-   * @var AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotUpdateUserException::class;
 

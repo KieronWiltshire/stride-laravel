@@ -9,7 +9,7 @@ use Support\Validators\AppValidator;
 class UserEmailValidator extends UserValidator
 {
   /**
-   * @var AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = InvalidEmailException::class;
 

@@ -9,7 +9,7 @@ use Support\Validators\AppValidator;
 class UserCreateValidator extends AppValidator
 {
   /**
-   * @var AppError
+   * @var \Support\Exceptions\AppError
    */
   protected $exception = CannotCreateUserException::class;
 

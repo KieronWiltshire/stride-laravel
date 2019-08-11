@@ -7,9 +7,9 @@ use Support\Exceptions\AppError;
 
 class RoleUpdateValidator extends RoleValidator
 {
-  /**
-   * @var AppError
-   */
+    /**
+     * @var \Support\Exceptions\AppError
+     */
   protected $exception = CannotUpdateRoleException::class;
 
   /**
