@@ -3,11 +3,12 @@
 namespace Domain\Menu\Validators;
 
 use Domain\Menu\Exceptions\CannotCreateMenuException;
+use Support\Exceptions\AppError;
 
 class MenuCreateValidator extends MenuValidator
 {
   /**
-   * @var \Support\Exceptions\AppError
+   * @var AppError
    */
   protected $exception = CannotCreateMenuException::class;
 

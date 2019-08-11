@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\OAuth;
 use Domain\OAuth\Exceptions\InvalidAuthorizationRequestException;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Zend\Diactoros\Response as Psr7Response;
 use League\OAuth2\Server\AuthorizationServer;
 use Laravel\Passport\Http\Controllers\RetrievesAuthRequestFromSession;
@@ -16,14 +17,14 @@ class ApproveAuthorizationController
   /**
    * The authorization server.
    *
-   * @var \League\OAuth2\Server\AuthorizationServer
+   * @var AuthorizationServer
    */
   protected $server;
 
   /**
    * Create a new controller instance.
    *
-   * @param \League\OAuth2\Server\AuthorizationServer $server
+   * @param AuthorizationServer $server
    */
   public function __construct(
     AuthorizationServer $server
@@ -34,8 +35,8 @@ class ApproveAuthorizationController
   /**
    * Approve the authorization request.
    *
-   * @param \Illuminate\Http\Request $request
-   * @return \Illuminate\Http\Response
+   * @param Request $request
+   * @return Response
    */
   public function approve(Request $request)
   {

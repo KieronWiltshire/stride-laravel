@@ -4,32 +4,35 @@ namespace Domain\Menu;
 
 use Domain\Menu\Events\MenuCreatedEvent;
 use Domain\Menu\Events\MenuUpdatedEvent;
+use Domain\Menu\Exceptions\CannotCreateMenuException;
+use Domain\Menu\Exceptions\CannotUpdateMenuException;
 use Domain\Menu\Exceptions\MenuNotFoundException;
 use Domain\Menu\Menu;
 use Domain\Menu\Validators\MenuCreateValidator;
 use Domain\Menu\Validators\MenuUpdateValidator;
 use Domain\User\User;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
 use Support\Repositories\AppRepository;
 use Domain\Menu\Contracts\Repositories\MenuRepository as MenuRepositoryInterface;
 
 class UserRepository extends AppRepository implements MenuRepositoryInterface
 {
   /**
-   * @var \Domain\Menu\Validators\MenuCreateValidator
+   * @var MenuCreateValidator
    */
   protected $menuCreateValidator;
 
   /**
-   * @var \Domain\Menu\Validators\MenuUpdateValidator
+   * @var MenuUpdateValidator
    */
   protected $menuUpdateValidator;
 
   /**
    * Create a new user repository instance.
    *
-   * @param \Domain\Menu\Validators\MenuCreateValidator $menuCreateValidator
-   * @param \Domain\Menu\Validators\MenuUpdateValidator $menuUpdateValidator
+   * @param MenuCreateValidator $menuCreateValidator
+   * @param MenuUpdateValidator $menuUpdateValidator
    */
   public function __construct(
     MenuCreateValidator $menuCreateValidator,
@@ -42,7 +45,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
   /**
    * Retrieve all of the menus.
    *
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+   * @return Collection<\Domain\Menu\Menu>
    */
   function all()
   {
@@ -55,7 +58,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    * @param array $attributes
    * @return \Domain\Menu\Menu
    *
-   * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
+   * @throws CannotCreateMenuException
    */
   function create($attributes)
   {
@@ -80,7 +83,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    * @param array $attributes
    * @return \Domain\Menu\Menu
    *
-   * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
+   * @throws CannotCreateMenuException
    */
   function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
@@ -103,7 +106,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    * @param number|string $parameter
    * @param number|string|array $search
    * @param boolean $regex
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+   * @return Collection<\Domain\Menu\Menu>
    */
   function find($parameter, $search, $regex = true)
   {
@@ -128,7 +131,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    * @param string $id
    * @return \Domain\Menu\Menu
    *
-   * @throws \Domain\Menu\Exceptions\MenuNotFoundException
+   * @throws MenuNotFoundException
    */
   function findById($id)
   {
@@ -148,7 +151,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
    * @param array $attributes
    * @return \Domain\Menu\Menu
    *
-   * @throws \Domain\Menu\Exceptions\CannotUpdateMenuException
+   * @throws CannotUpdateMenuException
    */
   function update(Menu $menu, $attributes)
   {
@@ -168,8 +171,8 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
   /**
    * Retrieve all of the menus for the specified user.
    *
-   * @param \Domain\User\User $user
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+   * @param User $user
+   * @return Collection<\Domain\Menu\Menu>
    */
   function getMenusForUser(User $user)
   {

@@ -5,6 +5,7 @@ namespace App\Transformers;
 use App\Transformers\PermissionTransformer;
 use Domain\Role\Role;
 use Domain\Permission\PermissionService;
+use League\Fractal\Resource\Collection;
 use League\Fractal\TransformerAbstract;
 
 class RoleTransformer extends TransformerAbstract
@@ -19,7 +20,7 @@ class RoleTransformer extends TransformerAbstract
   ];
 
   /**
-   * @var \Domain\Permission\PermissionService
+   * @var PermissionService
    */
   protected $permissionService;
 
@@ -31,7 +32,7 @@ class RoleTransformer extends TransformerAbstract
   /**
    * Create a new role transformer instance
    *
-   * @param \Domain\Permission\PermissionService $permissionService
+   * @param PermissionService $permissionService
    * @param \App\Transformers\PermissionTransformer $permissionTransformer
    */
   public function __construct(
@@ -57,7 +58,7 @@ class RoleTransformer extends TransformerAbstract
   /**
    * Include Permissions.
    *
-   * @return \League\Fractal\Resource\Collection
+   * @return Collection
    */
   public function includePermissions($role)
   {

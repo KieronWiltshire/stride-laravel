@@ -3,20 +3,25 @@
 namespace Domain\Role;
 
 use Domain\Role\Contracts\Repositories\RoleRepository;
+use Domain\Role\Exceptions\CannotCreateRoleException;
+use Domain\Role\Exceptions\CannotUpdateRoleException;
+use Domain\Role\Exceptions\RoleNotFoundException;
+use Domain\Role\Exceptions\UnableToSetDefaultRoleException;
 use Domain\User\User;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 class RoleService
 {
   /**
-   * @var \Domain\Role\Contracts\Repositories\RoleRepository
+   * @var RoleRepository
    */
   protected $roleRepository;
 
   /**
    * Create a new user service instance.
    *
-   * @param \Domain\Role\Contracts\Repositories\RoleRepository $roleRepository
+   * @param RoleRepository $roleRepository
    */
   public function __construct(
     RoleRepository $roleRepository
@@ -38,9 +43,9 @@ class RoleService
    * Create a new role.
    *
    * @param array $attributes
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\CannotCreateRoleException
+   * @throws CannotCreateRoleException
    */
   public function create($attributes)
   {
@@ -55,9 +60,9 @@ class RoleService
    * @param number|string $search
    * @param boolean $regex
    * @param array $attributes
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\CannotCreateRoleException
+   * @throws CannotCreateRoleException
    */
   public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
@@ -81,9 +86,9 @@ class RoleService
    * Find a role by identifier.
    *
    * @param string $id
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws RoleNotFoundException
    */
   public function findById($id)
   {
@@ -94,9 +99,9 @@ class RoleService
    * Find a role by name.
    *
    * @param string $name
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws RoleNotFoundException
    */
   public function findByName($name)
   {
@@ -106,10 +111,10 @@ class RoleService
   /**
    * Set the specified role as the default role.
    *
-   * @param \Domain\Role\Role $role
+   * @param Role $role
    * @return void
    *
-   * @throws \Domain\Role\Exceptions\UnableToSetDefaultRoleException
+   * @throws UnableToSetDefaultRoleException
    */
   public function setDefaultRole(Role $role)
   {
@@ -119,9 +124,9 @@ class RoleService
   /**
    * Retrieve the default user role.
    *
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws RoleNotFoundException
    */
   public function getDefaultRole()
   {
@@ -131,11 +136,11 @@ class RoleService
   /**
    * Update a role.
    *
-   * @param \Domain\Role\Role $role
+   * @param Role $role
    * @param array $attributes
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\CannotUpdateRoleException
+   * @throws CannotUpdateRoleException
    */
   public function update(Role $role, $attributes)
   {
@@ -147,7 +152,7 @@ class RoleService
    *
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
+   * @return LengthAwarePaginator<\Domain\Role\Role>
    */
   public function index($limit = null, $offset = 1)
   {
@@ -162,7 +167,7 @@ class RoleService
    * @param boolean $regex
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
+   * @return LengthAwarePaginator<\Domain\Role\Role>
    */
   public function search($parameter, $search, $regex = true, $limit = null, $offset = 1)
   {
@@ -172,10 +177,10 @@ class RoleService
   /**
    * Add a role to the user.
    *
-   * @param \Domain\User\User $user
-   * @param \Domain\Role\Role $role
+   * @param User $user
+   * @param Role $role
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function addRoleToUser(User $user, Role $role, $persist = true)
   {
@@ -185,10 +190,10 @@ class RoleService
   /**
    * Add roles to the user.
    *
-   * @param \Domain\User\User $user
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param User $user
+   * @param Collection|array $roles
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function addRolesToUser(User $user, $roles = [], $persist = true)
   {
@@ -198,10 +203,10 @@ class RoleService
   /**
    * Remove a role from the user.
    *
-   * @param \Domain\User\User $user
-   * @param \Domain\Role\Role $role
+   * @param User $user
+   * @param Role $role
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function removeRoleFromUser(User $user, Role $role, $persist = true)
   {
@@ -211,10 +216,10 @@ class RoleService
   /**
    * Remove roles from the user.
    *
-   * @param \Domain\User\User $user
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param User $user
+   * @param Collection|array $roles
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function removeRolesFromUser(User $user, $roles = [], $persist = true)
   {
@@ -224,10 +229,10 @@ class RoleService
   /**
    * Set all of the roles of the specified user.
    *
-   * @param \Domain\User\User $user
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param User $user
+   * @param Collection|array $roles
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function setUserRoles(User $user, $roles = [], $persist = true)
   {
@@ -237,7 +242,7 @@ class RoleService
   /**
    * Retrieve all of the roles for the specified user.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
   public function getRolesForUser(User $user)
@@ -248,8 +253,8 @@ class RoleService
   /**
    * Determine if the given user has the specified role assigned.
    *
-   * @param \Domain\User\User $user
-   * @param \Domain\Role\Role $role
+   * @param User $user
+   * @param Role $role
    * @return bool
    */
   public function userHasRole(User $user, Role $role)
@@ -260,8 +265,8 @@ class RoleService
   /**
    * Determine if the given user has the specified roles assigned.
    *
-   * @param \Domain\User\User $user
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param User $user
+   * @param Collection|array $roles
    * @return bool
    */
   public function userHasRoles(User $user, $roles)
@@ -277,7 +282,7 @@ class RoleService
   /**
    * Retrieve all of the users that are associated with the specified role.
    *
-   * @param \Domain\Role\Role $role
+   * @param Role $role
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
   public function getUsersWithRole(Role $role)
@@ -288,7 +293,7 @@ class RoleService
   /**
    * Retrieve all of the users that are associated with any of the specified roles.
    *
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param Collection|array $roles
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
   public function getUsersWithRoles($roles = [])

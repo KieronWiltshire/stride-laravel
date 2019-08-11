@@ -7,17 +7,25 @@ use Domain\User\Contracts\Repositories\UserRepository;
 use Domain\User\Events\PasswordResetTokenGeneratedEvent;
 use Domain\User\Events\UserEmailVerifiedEvent;
 use Domain\User\Events\UserPasswordResetEvent;
+use Domain\User\Exceptions\CannotCreateUserException;
+use Domain\User\Exceptions\CannotUpdateUserException;
+use Domain\User\Exceptions\InvalidEmailException;
 use Domain\User\Exceptions\InvalidEmailVerificationTokenException;
+use Domain\User\Exceptions\InvalidPasswordException;
 use Domain\User\Exceptions\InvalidPasswordResetTokenException;
 use Domain\User\Exceptions\PasswordResetTokenExpiredException;
+use Domain\User\Exceptions\UserNotFoundException;
 use Domain\User\Mail\EmailVerificationToken;
 use Domain\User\Mail\PasswordResetToken;
 use Domain\User\Validators\UserEmailValidator;
 use Domain\User\Validators\UserPasswordValidator;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 
 class UserService
 {
@@ -27,12 +35,12 @@ class UserService
   protected $userRepository;
 
   /**
-   * @var \Domain\User\\Validators\UserEmailValidator
+   * @var \Domain\User\Validators\UserEmailValidator
    */
   protected $userEmailValidator;
 
   /**
-   * @var \Domain\User\\Validators\UserPasswordValidator
+   * @var \Domain\User\Validators\UserPasswordValidator
    */
   protected $userPasswordValidator;
 
@@ -56,7 +64,7 @@ class UserService
   /**
    * Retrieve all of the users.
    *
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\\User>
+   * @return Collection<\Domain\User\\User>
    */
   public function all()
   {
@@ -67,9 +75,9 @@ class UserService
    * Create a new user.
    *
    * @param array $attributes
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\CannotCreateUserException
+   * @throws CannotCreateUserException
    */
   public function create($attributes)
   {
@@ -88,9 +96,9 @@ class UserService
    * @param number|string $search
    * @param boolean $regex
    * @param array $attributes
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\CannotCreateUserException
+   * @throws CannotCreateUserException
    */
   public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
@@ -107,7 +115,7 @@ class UserService
    * @param number|string $parameter
    * @param number|string|array $search
    * @param boolean $regex
-   * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+   * @return Collection<\Domain\User\User>
    */
   public function find($parameter, $search, $regex = true)
   {
@@ -118,9 +126,9 @@ class UserService
    * Find a user by identifier.
    *
    * @param string $id
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws UserNotFoundException
    */
   public function findById($id)
   {
@@ -131,9 +139,9 @@ class UserService
    * Find a user by email.
    *
    * @param string $email
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws UserNotFoundException
    */
   public function findByEmail($email)
   {
@@ -143,11 +151,11 @@ class UserService
   /**
    * Update a user.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @param array $attributes
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\CannotUpdateUserException
+   * @throws CannotUpdateUserException
    */
   public function update(User $user, $attributes)
   {
@@ -159,9 +167,9 @@ class UserService
    *
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
+   * @return LengthAwarePaginator<\Domain\User\User>
    *
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws InvalidPaginationException
    */
   public function index($limit = null, $offset = 1)
   {
@@ -176,7 +184,7 @@ class UserService
    * @param boolean $regex
    * @param integer $limit
    * @param integer $offset
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
+   * @return LengthAwarePaginator<\Domain\User\User>
    */
   public function search($parameter, $search, $regex = true, $limit = null, $offset = 1)
   {
@@ -187,11 +195,11 @@ class UserService
    * Router a new email verification token be generated with
    * the user's new email address to verify.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @param string $email
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\InvalidEmailException
+   * @throws InvalidEmailException
    */
   public function requestEmailChange(User $user, $email)
   {
@@ -214,12 +222,12 @@ class UserService
    * Verify the user's specified email address and set their
    * email to the new one encoded within the token.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @param string $emailVerificationToken
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\InvalidEmailException
-   * @throws \Domain\User\Exceptions\InvalidEmailVerificationTokenException
+   * @throws InvalidEmailException
+   * @throws InvalidEmailVerificationTokenException
    */
   public function verifyEmail(User $user, $emailVerificationToken)
   {
@@ -276,10 +284,10 @@ class UserService
   /**
    * Send the email verification email.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @return void
    *
-   * @throws \Domain\User\Exceptions\InvalidEmailVerificationTokenException
+   * @throws InvalidEmailVerificationTokenException
    */
   public function sendEmailVerificationToken(User $user)
   {
@@ -299,8 +307,8 @@ class UserService
   /**
    * Create's a password reset token for the specified user.
    *
-   * @param \Domain\User\User $user
-   * @return \Domain\User\User
+   * @param User $user
+   * @return User
    */
   public function forgotPassword(User $user)
   {
@@ -318,14 +326,14 @@ class UserService
   /**
    * Reset a user's password using the password reset token.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @param string $password
    * @param string $passwordResetToken
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\InvalidPasswordException
-   * @throws \Domain\User\Exceptions\PasswordResetTokenExpiredException
-   * @throws \Domain\User\Exceptions\InvalidPasswordResetTokenException
+   * @throws InvalidPasswordException
+   * @throws PasswordResetTokenExpiredException
+   * @throws InvalidPasswordResetTokenException
    */
   public function resetPassword(User $user, $password, $passwordResetToken)
   {
@@ -382,7 +390,7 @@ class UserService
   /**
    * Send the user a password reset email.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @return void
    */
   public function sendPasswordResetToken(User $user)

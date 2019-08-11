@@ -12,7 +12,7 @@ class RoleUpdatedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \Domain\Role\Role
+   * @var Role
    */
   private $role;
 
@@ -24,7 +24,7 @@ class RoleUpdatedEvent
   /**
    * Create a new event instance.
    *
-   * @param \Domain\Role\Role $role
+   * @param Role $role
    * @param array $attributes
    */
   public function __construct(Role $role, $attributes)
@@ -36,7 +36,7 @@ class RoleUpdatedEvent
   /**
    * Retrieve the updated role.
    *
-   * @return \Domain\Role\Role
+   * @return Role
    */
   public function role()
   {

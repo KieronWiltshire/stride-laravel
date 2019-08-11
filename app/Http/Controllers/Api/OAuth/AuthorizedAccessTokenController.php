@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
+use Domain\OAuth\Exceptions\TokenNotFoundException;
 use Domain\OAuth\TokenRepository;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Response;
 
 class AuthorizedAccessTokenController
 {
   /**
    * The token repository implementation.
    *
-   * @var \Domain\OAuth\TokenRepository
+   * @var TokenRepository
    */
   protected $tokenRepository;
 
   /**
    * Create a new controller instance.
    *
-   * @param \Domain\OAuth\TokenRepository $tokenRepository
+   * @param TokenRepository $tokenRepository
    */
   public function __construct(
     TokenRepository $tokenRepository
@@ -27,7 +30,7 @@ class AuthorizedAccessTokenController
   /**
    * Get all of the authorized tokens for the authenticated user.
    *
-   * @return \Illuminate\Database\Eloquent\Collection
+   * @return Collection
    */
   public function forUser()
   {
@@ -45,9 +48,9 @@ class AuthorizedAccessTokenController
    * Delete the given token.
    *
    * @param  string  $tokenId
-   * @return \Illuminate\Http\Response
+   * @return Response
    *
-   * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
+   * @throws TokenNotFoundException
    */
   public function destroy($tokenId)
   {

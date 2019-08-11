@@ -3,11 +3,12 @@
 namespace Domain\User\Validators;
 
 use Domain\User\Exceptions\CannotUpdateUserException;
+use Support\Exceptions\AppError;
 
 class UserUpdateValidator extends UserValidator
 {
   /**
-   * @var \Support\Exceptions\AppError
+   * @var AppError
    */
   protected $exception = CannotUpdateUserException::class;
 

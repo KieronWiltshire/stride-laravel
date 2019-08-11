@@ -2,10 +2,21 @@
 
 namespace Domain\Role;
 
+use Domain\Role\Contracts\Repositories\RoleRepository as RoleRepositoryInterface;
+use Domain\Role\RoleRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RoleServiceProvider extends ServiceProvider
 {
+  /**
+   * All of the container bindings that should be registered.
+   *
+   * @var array
+   */
+  public $bindings = [
+    RoleRepositoryInterface::class => RoleRepository::class,
+  ];
+
   /**
    * Register services.
    *
@@ -13,10 +24,6 @@ class RoleServiceProvider extends ServiceProvider
    */
   public function register()
   {
-    $this->app->bind(
-      'Domain\Role\Contracts\Repositories\RoleRepository',
-      'Domain\Role\RoleRepository'
-    );
   }
 
   /**
@@ -26,5 +33,8 @@ class RoleServiceProvider extends ServiceProvider
    */
   public function boot()
   {
+    parent::boot();
+
+    //
   }
 }

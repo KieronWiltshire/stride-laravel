@@ -3,11 +3,12 @@
 namespace Domain\User\Validators;
 
 use Domain\User\Exceptions\InvalidPasswordException;
+use Support\Exceptions\AppError;
 
 class UserPasswordValidator extends UserValidator
 {
   /**
-   * @var \Support\Exceptions\AppError
+   * @var AppError
    */
   protected $exception = InvalidPasswordException::class;
 

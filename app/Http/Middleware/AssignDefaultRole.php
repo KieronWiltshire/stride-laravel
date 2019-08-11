@@ -5,19 +5,20 @@ namespace App\Http\Middleware;
 use Closure;
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\RoleService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AssignDefaultRole
 {
   /**
-   * @var \Domain\Role\RoleService
+   * @var RoleService
    */
   private $roleService;
 
   /**
    * Create a new assign default role middleware instance.
    * .
-   * @param \Domain\Role\RoleService $roleService
+   * @param RoleService $roleService
    */
   public function __construct(
     RoleService $roleService
@@ -28,8 +29,8 @@ class AssignDefaultRole
   /**
    * Handle an incoming request.
    *
-   * @param \Illuminate\Http\Request $request
-   * @param \Closure $next
+   * @param Request $request
+   * @param Closure $next
    * @param  string|null  $guard
    * @return mixed
    */

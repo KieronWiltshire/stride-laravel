@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Support\Exceptions\AppError;
 use Support\Exceptions\Http\TooManyRequestsError;
 use Support\Exceptions\Auth\AuthenticationFailedException;
@@ -48,9 +50,9 @@ class Handler extends ExceptionHandler
   /**
    * Report or log an exception.
    *
-   * @param \Exception $exception
+   * @param Exception $exception
    * @return void
-   * @throws \Exception
+   * @throws Exception
    */
   public function report(Exception $exception)
   {
@@ -60,9 +62,9 @@ class Handler extends ExceptionHandler
   /**
    * Render an exception into an HTTP response.
    *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \Exception  $exception
-   * @return \Illuminate\Http\Response
+   * @param  Request  $request
+   * @param Exception $exception
+   * @return Response
    */
   public function render($request, Exception $exception)
   {
@@ -80,9 +82,9 @@ class Handler extends ExceptionHandler
 
   /**
    * Conform the exception to an application standard.
-   * 
-   * @param \Exception $exception
-   * @return \Support\Exceptions\AppError
+   *
+   * @param Exception $exception
+   * @return AppError
    */
   public function conform(Exception $exception)
   {
@@ -192,8 +194,8 @@ class Handler extends ExceptionHandler
   /**
    * Conform the http exception to an application standard error.
    *
-   * @param \Symfony\Component\HttpKernel\Exception\HttpException $exception
-   * @return \Support\Exceptions\AppError
+   * @param HttpException $exception
+   * @return AppError
    */
   public function conformHttpExceptionToAppError(HttpException $exception)
   {
@@ -226,8 +228,8 @@ class Handler extends ExceptionHandler
   /**
    * Conform the authorization exception to an application standard error.
    *
-   * @param \Illuminate\Auth\Access\AuthorizationException $exception
-   * @return \Support\Exceptions\AppError
+   * @param AuthorizationException $exception
+   * @return AppError
    */
   public function conformAuthorizationExceptionToAppError(AuthorizationException $exception)
   {

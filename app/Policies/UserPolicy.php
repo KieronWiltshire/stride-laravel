@@ -14,8 +14,8 @@ class UserPolicy extends BasePolicy
    * Determine if the given user can view other user details such
    * as their email address.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\User\User $userToView
+   * @param User|null $user
+   * @param User $userToView
    * @return bool
    */
   public function view(?User $user, User $userToView)
@@ -31,8 +31,8 @@ class UserPolicy extends BasePolicy
   /**
    * Determine if the given user can be updated by the specified user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\User\User $userToUpdate
+   * @param User|null $user
+   * @param User $userToUpdate
    * @return bool
    */
   public function update(?User $user, User $userToUpdate)
@@ -48,8 +48,8 @@ class UserPolicy extends BasePolicy
   /**
    * Determine if the specified user can assign roles to the given user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\User\User $userToAssign
+   * @param User|null $user
+   * @param User $userToAssign
    * @return bool
    */
   public function assignRole(?User $user, User $userToAssign)
@@ -64,8 +64,8 @@ class UserPolicy extends BasePolicy
   /**
    * Determine if the specified user can deny roles to the given user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\User\User $userToDeny
+   * @param User|null $user
+   * @param User $userToDeny
    * @return bool
    */
   public function denyRole(?User $user, User $userToDeny)
@@ -80,8 +80,8 @@ class UserPolicy extends BasePolicy
   /**
    * Determine if the specified user can assign permissions to the given user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\User\User $userToAssign
+   * @param User|null $user
+   * @param User $userToAssign
    * @return bool
    */
   public function assignPermission(?User $user, User $userToAssign)
@@ -96,8 +96,8 @@ class UserPolicy extends BasePolicy
   /**
    * Determine if the specified user can deny permissions to the given user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\User\User $userToDeny
+   * @param User|null $user
+   * @param User $userToDeny
    * @return bool
    */
   public function denyPermission(?User $user, User $userToDeny)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\JsonResponse;
 use Support\Exceptions\Auth\AuthenticationFailedException;
 use App\Http\Controllers\Controller;
 use Domain\User\Exceptions\UserNotFoundException;
@@ -13,20 +14,20 @@ use Lcobucci\JWT\Parser;
 class AuthController extends Controller
 {
   /**
-   * @var \Domain\User\UserService
+   * @var UserService
    */
   protected $userService;
 
   /**
-   * @var \App\Transformers\UserTransformer
+   * @var UserTransformer
    */
   protected $userTransformer;
 
   /**
    * Create a new auth controller instance
    *
-   * @param \Domain\User\UserService $userService
-   * @param \App\Transformers\UserTransformer $userTransformer
+   * @param UserService $userService
+   * @param UserTransformer $userTransformer
    */
   public function __construct(
     UserService $userService,
@@ -39,7 +40,7 @@ class AuthController extends Controller
   /**
    * Retrieve an authentication token.
    *
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function login()
   {
@@ -73,7 +74,7 @@ class AuthController extends Controller
   /**
    * Get the authenticated User.
    *
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function me()
   {
@@ -83,7 +84,7 @@ class AuthController extends Controller
   /**
    * Log the user out (Invalidate the token).
    *
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function logout()
   {

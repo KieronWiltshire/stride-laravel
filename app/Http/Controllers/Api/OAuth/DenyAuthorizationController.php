@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api\OAuth;
 
 use Domain\OAuth\Exceptions\InvalidAuthorizationRequestException;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Laravel\Passport\Http\Controllers\RetrievesAuthRequestFromSession;
@@ -14,14 +15,14 @@ class DenyAuthorizationController
   /**
    * The response factory implementation.
    *
-   * @var \Illuminate\Contracts\Routing\ResponseFactory
+   * @var ResponseFactory
    */
   protected $response;
 
   /**
    * Create a new controller instance.
    *
-   * @param  \Illuminate\Contracts\Routing\ResponseFactory  $response
+   * @param ResponseFactory $response
    */
   public function __construct(
     ResponseFactory $response
@@ -32,7 +33,7 @@ class DenyAuthorizationController
   /**
    * Deny the authorization request.
    *
-   * @return \Illuminate\Http\RedirectResponse
+   * @return RedirectResponse
    */
   public function deny()
   {

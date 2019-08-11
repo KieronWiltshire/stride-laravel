@@ -7,6 +7,7 @@ use App\Transformers\RoleTransformer;
 use Domain\Permission\PermissionService;
 use Domain\Role\RoleService;
 use Illuminate\Support\Facades\Gate;
+use League\Fractal\Resource\Collection;
 use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
@@ -22,12 +23,12 @@ class UserTransformer extends TransformerAbstract
   ];
 
   /**
-   * @var \Domain\Permission\PermissionService
+   * @var PermissionService
    */
   protected $permissionService;
 
   /**
-   * @var \Domain\Role\RoleService
+   * @var RoleService
    */
   protected $roleService;
 
@@ -44,8 +45,8 @@ class UserTransformer extends TransformerAbstract
   /**
    * Create a new user transformer instance
    *
-   * @param \Domain\Permission\PermissionService $permissionService
-   * @param \Domain\Role\RoleService $roleService
+   * @param PermissionService $permissionService
+   * @param RoleService $roleService
    * @param \App\Transformers\RoleTransformer $roleTransformer
    * @param \App\Transformers\PermissionTransformer $permissionTransformer
    */
@@ -82,7 +83,7 @@ class UserTransformer extends TransformerAbstract
   /**
    * Include Roles.
    *
-   * @return \League\Fractal\Resource\Collection
+   * @return Collection
    */
   public function includeRoles($user)
   {
@@ -92,7 +93,7 @@ class UserTransformer extends TransformerAbstract
   /**
    * Include Permissions.
    *
-   * @return \League\Fractal\Resource\Collection
+   * @return Collection
    */
   public function includePermissions($user)
   {

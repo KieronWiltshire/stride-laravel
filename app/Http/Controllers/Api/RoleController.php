@@ -8,46 +8,52 @@ use Domain\Permission\Exceptions\PermissionNotAssignedException;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
 use Domain\Permission\PermissionService;
 use App\Transformers\PermissionTransformer;
+use Domain\Role\Exceptions\CannotCreateRoleException;
+use Domain\Role\Exceptions\CannotUpdateRoleException;
 use Domain\Role\Exceptions\RoleNotFoundException;
+use Domain\Role\Role;
 use Domain\Role\RoleService;
 use App\Transformers\RoleTransformer;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Support\Exceptions\Http\BadRequestError;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 use Support\Serializers\Fractal\OptionalDataKeySerializer;
 
 class RoleController extends Controller
 {
   /**
-   * @var \Domain\Role\RoleService
+   * @var RoleService
    */
   protected $roleService;
 
   /**
-   * @var \App\Transformers\RoleTransformer
+   * @var RoleTransformer
    */
   protected $roleTransformer;
 
   /**
-   * @var \Domain\Permission\PermissionService
+   * @var PermissionService
    */
   protected $permissionService;
 
   /**
-   * @var \App\Transformers\PermissionTransformer
+   * @var PermissionTransformer
    */
   protected $permissionTransformer;
 
   /**
-   * @var \Support\Serializers\Fractal\OptionalDataKeySerializer
+   * @var OptionalDataKeySerializer
    */
   protected $noDataKeySerializer;
 
   /**
    * Create a new role controller instance
    *
-   * @param \Domain\Role\RoleService $roleService
-   * @param \App\Transformers\RoleTransformer $roleTransformer
-   * @param \Domain\Permission\PermissionService $permissionService
-   * @param \App\Transformers\PermissionTransformer %permissionTransformer
+   * @param RoleService $roleService
+   * @param RoleTransformer $roleTransformer
+   * @param PermissionService $permissionService
+   * @param PermissionTransformer %permissionTransformer
    */
   public function __construct(
     RoleService $roleService,
@@ -65,9 +71,9 @@ class RoleController extends Controller
   /**
    * Retrieve an index of roles.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
+   * @return LengthAwarePaginator<\Domain\Role\Role>
    *
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws InvalidPaginationException
    */
   public function index()
   {
@@ -80,9 +86,9 @@ class RoleController extends Controller
   /**
    * Create a new role.
    *
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\CannotCreateRoleException
+   * @throws CannotCreateRoleException
    */
   public function create()
   {
@@ -102,9 +108,9 @@ class RoleController extends Controller
    * Retrieve a role by id.
    *
    * @param integer $id
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws RoleNotFoundException
    */
   public function getById($id)
   {
@@ -123,9 +129,9 @@ class RoleController extends Controller
    * Retrieve a role by name.
    *
    * @param string $name
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws RoleNotFoundException
    */
   public function getByName($name)
   {
@@ -143,10 +149,10 @@ class RoleController extends Controller
   /**
    * Retrieve an index of roles matching a particular search phrase.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
+   * @return LengthAwarePaginator<\Domain\Role\Role>
    *
-   * @throws \Support\Exceptions\Http\BadRequestError
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws BadRequestError
+   * @throws InvalidPaginationException
    */
   public function search()
   {
@@ -177,10 +183,10 @@ class RoleController extends Controller
    * Update a role.
    *
    * @param integer $id
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
-   * @throws \Domain\Role\Exceptions\CannotUpdateRoleException
+   * @throws RoleNotFoundException
+   * @throws CannotUpdateRoleException
    */
   public function update($id)
   {
@@ -209,7 +215,7 @@ class RoleController extends Controller
    *
    * @param $id
    * @param $permissionId
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function assignPermission($id, $permissionId)
   {
@@ -249,7 +255,7 @@ class RoleController extends Controller
    * Add the specified permissions to the specified role.
    *
    * @param $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function assignPermissions($id)
   {
@@ -297,7 +303,7 @@ class RoleController extends Controller
    *
    * @param $id
    * @param $permissionId
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function denyPermission($id, $permissionId)
   {
@@ -337,7 +343,7 @@ class RoleController extends Controller
    * Remove the specified permissions from the specified role.
    *
    * @param $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function denyPermissions($id)
   {

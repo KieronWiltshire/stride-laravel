@@ -8,30 +8,34 @@ use Domain\OAuth\Exceptions\ClientNotFoundException;
 use App\Transformers\ClientTransformer;
 use Domain\User\Exceptions\UserNotFoundException;
 use Domain\User\UserService;
+use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Laravel\Passport\Client;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 
 class ClientController extends Controller
 {
   /**
-   * @var \Domain\OAuth\ClientRepository
+   * @var ClientRepository
    */
   protected $clientRepository;
 
   /**
-   * @var \Domain\User\UserService
+   * @var UserService
    */
   protected $userService;
 
   /**
-   * @var \App\Transformers\ClientTransformer
+   * @var ClientTransformer
    */
   protected $clientTransformer;
 
   /**
    * Create a client controller instance.
    *
-   * @param \Domain\OAuth\ClientRepository $clientRepository
-   * @param \Domain\User\UserService $userService
-   * @param \App\Transformers\ClientTransformer $clientTransformer
+   * @param ClientRepository $clientRepository
+   * @param UserService $userService
+   * @param ClientTransformer $clientTransformer
    */
   public function __construct(
     ClientRepository $clientRepository,
@@ -47,10 +51,10 @@ class ClientController extends Controller
    * Get all of the clients for the specified user.
    *
    * @param integer $id
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
+   * @return LengthAwarePaginator<\Laravel\Passport\Client>
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws UserNotFoundException
+   * @throws InvalidPaginationException
    */
   public function forUser($id)
   {
@@ -79,10 +83,10 @@ class ClientController extends Controller
    * Get all of the clients for the authenticated user.
    *
    * @param integer $id
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Client>
+   * @return LengthAwarePaginator<\Laravel\Passport\Client>
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws UserNotFoundException
+   * @throws InvalidPaginationException
    */
   public function forAuthenticatedUser()
   {
@@ -92,7 +96,7 @@ class ClientController extends Controller
   /**
    * Store a new client.
    *
-   * @return \Laravel\Passport\Client
+   * @return Client
    */
   public function store()
   {
@@ -108,7 +112,7 @@ class ClientController extends Controller
    * Update the given client.
    *
    * @param string $id
-   * @return \Laravel\Passport\Client
+   * @return Client
    */
   public function update($id)
   {
@@ -132,7 +136,7 @@ class ClientController extends Controller
    * Delete the given client.
    *
    * @param string $id
-   * @return \Illuminate\Http\Response
+   * @return Response
    */
   public function destroy($id)
   {

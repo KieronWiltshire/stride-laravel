@@ -3,41 +3,48 @@
 namespace App\Http\Controllers\Api\OAuth;
 
 use App\Http\Controllers\Controller;
+use Domain\OAuth\Exceptions\CannotCreateTokenException;
 use Domain\OAuth\Exceptions\TokenNotFoundException;
 use Domain\OAuth\TokenRepository;
 use App\Transformers\TokenTransformer;
 use Domain\OAuth\Validators\TokenCreateValidator;
+use Domain\User\Exceptions\UserNotFoundException;
 use Domain\User\UserService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Http\Response;
+use Laravel\Passport\PersonalAccessTokenResult;
+use Laravel\Passport\Token;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 
 class PersonalAccessTokenController extends Controller
 {
   /**
-   * @var \Domain\OAuth\Validators\TokenCreateValidator
+   * @var TokenCreateValidator
    */
   protected $tokenCreateValidator;
 
   /**
-   * @var \Domain\OAuth\TokenRepository
+   * @var TokenRepository
    */
   protected $tokenRepository;
 
   /**
-   * @var \Domain\User\UserService
+   * @var UserService
    */
   protected $userService;
 
   /**
-   * @var \App\Transformers\TokenTransformer
+   * @var TokenTransformer
    */
   protected $tokenTransformer;
 
   /**
    * Create a controller instance.
    *
-   * @param \Domain\OAuth\Validators\TokenCreateValidator $tokenCreateValidator
-   * @param \Domain\OAuth\TokenRepository $tokenRepository
-   * @param \Domain\User\UserService $userService
-   * @param \App\Transformers\TokenTransformer $tokenTransformer
+   * @param TokenCreateValidator $tokenCreateValidator
+   * @param TokenRepository $tokenRepository
+   * @param UserService $userService
+   * @param TokenTransformer $tokenTransformer
    */
   public function __construct(
     TokenCreateValidator $tokenCreateValidator,
@@ -54,10 +61,10 @@ class PersonalAccessTokenController extends Controller
   /**
    * Get all of the personal access tokens for the authenticated user.
    *
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
+   * @return LengthAwarePaginator<\Laravel\Passport\Token>
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws UserNotFoundException
+   * @throws InvalidPaginationException
    */
   public function forAuthenticatedUser()
   {
@@ -68,10 +75,10 @@ class PersonalAccessTokenController extends Controller
    * Get all of the personal access tokens for the specified user.
    *
    * @param integer $id
-   * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
+   * @return LengthAwarePaginator<\Laravel\Passport\Token>
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws UserNotFoundException
+   * @throws InvalidPaginationException
    */
   public function forUser($id)
   {
@@ -91,9 +98,9 @@ class PersonalAccessTokenController extends Controller
   /**
    * Create a new personal access token for the user.
    *
-   * @return \Laravel\Passport\PersonalAccessTokenResult
+   * @return PersonalAccessTokenResult
    *
-   * @throws \Domain\OAuth\Exceptions\CannotCreateTokenException
+   * @throws CannotCreateTokenException
    */
   public function store()
   {
@@ -114,9 +121,9 @@ class PersonalAccessTokenController extends Controller
    * Delete the given token.
    *
    * @param string $tokenId
-   * @return \Illuminate\Http\Response
+   * @return Response
    *
-   * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
+   * @throws TokenNotFoundException
    */
   public function destroy($tokenId)
   {

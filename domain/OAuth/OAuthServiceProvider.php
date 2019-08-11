@@ -13,7 +13,6 @@ class OAuthServiceProvider extends ServiceProvider
    */
   public function register()
   {
-    //
   }
 
   /**
@@ -23,5 +22,8 @@ class OAuthServiceProvider extends ServiceProvider
    */
   public function boot()
   {
+    parent::boot();
+
+    //
   }
 }

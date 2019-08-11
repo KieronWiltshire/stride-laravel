@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\OAuth;
 
+use Closure;
+use Illuminate\Http\Response;
 use \Laravel\Passport\Http\Controllers\ConvertsPsrResponses;
 
 trait HandlesOAuthErrors
@@ -11,8 +13,8 @@ trait HandlesOAuthErrors
   /**
    * Perform the given callback with exception handling.
    *
-   * @param \Closure $callback
-   * @return \Illuminate\Http\Response
+   * @param Closure $callback
+   * @return Response
    */
   protected function withErrorHandling($callback)
   {

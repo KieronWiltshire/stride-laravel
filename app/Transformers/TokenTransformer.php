@@ -3,19 +3,20 @@
 namespace App\Transformers;
 
 use Laravel\Passport\Token;
+use League\Fractal\Resource\Item;
 use League\Fractal\TransformerAbstract;
 
 class TokenTransformer extends TransformerAbstract
 {
   /**
-   * @var \App\Transformers\ClientTransformer
+   * @var ClientTransformer
    */
   protected $clientTransformer;
 
   /**
    * Create a new token transformer instance
    *
-   * @param \App\Transformers\ClientTransformer $clientTransformer
+   * @param ClientTransformer $clientTransformer
    */
   public function __construct(
     ClientTransformer $clientTransformer
@@ -47,7 +48,7 @@ class TokenTransformer extends TransformerAbstract
   /**
    * Include Client.
    *
-   * @return \League\Fractal\Resource\Item
+   * @return Item
    */
   public function includeClient($token)
   {

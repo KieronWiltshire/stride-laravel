@@ -14,7 +14,7 @@ class TokenPolicy extends BasePolicy
   /**
    * Determine if the specified user can create a personal access token.
    *
-   * @param \Domain\User\User|null $user
+   * @param User|null $user
    * @return bool
    */
   public function create(?User $user)
@@ -30,8 +30,8 @@ class TokenPolicy extends BasePolicy
   /**
    * Determine if the given user can view a given user's personal access tokens.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\User\User $userToView
+   * @param User|null $user
+   * @param User $userToView
    * @return bool
    */
   public function for(?User $user, User $userToView)
@@ -47,8 +47,8 @@ class TokenPolicy extends BasePolicy
   /**
    * Determine if the given oauth client can be deleted by the specified user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Laravel\Passport\Token $token
+   * @param User|null $user
+   * @param Token $token
    * @return bool
    */
   public function delete(?User $user, Token $token)

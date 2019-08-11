@@ -12,7 +12,7 @@ class UserEmailVerifiedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \Domain\User\User
+   * @var User
    */
   private $user;
 
@@ -24,7 +24,7 @@ class UserEmailVerifiedEvent
   /**
    * Create a new event instance.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    */
   public function __construct(User $user, $oldEmail)
   {
@@ -34,8 +34,8 @@ class UserEmailVerifiedEvent
 
   /**
    * Retrieve the created user.
-   * 
-   * @return \Domain\User\User
+   *
+   * @return User
    */
   public function user()
   {
@@ -44,7 +44,7 @@ class UserEmailVerifiedEvent
 
   /**
    * Retrieve the user's old email.
-   * 
+   *
    * @return string
    */
   public function oldEmail()

@@ -3,28 +3,33 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Domain\Permission\Exceptions\CannotCreatePermissionException;
+use Domain\Permission\Exceptions\CannotUpdatePermissionException;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
+use Domain\Permission\Permission;
 use Domain\Permission\PermissionService;
 use App\Transformers\PermissionTransformer;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Support\Exceptions\Http\BadRequestError;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 
 class PermissionController extends Controller
 {
   /**
-   * @var \Domain\Permission\PermissionService
+   * @var PermissionService
    */
   protected $permissionService;
 
   /**
-   * @var \App\Transformers\PermissionTransformer
+   * @var PermissionTransformer
    */
   protected $permissionTransformer;
 
   /**
    * Create a new permission controller instance
    *
-   * @param \Domain\Permission\PermissionService $permissionService
-   * @param \App\Transformers\PermissionTransformer $permissionTransformer
+   * @param PermissionService $permissionService
+   * @param PermissionTransformer $permissionTransformer
    */
   public function __construct(
     PermissionService $permissionService,
@@ -37,9 +42,9 @@ class PermissionController extends Controller
   /**
    * Retrieve an index of permissions.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Permission\Permission>
+   * @return LengthAwarePaginator<\Domain\Permission\Permission>
    *
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws InvalidPaginationException
    */
   public function index()
   {
@@ -52,9 +57,9 @@ class PermissionController extends Controller
   /**
    * Create a new permission.
    *
-   * @return \Domain\Permission\Permission
+   * @return Permission
    *
-   * @throws \Domain\Permission\Exceptions\CannotCreatePermissionException
+   * @throws CannotCreatePermissionException
    */
   public function create()
   {
@@ -74,9 +79,9 @@ class PermissionController extends Controller
    * Retrieve a permission by id.
    *
    * @param integer $id
-   * @return \Domain\Permission\Permission
+   * @return Permission
    *
-   * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
+   * @throws PermissionNotFoundException
    */
   public function getById($id)
   {
@@ -95,9 +100,9 @@ class PermissionController extends Controller
    * Retrieve a permission by name.
    *
    * @param string $name
-   * @return \Domain\Permission\Permission
+   * @return Permission
    *
-   * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
+   * @throws PermissionNotFoundException
    */
   public function getByName($name)
   {
@@ -115,10 +120,10 @@ class PermissionController extends Controller
   /**
    * Retrieve an index of permissions matching a particular search phrase.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Permission\Permission>
+   * @return LengthAwarePaginator<\Domain\Permission\Permission>
    *
-   * @throws \Support\Exceptions\Http\BadRequestError
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws BadRequestError
+   * @throws InvalidPaginationException
    */
   public function search()
   {
@@ -149,10 +154,10 @@ class PermissionController extends Controller
    * Update a permission.
    *
    * @param integer $id
-   * @return \Domain\Permission\Permission
+   * @return Permission
    *
-   * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
-   * @throws \Domain\Permission\Exceptions\CannotUpdatePermissionException
+   * @throws PermissionNotFoundException
+   * @throws CannotUpdatePermissionException
    */
   public function update($id)
   {

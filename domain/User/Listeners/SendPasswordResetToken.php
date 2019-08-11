@@ -8,14 +8,14 @@ use Domain\User\Events\PasswordResetTokenGeneratedEvent;
 class SendPasswordResetToken
 {
   /**
-   * @var \Domain\User\Contracts\Repositories\UserRepository
+   * @var UserRepository
    */
   private $userRepository;
 
   /**
    * Create the event listener.
    *
-   * @param \Domain\User\Contracts\Repositories\UserRepository $userRepository
+   * @param UserRepository $userRepository
    */
   public function __construct(UserRepository $userRepository)
   {
@@ -25,7 +25,7 @@ class SendPasswordResetToken
   /**
    * Handle the event.
    *
-   * @param \Domain\User\Events\PasswordResetTokenGeneratedEvent $event
+   * @param PasswordResetTokenGeneratedEvent $event
    * @return void
    */
   public function handle(PasswordResetTokenGeneratedEvent $event)

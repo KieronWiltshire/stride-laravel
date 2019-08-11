@@ -12,7 +12,7 @@ class UserUpdatedEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \Domain\User\User
+   * @var User
    */
   private $user;
 
@@ -24,7 +24,7 @@ class UserUpdatedEvent
   /**
    * Create a new event instance.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @param array $attributes
    */
   public function __construct(User $user, $attributes)
@@ -35,8 +35,8 @@ class UserUpdatedEvent
 
   /**
    * Retrieve the updated user.
-   * 
-   * @return \Domain\User\User
+   *
+   * @return User
    */
   public function user()
   {
@@ -45,7 +45,7 @@ class UserUpdatedEvent
 
   /**
    * Retrieve the attributes that were updated.
-   * 
+   *
    * @return array
    */
   public function attributes()

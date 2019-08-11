@@ -5,6 +5,8 @@ namespace Domain\Role;
 use Domain\Role\Contracts\Repositories\RoleRepository as RoleRepositoryInterface;
 use Domain\Role\Events\RoleCreatedEvent;
 use Domain\Role\Events\RoleUpdatedEvent;
+use Domain\Role\Exceptions\CannotCreateRoleException;
+use Domain\Role\Exceptions\CannotUpdateRoleException;
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\Exceptions\UnableToSetDefaultRoleException;
 use Domain\User\User;
@@ -18,20 +20,20 @@ use Exception;
 class RoleRepository extends AppRepository implements RoleRepositoryInterface
 {
   /**
-   * @var \Domain\Role\Validators\RoleCreateValidator
+   * @var RoleCreateValidator
    */
   protected $roleCreateValidator;
 
   /**
-   * @var \Domain\Role\Validators\RoleUpdateValidator
+   * @var RoleUpdateValidator
    */
   protected $roleUpdateValidator;
 
   /**
    * Create a new role repository instance.
    *
-   * @param \Domain\Role\Validators\RoleCreateValidator $roleCreateValidator
-   * @param \Domain\Role\Validators\RoleUpdateValidator $roleUpdateValidator
+   * @param RoleCreateValidator $roleCreateValidator
+   * @param RoleUpdateValidator $roleUpdateValidator
    */
   public function __construct(
     RoleCreateValidator $roleCreateValidator,
@@ -55,9 +57,9 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    * Create a new role.
    *
    * @param array $attributes
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\CannotCreateRoleException
+   * @throws CannotCreateRoleException
    */
   public function create($attributes)
   {
@@ -80,9 +82,9 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    * @param number|string $search
    * @param boolean $regex
    * @param array $attributes
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\CannotCreateRoleException
+   * @throws CannotCreateRoleException
    */
   public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
   {
@@ -128,9 +130,9 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    * Find a role by identifier.
    *
    * @param string $id
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws RoleNotFoundException
    */
   public function findById($id)
   {
@@ -147,9 +149,9 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
    * Find a role by name.
    *
    * @param string $name
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws RoleNotFoundException
    */
   public function findByName($name)
   {
@@ -165,10 +167,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Set the specified role as the default role.
    *
-   * @param \Domain\Role\Role $role
+   * @param Role $role
    * @return void
    *
-   * @throws \Domain\Role\Exceptions\UnableToSetDefaultRoleException
+   * @throws UnableToSetDefaultRoleException
    */
   public function setDefaultRole(Role $role)
   {
@@ -185,9 +187,9 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Retrieve the default role.
    *
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\RoleNotFoundException
+   * @throws RoleNotFoundException
    */
   public function getDefaultRole()
   {
@@ -203,11 +205,11 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Update a role.
    *
-   * @param \Domain\Role\Role $role
+   * @param Role $role
    * @param array $attributes
-   * @return \Domain\Role\Role
+   * @return Role
    *
-   * @throws \Domain\Role\Exceptions\CannotUpdateRoleException
+   * @throws CannotUpdateRoleException
    */
   public function update(Role $role, $attributes)
   {
@@ -225,10 +227,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Add a role to the user.
    *
-   * @param \Domain\User\User $user
-   * @param \Domain\Role\Role $role
+   * @param User $user
+   * @param Role $role
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function addRoleToUser(User $user, Role $role, $persist = true)
   {
@@ -240,10 +242,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Add roles to the user.
    *
-   * @param \Domain\User\User $user
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param User $user
+   * @param Collection|array $roles
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function addRolesToUser(User $user, $roles = [], $persist = true)
   {
@@ -262,10 +264,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Remove a role from the user.
    *
-   * @param \Domain\User\User $user
-   * @param \Domain\Role\Role $role
+   * @param User $user
+   * @param Role $role
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function removeRoleFromUser(User $user, Role $role, $persist = true)
   {
@@ -277,10 +279,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Remove roles from the user.
    *
-   * @param \Domain\User\User $user
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param User $user
+   * @param Collection|array $roles
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function removeRolesFromUser(User $user, $roles = [], $persist = true)
   {
@@ -294,10 +296,10 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Set all of the roles of the specified user.
    *
-   * @param \Domain\User\User $user
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param User $user
+   * @param Collection|array $roles
    * @param boolean $persist
-   * @return \Domain\User\User
+   * @return User
    */
   public function setUserRoles(User $user, $roles = [], $persist = true)
   {
@@ -311,7 +313,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Retrieve all of the roles for the specified user.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
    */
   public function getRolesForUser(User $user)
@@ -322,7 +324,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Retrieve all of the users that are associated with the specified role.
    *
-   * @param \Domain\Role\Role $role
+   * @param Role $role
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
   public function getUsersWithRole(Role $role)
@@ -333,7 +335,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
   /**
    * Retrieve all of the users that are associated with any of the specified roles.
    *
-   * @param \Illuminate\Support\Collection|array $roles
+   * @param Collection|array $roles
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
    */
   public function getUsersWithRoles($roles = [])

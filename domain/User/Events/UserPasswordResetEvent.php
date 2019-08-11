@@ -12,14 +12,14 @@ class UserPasswordResetEvent
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \Domain\User\User
+   * @var User
    */
   private $user;
 
   /**
    * Create a new event instance.
    *
-   * @param \Domain\User\User $user
+   * @param User $user
    */
   public function __construct(User $user)
   {
@@ -28,8 +28,8 @@ class UserPasswordResetEvent
 
   /**
    * Retrieve the created user.
-   * 
-   * @return \Domain\User\User
+   *
+   * @return User
    */
   public function user()
   {

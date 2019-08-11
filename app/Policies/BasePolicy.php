@@ -2,19 +2,21 @@
 
 namespace App\Policies;
 
+use Closure;
 use Domain\Role\Exceptions\RoleNotFoundException;
+use Domain\Role\Role;
 use Domain\Role\RoleService;
 use Domain\User\User;
 
 class BasePolicy
 {
   /**
-   * @var \Domain\Role\RoleService
+   * @var RoleService
    */
   protected $roleService;
 
   /**
-   * @var \Domain\Role\Role
+   * @var Role
    */
   protected $defaultRole;
 
@@ -53,10 +55,10 @@ class BasePolicy
   /**
    * Retrieve the default role as the subject if the user is null.
    *
-   * @param \Domain\User\User|null $user
-   * @return bool|\Domain\Role\Role|\Domain\User\User
+   * @param User|null $user
+   * @return bool|Role|User
    */
-  public function fallbackToDefault(?User $user, \Closure $closure)
+  public function fallbackToDefault(?User $user, Closure $closure)
   {
     $subject = null;
 

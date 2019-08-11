@@ -14,7 +14,7 @@ class RolePolicy extends BasePolicy
   /**
    * Determine if the specified user can create a role.
    *
-   * @param \Domain\User\User|null $user
+   * @param User|null $user
    * @return bool
    */
   public function create(?User $user)
@@ -29,8 +29,8 @@ class RolePolicy extends BasePolicy
   /**
    * Determine if the specified user can update the given role.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\Role\Role $role
+   * @param User|null $user
+   * @param Role $role
    * @return bool
    */
   public function update(?User $user, Role $role)
@@ -45,8 +45,8 @@ class RolePolicy extends BasePolicy
   /**
    * Determine if the specified user can assign the specified role.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\Role\Role $role
+   * @param User|null $user
+   * @param Role $role
    * @return bool
    */
   public function assign(?User $user, Role $role)
@@ -61,8 +61,8 @@ class RolePolicy extends BasePolicy
   /**
    * Determine if the specified user can deny the specified role.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\Role\Role $role
+   * @param User|null $user
+   * @param Role $role
    * @return bool
    */
   public function deny(?User $user, Role $role)
@@ -77,8 +77,8 @@ class RolePolicy extends BasePolicy
   /**
    * Determine if the specified user can assign permissions to the given role.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\Role\Role $role
+   * @param User|null $user
+   * @param Role $role
    * @return bool
    */
   public function assignPermission(?User $user, Role $role)
@@ -93,8 +93,8 @@ class RolePolicy extends BasePolicy
   /**
    * Determine if the specified user can deny permissions to the given role.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\Role\Role $role
+   * @param User|null $user
+   * @param Role $role
    * @return bool
    */
   public function denyPermission(?User $user, Role $role)

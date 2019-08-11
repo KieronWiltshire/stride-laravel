@@ -14,7 +14,7 @@ class ClientPolicy extends BasePolicy
   /**
    * Determine if the specified user can create an oauth client.
    *
-   * @param \Domain\User\User|null $user
+   * @param User|null $user
    * @return bool
    */
   public function create(?User $user)
@@ -29,8 +29,8 @@ class ClientPolicy extends BasePolicy
   /**
    * Determine if the given user can view a given user's oauth clients.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\User\User $userToView
+   * @param User|null $user
+   * @param User $userToView
    * @return bool
    */
   public function for(?User $user, User $userToView)
@@ -46,8 +46,8 @@ class ClientPolicy extends BasePolicy
   /**
    * Determine if the given user can view oauth client details.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Laravel\Passport\Client $client
+   * @param User|null $user
+   * @param Client $client
    * @return bool
    */
   public function view(?User $user, Client $client)
@@ -63,8 +63,8 @@ class ClientPolicy extends BasePolicy
   /**
    * Determine if the given oauth client can be updated by the specified user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Laravel\Passport\Client $client
+   * @param User|null $user
+   * @param Client $client
    * @return bool
    */
   public function update(?User $user, Client $client)
@@ -80,8 +80,8 @@ class ClientPolicy extends BasePolicy
   /**
    * Determine if the given oauth client can be deleted by the specified user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Laravel\Passport\Client $client
+   * @param User|null $user
+   * @param Client $client
    * @return bool
    */
   public function delete(?User $user, Client $client)

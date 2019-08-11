@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class LaratrustSetupTables extends Migration
+class CreateLaratrustTables extends Migration
 {
   /**
    * Run the migrations.

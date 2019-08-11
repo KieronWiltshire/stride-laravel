@@ -13,61 +13,69 @@ use Domain\Role\Exceptions\RoleNotAssignedException;
 use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\RoleService;
 use App\Transformers\RoleTransformer;
+use Domain\User\Exceptions\CannotCreateUserException;
+use Domain\User\Exceptions\CannotUpdateUserException;
+use Domain\User\Exceptions\InvalidEmailException;
 use Domain\User\Exceptions\InvalidEmailVerificationTokenException;
+use Domain\User\Exceptions\InvalidPasswordException;
 use Domain\User\Exceptions\InvalidPasswordResetTokenException;
 use Domain\User\Exceptions\PasswordResetTokenExpiredException;
 use Domain\User\Exceptions\UserNotFoundException;
 use App\Transformers\UserTransformer;
+use Domain\User\User;
 use Domain\User\UserService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Support\Exceptions\Http\BadRequestError;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 use Support\Serializers\Fractal\OptionalDataKeySerializer;
 
 class UserController extends Controller
 {
   /**
-   * @var \Domain\User\UserService
+   * @var UserService
    */
   protected $userService;
 
   /**
-   * @var \App\Transformers\UserTransformer
+   * @var UserTransformer
    */
   protected $userTransformer;
 
   /**
-   * @var \Domain\Role\RoleService
+   * @var RoleService
    */
   protected $roleService;
 
   /**
-   * @var \App\Transformers\RoleTransformer
+   * @var RoleTransformer
    */
   protected $roleTransformer;
 
   /**
-   * @var \Domain\Permission\PermissionService
+   * @var PermissionService
    */
   protected $permissionService;
 
   /**
-   * @var \App\Transformers\PermissionTransformer
+   * @var PermissionTransformer
    */
   protected $permissionTransformer;
 
   /**
-   * @var \Support\Serializers\Fractal\OptionalDataKeySerializer
+   * @var OptionalDataKeySerializer
    */
   protected $noDataKeySerializer;
 
   /**
    * Create a new user controller instance
    *
-   * @param \Domain\User\UserService $userService
-   * @param \App\Transformers\UserTransformer $userTransformer
-   * @param \Domain\Role\RoleService $roleService
-   * @param \App\Transformers\RoleTransformer $roleTransformer
-   * @param \Domain\Permission\PermissionService $permissionService
-   * @param \App\Transformers\PermissionTransformer $permissionTransformer
+   * @param UserService $userService
+   * @param UserTransformer $userTransformer
+   * @param RoleService $roleService
+   * @param RoleTransformer $roleTransformer
+   * @param PermissionService $permissionService
+   * @param PermissionTransformer $permissionTransformer
    */
   public function __construct(
     UserService $userService,
@@ -89,9 +97,9 @@ class UserController extends Controller
   /**
    * Retrieve an index of users.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
+   * @return LengthAwarePaginator<\Domain\User\User>
    *
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws InvalidPaginationException
    */
   public function index()
   {
@@ -103,9 +111,9 @@ class UserController extends Controller
   /**
    * Create a new user.
    *
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\CannotCreateUserException
+   * @throws CannotCreateUserException
    */
   public function create()
   {
@@ -122,9 +130,9 @@ class UserController extends Controller
    * Retrieve a user by id.
    *
    * @param integer $id
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws UserNotFoundException
    */
   public function getById($id)
   {
@@ -145,9 +153,9 @@ class UserController extends Controller
    * Retrieve a user by email.
    *
    * @param string $email
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws UserNotFoundException
    */
   public function getByEmail($email)
   {
@@ -167,10 +175,10 @@ class UserController extends Controller
   /**
    * Retrieve an index of users matching a particular search phrase.
    *
-   * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\User\User>
+   * @return LengthAwarePaginator<\Domain\User\User>
    *
-   * @throws \Support\Exceptions\Http\BadRequestError
-   * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+   * @throws BadRequestError
+   * @throws InvalidPaginationException
    */
   public function search()
   {
@@ -201,10 +209,10 @@ class UserController extends Controller
    * Update a user.
    *
    * @param integer $id
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Domain\User\Exceptions\CannotUpdateUserException
+   * @throws UserNotFoundException
+   * @throws CannotUpdateUserException
    */
   public function update($id)
   {
@@ -230,10 +238,10 @@ class UserController extends Controller
    * Router a change to the specified email.
    *
    * @param integer $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Domain\User\Exceptions\InvalidEmailException
+   * @throws UserNotFoundException
+   * @throws InvalidEmailException
    */
   public function requestEmailChange($id)
   {
@@ -260,11 +268,11 @@ class UserController extends Controller
    * Verify the user's email.
    *
    * @param string $email
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Domain\User\Exceptions\InvalidEmailException
-   * @throws \Domain\User\Exceptions\InvalidEmailVerificationTokenException
+   * @throws UserNotFoundException
+   * @throws InvalidEmailException
+   * @throws InvalidEmailVerificationTokenException
    */
   public function verifyEmail($email)
   {
@@ -286,10 +294,10 @@ class UserController extends Controller
    * Resend the user's email verification token.
    *
    * @param string $email
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    *
-   * @throws \Domain\User\Exceptions\InvalidEmailVerificationTokenException
-   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws InvalidEmailVerificationTokenException
+   * @throws UserNotFoundException
    */
   public function resendEmailVerificationToken($email)
   {
@@ -320,9 +328,9 @@ class UserController extends Controller
    * Send the user a password reset token.
    *
    * @param string $email
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
+   * @throws UserNotFoundException
    */
   public function forgotPassword($email)
   {
@@ -347,12 +355,12 @@ class UserController extends Controller
    * Reset the user's password using the password reset token.
    *
    * @param string $email
-   * @return \Domain\User\User
+   * @return User
    *
-   * @throws \Domain\User\Exceptions\UserNotFoundException
-   * @throws \Domain\User\Exceptions\PasswordResetTokenExpiredException
-   * @throws \Domain\User\Exceptions\InvalidPasswordResetTokenException
-   * @throws \Domain\User\Exceptions\InvalidPasswordException
+   * @throws UserNotFoundException
+   * @throws PasswordResetTokenExpiredException
+   * @throws InvalidPasswordResetTokenException
+   * @throws InvalidPasswordException
    */
   public function resetPassword($email)
   {
@@ -387,7 +395,7 @@ class UserController extends Controller
    *
    * @param $id
    * @param $roleId
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function assignRole($id, $roleId)
   {
@@ -427,7 +435,7 @@ class UserController extends Controller
    * Add the specified roles to the specified user.
    *
    * @param $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function assignRoles($id)
   {
@@ -475,7 +483,7 @@ class UserController extends Controller
    *
    * @param $id
    * @param $roleId
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function denyRole($id, $roleId)
   {
@@ -515,7 +523,7 @@ class UserController extends Controller
    * Remove the specified roles from the specified user.
    *
    * @param $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function denyRoles($id)
   {
@@ -563,7 +571,7 @@ class UserController extends Controller
    *
    * @param $id
    * @param $permissionId
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function assignPermission($id, $permissionId)
   {
@@ -603,7 +611,7 @@ class UserController extends Controller
    * Add the specified permissions to the specified user.
    *
    * @param $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function assignPermissions($id)
   {
@@ -651,7 +659,7 @@ class UserController extends Controller
    *
    * @param $id
    * @param $permissionId
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function denyPermission($id, $permissionId)
   {
@@ -691,7 +699,7 @@ class UserController extends Controller
    * Remove the specified permissions from the specified user.
    *
    * @param $id
-   * @return \Illuminate\Http\JsonResponse
+   * @return JsonResponse
    */
   public function denyPermissions($id)
   {
@@ -738,8 +746,8 @@ class UserController extends Controller
    * Include the default role with the user response
    * if the specified user has no roles.
    *
-   * @param \Domain\User\User $user
-   * @return \Domain\User\User
+   * @param User $user
+   * @return User
    */
   protected function includeDefaultRole(&$user) {
     try {

@@ -3,11 +3,12 @@
 namespace Domain\Menu\Validators;
 
 use Domain\Menu\Exceptions\CannotUpdateMenuException;
+use Support\Exceptions\AppError;
 
 class MenuUpdateValidator extends MenuValidator
 {
   /**
-   * @var \Support\Exceptions\AppError
+   * @var AppError
    */
   protected $exception = CannotUpdateMenuException::class;
 

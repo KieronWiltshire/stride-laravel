@@ -14,7 +14,7 @@ class PermissionPolicy extends BasePolicy
   /**
    * Determine if the specified user can create a permission.
    *
-   * @param \Domain\User\User|null $user
+   * @param User|null $user
    * @return bool
    */
   public function create(?User $user)
@@ -29,8 +29,8 @@ class PermissionPolicy extends BasePolicy
   /**
    * Determine if the given permission can be updated by the specified user.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\Permission\Permission $permission
+   * @param User|null $user
+   * @param Permission $permission
    * @return bool
    */
   public function update(?User $user, Permission $permission)
@@ -45,8 +45,8 @@ class PermissionPolicy extends BasePolicy
   /**
    * Determine if the specified user can assign the specified permission.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\Permission\Permission $permission
+   * @param User|null $user
+   * @param Permission $permission
    * @return bool
    */
   public function assign(?User $user, Permission $permission)
@@ -61,8 +61,8 @@ class PermissionPolicy extends BasePolicy
   /**
    * Determine if the specified user can deny the specified permission.
    *
-   * @param \Domain\User\User|null $user
-   * @param \Domain\Permission\Permission $permission
+   * @param User|null $user
+   * @param Permission $permission
    * @return bool
    */
   public function deny(?User $user, Permission $permission)
