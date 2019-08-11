@@ -91,7 +91,7 @@ class LaratrustSeeder extends Seeder
       }
 
       // Attach all permissions to the role
-      $this->roleService->setPermissions($role, $permissions);
+      $this->permissionService->setRolePermissions($role, $permissions);
 
       $this->command->info("Creating '{$key}' user");
 
@@ -103,7 +103,7 @@ class LaratrustSeeder extends Seeder
         'password' => 'password'
       ]);
 
-      $this->userService->setRoles($user, [$role]);
+      $this->roleService->setUserRoles($user, [$role]);
     }
 
     // Creating user with permissions
@@ -140,7 +140,7 @@ class LaratrustSeeder extends Seeder
         }
 
         // Attach all permissions to the user
-        $this->userService->setPermissions($user, $permissions);
+        $this->permissionService->setUserPermissions($user, $permissions);
       }
     }
   }

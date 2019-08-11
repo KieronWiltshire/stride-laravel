@@ -87,7 +87,7 @@ class UserTransformer extends TransformerAbstract
    */
   public function includeRoles($user)
   {
-    return $this->collection($this->roleService->getRolesFromUser($user), $this->roleTransformer, false);
+    return $this->collection($this->roleService->getRolesForUser($user), $this->roleTransformer, false);
   }
 
   /**
@@ -97,6 +97,6 @@ class UserTransformer extends TransformerAbstract
    */
   public function includePermissions($user)
   {
-    return $this->collection($this->permissionService->getPermissionsFromUser($user), $this->permissionTransformer, false);
+    return $this->collection($this->permissionService->getPermissionsForUser($user), $this->permissionTransformer, false);
   }
 }

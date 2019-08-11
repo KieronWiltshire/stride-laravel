@@ -3,7 +3,6 @@
 
 namespace Support\Repositories;
 
-
 trait UsesPagination
 {
   /**
@@ -34,7 +33,7 @@ trait UsesPagination
   {
     $offset = ($offset + 1);
 
-    $validator = app()->make('Infrastructure\Validators\Pagination\PaginationValidator');
+    $validator = app()->make('Support\Validators\Pagination\PaginationValidator');
 
     $validator->validate([
       'limit' => $limit,

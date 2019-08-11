@@ -33,8 +33,5 @@ class RoleServiceProvider extends ServiceProvider
    */
   public function boot()
   {
-    parent::boot();
-
-    //
   }
 }

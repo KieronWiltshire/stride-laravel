@@ -3,10 +3,8 @@
 namespace Domain\User\Validators;
 
 use Domain\User\Exceptions\CannotCreateUserException;
-use Support\Exceptions\AppError;
-use Support\Validators\AppValidator;
 
-class UserCreateValidator extends AppValidator
+class UserCreateValidator extends UserValidator
 {
   /**
    * @var \Support\Exceptions\AppError
