@@ -2,37 +2,37 @@
 
 namespace Domain\Menu\Events;
 
-use Domain\Menu\Menu;
+use Domain\Menu\Item;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 
-class MenuCreatedEvent
+class ItemCreatedEvent
 {
   use Dispatchable, InteractsWithSockets, SerializesModels;
 
   /**
-   * @var \Domain\Menu\Menu
+   * @var \Domain\Menu\Item
    */
-  private $menu;
+  private $item;
 
   /**
    * Create a new event instance.
    *
-   * @param \Domain\Menu\Menu $menu
+   * @param \Domain\Menu\Item $item
    */
-  public function __construct(Menu $menu)
+  public function __construct(Item $item)
   {
-    $this->menu = $menu;
+    $this->item = $item;
   }
 
   /**
-   * Retrieve the created menu.
+   * Retrieve the created item.
    *
-   * @return \Domain\Menu\Menu
+   * @return \Domain\Menu\Item
    */
-  public function menu()
+  public function item()
   {
-    return $this->menu;
+    return $this->item;
   }
 }

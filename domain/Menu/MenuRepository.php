@@ -10,13 +10,13 @@ use Domain\Menu\Exceptions\MenuNotFoundException;
 use Domain\Menu\Menu;
 use Domain\Menu\Validators\MenuCreateValidator;
 use Domain\Menu\Validators\MenuUpdateValidator;
-use Domain\User\User;
+use Domain\Restauraunt\Restauraunt;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Support\Repositories\AppRepository;
 use Domain\Menu\Contracts\Repositories\MenuRepository as MenuRepositoryInterface;
 
-class UserRepository extends AppRepository implements MenuRepositoryInterface
+class MenuRepository extends AppRepository implements MenuRepositoryInterface
 {
   /**
    * @var \Domain\Menu\Validators\MenuCreateValidator
@@ -29,7 +29,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
   protected $menuUpdateValidator;
 
   /**
-   * Create a new user repository instance.
+   * Create a new menu repository instance.
    *
    * @param \Domain\Menu\Validators\MenuCreateValidator $menuCreateValidator
    * @param \Domain\Menu\Validators\MenuUpdateValidator $menuUpdateValidator
@@ -64,10 +64,10 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
   {
     $this->menuCreateValidator->validate($attributes);
 
-    if ($user = Menu::create($attributes)) {
-      event(new MenuCreatedEvent($user));
+    if ($menu = Menu::create($attributes)) {
+      event(new MenuCreatedEvent($menu));
 
-      return $user;
+      return $menu;
     }
 
     throw new Exception();
@@ -126,7 +126,7 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
   }
 
   /**
-   * Find a user by identifier.
+   * Find a menu by identifier.
    *
    * @param string $id
    * @return \Domain\Menu\Menu
@@ -169,14 +169,14 @@ class UserRepository extends AppRepository implements MenuRepositoryInterface
   }
 
   /**
-   * Retrieve all of the menus for the specified user.
+   * Retrieve all of the menus for the specified restauraunt.
    *
-   * @param \Domain\User\User $user
+   * @param \Domain\Restauraunt\Restauraunt $restaurant
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
    */
-  function getMenusForUser(User $user)
+  function getMenusForRestaurant(Restauraunt $restaurant)
   {
-    // TODO: Implement getMenusForUser() method.
-    return $this->execute(Menu::where('user_id', $user->id), true);
+    // TODO: Implement getMenusForRestaurant() method.
+    return $this->execute(Menu::where('restaurant_id', $restaurant->id), true);
   }
 }

@@ -6,7 +6,7 @@ use Domain\Menu\Exceptions\CannotCreateMenuException;
 use Domain\Menu\Exceptions\CannotUpdateMenuException;
 use Domain\Menu\Exceptions\MenuNotFoundException;
 use Domain\Menu\Menu;
-use Domain\User\User;
+use Domain\Restauraunt\Restauraunt;
 use Illuminate\Database\Eloquent\Collection;
 use Support\Contracts\Repositories\AppRepository;
 
@@ -54,7 +54,7 @@ interface MenuRepository extends AppRepository
   function find($parameter, $search, $regex = true);
 
   /**
-   * Find a user by identifier.
+   * Find a menu by identifier.
    *
    * @param string $id
    * @return \Domain\Menu\Menu
@@ -75,10 +75,10 @@ interface MenuRepository extends AppRepository
   function update(Menu $menu, $attributes);
 
   /**
-   * Retrieve all of the menus for the specified user.
+   * Retrieve all of the menus for the specified restauraunt.
    *
-   * @param \Domain\User\User $user
+   * @param \Domain\Restauraunt\Restauraunt $restaurant
    * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
    */
-  function getMenusForUser(User $user);
+  function getMenusForRestaurant(Restauraunt $restaurant);
 }
