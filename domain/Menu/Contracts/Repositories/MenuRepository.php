@@ -15,7 +15,7 @@ interface MenuRepository extends AppRepository
   /**
    * Retrieve all of the menus.
    *
-   * @return Collection<\Domain\Menu\Menu>
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
    */
   function all();
 
@@ -23,9 +23,9 @@ interface MenuRepository extends AppRepository
    * Create a new menu.
    *
    * @param array $attributes
-   * @return Menu
+   * @return \Domain\Menu\Menu
    *
-   * @throws CannotCreateMenuException
+   * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
    */
   function create($attributes);
 
@@ -37,9 +37,9 @@ interface MenuRepository extends AppRepository
    * @param number|string $search
    * @param boolean $regex
    * @param array $attributes
-   * @return Menu
+   * @return \Domain\Menu\Menu
    *
-   * @throws CannotCreateMenuException
+   * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
    */
   function firstOrCreate($parameter, $search, $regex = true, $attributes = []);
 
@@ -49,7 +49,7 @@ interface MenuRepository extends AppRepository
    * @param number|string $parameter
    * @param number|string|array $search
    * @param boolean $regex
-   * @return Collection<\Domain\Menu\Menu>
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
    */
   function find($parameter, $search, $regex = true);
 
@@ -57,28 +57,28 @@ interface MenuRepository extends AppRepository
    * Find a user by identifier.
    *
    * @param string $id
-   * @return Menu
+   * @return \Domain\Menu\Menu
    *
-   * @throws MenuNotFoundException
+   * @throws \Domain\Menu\Exceptions\MenuNotFoundException
    */
   function findById($id);
 
   /**
    * Update a menu.
    *
-   * @param Menu $menu
+   * @param \Domain\Menu\Menu $menu
    * @param array $attributes
-   * @return Menu
+   * @return \Domain\Menu\Menu
    *
-   * @throws CannotUpdateMenuException
+   * @throws \Domain\Menu\Exceptions\CannotUpdateMenuException
    */
   function update(Menu $menu, $attributes);
 
   /**
    * Retrieve all of the menus for the specified user.
    *
-   * @param User $user
-   * @return Collection<\Domain\Menu\Menu>
+   * @param \Domain\User\User $user
+   * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
    */
   function getMenusForUser(User $user);
 }

@@ -4,7 +4,7 @@ namespace Domain\Menu;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class Item extends Model
 {
   /**
    * The attributes that are mass assignable.
@@ -28,12 +28,12 @@ class Menu extends Model
   protected $dates = [];
 
   /**
-   * Retrieve the items associated to the menu.
+   * Retrieve the item type.
    *
-   * @return
+   * @return mixed
    */
-  public function items()
+  public function type()
   {
-    return $this->hasMany('App\Comment');
+    return $this->morphTo();
   }
 }

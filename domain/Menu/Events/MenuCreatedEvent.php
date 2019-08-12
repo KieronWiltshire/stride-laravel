@@ -19,7 +19,7 @@ class MenuCreatedEvent
   /**
    * Create a new event instance.
    *
-   * @param \Domain\User\Menu $menu
+   * @param \Domain\Menu\Menu $menu
    */
   public function __construct(Menu $menu)
   {
@@ -29,7 +29,7 @@ class MenuCreatedEvent
   /**
    * Retrieve the created menu.
    *
-   * @return Menu
+   * @return \Domain\Menu\Menu
    */
   public function menu()
   {
