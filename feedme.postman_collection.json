@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "64267194-0d63-4a27-8c64-6714102986a6",
+		"_postman_id": "6e26501d-2370-4840-b336-b529c54392f8",
 		"name": "feedme",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -17,7 +17,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/api/user",
+									"raw": "{{url}}/api/user?",
 									"host": [
 										"{{url}}"
 									],
@@ -249,7 +249,7 @@
 										}
 									]
 								},
-								"method": "PUT",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -321,7 +321,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [],
 								"url": {
 									"raw": "{{url}}/api/user/1/assign-role/1?dump",
@@ -358,7 +358,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [],
 								"url": {
 									"raw": "{{url}}/api/user/1/deny-role/1",
@@ -389,7 +389,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -447,7 +447,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -499,7 +499,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [],
 								"url": {
 									"raw": "{{url}}/api/user/1/assign-permission/1",
@@ -530,7 +530,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [],
 								"url": {
 									"raw": "{{url}}/api/user/1/deny-permission/1",
@@ -561,7 +561,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -613,7 +613,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -664,7 +664,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/api/role",
+									"raw": "{{url}}/api/role?",
 									"host": [
 										"{{url}}"
 									],
@@ -824,7 +824,7 @@
 										}
 									]
 								},
-								"method": "PUT",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -870,7 +870,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [],
 								"url": {
 									"raw": "{{url}}/api/role/1/assign-permission/1",
@@ -901,7 +901,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [],
 								"url": {
 									"raw": "{{url}}/api/role/1/deny-permission/1",
@@ -932,7 +932,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -984,7 +984,7 @@
 										}
 									]
 								},
-								"method": "POST",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -1035,7 +1035,7 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{url}}/api/permission",
+									"raw": "{{url}}/api/permission?",
 									"host": [
 										"{{url}}"
 									],
@@ -1195,7 +1195,7 @@
 										}
 									]
 								},
-								"method": "PUT",
+								"method": "PATCH",
 								"header": [
 									{
 										"key": "Content-Type",

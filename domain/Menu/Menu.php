@@ -30,10 +30,10 @@ class Menu extends Model
   /**
    * Retrieve the items associated to the menu.
    *
-   * @return
+   * @return \Illuminate\Database\Eloquent\Relations\HasMany
    */
   public function items()
   {
-    return $this->hasMany('App\Comment');
+    return $this->hasMany('Domain\Menu\Item');
   }
 }

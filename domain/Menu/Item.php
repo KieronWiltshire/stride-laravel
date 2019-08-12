@@ -36,4 +36,14 @@ class Item extends Model
   {
     return $this->morphTo();
   }
+
+  /**
+   * Retrieve the menu associated to the item.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\HasOne
+   */
+  public function menu()
+  {
+    return $this->hasOne('Domain\Menu\Menu');
+  }
 }
