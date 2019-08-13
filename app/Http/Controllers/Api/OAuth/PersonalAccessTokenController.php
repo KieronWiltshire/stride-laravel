@@ -82,8 +82,8 @@ class PersonalAccessTokenController extends Controller
    */
   public function forUser($id)
   {
-    $user = $this->userRepository->findById($id);
-//    $this->authorize('personal-access-token.for', $user);
+    $user = $this->userService->findById($id);
+    $this->authorize('personal-access-token.for', $user);
 
     $tokens = $this->tokenRepository->personalAccessTokensForUserWithClientAndTokenNotRevokedAsPaginated($user->id, request()->input('limit'), request()->input('offset'))
       ->setPath(route('api.oauth.personal-access-tokens.get', $user->id))
