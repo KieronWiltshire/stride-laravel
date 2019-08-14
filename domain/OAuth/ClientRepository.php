@@ -45,10 +45,10 @@ class ClientRepository extends PassportClientRepository
      * @param ClientUpdateValidator $clientUpdateValidator
      */
     public function __construct(
-      PaginationValidator $paginationValidator,
-      ClientCreateValidator $clientCreateValidator,
-      ClientUpdateValidator $clientUpdateValidator
-  ) {
+        PaginationValidator $paginationValidator,
+        ClientCreateValidator $clientCreateValidator,
+        ClientUpdateValidator $clientUpdateValidator
+    ) {
         $this->paginationValidator = $paginationValidator;
         $this->clientCreateValidator = $clientCreateValidator;
         $this->clientUpdateValidator = $clientUpdateValidator;
@@ -131,7 +131,7 @@ class ClientRepository extends PassportClientRepository
      * @param integer $offset
      * @return LengthAwarePaginator
      *
-     * @throws \Support\Exceptions\Pagination\InvalidPaginationException
+     * @throws \ReflectionException
      */
     public function forUserAsPaginated($userId, $limit = null, $offset = 1)
     {

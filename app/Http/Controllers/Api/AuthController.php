@@ -31,9 +31,9 @@ class AuthController extends Controller
      * @param UserTransformer $userTransformer
      */
     public function __construct(
-      UserService $userService,
-      UserTransformer $userTransformer
-  ) {
+        UserService $userService,
+        UserTransformer $userTransformer
+    ) {
         $this->userService = $userService;
         $this->userTransformer = $userTransformer;
     }

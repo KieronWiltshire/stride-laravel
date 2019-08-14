@@ -43,7 +43,7 @@ class TokenRepository extends PassportTokenRepository
      * @param TokenCreateValidator $tokenCreateValidator
      */
     public function __construct(
-         PaginationValidator $paginationValidator,
+        PaginationValidator $paginationValidator,
         TokenCreateValidator $tokenCreateValidator
     ) {
         $this->paginationValidator = $paginationValidator;

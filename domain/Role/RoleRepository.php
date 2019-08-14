@@ -36,9 +36,9 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * @param RoleUpdateValidator $roleUpdateValidator
      */
     public function __construct(
-      RoleCreateValidator $roleCreateValidator,
-      RoleUpdateValidator $roleUpdateValidator
-  ) {
+        RoleCreateValidator $roleCreateValidator,
+        RoleUpdateValidator $roleUpdateValidator
+    ) {
         $this->roleCreateValidator = $roleCreateValidator;
         $this->roleUpdateValidator = $roleUpdateValidator;
     }
