@@ -14,8 +14,8 @@ class RoleServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-    RoleRepositoryInterface::class => RoleRepository::class,
-  ];
+        RoleRepositoryInterface::class => RoleRepository::class,
+    ];
 
     /**
      * Register services.

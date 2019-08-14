@@ -14,7 +14,7 @@ interface RestaurantRepository extends AppRepository
     /**
      * Retrieve all of the restaurants.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Restaurant\Restaurant>
+     * @return Collection
      */
     public function all();
 
@@ -22,9 +22,9 @@ interface RestaurantRepository extends AppRepository
      * Create a new restaurant.
      *
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotCreateRestaurantException
+     * @throws CannotCreateRestaurantException
      */
     public function create($attributes);
 
@@ -36,9 +36,9 @@ interface RestaurantRepository extends AppRepository
      * @param number|string $search
      * @param boolean $regex
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotCreateRestaurantException
+     * @throws CannotCreateRestaurantException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = []);
 
@@ -48,7 +48,7 @@ interface RestaurantRepository extends AppRepository
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Restaurant\Restaurant>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true);
 
@@ -56,20 +56,20 @@ interface RestaurantRepository extends AppRepository
      * Find a restaurant by identifier.
      *
      * @param string $id
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\RestaurantNotFoundException
+     * @throws RestaurantNotFoundException
      */
     public function findById($id);
 
     /**
      * Update a restaurant.
      *
-     * @param \Domain\Restaurant\Restaurant $restaurant
+     * @param Restaurant $restaurant
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotUpdateRestaurantException
+     * @throws CannotUpdateRestaurantException
      */
     public function update(Restaurant $restaurant, $attributes);
 }

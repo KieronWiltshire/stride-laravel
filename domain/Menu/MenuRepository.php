@@ -19,25 +19,25 @@ use Domain\Menu\Contracts\Repositories\MenuRepository as MenuRepositoryInterface
 class MenuRepository extends AppRepository implements MenuRepositoryInterface
 {
     /**
-     * @var \Domain\Menu\Validators\MenuCreateValidator
+     * @var MenuCreateValidator
      */
     protected $menuCreateValidator;
 
     /**
-     * @var \Domain\Menu\Validators\MenuUpdateValidator
+     * @var MenuUpdateValidator
      */
     protected $menuUpdateValidator;
 
     /**
      * Create a new menu repository instance.
      *
-     * @param \Domain\Menu\Validators\MenuCreateValidator $menuCreateValidator
-     * @param \Domain\Menu\Validators\MenuUpdateValidator $menuUpdateValidator
+     * @param MenuCreateValidator $menuCreateValidator
+     * @param MenuUpdateValidator $menuUpdateValidator
      */
     public function __construct(
-      MenuCreateValidator $menuCreateValidator,
-      MenuUpdateValidator $menuUpdateValidator
-  ) {
+        MenuCreateValidator $menuCreateValidator,
+        MenuUpdateValidator $menuUpdateValidator
+    ) {
         $this->menuCreateValidator = $menuCreateValidator;
         $this->menuUpdateValidator = $menuUpdateValidator;
     }
@@ -45,7 +45,7 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
     /**
      * Retrieve all of the menus.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+     * @return Collection
      */
     public function all()
     {
@@ -56,9 +56,9 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
      * Create a new menu.
      *
      * @param array $attributes
-     * @return \Domain\Menu\Menu
+     * @return Menu
      *
-     * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
+     * @throws \ReflectionException
      */
     public function create($attributes)
     {
@@ -81,9 +81,9 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
      * @param number|string $search
      * @param boolean $regex
      * @param array $attributes
-     * @return \Domain\Menu\Menu
+     * @return Menu
      *
-     * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
+     * @throws \ReflectionException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -106,7 +106,7 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -129,9 +129,9 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
      * Find a menu by identifier.
      *
      * @param string $id
-     * @return \Domain\Menu\Menu
+     * @return Menu
      *
-     * @throws \Domain\Menu\Exceptions\MenuNotFoundException
+     * @throws MenuNotFoundException
      */
     public function findById($id)
     {
@@ -147,11 +147,11 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
     /**
      * Update a menu.
      *
-     * @param \Domain\Menu\Menu $menu
+     * @param Menu $menu
      * @param array $attributes
-     * @return \Domain\Menu\Menu
+     * @return Menu
      *
-     * @throws \Domain\Menu\Exceptions\CannotUpdateMenuException
+     * @throws \ReflectionException
      */
     public function update(Menu $menu, $attributes)
     {
@@ -169,10 +169,10 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
     }
 
     /**
-     * Retrieve all of the menus for the specified restauraunt.
+     * Retrieve all of the menus for the specified restaurant.
      *
-     * @param \Domain\Restaurant\Restaurant $restaurant
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+     * @param Restaurant $restaurant
+     * @return Collection
      */
     public function getMenusForRestaurant(Restaurant $restaurant)
     {

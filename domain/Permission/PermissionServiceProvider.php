@@ -14,8 +14,8 @@ class PermissionServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-    PermissionRepositoryInterface::class => PermissionRepository::class,
-  ];
+        PermissionRepositoryInterface::class => PermissionRepository::class,
+    ];
 
     /**
      * Register services.

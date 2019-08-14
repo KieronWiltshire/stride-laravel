@@ -4,7 +4,7 @@
 namespace Domain\Menu\Contracts\Repositories;
 
 use Domain\Menu\Exceptions\CannotCreateItemException;
-use Domain\Menu\Exceptions\CannotUpdateRestaurantException;
+use Domain\Menu\Exceptions\CannotUpdateItemException;
 use Domain\Menu\Exceptions\ItemNotFoundException;
 use Domain\Menu\Menu;
 use Domain\Menu\Item;
@@ -16,7 +16,7 @@ interface ItemRepository extends AppRepository
     /**
      * Retrieve all of the items.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Item>
+     * @return Collection
      */
     public function all();
 
@@ -24,9 +24,9 @@ interface ItemRepository extends AppRepository
      * Create a new item.
      *
      * @param array $attributes
-     * @return \Domain\Menu\Item
+     * @return Item
      *
-     * @throws \Domain\Menu\Exceptions\CannotCreateItemException
+     * @throws CannotCreateItemException
      */
     public function create($attributes);
 
@@ -38,9 +38,9 @@ interface ItemRepository extends AppRepository
      * @param number|string $search
      * @param boolean $regex
      * @param array $attributes
-     * @return \Domain\Menu\Item
+     * @return Item
      *
-     * @throws \Domain\Menu\Exceptions\CannotCreateItemException
+     * @throws CannotCreateItemException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = []);
 
@@ -50,7 +50,7 @@ interface ItemRepository extends AppRepository
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Item>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true);
 
@@ -58,28 +58,28 @@ interface ItemRepository extends AppRepository
      * Find a item by identifier.
      *
      * @param string $id
-     * @return \Domain\Menu\Item
+     * @return Item
      *
-     * @throws \Domain\Menu\Exceptions\ItemNotFoundException
+     * @throws ItemNotFoundException
      */
     public function findById($id);
 
     /**
      * Update a Item.
      *
-     * @param \Domain\Menu\Item $item
+     * @param Item $item
      * @param array $attributes
-     * @return \Domain\Menu\Item
+     * @return Item
      *
-     * @throws \Domain\Menu\Exceptions\CannotUpdateRestaurantException
+     * @throws CannotUpdateItemException
      */
     public function update(Item $item, $attributes);
 
     /**
      * Retrieve all of the items for the specified menu.
      *
-     * @param \Domain\Menu\Menu $menu
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Item>
+     * @param Menu $menu
+     * @return Collection
      */
     public function getItemsForMenu(Menu $menu);
 }

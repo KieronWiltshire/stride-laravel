@@ -8,7 +8,7 @@ use Support\Exceptions\AppError;
 class RoleCreateValidator extends RoleValidator
 {
     /**
-     * @var \Support\Exceptions\AppError
+     * @var AppError
      */
     protected $exception = CannotCreateRoleException::class;
 
@@ -20,11 +20,11 @@ class RoleCreateValidator extends RoleValidator
     public function rules()
     {
         return [
-      'name' => array_merge($this->nameRules, [
-        'required',
-      ]),
-      'display_name' => $this->displayNameRules,
-      'description' => $this->descriptionRules,
-    ];
+            'name' => array_merge($this->nameRules, [
+                'required',
+            ]),
+            'display_name' => $this->displayNameRules,
+            'description' => $this->descriptionRules,
+        ];
     }
 }

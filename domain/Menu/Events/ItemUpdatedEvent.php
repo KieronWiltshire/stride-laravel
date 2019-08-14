@@ -12,7 +12,7 @@ class ItemUpdatedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \Domain\Menu\Item
+     * @var Item
      */
     private $item;
 
@@ -24,7 +24,7 @@ class ItemUpdatedEvent
     /**
      * Create a new event instance.
      *
-     * @param \Domain\Menu\Item $item
+     * @param Item $item
      * @param array $attributes
      */
     public function __construct(Item $item, $attributes)
@@ -36,7 +36,7 @@ class ItemUpdatedEvent
     /**
      * Retrieve the updated item.
      *
-     * @return \Domain\Menu\Item
+     * @return Item
      */
     public function item()
     {

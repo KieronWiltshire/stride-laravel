@@ -3,11 +3,12 @@
 namespace Domain\Permission\Validators;
 
 use Domain\Permission\Exceptions\CannotCreatePermissionException;
+use Support\Exceptions\AppError;
 
 class PermissionCreateValidator extends PermissionValidator
 {
     /**
-     * @var \Support\Exceptions\AppError
+     * @var AppError
      */
     protected $exception = CannotCreatePermissionException::class;
 
@@ -19,11 +20,11 @@ class PermissionCreateValidator extends PermissionValidator
     public function rules()
     {
         return [
-      'name' => array_merge($this->nameRules, [
-        'required',
-      ]),
-      'display_name' => $this->displayNameRules,
-      'description' => $this->descriptionRules,
-    ];
+            'name' => array_merge($this->nameRules, [
+                'required',
+            ]),
+            'display_name' => $this->displayNameRules,
+            'description' => $this->descriptionRules,
+        ];
     }
 }

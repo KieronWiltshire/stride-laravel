@@ -10,6 +10,7 @@ use Domain\Role\Exceptions\UnableToSetDefaultRoleException;
 use Domain\User\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 
 class RoleService
 {
@@ -24,15 +25,15 @@ class RoleService
      * @param RoleRepository $roleRepository
      */
     public function __construct(
-      RoleRepository $roleRepository
-  ) {
+        RoleRepository $roleRepository
+    ) {
         $this->roleRepository = $roleRepository;
     }
 
     /**
      * Retrieve all of the roles.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+     * @return Collection<Role>
      */
     public function all()
     {
@@ -61,8 +62,6 @@ class RoleService
      * @param boolean $regex
      * @param array $attributes
      * @return Role
-     *
-     * @throws CannotCreateRoleException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -75,7 +74,7 @@ class RoleService
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -87,8 +86,6 @@ class RoleService
      *
      * @param string $id
      * @return Role
-     *
-     * @throws RoleNotFoundException
      */
     public function findById($id)
     {
@@ -100,8 +97,6 @@ class RoleService
      *
      * @param string $name
      * @return Role
-     *
-     * @throws RoleNotFoundException
      */
     public function findByName($name)
     {
@@ -113,8 +108,6 @@ class RoleService
      *
      * @param Role $role
      * @return void
-     *
-     * @throws UnableToSetDefaultRoleException
      */
     public function setDefaultRole(Role $role)
     {
@@ -125,8 +118,6 @@ class RoleService
      * Retrieve the default user role.
      *
      * @return Role
-     *
-     * @throws RoleNotFoundException
      */
     public function getDefaultRole()
     {
@@ -152,7 +143,8 @@ class RoleService
      *
      * @param integer $limit
      * @param integer $offset
-     * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
+     * @return LengthAwarePaginator
+     * @throws InvalidPaginationException
      */
     public function index($limit = null, $offset = 1)
     {
@@ -167,7 +159,8 @@ class RoleService
      * @param boolean $regex
      * @param integer $limit
      * @param integer $offset
-     * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Role\Role>
+     * @return LengthAwarePaginator
+     * @throws InvalidPaginationException
      */
     public function search($parameter, $search, $regex = true, $limit = null, $offset = 1)
     {
@@ -243,7 +236,7 @@ class RoleService
      * Retrieve all of the roles for the specified user.
      *
      * @param User $user
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+     * @return Collection
      */
     public function getRolesForUser(User $user)
     {
@@ -272,9 +265,9 @@ class RoleService
     public function userHasRoles(User $user, $roles)
     {
         $roleIds = ($roles instanceof Collection ? $roles : collect($roles))
-      ->map->only(['id'])
-      ->flatten()
-      ->all();
+            ->map->only(['id'])
+            ->flatten()
+            ->all();
 
         return ($this->getRoles($user)->whereIn('id', $roleIds)->count() > 0);
     }
@@ -283,7 +276,7 @@ class RoleService
      * Retrieve all of the users that are associated with the specified role.
      *
      * @param Role $role
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+     * @return Collection
      */
     public function getUsersWithRole(Role $role)
     {
@@ -294,7 +287,7 @@ class RoleService
      * Retrieve all of the users that are associated with any of the specified roles.
      *
      * @param Collection|array $roles
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+     * @return Collection
      */
     public function getUsersWithRoles($roles = [])
     {

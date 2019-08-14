@@ -12,14 +12,14 @@ class PermissionCreatedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \Domain\Permission\Permission
+     * @var Permission
      */
     private $permission;
 
     /**
      * Create a new event instance.
      *
-     * @param \Domain\Permission\Permission $permission
+     * @param Permission $permission
      */
     public function __construct(Permission $permission)
     {
@@ -29,7 +29,7 @@ class PermissionCreatedEvent
     /**
      * Retrieve the created permission.
      *
-     * @return \Domain\Permission\Permission
+     * @return Permission
      */
     public function permission()
     {

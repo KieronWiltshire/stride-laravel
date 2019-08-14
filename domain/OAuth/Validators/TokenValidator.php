@@ -11,8 +11,8 @@ abstract class TokenValidator extends AppValidator
      * @var array
      */
     protected $nameRules = [
-    'max:255',
-  ];
+        'max:255',
+    ];
 
     /**
      * Retrieve the rules for the scope parameter.
@@ -22,7 +22,7 @@ abstract class TokenValidator extends AppValidator
     protected function scopeRules()
     {
         return [
-      'array|in:' . implode(',', Passport::scopeIds())
-    ];
+            'array|in:' . implode(',', Passport::scopeIds())
+        ];
     }
 }

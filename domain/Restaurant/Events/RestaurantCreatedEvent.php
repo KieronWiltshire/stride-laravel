@@ -12,14 +12,14 @@ class RestaurantCreatedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \Domain\Restaurant\Restaurant
+     * @var Restaurant
      */
     private $restaurant;
 
     /**
      * Create a new event instance.
      *
-     * @param \Domain\Restaurant\Restaurant $restaurant
+     * @param Restaurant $restaurant
      */
     public function __construct(Restaurant $restaurant)
     {
@@ -29,7 +29,7 @@ class RestaurantCreatedEvent
     /**
      * Retrieve the created restaurant.
      *
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      */
     public function restaurant()
     {

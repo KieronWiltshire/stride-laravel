@@ -19,8 +19,8 @@ class UserServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-    UserRepositoryInterface::class => UserRepository::class,
-  ];
+        UserRepositoryInterface::class => UserRepository::class,
+    ];
 
     /**
      * The event handler mappings for the application.
@@ -28,13 +28,13 @@ class UserServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-    EmailVerificationTokenGeneratedEvent::class => [
-      SendEmailVerificationToken::class,
-    ],
-    PasswordResetTokenGeneratedEvent::class => [
-      SendPasswordResetToken::class
-    ]
-  ];
+        EmailVerificationTokenGeneratedEvent::class => [
+            SendEmailVerificationToken::class,
+        ],
+        PasswordResetTokenGeneratedEvent::class => [
+            SendPasswordResetToken::class
+        ]
+    ];
 
     /**
      * Register services.

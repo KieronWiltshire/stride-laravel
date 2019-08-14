@@ -8,7 +8,7 @@ use Support\Exceptions\AppError;
 class RestaurantCreateValidator extends RestaurantValidator
 {
     /**
-     * @var \Support\Exceptions\AppError
+     * @var AppError
      */
     protected $exception = CannotCreateRestaurantException::class;
 
@@ -20,7 +20,7 @@ class RestaurantCreateValidator extends RestaurantValidator
     public function rules()
     {
         return [
-      '' => ''
-    ];
+            '' => ''
+        ];
     }
 }

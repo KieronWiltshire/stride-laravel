@@ -12,7 +12,7 @@ class PermissionUpdatedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \Domain\Permission\Permission
+     * @var Permission
      */
     private $permission;
 
@@ -24,7 +24,7 @@ class PermissionUpdatedEvent
     /**
      * Create a new event instance.
      *
-     * @param \Domain\Permission\Permission $permission
+     * @param Permission $permission
      * @param array $attributes
      */
     public function __construct(Permission $permission, $attributes)
@@ -36,7 +36,7 @@ class PermissionUpdatedEvent
     /**
      * Retrieve the updated permission.
      *
-     * @return \Domain\Permission\Permission
+     * @return Permission
      */
     public function permission()
     {

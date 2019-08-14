@@ -46,7 +46,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
     /**
      * Retrieve all of the roles.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+     * @return Collection
      */
     public function all()
     {
@@ -59,7 +59,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * @param array $attributes
      * @return Role
      *
-     * @throws CannotCreateRoleException
+     * @throws \ReflectionException
      */
     public function create($attributes)
     {
@@ -84,7 +84,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * @param array $attributes
      * @return Role
      *
-     * @throws CannotCreateRoleException
+     * @throws \ReflectionException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -107,7 +107,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -209,7 +209,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * @param array $attributes
      * @return Role
      *
-     * @throws CannotUpdateRoleException
+     * @throws \ReflectionException
      */
     public function update(Role $role, $attributes)
     {
@@ -314,7 +314,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * Retrieve all of the roles for the specified user.
      *
      * @param User $user
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+     * @return Collection
      */
     public function getRolesForUser(User $user)
     {
@@ -325,7 +325,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * Retrieve all of the users that are associated with the specified role.
      *
      * @param Role $role
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+     * @return Collection
      */
     public function getUsersWithRole(Role $role)
     {
@@ -336,7 +336,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * Retrieve all of the users that are associated with any of the specified roles.
      *
      * @param Collection|array $roles
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+     * @return Collection
      */
     public function getUsersWithRoles($roles = [])
     {

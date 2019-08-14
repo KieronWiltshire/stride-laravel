@@ -12,14 +12,14 @@ class ItemCreatedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \Domain\Menu\Item
+     * @var Item
      */
     private $item;
 
     /**
      * Create a new event instance.
      *
-     * @param \Domain\Menu\Item $item
+     * @param Item $item
      */
     public function __construct(Item $item)
     {
@@ -29,7 +29,7 @@ class ItemCreatedEvent
     /**
      * Retrieve the created item.
      *
-     * @return \Domain\Menu\Item
+     * @return Item
      */
     public function item()
     {

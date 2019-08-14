@@ -15,7 +15,7 @@ interface RoleRepository extends AppRepository
     /**
      * Retrieve all of the roles.
      *
-     * @return Collection<\Domain\Role\Role>
+     * @return Collection
      */
     public function all();
 
@@ -49,7 +49,7 @@ interface RoleRepository extends AppRepository
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return Collection<\Domain\Role\Role>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true);
 
@@ -115,7 +115,7 @@ interface RoleRepository extends AppRepository
      * Add roles to the user.
      *
      * @param User $user
-     * @param \Illuminate\Support\Collection|array $roles
+     * @param Collection|array $roles
      * @param boolean $persist
      * @return User
      */
@@ -135,7 +135,7 @@ interface RoleRepository extends AppRepository
      * Remove roles from the user.
      *
      * @param User $user
-     * @param \Illuminate\Support\Collection|array $roles
+     * @param Collection|array $roles
      * @param boolean $persist
      * @return User
      */
@@ -145,7 +145,7 @@ interface RoleRepository extends AppRepository
      * Set all of the roles of the specified user.
      *
      * @param User $user
-     * @param \Illuminate\Support\Collection|array $roles
+     * @param Collection|array $roles
      * @param boolean $persist
      * @return User
      */
@@ -155,7 +155,7 @@ interface RoleRepository extends AppRepository
      * Retrieve all of the roles for the specified user.
      *
      * @param User $user
-     * @return Collection<\Domain\Role\Role>
+     * @return Collection
      */
     public function getRolesForUser(User $user);
 
@@ -163,15 +163,15 @@ interface RoleRepository extends AppRepository
      * Retrieve all of the users that are associated with the specified role.
      *
      * @param Role $role
-     * @return Collection<\Domain\User\User>
+     * @return Collection
      */
     public function getUsersWithRole(Role $role);
 
     /**
      * Retrieve all of the users that are associated with any of the specified roles.
      *
-     * @param \Illuminate\Support\Collection|array $roles
-     * @return Collection<\Domain\User\User>
+     * @param Collection|array $roles
+     * @return Collection
      */
     public function getUsersWithRoles($roles = []);
 }

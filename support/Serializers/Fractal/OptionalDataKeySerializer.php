@@ -25,8 +25,7 @@ class OptionalDataKeySerializer extends DataArraySerializer
      * Serialize a collection.
      *
      * @param string $resourceKey
-     * @param array  $data
-     *
+     * @param array $data
      * @return array
      */
     public function collection($resourceKey, array $data)
@@ -42,8 +41,7 @@ class OptionalDataKeySerializer extends DataArraySerializer
      * Serialize an item.
      *
      * @param string $resourceKey
-     * @param array  $data
-     *
+     * @param array $data
      * @return array
      */
     public function item($resourceKey, array $data)

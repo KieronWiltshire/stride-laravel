@@ -3,11 +3,12 @@
 namespace Domain\OAuth\Validators;
 
 use Domain\OAuth\Exceptions\CannotCreateTokenException;
+use Support\Exceptions\AppError;
 
 class TokenCreateValidator extends TokenValidator
 {
     /**
-     * @var \Support\Exceptions\AppError
+     * @var AppError
      */
     protected $exception = CannotCreateTokenException::class;
 
@@ -19,8 +20,8 @@ class TokenCreateValidator extends TokenValidator
     public function rules()
     {
         return [
-      'name' => $this->nameRules,
-      'scope' => $this->scopeRules(),
-    ];
+            'name' => $this->nameRules,
+            'scope' => $this->scopeRules(),
+        ];
     }
 }

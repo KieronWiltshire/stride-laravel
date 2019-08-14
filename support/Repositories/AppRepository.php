@@ -3,6 +3,7 @@
 namespace Support\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
 use Support\Contracts\Repositories\AppRepository as AppRepositoryInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -16,7 +17,8 @@ class AppRepository implements AppRepositoryInterface
      * relations and pagination parameters.
      *
      * @param Builder $query
-     * @return LengthAwarePaginator|Collection
+     * @param bool $first
+     * @return LengthAwarePaginator|Collection|Model
      */
     protected function execute($query, $first = false)
     {

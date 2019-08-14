@@ -3,6 +3,7 @@
 namespace Domain\Menu;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Item extends Model
 {
@@ -40,7 +41,7 @@ class Item extends Model
     /**
      * Retrieve the menu associated to the item.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return HasOne
      */
     public function menu()
     {

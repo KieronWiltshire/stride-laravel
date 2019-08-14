@@ -16,9 +16,9 @@ class MenuServiceProvider extends ServiceProvider
      * @var array
      */
     public $bindings = [
-    MenuRepositoryInterface::class => MenuRepository::class,
-    ItemRepositoryInterface::class => ItemRepository::class
-  ];
+        MenuRepositoryInterface::class => MenuRepository::class,
+        ItemRepositoryInterface::class => ItemRepository::class
+    ];
 
     /**
      * Register services.

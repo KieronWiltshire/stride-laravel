@@ -20,7 +20,6 @@ class EmailVerificationTokenGeneratedEvent
      * Create a new event instance.
      *
      * @param User $user
-     * @param string $email
      */
     public function __construct(User $user)
     {

@@ -12,7 +12,7 @@ class RestaurantUpdatedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \Domain\Restaurant\Restaurant
+     * @var Restaurant
      */
     private $restaurant;
 
@@ -24,7 +24,7 @@ class RestaurantUpdatedEvent
     /**
      * Create a new event instance.
      *
-     * @param \Domain\Restaurant\Restaurant $restaurant
+     * @param Restaurant $restaurant
      * @param array $attributes
      */
     public function __construct(Restaurant $restaurant, $attributes)
@@ -36,7 +36,7 @@ class RestaurantUpdatedEvent
     /**
      * Retrieve the updated restaurant.
      *
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      */
     public function restaurant()
     {

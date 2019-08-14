@@ -14,7 +14,7 @@ interface UserRepository extends AppRepository
     /**
      * Retrieve all of the users.
      *
-     * @return Collection<User>
+     * @return Collection
      */
     public function all();
 
@@ -48,7 +48,7 @@ interface UserRepository extends AppRepository
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return Collection<User>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true);
 

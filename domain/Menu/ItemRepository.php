@@ -21,25 +21,25 @@ use Domain\Menu\Contracts\Repositories\ItemRepository as ItemRepositoryInterface
 class ItemRepository extends AppRepository implements ItemRepositoryInterface
 {
     /**
-     * @var \Domain\Menu\Validators\ItemCreateValidator
+     * @var ItemCreateValidator
      */
     protected $itemCreateValidator;
 
     /**
-     * @var \Domain\Menu\Validators\ItemUpdateValidator
+     * @var ItemUpdateValidator
      */
     protected $itemUpdateValidator;
 
     /**
      * Create a new item repository instance.
      *
-     * @param \Domain\Menu\Validators\ItemCreateValidator $itemCreateValidator
-     * @param \Domain\Menu\Validators\ItemUpdateValidator $itemUpdateValidator
+     * @param ItemCreateValidator $itemCreateValidator
+     * @param ItemUpdateValidator $itemUpdateValidator
      */
     public function __construct(
-      ItemCreateValidator $itemCreateValidator,
-      ItemUpdateValidator $itemUpdateValidator
-  ) {
+        ItemCreateValidator $itemCreateValidator,
+        ItemUpdateValidator $itemUpdateValidator
+    ) {
         $this->itemCreateValidator = $itemCreateValidator;
         $this->itemUpdateValidator = $itemUpdateValidator;
     }
@@ -47,7 +47,7 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
     /**
      * Retrieve all of the items.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Item>
+     * @return Collection
      */
     public function all()
     {
@@ -58,9 +58,9 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
      * Create a new item.
      *
      * @param array $attributes
-     * @return \Domain\Menu\Item
+     * @return Item
      *
-     * @throws \Domain\Menu\Exceptions\CannotCreateItemException
+     * @throws \ReflectionException
      */
     public function create($attributes)
     {
@@ -85,7 +85,7 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
      * @param array $attributes
      * @return \Domain\Menu\Item
      *
-     * @throws \Domain\Menu\Exceptions\CannotCreateItemException
+     * @throws \ReflectionException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -108,7 +108,7 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Item>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -131,9 +131,9 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
      * Find a item by identifier.
      *
      * @param string $id
-     * @return \Domain\Menu\Item
+     * @return Item
      *
-     * @throws \Domain\Menu\Exceptions\ItemNotFoundException
+     * @throws ItemNotFoundException
      */
     public function findById($id)
     {
@@ -149,11 +149,11 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
     /**
      * Update a item.
      *
-     * @param \Domain\Menu\Item $item
+     * @param Item $item
      * @param array $attributes
-     * @return \Domain\Menu\Item
+     * @return Item
      *
-     * @throws \Domain\Menu\Exceptions\CannotUpdateRestaurantException
+     * @throws \ReflectionException
      */
     public function update(Item $item, $attributes)
     {
@@ -174,7 +174,7 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
      * Retrieve all of the items for the specified menu.
      *
      * @param \Domain\Menu\Menu $menu
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Item>
+     * @return Collection
      */
     public function getItemsForMenu(Menu $menu)
     {

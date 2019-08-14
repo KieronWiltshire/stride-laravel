@@ -15,9 +15,9 @@ use ReflectionClass;
 abstract class AppValidator
 {
 
-  /**
-   * @var ValidationFactory
-   */
+    /**
+     * @var ValidationFactory
+     */
     protected $validationFactory;
 
     /**

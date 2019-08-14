@@ -19,9 +19,9 @@ class PermissionUpdateValidator extends PermissionValidator
     public function rules()
     {
         return [
-      'name' => $this->nameRules,
-      'display_name' => $this->displayNameRules,
-      'description' => $this->descriptionRules,
-    ];
+            'name' => $this->nameRules,
+            'display_name' => $this->displayNameRules,
+            'description' => $this->descriptionRules,
+        ];
     }
 }

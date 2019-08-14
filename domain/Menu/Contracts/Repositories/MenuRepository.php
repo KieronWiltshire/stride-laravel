@@ -4,6 +4,7 @@ namespace Domain\Menu\Contracts\Repositories;
 
 use Domain\Menu\Exceptions\CannotCreateMenuException;
 use Domain\Menu\Exceptions\CannotUpdateMenuException;
+use Domain\Menu\Exceptions\MenuNotFoundException;
 use Domain\Menu\Exceptions\RestaurantNotFoundException;
 use Domain\Menu\Menu;
 use Domain\Restaurant\Restaurant;
@@ -15,7 +16,7 @@ interface MenuRepository extends AppRepository
     /**
      * Retrieve all of the menus.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+     * @return Collection
      */
     public function all();
 
@@ -23,9 +24,9 @@ interface MenuRepository extends AppRepository
      * Create a new menu.
      *
      * @param array $attributes
-     * @return \Domain\Menu\Menu
+     * @return Menu
      *
-     * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
+     * @throws CannotCreateMenuException
      */
     public function create($attributes);
 
@@ -37,9 +38,9 @@ interface MenuRepository extends AppRepository
      * @param number|string $search
      * @param boolean $regex
      * @param array $attributes
-     * @return \Domain\Menu\Menu
+     * @return Menu
      *
-     * @throws \Domain\Menu\Exceptions\CannotCreateMenuException
+     * @throws CannotCreateMenuException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = []);
 
@@ -49,7 +50,7 @@ interface MenuRepository extends AppRepository
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true);
 
@@ -57,28 +58,28 @@ interface MenuRepository extends AppRepository
      * Find a menu by identifier.
      *
      * @param string $id
-     * @return \Domain\Menu\Menu
+     * @return Menu
      *
-     * @throws \Domain\Menu\Exceptions\RestaurantNotFoundException
+     * @throws MenuNotFoundException
      */
     public function findById($id);
 
     /**
      * Update a menu.
      *
-     * @param \Domain\Menu\Menu $menu
+     * @param Menu $menu
      * @param array $attributes
-     * @return \Domain\Menu\Menu
+     * @return Menu
      *
-     * @throws \Domain\Menu\Exceptions\CannotUpdateMenuException
+     * @throws CannotUpdateMenuException
      */
     public function update(Menu $menu, $attributes);
 
     /**
-     * Retrieve all of the menus for the specified restauraunt.
+     * Retrieve all of the menus for the specified restaurant.
      *
-     * @param \Domain\Restaurant\Restaurant $restaurant
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Menu\Menu>
+     * @param Restaurant $restaurant
+     * @return Collection
      */
     public function getMenusForRestaurant(Restaurant $restaurant);
 }

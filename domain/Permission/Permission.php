@@ -12,6 +12,6 @@ class Permission extends LaratrustPermission
      * @var array
      */
     protected $hidden = [
-    'pivot'
-  ];
+        'pivot'
+    ];
 }

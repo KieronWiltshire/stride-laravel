@@ -3,29 +3,35 @@
 namespace Domain\Restaurant;
 
 use Domain\Restaurant\Contracts\Repositories\RestaurantRepository;
+use Domain\Restaurant\Exceptions\CannotCreateRestaurantException;
+use Domain\Restaurant\Exceptions\CannotUpdateRestaurantException;
+use Domain\Restaurant\Exceptions\RestaurantNotFoundException;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 
 class RestaurantService
 {
     /**
-     * @var \Domain\Restaurant\Contracts\Repositories\RestaurantRepository
+     * @var RestaurantRepository
      */
     protected $restaurantRepository;
 
     /**
      * Create a new restaurant service instance.
      *
-     * @param \Domain\Restaurant\Contracts\Repositories\RestaurantRepository $restaurantRepository
+     * @param RestaurantRepository $restaurantRepository
      */
     public function __construct(
-      RestaurantRepository $restaurantRepository
-  ) {
+        RestaurantRepository $restaurantRepository
+    ) {
         $this->restaurantRepository = $restaurantRepository;
     }
 
     /**
      * Retrieve all of the restaurants.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Restaurant\Restaurant>
+     * @return Collection
      */
     public function all()
     {
@@ -36,9 +42,9 @@ class RestaurantService
      * Create a new restaurant.
      *
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotCreateRestaurantException
+     * @throws CannotCreateRestaurantException
      */
     public function create($attributes)
     {
@@ -53,9 +59,9 @@ class RestaurantService
      * @param number|string $search
      * @param boolean $regex
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotCreateRestaurantException
+     * @throws CannotCreateRestaurantException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -68,7 +74,7 @@ class RestaurantService
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Restaurant\Restaurant>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -79,9 +85,9 @@ class RestaurantService
      * Find a restaurant by identifier.
      *
      * @param string $id
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\RestaurantNotFoundException
+     * @throws RestaurantNotFoundException
      */
     public function findById($id)
     {
@@ -91,11 +97,11 @@ class RestaurantService
     /**
      * Update a restaurant.
      *
-     * @param \Domain\Restaurant\Restaurant $restaurant
+     * @param Restaurant $restaurant
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotUpdateRestaurantException
+     * @throws CannotUpdateRestaurantException
      */
     public function update(Restaurant $restaurant, $attributes)
     {
@@ -103,14 +109,15 @@ class RestaurantService
     }
 
     /**
-     * Retrieve an index of the restaurans.
+     * Retrieve an index of the restaurant.
      *
      * @param integer $limit
      * @param integer $offset
-     * @return LengthAwarePaginator<\Domain\Restaurant\Restaurant>
+     * @return LengthAwarePaginator
+     * @throws InvalidPaginationException
      */
     public function index($limit = null, $offset = 1)
     {
-        return $this->roleRepository->with(['permissions'])->paginate($limit, $offset)->all();
+        return $this->restaurantRepository->with(['permissions'])->paginate($limit, $offset)->all();
     }
 }

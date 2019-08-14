@@ -18,25 +18,25 @@ use Domain\Restaurant\Contracts\Repositories\RestaurantRepository as RestaurantR
 class RestaurantRepository extends AppRepository implements RestaurantRepositoryInterface
 {
     /**
-     * @var \Domain\Restaurant\Validators\RestaurantCreateValidator
+     * @var RestaurantCreateValidator
      */
     protected $restaurantCreateValidator;
 
     /**
-     * @var \Domain\Restaurant\Validators\RestaurantUpdateValidator
+     * @var RestaurantUpdateValidator
      */
     protected $restaurantUpdateValidator;
 
     /**
      * Create a new restaurant repository instance.
      *
-     * @param \Domain\Restaurant\Validators\RestaurantCreateValidator $restaurantCreateValidator
-     * @param \Domain\Restaurant\Validators\RestaurantUpdateValidator $restaurantUpdateValidator
+     * @param RestaurantCreateValidator $restaurantCreateValidator
+     * @param RestaurantUpdateValidator $restaurantUpdateValidator
      */
     public function __construct(
-      RestaurantCreateValidator $restaurantCreateValidator,
-      RestaurantUpdateValidator $restaurantUpdateValidator
-  ) {
+        RestaurantCreateValidator $restaurantCreateValidator,
+        RestaurantUpdateValidator $restaurantUpdateValidator
+    ) {
         $this->restaurantCreateValidator = $restaurantCreateValidator;
         $this->restaurantUpdateValidator = $restaurantUpdateValidator;
     }
@@ -44,7 +44,7 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
     /**
      * Retrieve all of the restaurants.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Restaurant\Restaurant>
+     * @return Collection
      */
     public function all()
     {
@@ -55,9 +55,9 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
      * Create a new restaurant.
      *
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotCreateRestaurantException
+     * @throws \ReflectionException
      */
     public function create($attributes)
     {
@@ -82,7 +82,7 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
      * @param array $attributes
      * @return \Domain\Restaurant\Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotCreateRestaurantException
+     * @throws \ReflectionException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -105,7 +105,7 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Restaurant\Restaurant>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -128,9 +128,9 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
      * Find a restaurant by identifier.
      *
      * @param string $id
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\RestaurantNotFoundException
+     * @throws RestaurantNotFoundException
      */
     public function findById($id)
     {
@@ -146,11 +146,11 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
     /**
      * Update a restaurant.
      *
-     * @param \Domain\Restaurant\Restaurant $restaurant
+     * @param Restaurant $restaurant
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \Domain\Restaurant\Exceptions\CannotUpdateRestaurantException
+     * @throws \ReflectionException
      */
     public function update(Restaurant $restaurant, $attributes)
     {

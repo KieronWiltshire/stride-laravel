@@ -12,14 +12,14 @@ class MenuCreatedEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var \Domain\Menu\Menu
+     * @var Menu
      */
     private $menu;
 
     /**
      * Create a new event instance.
      *
-     * @param \Domain\Menu\Menu $menu
+     * @param Menu $menu
      */
     public function __construct(Menu $menu)
     {
@@ -29,7 +29,7 @@ class MenuCreatedEvent
     /**
      * Retrieve the created menu.
      *
-     * @return \Domain\Menu\Menu
+     * @return Menu
      */
     public function menu()
     {

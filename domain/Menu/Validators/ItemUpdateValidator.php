@@ -2,15 +2,15 @@
 
 namespace Domain\Menu\Validators;
 
-use Domain\Menu\Exceptions\CannotUpdateRestaurantException;
+use Domain\Menu\Exceptions\CannotUpdateItemException;
 use Support\Exceptions\AppError;
 
 class ItemUpdateValidator extends MenuValidator
 {
     /**
-     * @var \Support\Exceptions\AppError
+     * @var AppError
      */
-    protected $exception = CannotUpdateRestaurantException::class;
+    protected $exception = CannotUpdateItemException::class;
 
     /**
      * Retrieve the rules set for the validator.

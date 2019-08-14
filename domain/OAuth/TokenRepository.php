@@ -4,6 +4,9 @@ namespace Domain\OAuth;
 
 use Domain\OAuth\Exceptions\TokenNotFoundException;
 use Domain\OAuth\Validators\TokenCreateValidator;
+use Domain\User\User;
+use Illuminate\Database\Eloquent\Collection;
+use Laravel\Passport\Client;
 use Support\Validators\Pagination\PaginationValidator;
 use Laravel\Passport\Token;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -24,25 +27,25 @@ use Laravel\Passport\Passport;
 class TokenRepository extends PassportTokenRepository
 {
     /**
-     * @var \Support\Validators\Pagination\PaginationValidator
+     * @var PaginationValidator
      */
     protected $paginationValidator;
 
     /**
-     * @var \Domain\OAuth\Validators\TokenCreateValidator
+     * @var TokenCreateValidator
      */
     protected $tokenCreateValidator;
 
     /**
      * Create a new token repository instance.
      *
-     * @param \Support\Validators\Pagination\PaginationValidator $paginationValidator
-     * @param \Domain\OAuth\Validators\TokenCreateValidator $tokenCreateValidator
+     * @param PaginationValidator $paginationValidator
+     * @param TokenCreateValidator $tokenCreateValidator
      */
     public function __construct(
-      PaginationValidator $paginationValidator,
-      TokenCreateValidator $tokenCreateValidator
-  ) {
+         PaginationValidator $paginationValidator,
+        TokenCreateValidator $tokenCreateValidator
+    ) {
         $this->paginationValidator = $paginationValidator;
         $this->tokenCreateValidator = $tokenCreateValidator;
     }
@@ -51,9 +54,9 @@ class TokenRepository extends PassportTokenRepository
      * Creates a new Access Token.
      *
      * @param array $attributes
-     * @return \Laravel\Passport\Token
+     * @return Token
      *
-     * @throws \Domain\OAuth\Exceptions\CannotCreateTokenException
+     * @throws \ReflectionException
      */
     public function create($attributes)
     {
@@ -65,9 +68,9 @@ class TokenRepository extends PassportTokenRepository
      * Get a token by the given ID.
      *
      * @param string $id
-     * @return \Laravel\Passport\Token
+     * @return Token
      *
-     * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
+     * @throws TokenNotFoundException
      */
     public function find($id)
     {
@@ -85,9 +88,9 @@ class TokenRepository extends PassportTokenRepository
      *
      * @param string $id
      * @param int $userId
-     * @return \Laravel\Passport\Token
+     * @return Token
      *
-     * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
+     * @throws TokenNotFoundException
      */
     public function findForUser($id, $userId)
     {
@@ -104,7 +107,7 @@ class TokenRepository extends PassportTokenRepository
      * Get the token instances for the given user ID.
      *
      * @param mixed $userId
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return Collection
      */
     public function forUser($userId)
     {
@@ -117,19 +120,19 @@ class TokenRepository extends PassportTokenRepository
      * @param mixed $userId
      * @param integer $limit
      * @param integer $offset
-     * @return \Illuminate\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
+     * @return LengthAwarePaginator
      *
-     * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+     * @throws \ReflectionException
      */
     public function forUserAsPaginated($userId, $limit = null, $offset = 1)
     {
         $this->paginationValidator->validate([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
+            'limit' => $limit,
+            'offset' => $offset
+        ]);
 
         $query = Passport::token()
-      ->where('user_id', $userId);
+            ->where('user_id', $userId);
 
         if ($limit) {
             return $query->paginate($limit, ['*'], 'page', $offset);
@@ -146,24 +149,24 @@ class TokenRepository extends PassportTokenRepository
      * @param mixed $userId
      * @param integer $limit
      * @param integer $offset
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
+     * @return LengthAwarePaginator
      *
-     * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+     * @throws \ReflectionException
      */
     public function personalAccessTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
     {
         $this->paginationValidator->validate([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
+            'limit' => $limit,
+            'offset' => $offset
+        ]);
 
         $query = Passport::token()
-      ->with('client')
-      ->where('user_id', $userId)
-      ->where('revoked', false)
-      ->whereHas('client', function ($subQuery) {
-          $subQuery->where('personal_access_client', true);
-      });
+            ->with('client')
+            ->where('user_id', $userId)
+            ->where('revoked', false)
+            ->whereHas('client', function ($subQuery) {
+                $subQuery->where('personal_access_client', true);
+            });
 
         if ($limit) {
             return $query->paginate($limit, ['*'], 'page', $offset);
@@ -180,24 +183,24 @@ class TokenRepository extends PassportTokenRepository
      * @param mixed $userId
      * @param integer $limit
      * @param integer $offset
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
+     * @return LengthAwarePaginator
      *
-     * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+     * @throws \ReflectionException
      */
     public function passwordTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
     {
         $this->paginationValidator->validate([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
+            'limit' => $limit,
+            'offset' => $offset
+        ]);
 
         $query = Passport::token()
-      ->with('client')
-      ->where('user_id', $userId)
-      ->where('revoked', false)
-      ->whereHas('client', function ($subQuery) {
-          $subQuery->where('password_client', true);
-      });
+            ->with('client')
+            ->where('user_id', $userId)
+            ->where('revoked', false)
+            ->whereHas('client', function ($subQuery) {
+                $subQuery->where('password_client', true);
+            });
 
         if ($limit) {
             return $query->paginate($limit, ['*'], 'page', $offset);
@@ -214,25 +217,25 @@ class TokenRepository extends PassportTokenRepository
      * @param mixed $userId
      * @param integer $limit
      * @param integer $offset
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator<\Laravel\Passport\Token>
+     * @return LengthAwarePaginator
      *
-     * @throws \Infrastructure\Exceptions\Pagination\InvalidPaginationException
+     * @throws \ReflectionException
      */
     public function personalAccessOrPasswordTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, $limit = null, $offset = 1)
     {
         $this->paginationValidator->validate([
-      'limit' => $limit,
-      'offset' => $offset
-    ]);
+            'limit' => $limit,
+            'offset' => $offset
+        ]);
 
         $query = Passport::token()
-      ->with('client')
-      ->where('user_id', $userId)
-      ->where('revoked', false)
-      ->whereHas('client', function ($subQuery) {
-          $subQuery->where('personal_access_client', true);
-          $subQuery->orWhere('password_client', true);
-      });
+            ->with('client')
+            ->where('user_id', $userId)
+            ->where('revoked', false)
+            ->whereHas('client', function ($subQuery) {
+                $subQuery->where('personal_access_client', true);
+                $subQuery->orWhere('password_client', true);
+            });
 
         if ($limit) {
             return $query->paginate($limit, ['*'], 'page', $offset);
@@ -246,11 +249,11 @@ class TokenRepository extends PassportTokenRepository
     /**
      * Get a valid token instance for the given user and client.
      *
-     * @param \Illuminate\Database\Eloquent\Model $user
-     * @param \Laravel\Passport\Client $client
-     * @return \Laravel\Passport\Token
+     * @param User $user
+     * @param Client $client
+     * @return Token
      *
-     * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
+     * @throws TokenNotFoundException
      */
     public function getValidToken($user, $client)
     {
@@ -266,7 +269,7 @@ class TokenRepository extends PassportTokenRepository
     /**
      * Store the given token instance.
      *
-     * @param \Laravel\Passport\Token $token
+     * @param Token $token
      * @return void
      */
     public function save(Token $token)
@@ -300,11 +303,11 @@ class TokenRepository extends PassportTokenRepository
     /**
      * Find a valid token for the given user and client.
      *
-     * @param \Illuminate\Database\Eloquent\Model $user
-     * @param \Laravel\Passport\Client $client
-     * @return \Laravel\Passport\Token
+     * @param User $user
+     * @param Client $client
+     * @return Token
      *
-     * @throws \Domain\OAuth\Exceptions\TokenNotFoundException
+     * @throws TokenNotFoundException
      */
     public function findValidToken($user, $client)
     {

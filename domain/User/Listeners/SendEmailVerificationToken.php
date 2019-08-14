@@ -29,6 +29,7 @@ class SendEmailVerificationToken
      *
      * @param EmailVerificationTokenGeneratedEvent $event
      * @return void
+     * @throws \Exception
      */
     public function handle(EmailVerificationTokenGeneratedEvent $event)
     {

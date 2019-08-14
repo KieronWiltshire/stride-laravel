@@ -3,32 +3,37 @@
 namespace Domain\Permission;
 
 use Domain\Permission\Contracts\Repositories\PermissionRepository;
+use Domain\Permission\Exceptions\CannotCreatePermissionException;
+use Domain\Permission\Exceptions\CannotUpdatePermissionException;
+use Domain\Permission\Exceptions\PermissionNotFoundException;
 use Domain\Role\Role;
 use Domain\User\User;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Support\Exceptions\Pagination\InvalidPaginationException;
 
 class PermissionService
 {
     /**
-     * @var \Domain\Permission\Contracts\Repositories\PermissionRepository
+     * @var PermissionRepository
      */
     protected $permissionRepository;
 
     /**
      * Create a new user service instance.
      *
-     * @param \Domain\Permission\Contracts\Repositories\PermissionRepository $permissionRepository
+     * @param PermissionRepository $permissionRepository
      */
     public function __construct(
-      PermissionRepository $permissionRepository
-  ) {
+        PermissionRepository $permissionRepository
+    ) {
         $this->permissionRepository = $permissionRepository;
     }
 
     /**
      * Retrieve all of the permissions.
      *
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+     * @return Collection
      */
     public function all()
     {
@@ -39,9 +44,9 @@ class PermissionService
      * Create a new permission.
      *
      * @param array $attributes
-     * @return \Domain\Permission\Permission
+     * @return Permission
      *
-     * @throws \Domain\Permission\Exceptions\CannotCreatePermissionException
+     * @throws CannotCreatePermissionException
      */
     public function create($attributes)
     {
@@ -56,9 +61,9 @@ class PermissionService
      * @param number|string $search
      * @param boolean $regex
      * @param array $attributes
-     * @return \Domain\Permission\Permission
+     * @return Permission
      *
-     * @throws \Domain\Permission\Exceptions\CannotCreatePermissionException
+     * @throws CannotCreatePermissionException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -71,7 +76,7 @@ class PermissionService
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -82,9 +87,9 @@ class PermissionService
      * Find a permission by identifier.
      *
      * @param string $id
-     * @return \Domain\Permission\Permission
+     * @return Permission
      *
-     * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
+     * @throws PermissionNotFoundException
      */
     public function findById($id)
     {
@@ -95,9 +100,9 @@ class PermissionService
      * Find a permission by name.
      *
      * @param string $name
-     * @return \Domain\Permission\Permission
+     * @return Permission
      *
-     * @throws \Domain\Permission\Exceptions\PermissionNotFoundException
+     * @throws PermissionNotFoundException
      */
     public function findByName($name)
     {
@@ -107,11 +112,11 @@ class PermissionService
     /**
      * Update a permission.
      *
-     * @param \Domain\Permission\Permission $permission
+     * @param Permission $permission
      * @param array $attributes
-     * @return \Domain\Permission\Permission
+     * @return Permission
      *
-     * @throws \Domain\Permission\Exceptions\CannotUpdatePermissionException
+     * @throws CannotUpdatePermissionException
      */
     public function update(Permission $permission, $attributes)
     {
@@ -123,7 +128,8 @@ class PermissionService
      *
      * @param integer $limit
      * @param integer $offset
-     * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Permission\Permission>
+     * @return LengthAwarePaginator
+     * @throws InvalidPaginationException
      */
     public function index($limit = null, $offset = 1)
     {
@@ -138,7 +144,8 @@ class PermissionService
      * @param boolean $regex
      * @param integer $limit
      * @param integer $offset
-     * @return \Illuminate\Pagination\LengthAwarePaginator<\Domain\Permission\Permission>
+     * @return LengthAwarePaginator
+     * @throws InvalidPaginationException
      */
     public function search($parameter, $search, $regex = true, $limit = null, $offset = 1)
     {
@@ -148,9 +155,9 @@ class PermissionService
     /**
      * Add a permission to the specified role.
      *
-     * @param \Domain\Role\Role $role
-     * @param \Domain\Permission\Permission $permission
-     * @return \Domain\Role\Role
+     * @param Role $role
+     * @param Permission $permission
+     * @return Role
      */
     public function addPermissionToRole(Role $role, Permission $permission)
     {
@@ -160,9 +167,9 @@ class PermissionService
     /**
      * Add a permission to the specified user.
      *
-     * @param \Domain\User\User $user
-     * @param \Domain\Permission\Permission $permission
-     * @return \Domain\User\User
+     * @param User $user
+     * @param Permission $permission
+     * @return User
      */
     public function addPermissionToUser(User $user, Permission $permission)
     {
@@ -172,9 +179,9 @@ class PermissionService
     /**
      * Add multiple permissions to the specified role.
      *
-     * @param \Domain\Role\Role $role
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return \Domain\Role\Role
+     * @param Role $role
+     * @param Collection|array $permissions
+     * @return Role
      */
     public function addPermissionsToRole(Role $role, $permissions = [])
     {
@@ -184,9 +191,9 @@ class PermissionService
     /**
      * Add multiple permissions to the specified user.
      *
-     * @param \Domain\User\User $user
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return \Domain\User\User
+     * @param User $user
+     * @param Collection|array $permissions
+     * @return User
      */
     public function addPermissionsToUser(User $user, $permissions = [])
     {
@@ -196,9 +203,9 @@ class PermissionService
     /**
      * Remove a permission from the specified role.
      *
-     * @param \Domain\Role\Role $role
-     * @param \Domain\Permission\Permission $permission
-     * @return \Domain\Role\Role
+     * @param Role $role
+     * @param Permission $permission
+     * @return Role
      */
     public function removePermissionFromRole(Role $role, Permission $permission)
     {
@@ -208,9 +215,9 @@ class PermissionService
     /**
      * Remove a permission from the specified user.
      *
-     * @param \Domain\User\User $user
-     * @param \Domain\Permission\Permission $permission
-     * @return \Domain\User\User
+     * @param User $user
+     * @param Permission $permission
+     * @return User
      */
     public function removePermissionFromUser(User $user, Permission $permission)
     {
@@ -220,9 +227,9 @@ class PermissionService
     /**
      * Remove multiple permissions from the specified role.
      *
-     * @param \Domain\Role\Role $role
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return \Domain\Role\Role
+     * @param Role $role
+     * @param Collection|array $permissions
+     * @return Role
      */
     public function removePermissionsFromRole(Role $role, $permissions = [])
     {
@@ -232,9 +239,9 @@ class PermissionService
     /**
      * Remove multiple permissions from the specified user.
      *
-     * @param \Domain\User\User $user
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return \Domain\User\User
+     * @param User $user
+     * @param Collection|array $permissions
+     * @return User
      */
     public function removePermissionsFromUser(User $user, $permissions = [])
     {
@@ -244,9 +251,9 @@ class PermissionService
     /**
      * Set all of the permissions of the specified role.
      *
-     * @param \Domain\Role\Role $role
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return \Domain\Role\Role
+     * @param Role $role
+     * @param Collection|array $permissions
+     * @return Role
      */
     public function setRolePermissions(Role $role, $permissions = [])
     {
@@ -256,9 +263,9 @@ class PermissionService
     /**
      * Set all of the permissions of the specified user.
      *
-     * @param \Domain\User\User $user
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return \Domain\User\User
+     * @param User $user
+     * @param Collection|array $permissions
+     * @return User
      */
     public function setUserPermissions(User $user, $permissions = [])
     {
@@ -268,8 +275,8 @@ class PermissionService
     /**
      * Retrieve all of the permissions for the specified role.
      *
-     * @param \Domain\Role\Role $role
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+     * @param Role $role
+     * @return Collection
      */
     public function getPermissionsForRole(Role $role)
     {
@@ -279,8 +286,8 @@ class PermissionService
     /**
      * Retrieve all of the permissions for the specified user.
      *
-     * @param \Domain\User\User $user
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Permission\Permission>
+     * @param User $user
+     * @return Collection
      */
     public function getPermissionsForUser(User $user)
     {
@@ -290,8 +297,8 @@ class PermissionService
     /**
      * Determine if the given role has the specified permission assigned.
      *
-     * @param \Domain\Role\Role $role
-     * @param \Domain\Permission\Permission $permission
+     * @param Role $role
+     * @param Permission $permission
      * @return bool
      */
     public function roleHasPermission(Role $role, Permission $permission)
@@ -302,8 +309,8 @@ class PermissionService
     /**
      * Determine if the given user has the specified permission assigned.
      *
-     * @param \Domain\User\User $user
-     * @param \Domain\Permission\Permission $permission
+     * @param User $user
+     * @param Permission $permission
      * @return bool
      */
     public function userHasPermission(User $user, Permission $permission)
@@ -314,16 +321,16 @@ class PermissionService
     /**
      * Determine if the given role has the specified permissions assigned.
      *
-     * @param \Domain\Role\Role $role
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param Role $role
+     * @param Collection|array $permissions
      * @return bool
      */
     public function roleHasPermissions(Role $role, $permissions)
     {
         $permissionIds = ($permissions instanceof Collection ? $permissions : collect($permissions))
-      ->map->only(['id'])
-      ->flatten()
-      ->all();
+            ->map->only(['id'])
+            ->flatten()
+            ->all();
 
         return ($this->getPermissionsForRole($role)->whereIn('id', $permissionIds)->count() > 0);
     }
@@ -331,16 +338,16 @@ class PermissionService
     /**
      * Determine if the given user has the specified permissions assigned.
      *
-     * @param \Domain\User\User $user
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param User $user
+     * @param Collection|array $permissions
      * @return bool
      */
     public function userHasPermissions(User $user, $permissions)
     {
         $permissionIds = ($permissions instanceof Collection ? $permissions : collect($permissions))
-      ->map->only(['id'])
-      ->flatten()
-      ->all();
+            ->map->only(['id'])
+            ->flatten()
+            ->all();
 
         return ($this->getPermissionsForUser($user)->whereIn('id', $permissionIds)->count() > 0);
     }
@@ -348,8 +355,8 @@ class PermissionService
     /**
      * Retrieve all of the roles that have access to the specified permission.
      *
-     * @param \Domain\Permission\Permission $permission
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+     * @param Permission $permission
+     * @return Collection
      */
     public function getRolesWithPermission(Permission $permission)
     {
@@ -359,8 +366,8 @@ class PermissionService
     /**
      * Retrieve all of the users that have access to the specified permission.
      *
-     * @param \Domain\Permission\Permission $permission
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+     * @param Permission $permission
+     * @return Collection
      */
     public function getUsersWithPermission(Permission $permission)
     {
@@ -370,8 +377,8 @@ class PermissionService
     /**
      * Retrieve all of the roles that have access to any of the specified permissions.
      *
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\Role\Role>
+     * @param Collection|array $permissions
+     * @return Collection
      */
     public function getRolesWithPermissions($permissions = [])
     {
@@ -381,8 +388,8 @@ class PermissionService
     /**
      * Retrieve all of the users that have access to any of the specified permissions.
      *
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return \Illuminate\Database\Eloquent\Collection<\Domain\User\User>
+     * @param Collection|array $permissions
+     * @return Collection
      */
     public function getUsersWithPermissions($permissions = [])
     {

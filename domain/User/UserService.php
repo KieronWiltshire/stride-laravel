@@ -65,7 +65,7 @@ class UserService
     /**
      * Retrieve all of the users.
      *
-     * @return Collection<User>
+     * @return Collection
      */
     public function all()
     {
@@ -98,8 +98,6 @@ class UserService
      * @param boolean $regex
      * @param array $attributes
      * @return User
-     *
-     * @throws CannotCreateUserException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -116,7 +114,7 @@ class UserService
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return Collection<User>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -164,7 +162,7 @@ class UserService
      *
      * @param integer $limit
      * @param integer $offset
-     * @return LengthAwarePaginator<User>
+     * @return LengthAwarePaginator
      *
      * @throws InvalidPaginationException
      */
@@ -181,7 +179,7 @@ class UserService
      * @param boolean $regex
      * @param integer $limit
      * @param integer $offset
-     * @return LengthAwarePaginator<User>
+     * @return LengthAwarePaginator
      *
      * @throws InvalidPaginationException
      */

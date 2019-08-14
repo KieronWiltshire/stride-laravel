@@ -12,8 +12,8 @@ class Role extends LaratrustRole
      * @var array
      */
     protected $hidden = [
-    'pivot'
-  ];
+        'pivot'
+    ];
 
     /**
      * The attributes that should be cast to native types.
@@ -21,8 +21,8 @@ class Role extends LaratrustRole
      * @var array
      */
     protected $casts = [
-    'is_default' => 'boolean',
-  ];
+        'is_default' => 'boolean',
+    ];
 
     /**
      * Get the role's is default attribute.

@@ -18,7 +18,7 @@ class EmailVerificationToken extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param string $passwordResetToken
+     * @param string $emailVerificationToken
      */
     public function __construct($emailVerificationToken)
     {

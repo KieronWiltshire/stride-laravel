@@ -2,6 +2,7 @@
 
 namespace Domain\User;
 
+use Illuminate\Pagination\LengthAwarePaginator;
 use Support\Exceptions\AppError;
 use Support\Repositories\AppRepository;
 use Domain\User\Contracts\Repositories\UserRepository as UserRepositoryInterface;
@@ -42,7 +43,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
     /**
      * Retrieve all of the users.
      *
-     * @return Collection<User>
+     * @return Collection
      */
     public function all()
     {
@@ -56,7 +57,6 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
      * @return User
      *
      * @throws \ReflectionException
-     * @throws AppError
      */
     public function create($attributes)
     {
@@ -81,7 +81,6 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
      * @param array $attributes
      * @return User
      *
-     * @throws AppError
      * @throws \ReflectionException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
@@ -105,7 +104,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
      * @param number|string $parameter
      * @param number|string|array $search
      * @param boolean $regex
-     * @return Collection<User>
+     * @return Collection
      */
     public function find($parameter, $search, $regex = true)
     {
@@ -169,7 +168,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
      * @param array $attributes
      * @return User
      *
-     * @throws CannotUpdateUserException
+     * @throws \ReflectionException
      */
     public function update(User $user, $attributes)
     {

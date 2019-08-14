@@ -8,7 +8,7 @@ use Support\Exceptions\AppError;
 class ItemCreateValidator extends MenuValidator
 {
     /**
-     * @var \Support\Exceptions\AppError
+     * @var AppError
      */
     protected $exception = CannotCreateItemException::class;
 
