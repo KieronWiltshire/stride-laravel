@@ -11,58 +11,58 @@ use League\OAuth2\Server\AuthorizationServer;
 
 class AccessTokenController
 {
-  use HandlesOAuthErrors;
+    use HandlesOAuthErrors;
 
-  /**
-   * The authorization server.
-   *
-   * @var AuthorizationServer
-   */
-  protected $server;
+    /**
+     * The authorization server.
+     *
+     * @var AuthorizationServer
+     */
+    protected $server;
 
-  /**
-   * The token repository instance.
-   *
-   * @var TokenRepository
-   */
-  protected $tokens;
+    /**
+     * The token repository instance.
+     *
+     * @var TokenRepository
+     */
+    protected $tokens;
 
-  /**
-   * The JWT parser instance.
-   *
-   * @var JwtParser
-   */
-  protected $jwt;
+    /**
+     * The JWT parser instance.
+     *
+     * @var JwtParser
+     */
+    protected $jwt;
 
-  /**
-   * Create a new controller instance.
-   *
-   * @param AuthorizationServer $server
-   * @param TokenRepository $tokens
-   * @param JwtParser $jwt
-   */
-  public function __construct(
-    AuthorizationServer $server,
-    TokenRepository $tokens,
-    JwtParser $jwt
+    /**
+     * Create a new controller instance.
+     *
+     * @param AuthorizationServer $server
+     * @param TokenRepository $tokens
+     * @param JwtParser $jwt
+     */
+    public function __construct(
+      AuthorizationServer $server,
+      TokenRepository $tokens,
+      JwtParser $jwt
   ) {
-    $this->jwt = $jwt;
-    $this->server = $server;
-    $this->tokens = $tokens;
-  }
+        $this->jwt = $jwt;
+        $this->server = $server;
+        $this->tokens = $tokens;
+    }
 
-  /**
-   * Authorize a client to access the user's account.
-   *
-   * @param ServerRequestInterface $request
-   * @return Response
-   */
-  public function issueToken(ServerRequestInterface $request)
-  {
-    return $this->withErrorHandling(function () use ($request) {
-      return $this->convertResponse(
-        $this->server->respondToAccessTokenRequest($request, new Psr7Response)
+    /**
+     * Authorize a client to access the user's account.
+     *
+     * @param ServerRequestInterface $request
+     * @return Response
+     */
+    public function issueToken(ServerRequestInterface $request)
+    {
+        return $this->withErrorHandling(function () use ($request) {
+            return $this->convertResponse(
+          $this->server->respondToAccessTokenRequest($request, new Psr7Response)
       );
-    });
-  }
+        });
+    }
 }

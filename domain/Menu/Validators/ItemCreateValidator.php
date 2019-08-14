@@ -7,20 +7,20 @@ use Support\Exceptions\AppError;
 
 class ItemCreateValidator extends MenuValidator
 {
-  /**
-   * @var \Support\Exceptions\AppError
-   */
-  protected $exception = CannotCreateItemException::class;
+    /**
+     * @var \Support\Exceptions\AppError
+     */
+    protected $exception = CannotCreateItemException::class;
 
-  /**
-   * Retrieve the rules set for the validator.
-   *
-   * @return array
-   */
-  public function rules()
-  {
-    return [
+    /**
+     * Retrieve the rules set for the validator.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
       '' => ''
     ];
-  }
+    }
 }

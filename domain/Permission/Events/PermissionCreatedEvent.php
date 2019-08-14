@@ -9,30 +9,30 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 
 class PermissionCreatedEvent
 {
-  use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  /**
-   * @var \Domain\Permission\Permission
-   */
-  private $permission;
+    /**
+     * @var \Domain\Permission\Permission
+     */
+    private $permission;
 
-  /**
-   * Create a new event instance.
-   *
-   * @param \Domain\Permission\Permission $permission
-   */
-  public function __construct(Permission $permission)
-  {
-    $this->permission = $permission;
-  }
+    /**
+     * Create a new event instance.
+     *
+     * @param \Domain\Permission\Permission $permission
+     */
+    public function __construct(Permission $permission)
+    {
+        $this->permission = $permission;
+    }
 
-  /**
-   * Retrieve the created permission.
-   *
-   * @return \Domain\Permission\Permission
-   */
-  public function permission()
-  {
-    return $this->permission;
-  }
+    /**
+     * Retrieve the created permission.
+     *
+     * @return \Domain\Permission\Permission
+     */
+    public function permission()
+    {
+        return $this->permission;
+    }
 }

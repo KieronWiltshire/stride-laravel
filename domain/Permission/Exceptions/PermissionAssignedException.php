@@ -6,10 +6,11 @@ use Support\Exceptions\Http\ValidationError;
 
 class PermissionAssignedException extends ValidationError
 {
-  /**
-   * Create a new permission assigned exception instance.
-   */
-  public function __construct() {
-    parent::__construct(__('permission.exceptions.permission_assigned'));
-  }
+    /**
+     * Create a new permission assigned exception instance.
+     */
+    public function __construct()
+    {
+        parent::__construct(__('permission.exceptions.permission_assigned'));
+    }
 }

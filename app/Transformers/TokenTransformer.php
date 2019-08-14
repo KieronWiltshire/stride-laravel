@@ -8,50 +8,50 @@ use League\Fractal\TransformerAbstract;
 
 class TokenTransformer extends TransformerAbstract
 {
-  /**
-   * @var ClientTransformer
-   */
-  protected $clientTransformer;
+    /**
+     * @var ClientTransformer
+     */
+    protected $clientTransformer;
 
-  /**
-   * Create a new token transformer instance
-   *
-   * @param ClientTransformer $clientTransformer
-   */
-  public function __construct(
-    ClientTransformer $clientTransformer
+    /**
+     * Create a new token transformer instance
+     *
+     * @param ClientTransformer $clientTransformer
+     */
+    public function __construct(
+      ClientTransformer $clientTransformer
   ) {
-    $this->clientTransformer = $clientTransformer;
-  }
+        $this->clientTransformer = $clientTransformer;
+    }
 
-  /**
-   * List of resources possible to include
-   *
-   * @var array
-   */
-  protected $availableIncludes = [
+    /**
+     * List of resources possible to include
+     *
+     * @var array
+     */
+    protected $availableIncludes = [
     'client'
   ];
 
-  /**
-   * A Fractal transformer.
-   *
-   * @return array
-   */
-  public function transform($token)
-  {
-    $visible = [];
+    /**
+     * A Fractal transformer.
+     *
+     * @return array
+     */
+    public function transform($token)
+    {
+        $visible = [];
 
-    return $token->makeVisible($visible)->toArray();
-  }
+        return $token->makeVisible($visible)->toArray();
+    }
 
-  /**
-   * Include Client.
-   *
-   * @return Item
-   */
-  public function includeClient($token)
-  {
-    return $this->item($token->client, $this->clientTransformer);
-  }
+    /**
+     * Include Client.
+     *
+     * @return Item
+     */
+    public function includeClient($token)
+    {
+        return $this->item($token->client, $this->clientTransformer);
+    }
 }

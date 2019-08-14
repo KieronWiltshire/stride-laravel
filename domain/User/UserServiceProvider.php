@@ -13,21 +13,21 @@ use Domain\User\UserRepository;
 
 class UserServiceProvider extends ServiceProvider
 {
-  /**
-   * All of the container bindings that should be registered.
-   *
-   * @var array
-   */
-  public $bindings = [
+    /**
+     * All of the container bindings that should be registered.
+     *
+     * @var array
+     */
+    public $bindings = [
     UserRepositoryInterface::class => UserRepository::class,
   ];
 
-  /**
-   * The event handler mappings for the application.
-   *
-   * @var array
-   */
-  protected $listen = [
+    /**
+     * The event handler mappings for the application.
+     *
+     * @var array
+     */
+    protected $listen = [
     EmailVerificationTokenGeneratedEvent::class => [
       SendEmailVerificationToken::class,
     ],
@@ -36,24 +36,24 @@ class UserServiceProvider extends ServiceProvider
     ]
   ];
 
-  /**
-   * Register services.
-   *
-   * @return void
-   */
-  public function register()
-  {
-  }
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+    }
 
-  /**
-   * Bootstrap services.
-   *
-   * @return void
-   */
-  public function boot()
-  {
-    parent::boot();
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
 
-    //
-  }
+        //
+    }
 }

@@ -6,5 +6,5 @@ use Support\Validators\AppValidator;
 
 abstract class MenuValidator extends AppValidator
 {
-  // TODO:
+    // TODO:
 }

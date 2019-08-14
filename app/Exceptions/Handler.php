@@ -28,123 +28,123 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 
 class Handler extends ExceptionHandler
 {
-  /**
-   * A list of the exception types that are not reported.
-   *
-   * @var array
-   */
-  protected $dontReport = [
+    /**
+     * A list of the exception types that are not reported.
+     *
+     * @var array
+     */
+    protected $dontReport = [
     //
   ];
 
-  /**
-   * A list of the inputs that are never flashed for validation exceptions.
-   *
-   * @var array
-   */
-  protected $dontFlash = [
+    /**
+     * A list of the inputs that are never flashed for validation exceptions.
+     *
+     * @var array
+     */
+    protected $dontFlash = [
     'password',
     'password_confirmation',
   ];
 
-  /**
-   * Report or log an exception.
-   *
-   * @param Exception $exception
-   * @return void
-   * @throws Exception
-   */
-  public function report(Exception $exception)
-  {
-    parent::report($exception);
-  }
-
-  /**
-   * Render an exception into an HTTP response.
-   *
-   * @param  Request  $request
-   * @param Exception $exception
-   * @return Response
-   */
-  public function render($request, Exception $exception)
-  {
-    if (app()->environment(['local', 'development'])) {
-      if ($request->has('dump')) {
-        dd($exception);
-      }
+    /**
+     * Report or log an exception.
+     *
+     * @param Exception $exception
+     * @return void
+     * @throws Exception
+     */
+    public function report(Exception $exception)
+    {
+        parent::report($exception);
     }
 
-    $conform = $this->conform($exception);
-    $render = $conform->render();
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param  Request  $request
+     * @param Exception $exception
+     * @return Response
+     */
+    public function render($request, Exception $exception)
+    {
+        if (app()->environment(['local', 'development'])) {
+            if ($request->has('dump')) {
+                dd($exception);
+            }
+        }
 
-    return response($render, $conform->getHttpStatus());
-  }
+        $conform = $this->conform($exception);
+        $render = $conform->render();
 
-  /**
-   * Conform the exception to an application standard.
-   *
-   * @param Exception $exception
-   * @return AppError
-   */
-  public function conform(Exception $exception)
-  {
-    $error = null;
-
-    /*
-    |--------------------------------------------------------------------------
-    | Handling HttpException
-    |--------------------------------------------------------------------------
-    |
-    | This default exception thrown by the Laravel framework does
-    | not conform to the application's error response structure,
-    | therefore we swap it out for an application defined error.
-    |
-    */
-    if ($exception instanceof HttpException) {
-      $error = $this->conformHttpExceptionToAppError($exception);
+        return response($render, $conform->getHttpStatus());
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Handling AuthorizationException
-    |--------------------------------------------------------------------------
-    |
-    | This default exception thrown by the Laravel framework does
-    | not conform to the application's error response structure,
-    | therefore we swap it out for an application defined error.
-    |
-    */
-    if ($exception instanceof AuthorizationException) {
-      $error = $this->conformAuthorizationExceptionToAppError($exception);
-    }
+    /**
+     * Conform the exception to an application standard.
+     *
+     * @param Exception $exception
+     * @return AppError
+     */
+    public function conform(Exception $exception)
+    {
+        $error = null;
 
-    /*
-    |--------------------------------------------------------------------------
-    | Handling ValidationException
-    |--------------------------------------------------------------------------
-    |
-    | This default exception thrown by the Laravel framework does
-    | not conform to the application's error response structure,
-    | therefore we swap it out for an application defined error.
-    |
-    */
-    if ($exception instanceof ValidationException) {
-      $error = new ValidationError();
-      $error->setContext($exception->errors());
-    }
+        /*
+        |--------------------------------------------------------------------------
+        | Handling HttpException
+        |--------------------------------------------------------------------------
+        |
+        | This default exception thrown by the Laravel framework does
+        | not conform to the application's error response structure,
+        | therefore we swap it out for an application defined error.
+        |
+        */
+        if ($exception instanceof HttpException) {
+            $error = $this->conformHttpExceptionToAppError($exception);
+        }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Handling OAuthServerException
-    |--------------------------------------------------------------------------
-    |
-    | This default exception thrown by the Laravel framework does
-    | not conform to the application's error response structure,
-    | therefore we swap it out for an application defined error.
-    |
-    */
-    if ($exception instanceof OAuthServerException) {
-      switch ($exception->getCode()) {
+        /*
+        |--------------------------------------------------------------------------
+        | Handling AuthorizationException
+        |--------------------------------------------------------------------------
+        |
+        | This default exception thrown by the Laravel framework does
+        | not conform to the application's error response structure,
+        | therefore we swap it out for an application defined error.
+        |
+        */
+        if ($exception instanceof AuthorizationException) {
+            $error = $this->conformAuthorizationExceptionToAppError($exception);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Handling ValidationException
+        |--------------------------------------------------------------------------
+        |
+        | This default exception thrown by the Laravel framework does
+        | not conform to the application's error response structure,
+        | therefore we swap it out for an application defined error.
+        |
+        */
+        if ($exception instanceof ValidationException) {
+            $error = new ValidationError();
+            $error->setContext($exception->errors());
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Handling OAuthServerException
+        |--------------------------------------------------------------------------
+        |
+        | This default exception thrown by the Laravel framework does
+        | not conform to the application's error response structure,
+        | therefore we swap it out for an application defined error.
+        |
+        */
+        if ($exception instanceof OAuthServerException) {
+            switch ($exception->getCode()) {
         case 2:
           $error = new UnsupportedGrantTypeException();
           break;
@@ -170,36 +170,36 @@ class Handler extends ExceptionHandler
           $error = $this->conformHttpExceptionToAppError($exception);
           break;
       }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Handling AppError
+        |--------------------------------------------------------------------------
+        |
+        | Use the AppError in the response.
+        |
+        */
+        if ($exception instanceof AppError) {
+            $error = $exception;
+        }
+
+        if (!$error) {
+            $error = new InternalServerError();
+        }
+
+        return $error;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Handling AppError
-    |--------------------------------------------------------------------------
-    |
-    | Use the AppError in the response.
-    |
-    */
-    if ($exception instanceof AppError) {
-      $error = $exception;
-    }
-
-    if (!$error) {
-      $error = new InternalServerError();
-    }
-
-    return $error;
-  }
-
-  /**
-   * Conform the http exception to an application standard error.
-   *
-   * @param HttpException $exception
-   * @return AppError
-   */
-  public function conformHttpExceptionToAppError(HttpException $exception)
-  {
-    switch ($exception->getStatusCode()) {
+    /**
+     * Conform the http exception to an application standard error.
+     *
+     * @param HttpException $exception
+     * @return AppError
+     */
+    public function conformHttpExceptionToAppError(HttpException $exception)
+    {
+        switch ($exception->getStatusCode()) {
       case 400:
         return new BadRequestError();
       case 401:
@@ -223,16 +223,16 @@ class Handler extends ExceptionHandler
       default:
         return new InternalServerError();
     }
-  }
+    }
 
-  /**
-   * Conform the authorization exception to an application standard error.
-   *
-   * @param AuthorizationException $exception
-   * @return AppError
-   */
-  public function conformAuthorizationExceptionToAppError(AuthorizationException $exception)
-  {
-    return new ForbiddenError();
-  }
+    /**
+     * Conform the authorization exception to an application standard error.
+     *
+     * @param AuthorizationException $exception
+     * @return AppError
+     */
+    public function conformAuthorizationExceptionToAppError(AuthorizationException $exception)
+    {
+        return new ForbiddenError();
+    }
 }

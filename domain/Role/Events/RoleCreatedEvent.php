@@ -9,30 +9,30 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 
 class RoleCreatedEvent
 {
-  use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  /**
-   * @var Role
-   */
-  private $role;
+    /**
+     * @var Role
+     */
+    private $role;
 
-  /**
-   * Create a new event instance.
-   *
-   * @param Role $role
-   */
-  public function __construct(Role $role)
-  {
-    $this->role = $role;
-  }
+    /**
+     * Create a new event instance.
+     *
+     * @param Role $role
+     */
+    public function __construct(Role $role)
+    {
+        $this->role = $role;
+    }
 
-  /**
-   * Retrieve the created role.
-   *
-   * @return Role
-   */
-  public function role()
-  {
-    return $this->role;
-  }
+    /**
+     * Retrieve the created role.
+     *
+     * @return Role
+     */
+    public function role()
+    {
+        return $this->role;
+    }
 }

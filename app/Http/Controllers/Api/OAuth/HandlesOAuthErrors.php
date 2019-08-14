@@ -8,17 +8,17 @@ use \Laravel\Passport\Http\Controllers\ConvertsPsrResponses;
 
 trait HandlesOAuthErrors
 {
-  use ConvertsPsrResponses;
+    use ConvertsPsrResponses;
 
-  /**
-   * Perform the given callback with exception handling.
-   *
-   * @param Closure $callback
-   * @return Response
-   */
-  protected function withErrorHandling($callback)
-  {
-    // Ignore the original intent of creating a response
-    return $callback();
-  }
+    /**
+     * Perform the given callback with exception handling.
+     *
+     * @param Closure $callback
+     * @return Response
+     */
+    protected function withErrorHandling($callback)
+    {
+        // Ignore the original intent of creating a response
+        return $callback();
+    }
 }

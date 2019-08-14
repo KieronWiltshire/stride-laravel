@@ -9,54 +9,54 @@ use Illuminate\Http\Response;
 
 class AuthorizedAccessTokenController
 {
-  /**
-   * The token repository implementation.
-   *
-   * @var TokenRepository
-   */
-  protected $tokenRepository;
+    /**
+     * The token repository implementation.
+     *
+     * @var TokenRepository
+     */
+    protected $tokenRepository;
 
-  /**
-   * Create a new controller instance.
-   *
-   * @param TokenRepository $tokenRepository
-   */
-  public function __construct(
-    TokenRepository $tokenRepository
+    /**
+     * Create a new controller instance.
+     *
+     * @param TokenRepository $tokenRepository
+     */
+    public function __construct(
+      TokenRepository $tokenRepository
   ) {
-    $this->tokenRepository = $tokenRepository;
-  }
+        $this->tokenRepository = $tokenRepository;
+    }
 
-  /**
-   * Get all of the authorized tokens for the authenticated user.
-   *
-   * @return Collection
-   */
-  public function forUser()
-  {
-    $userId = request()->user()->getKey();
+    /**
+     * Get all of the authorized tokens for the authenticated user.
+     *
+     * @return Collection
+     */
+    public function forUser()
+    {
+        $userId = request()->user()->getKey();
 
-    return $this->tokenRepository->personalAccessOrPasswordTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, request()->query('limit'), request()->query('offset'))
+        return $this->tokenRepository->personalAccessOrPasswordTokensForUserWithClientAndTokenNotRevokedAsPaginated($userId, request()->query('limit'), request()->query('offset'))
       ->setPath(route('api.oauth.tokens.index'))
       ->setPageName('offset')
       ->appends([
         'limit' => request()->query('limit')
       ]);
-  }
+    }
 
-  /**
-   * Delete the given token.
-   *
-   * @param  string  $tokenId
-   * @return Response
-   *
-   * @throws TokenNotFoundException
-   */
-  public function destroy($tokenId)
-  {
-    $token = $this->tokenRepository->findForUser($tokenId, request()->user()->getKey());
-    $token->revoke();
+    /**
+     * Delete the given token.
+     *
+     * @param  string  $tokenId
+     * @return Response
+     *
+     * @throws TokenNotFoundException
+     */
+    public function destroy($tokenId)
+    {
+        $token = $this->tokenRepository->findForUser($tokenId, request()->user()->getKey());
+        $token->revoke();
 
-    return response('', 204);
-  }
+        return response('', 204);
+    }
 }

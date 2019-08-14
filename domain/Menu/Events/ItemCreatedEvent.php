@@ -9,30 +9,30 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 
 class ItemCreatedEvent
 {
-  use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  /**
-   * @var \Domain\Menu\Item
-   */
-  private $item;
+    /**
+     * @var \Domain\Menu\Item
+     */
+    private $item;
 
-  /**
-   * Create a new event instance.
-   *
-   * @param \Domain\Menu\Item $item
-   */
-  public function __construct(Item $item)
-  {
-    $this->item = $item;
-  }
+    /**
+     * Create a new event instance.
+     *
+     * @param \Domain\Menu\Item $item
+     */
+    public function __construct(Item $item)
+    {
+        $this->item = $item;
+    }
 
-  /**
-   * Retrieve the created item.
-   *
-   * @return \Domain\Menu\Item
-   */
-  public function item()
-  {
-    return $this->item;
-  }
+    /**
+     * Retrieve the created item.
+     *
+     * @return \Domain\Menu\Item
+     */
+    public function item()
+    {
+        return $this->item;
+    }
 }

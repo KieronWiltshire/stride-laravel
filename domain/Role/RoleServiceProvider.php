@@ -8,30 +8,30 @@ use Illuminate\Support\ServiceProvider;
 
 class RoleServiceProvider extends ServiceProvider
 {
-  /**
-   * All of the container bindings that should be registered.
-   *
-   * @var array
-   */
-  public $bindings = [
+    /**
+     * All of the container bindings that should be registered.
+     *
+     * @var array
+     */
+    public $bindings = [
     RoleRepositoryInterface::class => RoleRepository::class,
   ];
 
-  /**
-   * Register services.
-   *
-   * @return void
-   */
-  public function register()
-  {
-  }
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+    }
 
-  /**
-   * Bootstrap services.
-   *
-   * @return void
-   */
-  public function boot()
-  {
-  }
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+    }
 }
