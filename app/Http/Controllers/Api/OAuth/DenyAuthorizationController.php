@@ -25,8 +25,8 @@ class DenyAuthorizationController
      * @param ResponseFactory $response
      */
     public function __construct(
-      ResponseFactory $response
-  ) {
+        ResponseFactory $response
+    ) {
         $this->response = $response;
     }
 
@@ -34,6 +34,7 @@ class DenyAuthorizationController
      * Deny the authorization request.
      *
      * @return RedirectResponse
+     * @throws InvalidAuthorizationRequestException
      */
     public function deny()
     {
@@ -52,7 +53,7 @@ class DenyAuthorizationController
         $separator = $authRequest->getGrantTypeId() === 'implicit' ? '#' : (strstr($uri, '?') ? '&' : '?');
 
         return $this->response->redirectTo(
-        $uri.$separator.'error=access_denied&state=' . request()->input('state')
-    );
+            $uri.$separator.'error=access_denied&state=' . request()->input('state')
+        );
     }
 }

@@ -26,8 +26,8 @@ class BasePolicy
      * @param RoleService $roleService
      */
     public function __construct(
-      RoleService $roleService
-  ) {
+        RoleService $roleService
+    ) {
         $this->roleService = $roleService;
     }
 

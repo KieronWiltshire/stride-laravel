@@ -8,9 +8,11 @@ use Domain\OAuth\Exceptions\ClientNotFoundException;
 use App\Transformers\ClientTransformer;
 use Domain\User\Exceptions\UserNotFoundException;
 use Domain\User\UserService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Response;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Laravel\Passport\Client;
+use Support\Exceptions\AppError;
 use Support\Exceptions\Pagination\InvalidPaginationException;
 
 class ClientController extends Controller
@@ -38,10 +40,10 @@ class ClientController extends Controller
      * @param ClientTransformer $clientTransformer
      */
     public function __construct(
-      ClientRepository $clientRepository,
-      UserService $userService,
-      ClientTransformer $clientTransformer
-  ) {
+        ClientRepository $clientRepository,
+        UserService $userService,
+        ClientTransformer $clientTransformer
+    ) {
         $this->clientRepository = $clientRepository;
         $this->userService = $userService;
         $this->clientTransformer = $clientTransformer;
@@ -51,10 +53,11 @@ class ClientController extends Controller
      * Get all of the clients for the specified user.
      *
      * @param integer $id
-     * @return LengthAwarePaginator<\Laravel\Passport\Client>
+     * @return LengthAwarePaginator
      *
-     * @throws UserNotFoundException
-     * @throws InvalidPaginationException
+     * @throws AuthorizationException
+     * @throws \ReflectionException
+     * @throws AppError
      */
     public function forUser($id)
     {
@@ -63,30 +66,30 @@ class ClientController extends Controller
             $this->authorize('client.for', $user);
 
             $clients = $this->clientRepository->activeForUserAsPaginated($user->getKey(), request()->query('limit'), request()->query('offset'))
-        ->setPath(route('api.oauth.clients.index'))
-        ->setPageName('offset')
-        ->appends([
-          'limit' => request()->query('limit')
-        ]);
+                ->setPath(route('api.oauth.clients.index'))
+                ->setPageName('offset')
+                ->appends([
+                    'limit' => request()->query('limit')
+                ]);
 
             return fractal($clients, $this->clientTransformer);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
     /**
      * Get all of the clients for the authenticated user.
      *
-     * @param integer $id
-     * @return LengthAwarePaginator<\Laravel\Passport\Client>
+     * @return LengthAwarePaginator
      *
-     * @throws UserNotFoundException
-     * @throws InvalidPaginationException
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws \ReflectionException
      */
     public function forAuthenticatedUser()
     {
@@ -97,6 +100,8 @@ class ClientController extends Controller
      * Store a new client.
      *
      * @return Client
+     * @throws AuthorizationException
+     * @throws \ReflectionException
      */
     public function store()
     {
@@ -105,7 +110,7 @@ class ClientController extends Controller
         $client = $this->clientRepository->create(request()->user()->getKey(), request()->input('name'), request()->input('redirect'))->makeVisible('secret');
 
         return response([], 201)
-      ->header('Location', route('api.oauth.client.get', $client->id));
+            ->header('Location', route('api.oauth.client.get', $client->id));
     }
 
     /**
@@ -113,6 +118,10 @@ class ClientController extends Controller
      *
      * @param string $id
      * @return Client
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws ClientNotFoundException
+     * @throws \ReflectionException
      */
     public function update($id)
     {
@@ -121,10 +130,10 @@ class ClientController extends Controller
 
         if (!$client) {
             throw (new ClientNotFoundException())->setContext([
-        'id' => [
-          __('oauth.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('oauth.id.not_found')
+                ]
+            ]);
         }
 
         $client = $this->clientRepository->update($client, request()->input('name'), request()->input('redirect'));
@@ -137,6 +146,9 @@ class ClientController extends Controller
      *
      * @param string $id
      * @return Response
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws ClientNotFoundException
      */
     public function destroy($id)
     {
@@ -145,10 +157,10 @@ class ClientController extends Controller
 
         if ($client->revoked) {
             throw (new ClientNotFoundException())->setContext([
-        'id' => [
-          __('oauth.client.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('oauth.client.id.not_found')
+                ]
+            ]);
         }
 
         $this->clientRepository->delete($client);

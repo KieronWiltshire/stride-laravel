@@ -12,8 +12,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-    //
-  ];
+        //
+    ];
 
     /**
      * Register any events for your application.

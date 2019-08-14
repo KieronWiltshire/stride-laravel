@@ -21,8 +21,8 @@ class RolePolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user) {
             return (
-        $subject->hasPermission('role.create')
-      );
+                $subject->hasPermission('role.create')
+            );
         });
     }
 
@@ -37,8 +37,8 @@ class RolePolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $role) {
             return (
-        $subject->hasPermission('role.update.all')
-      );
+                $subject->hasPermission('role.update.all')
+            );
         });
     }
 
@@ -53,8 +53,8 @@ class RolePolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $role) {
             return (
-        $subject->hasPermission('role.assign.all') || $subject->hasPermission('role.assign.' . $role->getKeyName())
-      );
+                $subject->hasPermission('role.assign.all') || $subject->hasPermission('role.assign.' . $role->getKeyName())
+            );
         });
     }
 
@@ -69,8 +69,8 @@ class RolePolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $role) {
             return (
-        $subject->hasPermission('role.deny.all') || $subject->hasPermission('role.deny.' . $role->getKeyName())
-      );
+                $subject->hasPermission('role.deny.all') || $subject->hasPermission('role.deny.' . $role->getKeyName())
+            );
         });
     }
 
@@ -85,8 +85,8 @@ class RolePolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $role) {
             return (
-        $subject->hasPermission('role.assign-permission')
-      );
+                $subject->hasPermission('role.assign-permission')
+            );
         });
     }
 
@@ -101,8 +101,8 @@ class RolePolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $role) {
             return (
-        $subject->hasPermission('role.deny-permission')
-      );
+                $subject->hasPermission('role.deny-permission')
+            );
         });
     }
 }

@@ -21,8 +21,8 @@ class TokenPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user) {
             return (
-        $subject->hasPermission('personal-access-token.create')
-      );
+                $subject->hasPermission('personal-access-token.create')
+            );
         });
     }
 
@@ -38,9 +38,9 @@ class TokenPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $userToView) {
             return (
-        ($subject->hasPermission('personal-access-token.view.me') && (($user && $userToView) && $user->id === $userToView->id))
-        || ($subject->hasPermission('personal-access-token.view.all'))
-      );
+                ($subject->hasPermission('personal-access-token.view.me') && (($user && $userToView) && $user->id === $userToView->id))
+                || ($subject->hasPermission('personal-access-token.view.all'))
+            );
         });
     }
 
@@ -55,9 +55,9 @@ class TokenPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $token) {
             return (
-        ($subject->hasPermission('personal-access-token.delete.me') && (($user && $token) && $user->id === $token->user_id))
-        || ($subject->hasPermission('personal-access-token.delete.all'))
-      );
+                ($subject->hasPermission('personal-access-token.delete.me') && (($user && $token) && $user->id === $token->user_id))
+                || ($subject->hasPermission('personal-access-token.delete.all'))
+            );
         });
     }
 }

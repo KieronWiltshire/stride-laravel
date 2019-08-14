@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateLaratrustTables extends Migration
 {
@@ -37,7 +38,7 @@ class CreateLaratrustTables extends Migration
             $table->string('user_type');
 
             $table->foreign('role_id')->references('id')->on('roles')
-        ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['user_id', 'role_id', 'user_type']);
         });
@@ -49,7 +50,7 @@ class CreateLaratrustTables extends Migration
             $table->string('user_type');
 
             $table->foreign('permission_id')->references('id')->on('permissions')
-        ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['user_id', 'permission_id', 'user_type']);
         });
@@ -60,9 +61,9 @@ class CreateLaratrustTables extends Migration
             $table->unsignedInteger('role_id');
 
             $table->foreign('permission_id')->references('id')->on('permissions')
-        ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('role_id')->references('id')->on('roles')
-        ->onUpdate('cascade')->onDelete('cascade');
+                ->onUpdate('cascade')->onDelete('cascade');
 
             $table->primary(['permission_id', 'role_id']);
         });

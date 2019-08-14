@@ -27,8 +27,8 @@ class ApproveAuthorizationController
      * @param AuthorizationServer $server
      */
     public function __construct(
-      AuthorizationServer $server
-  ) {
+        AuthorizationServer $server
+    ) {
         $this->server = $server;
     }
 
@@ -48,8 +48,8 @@ class ApproveAuthorizationController
             }
 
             return $this->convertResponse(
-          $this->server->completeAuthorizationRequest($authRequest, new Psr7Response)
-      );
+                $this->server->completeAuthorizationRequest($authRequest, new Psr7Response)
+            );
         });
     }
 }

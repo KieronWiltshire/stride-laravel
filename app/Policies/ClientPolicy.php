@@ -21,8 +21,8 @@ class ClientPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user) {
             return (
-        $subject->hasPermission('client.create')
-      );
+                $subject->hasPermission('client.create')
+            );
         });
     }
 
@@ -37,9 +37,9 @@ class ClientPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $userToView) {
             return (
-        ($subject->hasPermission('client.view.me') && (($user && $userToView) && $user->id === $userToView->id))
-        || ($subject->hasPermission('client.view.all'))
-      );
+                ($subject->hasPermission('client.view.me') && (($user && $userToView) && $user->id === $userToView->id))
+                || ($subject->hasPermission('client.view.all'))
+            );
         });
     }
 
@@ -54,9 +54,9 @@ class ClientPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $client) {
             return (
-        ($subject->hasPermission('client.view.me') && (($user && $client) && $user->id === $client->user_id))
-        || ($subject->hasPermission('client.view.all'))
-      );
+                ($subject->hasPermission('client.view.me') && (($user && $client) && $user->id === $client->user_id))
+                || ($subject->hasPermission('client.view.all'))
+            );
         });
     }
 
@@ -71,9 +71,9 @@ class ClientPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $client) {
             return (
-        ($subject->hasPermission('client.update.me') && (($user && $client) && $user->id === $client->user_id))
-        || ($subject->hasPermission('client.update.all'))
-      );
+                ($subject->hasPermission('client.update.me') && (($user && $client) && $user->id === $client->user_id))
+                || ($subject->hasPermission('client.update.all'))
+            );
         });
     }
 
@@ -88,9 +88,9 @@ class ClientPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $client) {
             return (
-        ($subject->hasPermission('client.delete.me') && (($user && $client) && $user->id === $client->user_id))
-        || ($subject->hasPermission('client.delete.all'))
-      );
+                ($subject->hasPermission('client.delete.me') && (($user && $client) && $user->id === $client->user_id))
+                || ($subject->hasPermission('client.delete.all'))
+            );
         });
     }
 }

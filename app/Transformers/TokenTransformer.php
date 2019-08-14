@@ -19,8 +19,8 @@ class TokenTransformer extends TransformerAbstract
      * @param ClientTransformer $clientTransformer
      */
     public function __construct(
-      ClientTransformer $clientTransformer
-  ) {
+        ClientTransformer $clientTransformer
+    ) {
         $this->clientTransformer = $clientTransformer;
     }
 
@@ -30,8 +30,8 @@ class TokenTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-    'client'
-  ];
+        'client'
+    ];
 
     /**
      * A Fractal transformer.

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
+use Support\Exceptions\AppError;
 use Support\Exceptions\Auth\AuthenticationFailedException;
 use App\Http\Controllers\Controller;
 use Domain\User\Exceptions\UserNotFoundException;
@@ -41,6 +42,7 @@ class AuthController extends Controller
      * Retrieve an authentication token.
      *
      * @return JsonResponse
+     * @throws AppError
      */
     public function login()
     {
@@ -51,23 +53,23 @@ class AuthController extends Controller
                 $token = $user->createToken('login', ['*']);
 
                 return response()->json([
-          'access_token' => $token->accessToken,
-          'token_type' => 'Bearer',
-          'expires_at' => $token->token->expires_at
-        ]);
+                    'access_token' => $token->accessToken,
+                    'token_type' => 'Bearer',
+                    'expires_at' => $token->token->expires_at
+                ]);
             } else {
                 throw (new AuthenticationFailedException())->setContext([
-          'auth' => [
-            __('auth.failed')
-          ]
-        ]);
+                    'auth' => [
+                        __('auth.failed')
+                    ]
+                ]);
             }
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-          'id' => [
-          __('user.email.not_found')
-          ]
-        ]);
+                'id' => [
+                    __('user.email.not_found')
+                ]
+            ]);
         }
     }
 
@@ -93,7 +95,7 @@ class AuthController extends Controller
         $token->revoke();
 
         return response()->json([
-      'message' => __('auth.logout')
-    ], 200);
+            'message' => __('auth.logout')
+        ], 200);
     }
 }

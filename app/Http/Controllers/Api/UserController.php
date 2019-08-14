@@ -24,8 +24,10 @@ use Domain\User\Exceptions\UserNotFoundException;
 use App\Transformers\UserTransformer;
 use Domain\User\User;
 use Domain\User\UserService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Support\Exceptions\AppError;
 use Support\Exceptions\Http\BadRequestError;
 use Support\Exceptions\Pagination\InvalidPaginationException;
 use Support\Serializers\Fractal\OptionalDataKeySerializer;
@@ -78,13 +80,13 @@ class UserController extends Controller
      * @param PermissionTransformer $permissionTransformer
      */
     public function __construct(
-      UserService $userService,
-      UserTransformer $userTransformer,
-      RoleService $roleService,
-      RoleTransformer $roleTransformer,
-      PermissionService $permissionService,
-      PermissionTransformer $permissionTransformer
-  ) {
+        UserService $userService,
+        UserTransformer $userTransformer,
+        RoleService $roleService,
+        RoleTransformer $roleTransformer,
+        PermissionService $permissionService,
+        PermissionTransformer $permissionTransformer
+    ) {
         $this->userService = $userService;
         $this->userTransformer = $userTransformer;
         $this->roleService = $roleService;
@@ -97,7 +99,7 @@ class UserController extends Controller
     /**
      * Retrieve an index of users.
      *
-     * @return LengthAwarePaginator<\Domain\User\User>
+     * @return LengthAwarePaginator
      *
      * @throws InvalidPaginationException
      */
@@ -118,12 +120,12 @@ class UserController extends Controller
     public function create()
     {
         $user = $this->userService->create([
-      'email' => request()->input('email'),
-      'password' => request()->input('password')
-    ]);
+            'email' => request()->input('email'),
+            'password' => request()->input('password')
+        ]);
 
         return response([], 201)
-      ->header('Location', route('api.user.get', $user->id));
+            ->header('Location', route('api.user.get', $user->id));
     }
 
     /**
@@ -132,7 +134,7 @@ class UserController extends Controller
      * @param integer $id
      * @return User
      *
-     * @throws UserNotFoundException
+     * @throws AppError
      */
     public function getById($id)
     {
@@ -142,10 +144,10 @@ class UserController extends Controller
             return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -155,7 +157,7 @@ class UserController extends Controller
      * @param string $email
      * @return User
      *
-     * @throws UserNotFoundException
+     * @throws AppError
      */
     public function getByEmail($email)
     {
@@ -165,42 +167,42 @@ class UserController extends Controller
             return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.email.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.email.not_found')
+                ]
+            ]);
         }
     }
 
     /**
      * Retrieve an index of users matching a particular search phrase.
      *
-     * @return LengthAwarePaginator<\Domain\User\User>
+     * @return LengthAwarePaginator
      *
-     * @throws BadRequestError
+     * @throws AppError
      * @throws InvalidPaginationException
      */
     public function search()
     {
         switch (strtolower(request()->query('parameter'))) {
-      case 'id':
-      case 'email':
-        break;
-      default:
-        throw (new BadRequestError())->setContext([
-          'parameter' => [
-            __('validation.regex', ['attribute' => 'parameter'])
-          ]
-        ]);
-    }
+            case 'id':
+            case 'email':
+                break;
+            default:
+                throw (new BadRequestError())->setContext([
+                    'parameter' => [
+                        __('validation.regex', ['attribute' => 'parameter'])
+                    ]
+                ]);
+        }
 
         $users = $this->userService->search(
-        request()->query('parameter'),
-        request()->query('search'),
-        (bool) request()->query('regex'),
-        request()->query('limit'),
-        request()->query('offset')
-    )->setPath(route('api.user.search'));
+            request()->query('parameter'),
+            request()->query('search'),
+            (bool) request()->query('regex'),
+            request()->query('limit'),
+            request()->query('offset')
+        )->setPath(route('api.user.search'));
 
         return fractal($this->includeDefaultRole($users), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
     }
@@ -211,8 +213,9 @@ class UserController extends Controller
      * @param integer $id
      * @return User
      *
-     * @throws UserNotFoundException
+     * @throws AppError
      * @throws CannotUpdateUserException
+     * @throws AuthorizationException
      */
     public function update($id)
     {
@@ -221,16 +224,16 @@ class UserController extends Controller
             $this->authorize('user.update', $user);
 
             $user = $this->userService->update($user, [
-        'password' => request()->input('password')
-      ]);
+                'password' => request()->input('password')
+            ]);
 
             return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -240,8 +243,10 @@ class UserController extends Controller
      * @param integer $id
      * @return JsonResponse
      *
-     * @throws UserNotFoundException
-     * @throws InvalidEmailException
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws CannotUpdateUserException
+     * @throws \ReflectionException
      */
     public function requestEmailChange($id)
     {
@@ -252,15 +257,15 @@ class UserController extends Controller
             $this->userService->requestEmailChange($user, request()->input('email'));
 
             return response()->json([
-        'message' => __('email.email_verification_sent'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
-      ], 202);
+                'message' => __('email.email_verification_sent'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
+            ], 202);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -270,9 +275,10 @@ class UserController extends Controller
      * @param string $email
      * @return User
      *
-     * @throws UserNotFoundException
-     * @throws InvalidEmailException
+     * @throws AppError
+     * @throws CannotUpdateUserException
      * @throws InvalidEmailVerificationTokenException
+     * @throws \ReflectionException
      */
     public function verifyEmail($email)
     {
@@ -283,10 +289,10 @@ class UserController extends Controller
             return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'email' => [
-          __('user.email.not_found')
-        ]
-      ]);
+                'email' => [
+                    __('user.email.not_found')
+                ]
+            ]);
         }
     }
 
@@ -296,8 +302,7 @@ class UserController extends Controller
      * @param string $email
      * @return JsonResponse
      *
-     * @throws InvalidEmailVerificationTokenException
-     * @throws UserNotFoundException
+     * @throws AppError
      */
     public function resendEmailVerificationToken($email)
     {
@@ -306,21 +311,21 @@ class UserController extends Controller
             $this->userService->sendEmailVerificationToken($user);
 
             return response()->json([
-        'message' => __('email.email_verification_resent'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
-      ], 202);
+                'message' => __('email.email_verification_resent'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
+            ], 202);
         } catch (InvalidEmailVerificationTokenException $e) {
             throw $e->setContext([
-        'email_verification_token' => [
-          __('user.exceptions.invalid_email_verification_token')
-        ]
-      ]);
+                'email_verification_token' => [
+                    __('user.exceptions.invalid_email_verification_token')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'email' => [
-          __('user.email.not_found')
-        ]
-      ]);
+                'email' => [
+                    __('user.email.not_found')
+                ]
+            ]);
         }
     }
 
@@ -330,7 +335,8 @@ class UserController extends Controller
      * @param string $email
      * @return JsonResponse
      *
-     * @throws UserNotFoundException
+     * @throws AppError
+     * @throws CannotUpdateUserException
      */
     public function forgotPassword($email)
     {
@@ -339,15 +345,15 @@ class UserController extends Controller
             $this->userService->forgotPassword($user);
 
             return response([
-        'message' => __('passwords.sent'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
-      ], 202);
-        } catch (MenuNotFoundException $e) {
+                'message' => __('passwords.sent'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
+            ], 202);
+        } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'email' => [
-          __('user.email.not_found')
-        ]
-      ]);
+                'email' => [
+                    __('user.email.not_found')
+                ]
+            ]);
         }
     }
 
@@ -357,10 +363,8 @@ class UserController extends Controller
      * @param string $email
      * @return User
      *
-     * @throws UserNotFoundException
-     * @throws PasswordResetTokenExpiredException
-     * @throws InvalidPasswordResetTokenException
-     * @throws InvalidPasswordException
+     * @throws AppError
+     * @throws \ReflectionException
      */
     public function resetPassword($email)
     {
@@ -371,22 +375,22 @@ class UserController extends Controller
             return fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions']);
         } catch (InvalidPasswordResetTokenException $e) {
             throw $e->setContext([
-        'password_reset_token' => [
-          __('user.exceptions.invalid_password_reset_token')
-        ]
-      ]);
+                'password_reset_token' => [
+                    __('user.exceptions.invalid_password_reset_token')
+                ]
+            ]);
         } catch (PasswordResetTokenExpiredException $e) {
             throw $e->setContext([
-        'password_reset_token' => [
-          __('user.exceptions.invalid_password_reset_token')
-        ]
-      ]);
+                'password_reset_token' => [
+                    __('user.exceptions.invalid_password_reset_token')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'email' => [
-          __('user.email.not_found')
-        ]
-      ]);
+                'email' => [
+                    __('user.email.not_found')
+                ]
+            ]);
         }
     }
 
@@ -396,6 +400,9 @@ class UserController extends Controller
      * @param $id
      * @param $roleId
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws RoleAssignedException
      */
     public function assignRole($id, $roleId)
     {
@@ -413,21 +420,21 @@ class UserController extends Controller
             $this->roleService->addRoleToUser($user, $role);
 
             return response([
-        'message' => __('user.role.assigned'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
-      ], 200);
+                'message' => __('user.role.assigned'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer)->parseIncludes(['roles', 'permissions'])
+            ], 200);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'roleId' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'roleId' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -436,6 +443,9 @@ class UserController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws RoleAssignedException
      */
     public function assignRoles($id)
     {
@@ -460,21 +470,21 @@ class UserController extends Controller
             $this->roleService->addRolesToUser($user, $roles);
 
             return response([
-        'message' => __('user.role.assigned'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions']),
-      ], 200);
+                'message' => __('user.role.assigned'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions']),
+            ], 200);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'roleId' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'roleId' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -484,6 +494,9 @@ class UserController extends Controller
      * @param $id
      * @param $roleId
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws RoleNotAssignedException
      */
     public function denyRole($id, $roleId)
     {
@@ -501,21 +514,21 @@ class UserController extends Controller
             $this->roleService->removeRoleFromUser($user, $role);
 
             return response([
-        'message' => __('user.role.denied'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
-      ], 200);
+                'message' => __('user.role.denied'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+            ], 200);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'roleId' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'roleId' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -524,6 +537,9 @@ class UserController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws RoleNotAssignedException
      */
     public function denyRoles($id)
     {
@@ -548,21 +564,21 @@ class UserController extends Controller
             $this->roleService->removeRolesFromUser($user, $roles);
 
             return response([
-        'message' => __('user.role.assigned'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
-      ], 200);
+                'message' => __('user.role.assigned'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+            ], 200);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'roleId' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'roleId' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -572,6 +588,9 @@ class UserController extends Controller
      * @param $id
      * @param $permissionId
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws PermissionAssignedException
      */
     public function assignPermission($id, $permissionId)
     {
@@ -589,21 +608,21 @@ class UserController extends Controller
             $this->permissionService->addPermissionToUser($user, $permission);
 
             return response([
-        'message' => __('user.permission.assigned'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
-      ], 200);
+                'message' => __('user.permission.assigned'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+            ], 200);
         } catch (PermissionNotFoundException $e) {
             throw $e->setContext([
-        'permissionId' => [
-          __('permission.id.not_found')
-        ]
-      ]);
+                'permissionId' => [
+                    __('permission.id.not_found')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -612,6 +631,9 @@ class UserController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws PermissionAssignedException
      */
     public function assignPermissions($id)
     {
@@ -633,24 +655,24 @@ class UserController extends Controller
                 throw new PermissionAssignedException();
             }
 
-            $this->permissionService->addPermissionToUser($user, $permissions);
+            $this->permissionService->addPermissionsToUser($user, $permissions);
 
             return response([
-        'message' => __('user.permission.assigned'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
-      ], 200);
+                'message' => __('user.permission.assigned'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+            ], 200);
         } catch (PermissionNotFoundException $e) {
             throw $e->setContext([
-        'permissionId' => [
-          __('permission.id.not_found')
-        ]
-      ]);
+                'permissionId' => [
+                    __('permission.id.not_found')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -660,6 +682,9 @@ class UserController extends Controller
      * @param $id
      * @param $permissionId
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws PermissionNotAssignedException
      */
     public function denyPermission($id, $permissionId)
     {
@@ -677,21 +702,21 @@ class UserController extends Controller
             $this->permissionService->removePermissionFromUser($user, $permission);
 
             return response([
-        'message' => __('user.permission.denied'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
-      ], 200);
+                'message' => __('user.permission.denied'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+            ], 200);
         } catch (PermissionNotFoundException $e) {
             throw $e->setContext([
-        'permissionId' => [
-          __('permission.id.not_found')
-        ]
-      ]);
+                'permissionId' => [
+                    __('permission.id.not_found')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -700,6 +725,9 @@ class UserController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws PermissionNotAssignedException
      */
     public function denyPermissions($id)
     {
@@ -724,21 +752,21 @@ class UserController extends Controller
             $this->permissionService->removePermissionsFromUser($user, $permissions);
 
             return response([
-        'message' => __('user.permission.denied'),
-        'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
-      ], 200);
+                'message' => __('user.permission.denied'),
+                'data' => fractal($this->includeDefaultRole($user), $this->userTransformer, $this->noDataKeySerializer)->parseIncludes(['roles', 'permissions'])
+            ], 200);
         } catch (PermissionNotFoundException $e) {
             throw $e->setContext([
-        'permissionId' => [
-          __('permission.id.not_found')
-        ]
-      ]);
+                'permissionId' => [
+                    __('permission.id.not_found')
+                ]
+            ]);
         } catch (UserNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('user.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('user.id.not_found')
+                ]
+            ]);
         }
     }
 

@@ -21,8 +21,8 @@ class AssignDefaultRole
      * @param RoleService $roleService
      */
     public function __construct(
-      RoleService $roleService
-  ) {
+        RoleService $roleService
+    ) {
         $this->roleService = $roleService;
     }
 
@@ -31,7 +31,7 @@ class AssignDefaultRole
      *
      * @param Request $request
      * @param Closure $next
-     * @param  string|null  $guard
+     * @param string|null $guard
      * @return mixed
      */
     public function handle($request, Closure $next, $guard = null)

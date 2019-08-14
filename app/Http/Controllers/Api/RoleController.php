@@ -14,8 +14,10 @@ use Domain\Role\Exceptions\RoleNotFoundException;
 use Domain\Role\Role;
 use Domain\Role\RoleService;
 use App\Transformers\RoleTransformer;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Support\Exceptions\AppError;
 use Support\Exceptions\Http\BadRequestError;
 use Support\Exceptions\Pagination\InvalidPaginationException;
 use Support\Serializers\Fractal\OptionalDataKeySerializer;
@@ -53,14 +55,14 @@ class RoleController extends Controller
      * @param RoleService $roleService
      * @param RoleTransformer $roleTransformer
      * @param PermissionService $permissionService
-     * @param PermissionTransformer %permissionTransformer
+     * @param PermissionTransformer $permissionTransformer
      */
     public function __construct(
-      RoleService $roleService,
-      RoleTransformer $roleTransformer,
-      PermissionService $permissionService,
-      PermissionTransformer $permissionTransformer
-  ) {
+        RoleService $roleService,
+        RoleTransformer $roleTransformer,
+        PermissionService $permissionService,
+        PermissionTransformer $permissionTransformer
+    ) {
         $this->roleService = $roleService;
         $this->roleTransformer = $roleTransformer;
         $this->permissionService = $permissionService;
@@ -71,14 +73,14 @@ class RoleController extends Controller
     /**
      * Retrieve an index of roles.
      *
-     * @return LengthAwarePaginator<\Domain\Role\Role>
+     * @return LengthAwarePaginator
      *
      * @throws InvalidPaginationException
      */
     public function index()
     {
         $roles = $this->roleService->index(request()->query('limit'), request()->query('offset'))
-      ->setPath(route('api.role.index'));
+            ->setPath(route('api.role.index'));
 
         return fractal($roles, $this->roleTransformer)->parseIncludes(['permissions']);
     }
@@ -89,19 +91,20 @@ class RoleController extends Controller
      * @return Role
      *
      * @throws CannotCreateRoleException
+     * @throws AuthorizationException
      */
     public function create()
     {
         $this->authorize('role.create');
 
         $role = $this->roleService->create([
-      'name' => request()->input('name'),
-      'display_name' => request()->input('display_name'),
-      'description' => request()->input('description')
-    ]);
+            'name' => request()->input('name'),
+            'display_name' => request()->input('display_name'),
+            'description' => request()->input('description')
+        ]);
 
         return response([], 201)
-      ->header('Location', route('api.role.get', $role->id));
+            ->header('Location', route('api.role.get', $role->id));
     }
 
     /**
@@ -110,7 +113,7 @@ class RoleController extends Controller
      * @param integer $id
      * @return Role
      *
-     * @throws RoleNotFoundException
+     * @throws AppError
      */
     public function getById($id)
     {
@@ -118,10 +121,10 @@ class RoleController extends Controller
             return fractal($this->roleService->findById($id), $this->roleTransformer)->parseIncludes(['permissions']);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -131,7 +134,7 @@ class RoleController extends Controller
      * @param string $name
      * @return Role
      *
-     * @throws RoleNotFoundException
+     * @throws AppError
      */
     public function getByName($name)
     {
@@ -139,42 +142,42 @@ class RoleController extends Controller
             return fractal($this->roleService->findByName($name), $this->roleTransformer)->parseIncludes(['permissions']);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('role.name.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('role.name.not_found')
+                ]
+            ]);
         }
     }
 
     /**
      * Retrieve an index of roles matching a particular search phrase.
      *
-     * @return LengthAwarePaginator<\Domain\Role\Role>
+     * @return LengthAwarePaginator
      *
-     * @throws BadRequestError
+     * @throws AppError
      * @throws InvalidPaginationException
      */
     public function search()
     {
         switch (strtolower(request()->query('parameter'))) {
-      case 'name':
-      case 'display_name':
-        break;
-      default:
-        throw (new BadRequestError())->setContext([
-          'parameter' => [
-            __('validation.regex', ['attribute' => 'parameter'])
-          ]
-        ]);
-    }
+            case 'name':
+            case 'display_name':
+                break;
+            default:
+                throw (new BadRequestError())->setContext([
+                    'parameter' => [
+                        __('validation.regex', ['attribute' => 'parameter'])
+                    ]
+                ]);
+        }
 
         $roles = $this->roleService->search(
-        request()->query('parameter'),
-        request()->query('search'),
-        (bool) request()->query('regex'),
-        request()->query('limit'),
-        request()->query('offset')
-    )->setPath(route('api.role.search'));
+            request()->query('parameter'),
+            request()->query('search'),
+            (bool) request()->query('regex'),
+            request()->query('limit'),
+            request()->query('offset')
+        )->setPath(route('api.role.search'));
 
         return fractal($roles, $this->roleTransformer)->parseIncludes(['permissions']);
     }
@@ -185,7 +188,8 @@ class RoleController extends Controller
      * @param integer $id
      * @return Role
      *
-     * @throws RoleNotFoundException
+     * @throws AppError
+     * @throws AuthorizationException
      * @throws CannotUpdateRoleException
      */
     public function update($id)
@@ -195,18 +199,18 @@ class RoleController extends Controller
             $this->authorize('role.update', $role);
 
             $role = $this->roleService->update($role, [
-        'name' => request()->input('name'),
-        'display_name' => request()->input('display_name'),
-        'description' => request()->input('description')
-      ]);
+                'name' => request()->input('name'),
+                'display_name' => request()->input('display_name'),
+                'description' => request()->input('description')
+            ]);
 
             return fractal($role, $this->roleTransformer)->parseIncludes(['permissions']);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -216,6 +220,9 @@ class RoleController extends Controller
      * @param $id
      * @param $permissionId
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws PermissionAssignedException
      */
     public function assignPermission($id, $permissionId)
     {
@@ -233,21 +240,21 @@ class RoleController extends Controller
             $this->permissionService->addPermissionToRole($role, $permission);
 
             return response([
-        'message' => __('role.permission.assigned'),
-        'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
-      ], 200);
+                'message' => __('role.permission.assigned'),
+                'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
+            ], 200);
         } catch (PermissionNotFoundException $e) {
             throw $e->setContext([
-        'permissionId' => [
-          __('permission.id.not_found')
-        ]
-      ]);
+                'permissionId' => [
+                    __('permission.id.not_found')
+                ]
+            ]);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -256,6 +263,9 @@ class RoleController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws PermissionAssignedException
      */
     public function assignPermissions($id)
     {
@@ -280,21 +290,21 @@ class RoleController extends Controller
             $this->permissionService->addPermissionsToRole($role, $permissions);
 
             return response([
-        'message' => __('role.permission.assigned'),
-        'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
-      ], 200);
+                'message' => __('role.permission.assigned'),
+                'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
+            ], 200);
         } catch (PermissionNotFoundException $e) {
             throw $e->setContext([
-        'permissionId' => [
-          __('permission.id.not_found')
-        ]
-      ]);
+                'permissionId' => [
+                    __('permission.id.not_found')
+                ]
+            ]);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -304,6 +314,9 @@ class RoleController extends Controller
      * @param $id
      * @param $permissionId
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws PermissionNotAssignedException
      */
     public function denyPermission($id, $permissionId)
     {
@@ -321,21 +334,21 @@ class RoleController extends Controller
             $this->permissionService->removePermissionFromRole($role, $permission);
 
             return response([
-        'message' => __('role.permission.denied'),
-        'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
-      ], 200);
+                'message' => __('role.permission.denied'),
+                'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
+            ], 200);
         } catch (PermissionNotFoundException $e) {
             throw $e->setContext([
-        'permissionId' => [
-          __('permission.id.not_found')
-        ]
-      ]);
+                'permissionId' => [
+                    __('permission.id.not_found')
+                ]
+            ]);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         }
     }
 
@@ -344,6 +357,9 @@ class RoleController extends Controller
      *
      * @param $id
      * @return JsonResponse
+     * @throws AppError
+     * @throws AuthorizationException
+     * @throws PermissionNotAssignedException
      */
     public function denyPermissions($id)
     {
@@ -368,21 +384,21 @@ class RoleController extends Controller
             $this->permissionService->removePermissionsFromRole($role, $permissions);
 
             return response([
-        'message' => __('role.permission.denied'),
-        'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
-      ], 200);
+                'message' => __('role.permission.denied'),
+                'data' => fractal($role, $this->roleTransformer, $this->noDataKeySerializer)->parseIncludes(['permissions'])
+            ], 200);
         } catch (PermissionNotFoundException $e) {
             throw $e->setContext([
-        'permissionId' => [
-          __('permission.id.not_found')
-        ]
-      ]);
+                'permissionId' => [
+                    __('permission.id.not_found')
+                ]
+            ]);
         } catch (RoleNotFoundException $e) {
             throw $e->setContext([
-        'id' => [
-          __('role.id.not_found')
-        ]
-      ]);
+                'id' => [
+                    __('role.id.not_found')
+                ]
+            ]);
         }
     }
 }

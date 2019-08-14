@@ -34,8 +34,8 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-    //
-  ];
+        //
+    ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -43,9 +43,9 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontFlash = [
-    'password',
-    'password_confirmation',
-  ];
+        'password',
+        'password_confirmation',
+    ];
 
     /**
      * Report or log an exception.
@@ -85,6 +85,7 @@ class Handler extends ExceptionHandler
      *
      * @param Exception $exception
      * @return AppError
+     * @throws Exception
      */
     public function conform(Exception $exception)
     {
@@ -145,31 +146,31 @@ class Handler extends ExceptionHandler
         */
         if ($exception instanceof OAuthServerException) {
             switch ($exception->getCode()) {
-        case 2:
-          $error = new UnsupportedGrantTypeException();
-          break;
-        case 3:
-          $error = new InvalidRequestException();
-          break;
-        case 4:
-          $error = new InvalidClientException();
-          break;
-        case 5:
-          $error = new InvalidScopeException();
-          break;
-        case 6:
-          $error = new AuthenticationFailedException();
-          break;
-        case 8:
-          $error = new InvalidRefreshTokenException();
-          break;
-        case 10:
-          $error = new InvalidGrantException();
-          break;
-        default:
-          $error = $this->conformHttpExceptionToAppError($exception);
-          break;
-      }
+                case 2:
+                    $error = new UnsupportedGrantTypeException();
+                    break;
+                case 3:
+                    $error = new InvalidRequestException();
+                    break;
+                case 4:
+                    $error = new InvalidClientException();
+                    break;
+                case 5:
+                    $error = new InvalidScopeException();
+                    break;
+                case 6:
+                    $error = new AuthenticationFailedException();
+                    break;
+                case 8:
+                    $error = new InvalidRefreshTokenException();
+                    break;
+                case 10:
+                    $error = new InvalidGrantException();
+                    break;
+                default:
+                    $error = $this->conformHttpExceptionToAppError($exception);
+                    break;
+            }
         }
 
         /*
@@ -196,33 +197,34 @@ class Handler extends ExceptionHandler
      *
      * @param HttpException $exception
      * @return AppError
+     * @throws Exception
      */
     public function conformHttpExceptionToAppError(HttpException $exception)
     {
         switch ($exception->getStatusCode()) {
-      case 400:
-        return new BadRequestError();
-      case 401:
-        return new UnauthorizedError();
-      case 403:
-        return new ForbiddenError();
-      case 404:
-        return new NotFoundError();
-      case 422:
-        return new ValidationError();
-      case 429:
-        $headers = $exception->getHeaders();
+            case 400:
+                return new BadRequestError();
+            case 401:
+                return new UnauthorizedError();
+            case 403:
+                return new ForbiddenError();
+            case 404:
+                return new NotFoundError();
+            case 422:
+                return new ValidationError();
+            case 429:
+                $headers = $exception->getHeaders();
 
-        return (new TooManyRequestsError(null))->setContext([
-          'limit' => $headers['X-RateLimit-Limit'],
-          'remaining' => $headers['X-RateLimit-Remaining'],
-          'retryAfter' => $headers['Retry-After'],
-          'resetAt' => $headers['X-RateLimit-Reset']
-        ]);
-      case 500:
-      default:
-        return new InternalServerError();
-    }
+                return (new TooManyRequestsError(null))->setContext([
+                    'limit' => $headers['X-RateLimit-Limit'],
+                    'remaining' => $headers['X-RateLimit-Remaining'],
+                    'retryAfter' => $headers['Retry-After'],
+                    'resetAt' => $headers['X-RateLimit-Reset']
+                ]);
+            case 500:
+            default:
+                return new InternalServerError();
+        }
     }
 
     /**
@@ -230,6 +232,7 @@ class Handler extends ExceptionHandler
      *
      * @param AuthorizationException $exception
      * @return AppError
+     * @throws Exception
      */
     public function conformAuthorizationExceptionToAppError(AuthorizationException $exception)
     {

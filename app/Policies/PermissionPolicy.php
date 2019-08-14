@@ -21,8 +21,8 @@ class PermissionPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user) {
             return (
-        $subject->hasPermission('permission.create')
-      );
+                $subject->hasPermission('permission.create')
+            );
         });
     }
 
@@ -37,8 +37,8 @@ class PermissionPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $permission) {
             return (
-        $subject->hasPermission('permission.update.all')
-      );
+                $subject->hasPermission('permission.update.all')
+            );
         });
     }
 
@@ -53,8 +53,8 @@ class PermissionPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $permission) {
             return (
-        $subject->hasPermission('permission.assign.all') || $subject->hasPermission('role.assign.' . $permission->getKeyName())
-      );
+                $subject->hasPermission('permission.assign.all') || $subject->hasPermission('role.assign.' . $permission->getKeyName())
+            );
         });
     }
 
@@ -69,8 +69,8 @@ class PermissionPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $permission) {
             return (
-        $subject->hasPermission('permission.deny.all') || $subject->hasPermission('role.deny.' . $permission->getKeyName())
-      );
+                $subject->hasPermission('permission.deny.all') || $subject->hasPermission('role.deny.' . $permission->getKeyName())
+            );
         });
     }
 }

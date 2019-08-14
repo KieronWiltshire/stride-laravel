@@ -20,8 +20,8 @@ class VersionHeader
         $response = $next($request);
 
         $response->headers->add([
-      'X-Version' => Version::compact()
-    ]);
+            'X-Version' => Version::compact()
+        ]);
 
         return $response;
     }

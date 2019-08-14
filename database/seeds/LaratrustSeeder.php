@@ -1,5 +1,6 @@
 <?php
 
+use Domain\Permission\Exceptions\CannotCreatePermissionException;
 use Domain\Permission\PermissionService;
 use Domain\Role\RoleService;
 use Domain\User\UserService;
@@ -10,32 +11,32 @@ use Illuminate\Support\Facades\DB;
 class LaratrustSeeder extends Seeder
 {
     /**
-     * @var \Domain\User\UserService
+     * @var UserService
      */
     private $userService;
 
     /**
-     * @var \Domain\Role\RoleService
+     * @var RoleService
      */
     private $roleService;
 
     /**
-     * @var \Domain\Permission\PermissionService
+     * @var PermissionService
      */
     private $permissionService;
 
     /**
      * Create a new laratrust seeder instance
      *
-     * @param \Domain\User\UserService $userService
-     * @param \Domain\Role\RoleService $roleService
-     * @param \Domain\Permission\PermissionService $permissionService
+     * @param UserService $userService
+     * @param RoleService $roleService
+     * @param PermissionService $permissionService
      */
     public function __construct(
-      UserService $userService,
-      RoleService $roleService,
-      PermissionService $permissionService
-  ) {
+        UserService $userService,
+        RoleService $roleService,
+        PermissionService $permissionService
+    ) {
         $this->userService = $userService;
         $this->roleService = $roleService;
         $this->permissionService = $permissionService;
@@ -44,7 +45,8 @@ class LaratrustSeeder extends Seeder
     /**
      * Run the database seeds.
      *
-     * @return  void
+     * @return void
+     * @throws CannotCreatePermissionException
      */
     public function run()
     {
@@ -63,10 +65,10 @@ class LaratrustSeeder extends Seeder
 
             // Create a new role
             $role = $this->roleService->firstOrCreate('name', $key, false, [
-        'name' => $key,
-        'display_name' => ucwords(str_replace('_', ' ', $key)),
-        'description' => ucwords(str_replace('_', ' ', $key))
-      ]);
+                'name' => $key,
+                'display_name' => ucwords(str_replace('_', ' ', $key)),
+                'description' => ucwords(str_replace('_', ' ', $key))
+            ]);
 
             $this->command->info('Creating Role ' . strtoupper($key));
 
@@ -78,10 +80,10 @@ class LaratrustSeeder extends Seeder
                     $permissionName = $module . '.' . $permissionValue;
 
                     $permissions[] = $this->permissionService->firstOrCreate('name', $permissionName, false, [
-            'name' => $permissionName,
-            'display_name' => ($permissionValue === '*') ? ('All ' . $module) : strtolower($permissionName),
-            'description' => strtolower($permissionName),
-          ])->id;
+                        'name' => $permissionName,
+                        'display_name' => ($permissionValue === '*') ? ('All ' . $module) : strtolower($permissionName),
+                        'description' => strtolower($permissionName),
+                    ])->id;
 
                     $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
                 }
@@ -96,9 +98,9 @@ class LaratrustSeeder extends Seeder
 
             // Create default user for each role
             $user = $this->userService->firstOrCreate('email', $userEmail, false, [
-        'email' => $userEmail,
-        'password' => 'password'
-      ]);
+                'email' => $userEmail,
+                'password' => 'password'
+            ]);
 
             $this->roleService->setUserRoles($user, [$role]);
         }
@@ -112,9 +114,9 @@ class LaratrustSeeder extends Seeder
 
                 // Create default user for each permission set
                 $user = $this->userService->firstOrCreate('email', $userEmail, false, [
-          'email' => $userEmail,
-          'password' => 'password',
-        ]);
+                    'email' => $userEmail,
+                    'password' => 'password',
+                ]);
 
                 foreach ($modules as $module => $value) {
                     foreach (explode(',', $value) as $p => $perm) {
@@ -123,10 +125,10 @@ class LaratrustSeeder extends Seeder
                         $permissionName = $module . '.' . $permissionValue;
 
                         $permissions[] = $this->permissionService->firstOrCreate('name', $permissionName, false, [
-              'name' => $permissionName,
-              'display_name' => ($permissionValue === '*') ? ('All ' . $module . ' permissions') : strtolower($permissionName),
-              'description' => strtolower($permissionName),
-            ])->id;
+                            'name' => $permissionName,
+                            'display_name' => ($permissionValue === '*') ? ('All ' . $module . ' permissions') : strtolower($permissionName),
+                            'description' => strtolower($permissionName),
+                        ])->id;
 
                         $this->command->info('Creating Permission to ' . $permissionValue . ' for ' . $module);
                     }

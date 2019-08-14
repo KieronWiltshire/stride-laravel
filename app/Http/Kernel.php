@@ -39,15 +39,15 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middleware = [
-    CheckForMaintenanceMode::class,
-    ValidatePostSize::class,
-    TrimStrings::class,
-    ConvertEmptyStringsToNull::class,
-    TrustProxies::class,
-    PrettyPrint::class,
-    VersionHeader::class,
-    AssignDefaultRole::class,
-  ];
+        CheckForMaintenanceMode::class,
+        ValidatePostSize::class,
+        TrimStrings::class,
+        ConvertEmptyStringsToNull::class,
+        TrustProxies::class,
+        PrettyPrint::class,
+        VersionHeader::class,
+        AssignDefaultRole::class,
+    ];
 
     /**
      * The application's route middleware groups.
@@ -55,38 +55,38 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewareGroups = [
-    'web' => [
-      EncryptCookies::class,
-      AddQueuedCookiesToResponse::class,
-      StartSession::class,
-      AuthenticateSession::class,
-      ShareErrorsFromSession::class,
-//      \App\Http\Middleware\VerifyCsrfToken::class, // This isn't needed because the application uses stateless tokens for authentication
-      SubstituteBindings::class,
-    ],
+        'web' => [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            AuthenticateSession::class,
+            ShareErrorsFromSession::class,
+    //        \App\Http\Middleware\VerifyCsrfToken::class, // This isn't needed because the application uses stateless tokens for authentication
+            SubstituteBindings::class,
+        ],
 
-    'api' => [
-      'throttle:60,1',
-      'bindings',
-    ],
+        'api' => [
+            'throttle:60,1',
+            'bindings',
+        ],
 
-    /**
-     * @notice
-     *
-     * The OAuth middleware group requires a session in order to store
-     * the authorization request, however these is no need to protect
-     * against CSRF attacks because the authentication process is handled
-     * in a stateless manner. If the authenticated user does not match the
-     * authorization request, then OAuth fails.
-     */
-    'oauth' => [
-      EncryptCookies::class,
-      AddQueuedCookiesToResponse::class,
-      StartSession::class,
-      'throttle:60,1',
-      'bindings',
-    ],
-  ];
+        /**
+         * @notice
+         *
+         * The OAuth middleware group requires a session in order to store
+         * the authorization request, however these is no need to protect
+         * against CSRF attacks because the authentication process is handled
+         * in a stateless manner. If the authenticated user does not match the
+         * authorization request, then OAuth fails.
+         */
+        'oauth' => [
+            EncryptCookies::class,
+            AddQueuedCookiesToResponse::class,
+            StartSession::class,
+            'throttle:60,1',
+            'bindings',
+        ],
+    ];
 
     /**
      * The application's route middleware.
@@ -96,19 +96,19 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-    'auth' => Authenticate::class,
-    'auth.basic' => AuthenticateWithBasicAuth::class,
-    'bindings' => SubstituteBindings::class,
-    'cache.headers' => SetCacheHeaders::class,
-    'can' => Authorize::class,
-    'guest' => RedirectIfAuthenticated::class,
-    'signed' => ValidateSignature::class,
-    'throttle' => ThrottleRequests::class,
-    'verified' => EnsureEmailIsVerified::class,
-    'scopes' => CheckScopes::class,
-    'scope' => CheckForAnyScope::class,
-    'client' => CheckClientCredentials::class,
-  ];
+        'auth' => Authenticate::class,
+        'auth.basic' => AuthenticateWithBasicAuth::class,
+        'bindings' => SubstituteBindings::class,
+        'cache.headers' => SetCacheHeaders::class,
+        'can' => Authorize::class,
+        'guest' => RedirectIfAuthenticated::class,
+        'signed' => ValidateSignature::class,
+        'throttle' => ThrottleRequests::class,
+        'verified' => EnsureEmailIsVerified::class,
+        'scopes' => CheckScopes::class,
+        'scope' => CheckForAnyScope::class,
+        'client' => CheckClientCredentials::class,
+    ];
 
     /**
      * The priority-sorted list of middleware.
@@ -118,11 +118,11 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $middlewarePriority = [
-    StartSession::class,
-    ShareErrorsFromSession::class,
-    Authenticate::class,
-    AuthenticateSession::class,
-    SubstituteBindings::class,
-    Authorize::class,
-  ];
+        StartSession::class,
+        ShareErrorsFromSession::class,
+        Authenticate::class,
+        AuthenticateSession::class,
+        SubstituteBindings::class,
+        Authorize::class,
+    ];
 }

@@ -22,9 +22,9 @@ class UserPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $userToView) {
             return (
-        ($subject->hasPermission('user.view.me') && ($user && $user->id === $userToView->id))
-        || ($subject->hasPermission('user.view.all'))
-      );
+                ($subject->hasPermission('user.view.me') && ($user && $user->id === $userToView->id))
+                || ($subject->hasPermission('user.view.all'))
+            );
         });
     }
 
@@ -39,9 +39,9 @@ class UserPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $userToUpdate) {
             return (
-        ($subject->hasPermission('user.update.me') && ($user && $user->id === $userToUpdate->id))
-        || ($subject->hasPermission('user.update.all'))
-      );
+                ($subject->hasPermission('user.update.me') && ($user && $user->id === $userToUpdate->id))
+                || ($subject->hasPermission('user.update.all'))
+            );
         });
     }
 
@@ -56,8 +56,8 @@ class UserPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $userToAssign) {
             return (
-        $subject->hasPermission('user.assign-role')
-      );
+                $subject->hasPermission('user.assign-role')
+            );
         });
     }
 
@@ -72,8 +72,8 @@ class UserPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $userToDeny) {
             return (
-        $subject->hasPermission('user.deny-role')
-      );
+                $subject->hasPermission('user.deny-role')
+            );
         });
     }
 
@@ -88,8 +88,8 @@ class UserPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $userToAssign) {
             return (
-        $subject->hasPermission('user.assign-permission')
-      );
+                $subject->hasPermission('user.assign-permission')
+            );
         });
     }
 
@@ -104,8 +104,8 @@ class UserPolicy extends BasePolicy
     {
         return $this->fallbackToDefault($user, function ($subject) use ($user, $userToDeny) {
             return (
-        $subject->laratrustCan('user.deny-permission')
-      );
+                $subject->laratrustCan('user.deny-permission')
+            );
         });
     }
 }

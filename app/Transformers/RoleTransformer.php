@@ -16,8 +16,8 @@ class RoleTransformer extends TransformerAbstract
      * @var array
      */
     protected $availableIncludes = [
-    'permissions'
-  ];
+        'permissions'
+    ];
 
     /**
      * @var PermissionService
@@ -25,7 +25,7 @@ class RoleTransformer extends TransformerAbstract
     protected $permissionService;
 
     /**
-     * @var \App\Transformers\PermissionTransformer
+     * @var PermissionTransformer
      */
     protected $permissionTransformer;
 
@@ -33,12 +33,12 @@ class RoleTransformer extends TransformerAbstract
      * Create a new role transformer instance
      *
      * @param PermissionService $permissionService
-     * @param \App\Transformers\PermissionTransformer $permissionTransformer
+     * @param PermissionTransformer $permissionTransformer
      */
     public function __construct(
-      PermissionService $permissionService,
-      PermissionTransformer $permissionTransformer
-  ) {
+        PermissionService $permissionService,
+        PermissionTransformer $permissionTransformer
+    ) {
         $this->permissionService = $permissionService;
         $this->permissionTransformer = $permissionTransformer;
     }
