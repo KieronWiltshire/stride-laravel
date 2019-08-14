@@ -7,7 +7,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class AppRepository implements AppRepositoryInterface
 {
-  use UsesPagination, UsesRelationships;
+  use UsesPagination, UsesRelationships, UsesOrderBy;
 
   /**
    * Execute the specified query including the specified
@@ -20,6 +20,10 @@ class AppRepository implements AppRepositoryInterface
   {
     if (isset($this->with) && count($this->with) > 0) {
       $query->with($this->relations);
+    }
+
+    if (isset($this->orderBy) && count($this->orderBy) > 0) {
+      $query->orderBy($this->orderBy);
     }
 
     $result = null;
@@ -45,7 +49,8 @@ class AppRepository implements AppRepositoryInterface
       }
     }
 
-    $this->with([]);
+    $this->relations = [];
+    $this->orderBy = [];
     $this->paginate = false;
 
     return $result;
