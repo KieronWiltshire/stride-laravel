@@ -9,47 +9,47 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 
 class UserUpdatedEvent
 {
-  use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  /**
-   * @var \Domain\User\User
-   */
-  private $user;
+    /**
+     * @var User
+     */
+    private $user;
 
-  /**
-   * @var array
-   */
-  private $attributes;
+    /**
+     * @var array
+     */
+    private $attributes;
 
-  /**
-   * Create a new event instance.
-   *
-   * @param \Domain\User\User $user
-   * @param array $attributes
-   */
-  public function __construct(User $user, $attributes)
-  {
-    $this->user = $user;
-    $this->attributes = $attributes;
-  }
+    /**
+     * Create a new event instance.
+     *
+     * @param User $user
+     * @param array $attributes
+     */
+    public function __construct(User $user, $attributes)
+    {
+        $this->user = $user;
+        $this->attributes = $attributes;
+    }
 
-  /**
-   * Retrieve the updated user.
-   * 
-   * @return \Domain\User\User
-   */
-  public function user()
-  {
-    return $this->user;
-  }
+    /**
+     * Retrieve the updated user.
+     *
+     * @return User
+     */
+    public function user()
+    {
+        return $this->user;
+    }
 
-  /**
-   * Retrieve the attributes that were updated.
-   * 
-   * @return array
-   */
-  public function attributes()
-  {
-    return $this->attributes;
-  }
+    /**
+     * Retrieve the attributes that were updated.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return $this->attributes;
+    }
 }

@@ -7,95 +7,96 @@ use App\Transformers\RoleTransformer;
 use Domain\Permission\PermissionService;
 use Domain\Role\RoleService;
 use Illuminate\Support\Facades\Gate;
+use League\Fractal\Resource\Collection;
 use League\Fractal\TransformerAbstract;
 
 class UserTransformer extends TransformerAbstract
 {
-  /**
-   * List of resources possible to include
-   *
-   * @var array
-   */
-  protected $availableIncludes = [
-    'roles',
-    'permissions'
-  ];
+    /**
+     * List of resources possible to include
+     *
+     * @var array
+     */
+    protected $availableIncludes = [
+        'roles',
+        'permissions'
+    ];
 
-  /**
-   * @var \Domain\Permission\PermissionService
-   */
-  protected $permissionService;
+    /**
+     * @var PermissionService
+     */
+    protected $permissionService;
 
-  /**
-   * @var \Domain\Role\RoleService
-   */
-  protected $roleService;
+    /**
+     * @var RoleService
+     */
+    protected $roleService;
 
-  /**
-   * @var \App\Transformers\RoleTransformer
-   */
-  protected $roleTransformer;
+    /**
+     * @var RoleTransformer
+     */
+    protected $roleTransformer;
 
-  /**
-   * @var \App\Transformers\PermissionTransformer
-   */
-  protected $permissionTransformer;
+    /**
+     * @var PermissionTransformer
+     */
+    protected $permissionTransformer;
 
-  /**
-   * Create a new user transformer instance
-   *
-   * @param \Domain\Permission\PermissionService $permissionService
-   * @param \Domain\Role\RoleService $roleService
-   * @param \App\Transformers\RoleTransformer $roleTransformer
-   * @param \App\Transformers\PermissionTransformer $permissionTransformer
-   */
-  public function __construct(
-    PermissionService $permissionService,
-    RoleService $roleService,
-    RoleTransformer $roleTransformer,
-    PermissionTransformer $permissionTransformer
-  ) {
-    $this->permissionService = $permissionService;
-    $this->roleService = $roleService;
-    $this->roleTransformer = $roleTransformer;
-    $this->permissionTransformer = $permissionTransformer;
-  }
-
-  /**
-   * A Fractal transformer.
-   *
-   * @return array
-   */
-  public function transform($user)
-  {
-    $visible = [];
-
-    $viewUserDetail = Gate::allows('user.view', $user);
-
-    if ($viewUserDetail || request()->route()->hasParameter('email')) {
-      $visible[] = 'email';
+    /**
+     * Create a new user transformer instance
+     *
+     * @param PermissionService $permissionService
+     * @param RoleService $roleService
+     * @param RoleTransformer $roleTransformer
+     * @param PermissionTransformer $permissionTransformer
+     */
+    public function __construct(
+        PermissionService $permissionService,
+        RoleService $roleService,
+        RoleTransformer $roleTransformer,
+        PermissionTransformer $permissionTransformer
+    ) {
+        $this->permissionService = $permissionService;
+        $this->roleService = $roleService;
+        $this->roleTransformer = $roleTransformer;
+        $this->permissionTransformer = $permissionTransformer;
     }
 
-    return $user->makeVisible($visible)->toArray();
-  }
+    /**
+     * A Fractal transformer.
+     *
+     * @return array
+     */
+    public function transform($user)
+    {
+        $visible = [];
 
-  /**
-   * Include Roles.
-   *
-   * @return \League\Fractal\Resource\Collection
-   */
-  public function includeRoles($user)
-  {
-    return $this->collection($this->roleService->getRolesFromUser($user), $this->roleTransformer, false);
-  }
+        $viewUserDetail = Gate::allows('user.view', $user);
 
-  /**
-   * Include Permissions.
-   *
-   * @return \League\Fractal\Resource\Collection
-   */
-  public function includePermissions($user)
-  {
-    return $this->collection($this->permissionService->getPermissionsFromUser($user), $this->permissionTransformer, false);
-  }
+        if ($viewUserDetail || request()->route()->hasParameter('email')) {
+            $visible[] = 'email';
+        }
+
+        return $user->makeVisible($visible)->toArray();
+    }
+
+    /**
+     * Include Roles.
+     *
+     * @return Collection
+     */
+    public function includeRoles($user)
+    {
+        return $this->collection($this->roleService->getRolesForUser($user), $this->roleTransformer, false);
+    }
+
+    /**
+     * Include Permissions.
+     *
+     * @return Collection
+     */
+    public function includePermissions($user)
+    {
+        return $this->collection($this->permissionService->getPermissionsForUser($user), $this->permissionTransformer, false);
+    }
 }

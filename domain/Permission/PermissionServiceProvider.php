@@ -3,28 +3,35 @@
 namespace Domain\Permission;
 
 use Illuminate\Support\ServiceProvider;
+use Domain\Permission\Contracts\Repositories\PermissionRepository as PermissionRepositoryInterface;
+use Domain\Permission\PermissionRepository;
 
 class PermissionServiceProvider extends ServiceProvider
 {
-  /**
-   * Register services.
-   *
-   * @return void
-   */
-  public function register()
-  {
-    $this->app->bind(
-      'Domain\Permission\Contracts\Repositories\PermissionRepository',
-      'Domain\Permission\PermissionRepository'
-    );
-  }
+    /**
+     * All of the container bindings that should be registered.
+     *
+     * @var array
+     */
+    public $bindings = [
+        PermissionRepositoryInterface::class => PermissionRepository::class,
+    ];
 
-  /**
-   * Bootstrap services.
-   *
-   * @return void
-   */
-  public function boot()
-  {
-  }
+    /**
+     * Register services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+    }
+
+    /**
+     * Bootstrap services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+    }
 }

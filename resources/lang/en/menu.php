@@ -14,7 +14,10 @@ return [
   'exceptions' => [
     'cannot_create_menu' => 'Unable to create the menu.',
     'cannot_update_menu' => 'Unable to update the menu.',
-    'not_found' => 'Unable to find the specified menu.'
+    'menu_not_found' => 'Unable to find the specified menu.',
+    'cannot_create_item' => 'Unable to create the item.',
+    'cannot_update_item' => 'Unable to update the item.',
+    'item_not_found' => 'Unable to find the specifieditem.'
   ],
 
   'id' => [

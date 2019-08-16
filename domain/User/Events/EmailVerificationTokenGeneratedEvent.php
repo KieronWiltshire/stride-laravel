@@ -9,31 +9,30 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 
 class EmailVerificationTokenGeneratedEvent
 {
-  use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, SerializesModels;
 
-  /**
-   * @var \Domain\User\User
-   */
-  private $user;
+    /**
+     * @var User
+     */
+    private $user;
 
-  /**
-   * Create a new event instance.
-   *
-   * @param \Domain\User\User $user
-   * @param string $email
-   */
-  public function __construct(User $user)
-  {
-    $this->user = $user;
-  }
+    /**
+     * Create a new event instance.
+     *
+     * @param User $user
+     */
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
-  /**
-   * Retrieve the created user.
-   *
-   * @return \Domain\User\User
-   */
-  public function user()
-  {
-    return $this->user;
-  }
+    /**
+     * Retrieve the created user.
+     *
+     * @return User
+     */
+    public function user()
+    {
+        return $this->user;
+    }
 }
