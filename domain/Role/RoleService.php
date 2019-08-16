@@ -33,7 +33,7 @@ class RoleService
     /**
      * Retrieve all of the roles.
      *
-     * @return Collection<Role>
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function all()
     {
@@ -62,6 +62,8 @@ class RoleService
      * @param boolean $regex
      * @param array $attributes
      * @return Role
+     *
+     * @throws CannotCreateRoleException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -86,6 +88,8 @@ class RoleService
      *
      * @param string $id
      * @return Role
+     *
+     * @throws RoleNotFoundException
      */
     public function findById($id)
     {
@@ -97,6 +101,8 @@ class RoleService
      *
      * @param string $name
      * @return Role
+     *
+     * @throws RoleNotFoundException
      */
     public function findByName($name)
     {
@@ -115,9 +121,11 @@ class RoleService
     }
 
     /**
-     * Retrieve the default user role.
+     * Retrieve the default role.
      *
      * @return Role
+     *
+     * @throws RoleNotFoundException
      */
     public function getDefaultRole()
     {

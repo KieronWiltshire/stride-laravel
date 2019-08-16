@@ -74,6 +74,14 @@ interface RoleRepository extends AppRepository
     public function findByName($name);
 
     /**
+     * Set the specified role as the default role.
+     *
+     * @param Role $role
+     * @return void
+     */
+    public function setDefaultRole(Role $role);
+
+    /**
      * Retrieve the default role.
      *
      * @return Role
@@ -81,14 +89,6 @@ interface RoleRepository extends AppRepository
      * @throws RoleNotFoundException
      */
     public function getDefaultRole();
-
-    /**
-     * Set the specified role as the default role.
-     *
-     * @param Role $role
-     * @return void
-     */
-    public function setDefaultRole(Role $role);
 
     /**
      * Update a role.

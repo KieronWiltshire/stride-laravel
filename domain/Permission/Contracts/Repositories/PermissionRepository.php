@@ -14,11 +14,11 @@ use Domain\Permission\Permission;
 interface PermissionRepository extends AppRepository
 {
 
-  /**
-   * Retrieve all of the permissions.
-   *
-   * @return Collection
-   */
+    /**
+     * Retrieve all of the permissions.
+     *
+     * @return Collection
+     */
     public function all();
 
     /**

@@ -98,6 +98,8 @@ class UserService
      * @param boolean $regex
      * @param array $attributes
      * @return User
+     *
+     * @throws CannotCreateUserException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -126,6 +128,8 @@ class UserService
      *
      * @param string $id
      * @return User
+     *
+     * @throws UserNotFoundException
      */
     public function findById($id)
     {
@@ -137,6 +141,8 @@ class UserService
      *
      * @param string $email
      * @return User
+     *
+     * @throws UserNotFoundException
      */
     public function findByEmail($email)
     {

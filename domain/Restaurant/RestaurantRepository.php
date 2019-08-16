@@ -57,7 +57,7 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
      * @param array $attributes
      * @return Restaurant
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateRestaurantException
      */
     public function create($attributes)
     {
@@ -80,9 +80,9 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
      * @param number|string $search
      * @param boolean $regex
      * @param array $attributes
-     * @return \Domain\Restaurant\Restaurant
+     * @return Restaurant
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateRestaurantException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -150,7 +150,7 @@ class RestaurantRepository extends AppRepository implements RestaurantRepository
      * @param array $attributes
      * @return Restaurant
      *
-     * @throws \ReflectionException
+     * @throws CannotUpdateRestaurantException
      */
     public function update(Restaurant $restaurant, $attributes)
     {

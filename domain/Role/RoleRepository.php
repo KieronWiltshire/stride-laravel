@@ -59,7 +59,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * @param array $attributes
      * @return Role
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateRoleException
      */
     public function create($attributes)
     {
@@ -84,7 +84,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * @param array $attributes
      * @return Role
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateRoleException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -169,8 +169,6 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      *
      * @param Role $role
      * @return void
-     *
-     * @throws UnableToSetDefaultRoleException
      */
     public function setDefaultRole(Role $role)
     {
@@ -209,7 +207,7 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
      * @param array $attributes
      * @return Role
      *
-     * @throws \ReflectionException
+     * @throws CannotUpdateRoleException
      */
     public function update(Role $role, $attributes)
     {
@@ -272,8 +270,8 @@ class RoleRepository extends AppRepository implements RoleRepositoryInterface
     public function removeRoleFromUser(User $user, Role $role, $persist = true)
     {
         return $this->removeRolesFromUser($user, [
-      $role
-    ], $persist);
+            $role
+        ], $persist);
     }
 
     /**

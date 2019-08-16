@@ -60,7 +60,7 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
      * @param array $attributes
      * @return Item
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateItemException
      */
     public function create($attributes)
     {
@@ -83,9 +83,9 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
      * @param number|string $search
      * @param boolean $regex
      * @param array $attributes
-     * @return \Domain\Menu\Item
+     * @return Item
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateItemException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -147,13 +147,13 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
     }
 
     /**
-     * Update a item.
+     * Update a Item.
      *
      * @param Item $item
      * @param array $attributes
      * @return Item
      *
-     * @throws \ReflectionException
+     * @throws CannotUpdateItemException
      */
     public function update(Item $item, $attributes)
     {
@@ -173,12 +173,12 @@ class ItemRepository extends AppRepository implements ItemRepositoryInterface
     /**
      * Retrieve all of the items for the specified menu.
      *
-     * @param \Domain\Menu\Menu $menu
+     * @param Menu $menu
      * @return Collection
      */
     public function getItemsForMenu(Menu $menu)
     {
-        // TODO: Implement getMenusForRestaurant() method.
-        return $this->execute(Menu::where('menu_id', $menu->id), true);
+        // TODO: Implement getItemsForMenu() method.
+        return $this->execute(Item::where('menu_id', $menu->id), true);
     }
 }

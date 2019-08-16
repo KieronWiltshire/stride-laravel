@@ -2,6 +2,8 @@
 
 namespace Domain\User;
 
+use Domain\User\Exceptions\CannotCreateUserException;
+use Domain\User\Exceptions\CannotUpdateUserException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Support\Exceptions\AppError;
 use Support\Repositories\AppRepository;
@@ -56,7 +58,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
      * @param array $attributes
      * @return User
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateUserException
      */
     public function create($attributes)
     {
@@ -81,7 +83,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
      * @param array $attributes
      * @return User
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateUserException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -168,7 +170,7 @@ class UserRepository extends AppRepository implements UserRepositoryInterface
      * @param array $attributes
      * @return User
      *
-     * @throws \ReflectionException
+     * @throws CannotUpdateUserException
      */
     public function update(User $user, $attributes)
     {

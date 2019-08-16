@@ -5,6 +5,7 @@ namespace Domain\Permission;
 use Domain\Permission\Contracts\Repositories\PermissionRepository as PermissionRepositoryInterface;
 use Domain\Permission\Events\PermissionCreatedEvent;
 use Domain\Permission\Events\PermissionUpdatedEvent;
+use Domain\Permission\Exceptions\CannotCreatePermissionException;
 use Domain\Permission\Exceptions\PermissionNotFoundException;
 use Domain\Role\Role;
 use Domain\User\User;
@@ -56,7 +57,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
      * @param array $attributes
      * @return Permission
      *
-     * @throws \ReflectionException
+     * @throws CannotCreatePermissionException
      */
     public function create($attributes)
     {
@@ -81,7 +82,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
      * @param array $attributes
      * @return Permission
      *
-     * @throws \ReflectionException
+     * @throws CannotCreatePermissionException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -168,7 +169,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
      * @param array $attributes
      * @return Permission
      *
-     * @throws \ReflectionException
+     * @throws CannotUpdatePermissionException
      */
     public function update(Permission $permission, $attributes)
     {
@@ -193,8 +194,8 @@ class PermissionRepository extends AppRepository implements PermissionRepository
     public function addPermissionToRole(Role $role, Permission $permission)
     {
         return $this->addPermissionsToRole($role, [
-      $permission
-    ]);
+            $permission
+        ]);
     }
 
     /**
@@ -207,16 +208,16 @@ class PermissionRepository extends AppRepository implements PermissionRepository
     public function addPermissionToUser(User $user, Permission $permission)
     {
         return $this->addPermissionsToUser($user, [
-      $permission
-    ]);
+            $permission
+        ]);
     }
 
     /**
      * Add multiple permissions to the specified role.
      *
      * @param Role $role
-     * @param \Illuminate\Support\Collection|array $permissions
-     * @return void
+     * @param Collection|array $permissions
+     * @return Role
      */
     public function addPermissionsToRole(Role $role, $permissions = [])
     {
@@ -227,7 +228,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
      * Add multiple permissions to the specified user.
      *
      * @param User $user
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param Collection|array $permissions
      * @return User
      */
     public function addPermissionsToUser(User $user, $permissions = [])
@@ -245,8 +246,8 @@ class PermissionRepository extends AppRepository implements PermissionRepository
     public function removePermissionFromRole(Role $role, Permission $permission)
     {
         return $this->removePermissionsFromRole($role, [
-      $permission
-    ]);
+            $permission
+        ]);
     }
 
     /**
@@ -259,15 +260,15 @@ class PermissionRepository extends AppRepository implements PermissionRepository
     public function removePermissionFromUser(User $user, Permission $permission)
     {
         return $this->removePermissionsFromUser($user, [
-      $permission
-    ]);
+            $permission
+        ]);
     }
 
     /**
      * Remove multiple permissions from the specified role.
      *
      * @param Role $role
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param Collection|array $permissions
      * @return Role
      */
     public function removePermissionsFromRole(Role $role, $permissions = [])
@@ -279,7 +280,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
      * Remove multiple permissions from the specified user.
      *
      * @param User $user
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param Collection|array $permissions
      * @return User
      */
     public function removePermissionsFromUser(User $user, $permissions = [])
@@ -291,7 +292,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
      * Set all of the permissions of the specified role.
      *
      * @param Role $role
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param Collection|array $permissions
      * @return Role
      */
     public function setRolePermissions(Role $role, $permissions = [])
@@ -303,7 +304,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
      * Set all of the permissions of the specified user.
      *
      * @param User $user
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param Collection|array $permissions
      * @return User
      */
     public function setUserPermissions(User $user, $permissions = [])
@@ -358,7 +359,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
     /**
      * Retrieve all of the roles that have access to any of the specified permissions.
      *
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param Collection|array $permissions
      * @return Collection
      */
     public function getRolesWithPermissions($permissions = [])
@@ -379,7 +380,7 @@ class PermissionRepository extends AppRepository implements PermissionRepository
     /**
      * Retrieve all of the users that have access to any of the specified permissions.
      *
-     * @param \Illuminate\Support\Collection|array $permissions
+     * @param Collection|array $permissions
      * @return Collection
      */
     public function getUsersWithPermissions($permissions = [])

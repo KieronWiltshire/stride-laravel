@@ -58,7 +58,7 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
      * @param array $attributes
      * @return Menu
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateMenuException
      */
     public function create($attributes)
     {
@@ -83,7 +83,7 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
      * @param array $attributes
      * @return Menu
      *
-     * @throws \ReflectionException
+     * @throws CannotCreateMenuException
      */
     public function firstOrCreate($parameter, $search, $regex = true, $attributes = [])
     {
@@ -151,7 +151,7 @@ class MenuRepository extends AppRepository implements MenuRepositoryInterface
      * @param array $attributes
      * @return Menu
      *
-     * @throws \ReflectionException
+     * @throws CannotUpdateMenuException
      */
     public function update(Menu $menu, $attributes)
     {
