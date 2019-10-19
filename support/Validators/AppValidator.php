@@ -34,6 +34,14 @@ abstract class AppValidator
     {
         $this->validationFactory = $validationFactory;
     }
+    
+    /**
+     * Method called after instantiation.
+     *
+     * @return void
+     */
+    public function boot()
+    {}
 
     /**
      * Retrieve the rules set for the validator.
